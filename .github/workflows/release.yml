@@ -1,0 +1,51 @@
+name: Release
+
+on:
+  create:
+    tags:
+      - "v*.*.*"
+  workflow_dispatch:
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    env:
+      ASSETS_FOLDER: USharpVideoSubtitles
+      UNITYPACKAGE: USharpVideoSubtitles_${{ github.ref_name }}.unitypackage
+    steps:
+    - uses: actions/checkout@v3
+
+    - uses: mikepenz/release-changelog-builder-action@v2
+      if: ${{ startsWith(github.ref, 'refs/tags/') }}
+      id: create_changelog
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - run: |
+        echo "Assets/${{ env.ASSETS_FOLDER }}.meta" > metaList
+        find "Assets/${{ env.ASSETS_FOLDER }}/" -name \*.meta >> metaList
+        echo $GITHUB_REF_NAME > "Assets/${{ env.ASSETS_FOLDER }}/version.txt"
+
+    #- uses: stefanzweifel/git-auto-commit-action@v4
+    #  if: startsWith(github.ref, 'refs/tags/')
+    #  with:
+    #    commit_message: Set version.txt to ${{ github.ref_name }}
+    #    file_pattern: Assets/${{ env.ASSETS_FOLDER }}/version.txt
+
+    - uses: pCYSl5EDgo/create-unitypackage@v1
+      with:
+        package-path: ${{ env.UNITYPACKAGE }}
+        include-files: metaList
+
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      if: startsWith(github.ref, 'refs/tags/')
+      with:
+        files: ${{ env.UNITYPACKAGE }}
+        body: ${{ steps.create_changelog.outputs.changelog }}
+
+    - uses: actions/upload-artifact@v3
+      if: ${{ !startsWith(github.ref, 'refs/tags/') }}
+      with:
+        name: ${{ env.UNITYPACKAGE }}
+        path: ${{ env.UNITYPACKAGE }}
