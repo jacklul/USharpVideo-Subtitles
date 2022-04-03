@@ -41,7 +41,7 @@ namespace UdonSharp.Video.Subtitles
         [SerializeField, Range(0, 600)]
         private int margin = 50;
         [SerializeField, Range(0, 1), Tooltip("0 means bottom, 1 means top")]
-        private int alignment = 0; // Not exposed to Udon yet, to be replaced with "private TextAlignmentOptions alignment = TextAlignmentOptions.Bottom;"
+        private int alignment = 0; // To be replaced with "private TextAlignmentOptions alignment = TextAlignmentOptions.Bottom;" which is not exposed to Udon yet
 
         private int _fontSize;
         private string _backgroundColorHex = "";
