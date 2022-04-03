@@ -26,7 +26,7 @@ _[This code](https://gist.github.com/hai-vr/b340f9a46952640f81efe7f02da6bdf6) by
 
 ## Installation for any other video player
 1. Install [UdonSharp](https://github.com/vrchat-community/UdonSharp)
-2. (Optional) Import [USharpVideo](https://github.com/MerlinVR/USharpVideo#Installation) package if you plan on using styling scripts
+2. (Optional) Import [USharpVideo](https://github.com/MerlinVR/USharpVideo/releases/latest) package if you plan on using styling scripts
 3. Install the [latest release](https://github.com/jacklul/USharpVideo-Subtitles/releases/latest)
 4. Drag the **Subtitles** prefab into your scene
 5. When a window asking you to import **TextMeshPro** assets appears just confirm and import them
