@@ -28,6 +28,12 @@ namespace UdonSharp.Video.Subtitles
         [SerializeField]
         private SubtitleOverlayHandler overlayHandler;
 
+        [Header("Settings")]
+        [Tooltip("If you plan on toggling this externally make sure to also toggle visibility of the the button too")]
+        public bool settingsPopupButtonEnabled = true;
+        public float settingsPopupScale = 1.5f;
+        //public float settingsPopupAlpha = 0.9f;
+
         [Header("Input field")]
 
         [SerializeField, Tooltip("Currently TMP_InputField is not supported by Udon so we are using proxy Text field to fetch the data")]
@@ -157,13 +163,6 @@ namespace UdonSharp.Video.Subtitles
         public Color buttonActivatedColor = new Color(1f, 1f, 1f, 1f);
         public Color iconInvertedColor = new Color(1f, 1f, 1f, 1f);
 
-        [Header("Settings")]
-        [Tooltip("If you plan on toggling this externally make sure to also toggle visibility of the the button too")]
-        public bool settingsPopupButtonEnabled = true;
-        public float settingsPopupScale = 1.5f;
-        //public float settingsPopupAlpha = 0.9f;
-
-        private USharpVideoPlayer _targetVideoPlayer;
         private Vector3 _originalSettingsMenuPosition;
         private Quaternion _originalSettingsMenuRotation;
         private Vector3 _originalSettingsMenuScale;
@@ -176,13 +175,11 @@ namespace UdonSharp.Video.Subtitles
         private void OnEnable()
         {
             manager.RegisterControlHandler(this);
-            _targetVideoPlayer = manager.GetTargetVideoPlayer();
 
             if (subtitlesToggle) subtitlesToggle.isOn = manager.IsEnabled();
             if (localToggle) localToggle.isOn = manager.IsLocal();
 
-            SetOwner(Networking.GetOwner(gameObject).displayName);
-            SynchronizeLockState();
+            UpdateOwner();
         }
 
         private void Start()
@@ -202,7 +199,11 @@ namespace UdonSharp.Video.Subtitles
         private void OnDisable()
         {
             manager.UnregisterControlHandler(this);
-            _targetVideoPlayer = null;
+        }
+
+        public override void OnPlayerLeft(VRCPlayerApi player)
+        {
+            UpdateOwner();
         }
 
         public void SetStatusText(string text)
@@ -268,11 +269,26 @@ namespace UdonSharp.Video.Subtitles
             }
         }
 
-        public void SetOwner(string owner)
+        public void UpdateOwner()
         {
-            if (!ownerField) return;
+            if (ownerField)
+            {
+                if (manager.IsLocal())
+                {
+                    ownerField.text = Networking.LocalPlayer.displayName + " " + INDICATOR_LOCAL;
+                }
+                else
+                {
+                    VRCPlayerApi owner = Networking.GetOwner(manager.gameObject);
 
-            ownerField.text = owner;
+                    if (Utilities.IsValid(owner))
+                        ownerField.text = Networking.GetOwner(manager.gameObject).displayName;
+                    else
+                        ownerField.text = "";
+                }
+            }
+
+            SynchronizeLockState();
         }
 
         public void SynchronizeLockState()
@@ -287,12 +303,9 @@ namespace UdonSharp.Video.Subtitles
                 return;
             }
 
-            if (_targetVideoPlayer == null)
-                _targetVideoPlayer = manager.GetTargetVideoPlayer();
-
-            if (_targetVideoPlayer.IsLocked())
+            if (manager.IsVideoPlayerLocked())
             {
-                if (_targetVideoPlayer.CanControlVideoPlayer())
+                if (manager.CanControlVideoPlayer())
                 {
                     //if (inputField) inputField.readOnly = false;
                     if (inputPlaceholderText) inputPlaceholderText.text = MESSAGE_PASTE;
@@ -302,7 +315,7 @@ namespace UdonSharp.Video.Subtitles
                 else
                 {
                     //if (inputField) inputField.readOnly = true;
-                    if (inputPlaceholderText) inputPlaceholderText.text = string.Format(@MESSAGE_ONLY_OWNER_CAN_ADD, Networking.GetOwner(_targetVideoPlayer.gameObject).displayName);
+                    if (inputPlaceholderText) inputPlaceholderText.text = string.Format(@MESSAGE_ONLY_OWNER_CAN_ADD, manager.GetVideoPlayerOwner().displayName);
                     if (inputClearButtonBackground) inputClearButtonBackground.gameObject.SetActive(false);
                     if (inputClearButtonIcon) inputClearButtonIcon.color = redGraphicColor;
                 }
@@ -342,8 +355,6 @@ namespace UdonSharp.Video.Subtitles
             if (!localToggle) return;
 
             manager.SetLocal(localToggle.isOn);
-
-            SynchronizeLockState();
         }
 
         public void OnInputMenuToggle()
