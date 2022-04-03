@@ -6,6 +6,8 @@ To check this out in-game visit [this test world](https://vrchat.com/home/world/
 
 _[This code](https://gist.github.com/hai-vr/b340f9a46952640f81efe7f02da6bdf6) by [Haï~](https://twitter.com/vr_hai) was a great help while creating this._
 
+<a href="https://i.imgur.com/IZUFwbV.png"><img src="https://i.imgur.com/IZUFwbV.png" height="300"></a>
+
 ## Features
 - Subtitle synchronization with everyone in the instance
 - Option to use own subtitles locally
