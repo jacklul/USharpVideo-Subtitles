@@ -157,11 +157,11 @@ namespace UdonSharp.Video.Subtitles
         private Text alignmentValue;
 
         [Header("Style Colors")]
-        public Color redGraphicColor = new Color(0.632f, 0.19f, 0.19f);
-        public Color whiteGraphicColor = new Color(0.9433f, 0.9433f, 0.9433f);
-        public Color buttonBackgroundColor = new Color(1f, 1f, 1f, 1f);
-        public Color buttonActivatedColor = new Color(1f, 1f, 1f, 1f);
-        public Color iconInvertedColor = new Color(1f, 1f, 1f, 1f);
+        public Color redGraphicColor = new Color(0.632f, 0.196f, 0.196f);
+        public Color whiteGraphicColor = new Color(0.943f, 0.943f, 0.943f);
+        public Color buttonBackgroundColor = new Color(0.213f, 0.186f, 0.216f);
+        public Color buttonActivatedColor = new Color(0.943f, 0.943f, 0.943f);
+        public Color iconInvertedColor = new Color(0.196f, 0.196f, 0.196f);
 
         private Vector3 _originalSettingsMenuPosition;
         private Quaternion _originalSettingsMenuRotation;
