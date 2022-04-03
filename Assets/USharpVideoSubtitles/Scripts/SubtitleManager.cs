@@ -51,8 +51,8 @@ namespace UdonSharp.Video.Subtitles
         [Tooltip("Should we automatically clear loaded subtitles when a new video starts (this setting currently works only with USharpVideoPlayer)")]
         public bool clearOnNewVideo = false;
 
-        [Tooltip("If this module is locked then only the master can manage subtitles (does nothing when using USharpVideo - lock state is fetched from it directly)")]
-        public bool defaultLocked = true;
+        [SerializeField, Tooltip("If this module is locked then only the master can manage subtitles (does nothing when using USharpVideo - lock state is fetched from it directly)")]
+        private bool defaultLocked = true;
 
         [UdonSynced]
         private string syncedChunk;

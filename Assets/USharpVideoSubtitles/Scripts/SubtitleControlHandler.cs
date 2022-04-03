@@ -29,8 +29,8 @@ namespace UdonSharp.Video.Subtitles
         private SubtitleOverlayHandler overlayHandler;
 
         [Header("Settings")]
-        [Tooltip("If you plan on toggling this externally make sure to also toggle visibility of the the button too")]
-        public bool settingsPopupButtonEnabled = true;
+        [SerializeField, Tooltip("If you plan on toggling this externally make sure to also toggle visibility of the the button too")]
+        private bool settingsPopupButtonEnabled = true;
         public float settingsPopupScale = 1.5f;
         //public float settingsPopupAlpha = 0.9f;
 
