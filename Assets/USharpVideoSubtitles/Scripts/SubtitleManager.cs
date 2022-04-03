@@ -10,8 +10,6 @@ using UdonSharp;
 using UnityEngine;
 using VRC.SDKBase;
 using VRC.Udon.Common;
-using VRC.SDK3.Video.Components;
-using VRC.SDK3.Video.Components.AVPro;
 using VRC.SDK3.Video.Components.Base;
 
 namespace UdonSharp.Video.Subtitles
@@ -85,9 +83,6 @@ namespace UdonSharp.Video.Subtitles
         private VideoPlayerManager _videoManager;
         private SubtitleControlHandler[] _registeredControlHandlers;
         private SubtitleOverlayHandler _overlayHandler;
-
-        private VRCUnityVideoPlayer _unityVideoPlayer;
-        private VRCAVProVideoPlayer _avProVideoPlayer;
 
         private int _lastUpdateFrame = 0;
         private int _currentDataIndex = 0;
