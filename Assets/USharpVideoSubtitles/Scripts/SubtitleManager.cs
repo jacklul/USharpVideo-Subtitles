@@ -108,7 +108,7 @@ namespace UdonSharp.Video.Subtitles
             if (targetVideoPlayer)
                 _videoManager = targetVideoPlayer.GetVideoManager();
             else
-                SetPlayerLocked(defaultLocked);
+                SetLocked(defaultLocked);
 
             ResetSubtitleTrackingState();
         }
@@ -204,7 +204,7 @@ namespace UdonSharp.Video.Subtitles
                 return;
             }
 
-            if (IsPlayerPlaying()) // Don't update subtitles if the video is not playing
+            if (IsVideoPlayerPlaying()) // Don't update subtitles if the video is not playing
             {
                 float time = GetVideoTime();
 
@@ -234,7 +234,7 @@ namespace UdonSharp.Video.Subtitles
             }
         }
 
-        private bool IsPlayerPlaying()
+        private bool IsVideoPlayerPlaying()
         {
             if (_videoManager)
                 return _videoManager.IsPlaying();
@@ -594,7 +594,7 @@ namespace UdonSharp.Video.Subtitles
             return _isLocked;
         }
 
-        public void SetPlayerLocked(bool state)
+        public void SetLocked(bool state)
         {
             if (targetVideoPlayer) return;
 
