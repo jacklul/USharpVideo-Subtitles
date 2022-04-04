@@ -21,14 +21,14 @@ _[This code](https://gist.github.com/hai-vr/b340f9a46952640f81efe7f02da6bdf6) by
 
 ## Installation
 1. Install [UdonSharp](https://github.com/vrchat-community/UdonSharp) first if you haven't already
-2. Import [USharpVideo](https://github.com/MerlinVR/USharpVideo/releases/latest) if you haven't already
-3. Import [latest release](https://github.com/jacklul/USharpVideo-Subtitles/releases/latest)
-4. Drag the prefab into your scene:
+2. Import [USharpVideo](https://github.com/MerlinVR/USharpVideo/releases/latest) package if you haven't already
+3. Import [latest release](https://github.com/jacklul/USharpVideo-Subtitles/releases/latest) package
+4. Drag the `USharpVideoSubtitles/Subtitles` prefab into your scene:
     - when using **USharpVideo** - drag the prefab directly into it
     - otherwise - just drag it into the scene (preferrably at the root)
-5. When a window asking you to import **TextMeshPro Essentials** appears just confirm and import it
-6. Add a reference in the **Subtitles** object (**SubtitleManager** script) to:
+5. When a window asking you to import **TextMeshPro Essentials** appears - just do it
+6. Add a reference in the `Subtitles` object (**SubtitleManager** script) to:
     - (when using **USharpVideo**) **USharpVideoPlayer** script (**Target Video Player** field)
-    - (in any other case) **VRCUnityVideoPlayer** (in most cases) or **VRCAVProVideoPlayer** (depends on which one you're using) in the Subtitles object (**Base Video Player** field) 
-
-To position the `Subtitles/Overlay` correctly you should drag this object into the video player's screen object and then reset transform values, you can then move it wherever you want as long you don't touch the transform values.
+    OR
+    - **VRCUnityVideoPlayer** or **VRCAVProVideoPlayer** (**Base Video Player** field) - depends on which one you're using, usually it's the first one
+7. To display subtitles in the correct position you have to drag `Subtitles/Overlay` object into the video player's screen object and then reset transform values on it.
