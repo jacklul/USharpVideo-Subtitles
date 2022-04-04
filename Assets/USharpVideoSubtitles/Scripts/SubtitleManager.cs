@@ -30,7 +30,6 @@ namespace UdonSharp.Video.Subtitles
         private const string MESSAGE_ONLY_OWNER_CAN = "Only {0} can {1}";
         private const string MESSAGE_ONLY_ACTION_SYNC = "synchronize subtitles";
         private const string MESSAGE_ONLY_ACTION_ADD = "add subtitles";
-        private const string MESSAGE_ONLY_ACTION_CLEAR = "clear subtitles";
         private const string MESSAGE_SYNCHRONIZING = "Synchronizing {0} / {1} {2}";
         private const string SUBTITLE_PLACEHOLDER = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
 
@@ -694,14 +693,7 @@ namespace UdonSharp.Video.Subtitles
                 }
 
                 if (!CanControlVideoPlayer())
-                {
-                    string statusText = string.Format(@MESSAGE_ONLY_OWNER_CAN, Networking.GetOwner(gameObject).displayName, MESSAGE_ONLY_ACTION_CLEAR);
-
-                    foreach (SubtitleControlHandler handler in _registeredControlHandlers)
-                        handler.SetTemporaryStatusText(statusText, 3.0f);
-
                     return;
-                }
 
                 ClearSubtitlesLocal(); // Must be called first otherwise RestoreStatusText() in OnPostSerialization will send previous status instead of cleared message
                 SetAndTransmitSubtitles("");
