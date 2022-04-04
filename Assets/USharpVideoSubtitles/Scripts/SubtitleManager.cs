@@ -502,10 +502,8 @@ namespace UdonSharp.Video.Subtitles
 
         private bool IsNumeric(string number)
         {
-#pragma warning disable IDE0018, IDE0059 // UdonSharp does not currently support node type DeclarationExpression
             int n;
             return int.TryParse(number, out n);
-#pragma warning restore IDE0018, IDE0059
         }
 
         private float ParseTimestamp(string timestamp)

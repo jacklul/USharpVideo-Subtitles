@@ -257,7 +257,8 @@ namespace UdonSharp.Video.Subtitles
 
         public void SaveStatusText()
         {
-            _previousStatus = GetStatusText();
+            if (_previousStatus == "")
+                _previousStatus = GetStatusText();
         }
 
         public void RestoreStatusText()
@@ -330,7 +331,6 @@ namespace UdonSharp.Video.Subtitles
                     //if (inputClearButtonBackground) inputClearButtonBackground.gameObject.SetActive(true);
 
                     if (lockGraphic) lockGraphic.color = whiteGraphicColor;
-
                     if (inputClearButtonIcon) inputClearButtonIcon.color = whiteGraphicColor;
 
                     //if (inputField) inputField.readOnly = false;
@@ -341,7 +341,6 @@ namespace UdonSharp.Video.Subtitles
                     //if (inputClearButtonBackground) inputClearButtonBackground.gameObject.SetActive(false);
 
                     if (lockGraphic) lockGraphic.color = redGraphicColor;
-
                     if (inputClearButtonIcon) inputClearButtonIcon.color = redGraphicColor;
 
                     //if (inputField) inputField.readOnly = true;
@@ -548,8 +547,8 @@ namespace UdonSharp.Video.Subtitles
 
             string[] array = settings.Split('/');
 
-            string[] tmpValue = new string[0];
-            Color currentColor = new Color();
+            string[] tmpValue;
+            Color currentColor;
 
             foreach (string setting in array)
             {
@@ -560,6 +559,9 @@ namespace UdonSharp.Video.Subtitles
                     switch (tmp[0])
                     {
                         case "fs": // Font size
+                            if (!fontSizeSlider)
+                                continue;
+
                             fontSizeSlider.value = SafelyParseFloat(tmp[1]);
                             SetFontSizeValue((int)fontSizeSlider.value);
 
@@ -567,6 +569,9 @@ namespace UdonSharp.Video.Subtitles
                                 overlayHandler.SetFontSize((int)fontSizeSlider.value);
                             break;
                         case "fc": // Font color
+                            if (!fontColorRSlider || !fontColorGSlider || !fontColorBSlider)
+                                continue;
+
                             tmpValue = tmp[1].Split(';');
                             Color fontColor;
 
@@ -583,6 +588,9 @@ namespace UdonSharp.Video.Subtitles
                             overlayHandler.SetFontColor(fontColor);
                             break;
                         case "oc": // Outline color
+                            if (!outlineColorRSlider || !outlineColorGSlider || !outlineColorBSlider)
+                                continue;
+
                             tmpValue = tmp[1].Split(';');
                             Color outlineColor;
 
@@ -599,6 +607,9 @@ namespace UdonSharp.Video.Subtitles
                             overlayHandler.SetOutlineColor(outlineColor);
                             break;
                         case "bc": // Background color
+                            if (!backgroundColorRSlider || !backgroundColorGSlider || !backgroundColorBSlider)
+                                continue;
+
                             tmpValue = tmp[1].Split(';');
                             Color backgroundColor;
 
@@ -617,6 +628,9 @@ namespace UdonSharp.Video.Subtitles
                             overlayHandler.SetBackgroundColor(backgroundColor);
                             break;
                         case "bo": // Background opacity
+                            if (!backgroundOpacitySlider)
+                                continue;
+
                             backgroundOpacitySlider.value = SafelyParseFloat(tmp[1]);
                             SetBackgroundOpacityValue(backgroundOpacitySlider.value);
 
@@ -625,6 +639,9 @@ namespace UdonSharp.Video.Subtitles
                             overlayHandler.SetBackgroundColor(new Color(currentColor.r, currentColor.g, currentColor.b, backgroundOpacitySlider.value));
                             break;
                         case "pm": // Margin
+                            if (!marginSlider)
+                                continue;
+
                             marginSlider.value = SafelyParseInt(tmp[1]);
                             SetMarginValue((int)marginSlider.value);
 
@@ -632,25 +649,29 @@ namespace UdonSharp.Video.Subtitles
                                 overlayHandler.SetMargin((int)marginSlider.value);
                             break;
                         case "pa": // Alignment
-                            alignmentSlider.value = SafelyParseInt(tmp[1]);
-                            alignmentToggle.isOn = alignmentSlider.value == 1;
-                            SetAlignmentValue((int)alignmentSlider.value);
+                            if (!alignmentToggle)
+                                continue;
 
-                            /*if ((int)alignmentSlider.value == 0)
-                                overlayHandler.SetAlignment("Bottom"); // TextAlignmentOptions.Bottom - not exposed to Udon yet
+                            int alignmentValue = SafelyParseInt(tmp[1]);
+
+                            alignmentToggle.isOn = alignmentValue == 1;
+                            SetAlignmentValue(alignmentValue);
+
+                            /*if (alignmentToggle.isOn)
+                                overlayHandler.SetAlignment("Top"); // TextAlignmentOptions.Top - not exposed to Udon yet
                             else
-                                overlayHandler.SetAlignment("Top");*/ // TextAlignmentOptions.Top - not exposed to Udon yet
-                            overlayHandler.SetAlignment((int)alignmentSlider.value);
+                                overlayHandler.SetAlignment("Bottom");*/ // TextAlignmentOptions.Bottom - not exposed to Udon yet
+
+                            overlayHandler.SetAlignment(alignmentValue);
                             break;
                     }
                 }
             }
         }
 
-        private float SafelyParseInt(string number)
+        private int SafelyParseInt(string number)
         {
             int n;
-
             if (int.TryParse(number, out n))
                 return int.Parse(number);
 
@@ -660,7 +681,6 @@ namespace UdonSharp.Video.Subtitles
         private float SafelyParseFloat(string number)
         {
             float n;
-
             if (float.TryParse(number, out n))
                 return float.Parse(number);
 
@@ -861,7 +881,7 @@ namespace UdonSharp.Video.Subtitles
         {
             if (!alignmentValue) return;
 
-            alignmentSlider.value = value;
+            if (alignmentSlider) alignmentSlider.value = value;
             alignmentValue.text = value == 0 ? ALIGNMENT_BOTTOM : ALIGNMENT_TOP;
         }
     }
