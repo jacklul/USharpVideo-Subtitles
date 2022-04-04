@@ -105,6 +105,15 @@ namespace UdonSharp.Video.Subtitles
         [SerializeField]
         private Graphic helpMenuButtonIcon;
 
+        [Header("Lock button")]
+        [SerializeField]
+        private GameObject lockButton;
+        [SerializeField]
+        private Graphic lockGraphic;
+
+        [SerializeField]
+        private GameObject masterLockedIcon, masterUnlockedIcon;
+
         [Header("Settings fields")]
 
         [SerializeField]
@@ -178,6 +187,7 @@ namespace UdonSharp.Video.Subtitles
 
             if (subtitlesToggle) subtitlesToggle.isOn = manager.IsEnabled();
             if (localToggle) localToggle.isOn = manager.IsLocal();
+            if (lockButton) lockButton.SetActive(!manager.IsUsingUSharpVideo());
 
             UpdateOwner();
         }
@@ -295,37 +305,61 @@ namespace UdonSharp.Video.Subtitles
         {
             if (manager.IsLocal())
             {
+                if (lockButton && !manager.IsUsingUSharpVideo()) lockButton.SetActive(false);
+                //if (inputClearButtonBackground) inputClearButtonBackground.gameObject.SetActive(true);
+
+                if (lockGraphic) lockGraphic.color = whiteGraphicColor;
+                if (inputClearButtonIcon) inputClearButtonIcon.color = whiteGraphicColor;
+
                 //if (inputField) inputField.readOnly = false;
                 if (inputPlaceholderText) inputPlaceholderText.text = MESSAGE_PASTE + " " + INDICATOR_LOCAL;
-                if (inputClearButtonBackground) inputClearButtonBackground.gameObject.SetActive(true);
-                if (inputClearButtonIcon) inputClearButtonIcon.color = whiteGraphicColor;
 
                 return;
             }
 
-            if (manager.IsVideoPlayerLocked())
+            if (lockButton && !manager.IsUsingUSharpVideo()) lockButton.SetActive(true);
+
+            if (manager.IsLocked())
             {
+                if (masterLockedIcon) masterLockedIcon.SetActive(true);
+                if (masterUnlockedIcon) masterUnlockedIcon.SetActive(false);
+
                 if (manager.CanControlVideoPlayer())
                 {
+                    //if (inputClearButtonBackground) inputClearButtonBackground.gameObject.SetActive(true);
+
+                    if (lockGraphic) lockGraphic.color = whiteGraphicColor;
+
+                    if (inputClearButtonIcon) inputClearButtonIcon.color = whiteGraphicColor;
+
                     //if (inputField) inputField.readOnly = false;
                     if (inputPlaceholderText) inputPlaceholderText.text = MESSAGE_PASTE;
-                    if (inputClearButtonBackground) inputClearButtonBackground.gameObject.SetActive(true);
-                    if (inputClearButtonIcon) inputClearButtonIcon.color = whiteGraphicColor;
                 }
                 else
                 {
-                    //if (inputField) inputField.readOnly = true;
-                    if (inputPlaceholderText) inputPlaceholderText.text = string.Format(@MESSAGE_ONLY_OWNER_CAN_ADD, manager.GetVideoPlayerOwner().displayName);
-                    if (inputClearButtonBackground) inputClearButtonBackground.gameObject.SetActive(false);
+                    //if (inputClearButtonBackground) inputClearButtonBackground.gameObject.SetActive(false);
+
+                    if (lockGraphic) lockGraphic.color = redGraphicColor;
+
                     if (inputClearButtonIcon) inputClearButtonIcon.color = redGraphicColor;
+
+                    //if (inputField) inputField.readOnly = true;
+                    VRCPlayerApi owner = manager.GetVideoPlayerOwner();
+                    if (inputPlaceholderText) inputPlaceholderText.text = string.Format(@MESSAGE_ONLY_OWNER_CAN_ADD, owner != null ? owner.displayName : "");
                 }
             }
             else
             {
+                if (masterLockedIcon) masterLockedIcon.SetActive(false);
+                if (masterUnlockedIcon) masterUnlockedIcon.SetActive(true);
+
+                //if (inputClearButtonBackground) inputClearButtonBackground.gameObject.SetActive(true);
+
+                if (lockGraphic) lockGraphic.color = whiteGraphicColor;
+                if (inputClearButtonIcon) inputClearButtonIcon.color = whiteGraphicColor;
+
                 //if (inputField) inputField.readOnly = false;
                 if (inputPlaceholderText) inputPlaceholderText.text = MESSAGE_PASTE + " " + INDICATOR_ANYONE;
-                if (inputClearButtonBackground) inputClearButtonBackground.gameObject.SetActive(true);
-                if (inputClearButtonIcon) inputClearButtonIcon.color = whiteGraphicColor;
             }
         }
 
@@ -673,6 +707,11 @@ namespace UdonSharp.Video.Subtitles
 
             inputMenu.SetActive(false);
             ToggleMenu("dummy"); // Makes sure everything gets closed and button states reset
+        }
+
+        public void OnLockButton()
+        {
+            manager.SetLocked(!manager.IsLocked());
         }
 
         public void OnFontSizeSlider()

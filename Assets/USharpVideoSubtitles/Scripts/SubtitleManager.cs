@@ -586,7 +586,12 @@ namespace UdonSharp.Video.Subtitles
             Debug.LogError(LOG_PREFIX + " " + message, this);
         }
 
-        public bool IsVideoPlayerLocked()
+        public bool IsUsingUSharpVideo()
+        {
+            return targetVideoPlayer != null;
+        }
+
+        public bool IsLocked()
         {
             if (targetVideoPlayer)
                 return targetVideoPlayer.IsLocked();
@@ -596,7 +601,7 @@ namespace UdonSharp.Video.Subtitles
 
         public void SetLocked(bool state)
         {
-            if (targetVideoPlayer) return;
+            if (targetVideoPlayer || !Networking.IsMaster) return;
 
             _isLocked = state;
 
@@ -609,7 +614,7 @@ namespace UdonSharp.Video.Subtitles
             if (targetVideoPlayer)
                 return targetVideoPlayer.CanControlVideoPlayer();
 
-            return !_isLocked || GetVideoPlayerOwner() == Networking.LocalPlayer;
+            return !_isLocked || Networking.IsMaster;
         }
 
         public VRCPlayerApi GetVideoPlayerOwner()

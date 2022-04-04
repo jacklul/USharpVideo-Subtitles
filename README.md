@@ -36,5 +36,3 @@ _[This code](https://gist.github.com/hai-vr/b340f9a46952640f81efe7f02da6bdf6) by
 7. You will have a bunch of missing scripts on the object if you didn't import **USharpVideo** package - you can remove them either manually or use [this editor script](https://gist.github.com/ArieLeo/c812b06329dbdc0acef9b7e074b6586d)
 
 To make the subtitles overlay match the video player screen just drag the **Overlay** object into the video player's screen object then reset **Overlay** object's transform values.
-
-For better integration you will want to write an Udon script that calls **SubtitleManager.SetLocked(true/false)** in **Subtitles** object - this will let the script know whenever everyone are allowed to paste the subtitles or just the master, without this only master will have control over the subtitles (by default).
