@@ -731,12 +731,16 @@ namespace UdonSharp.Video.Subtitles
                 }
                 else
                 {
-                    string statusText = string.Format(@MESSAGE_ONLY_OWNER_CAN, Networking.GetOwner(gameObject).displayName, MESSAGE_ONLY_ACTION_SYNC);
-
-                    foreach (SubtitleControlHandler handler in _registeredControlHandlers)
-                        handler.SetTemporaryStatusText(statusText, 3.0f);
-
+                    int _dataTotalBefore = _dataTotal;
                     ParseSubtitles(_data); // Just in case something went wrong and subtitles didn't load in SetLocal()
+
+                    if (_dataTotalBefore == _dataTotal)
+                    {
+                        string statusText = string.Format(@MESSAGE_ONLY_OWNER_CAN, Networking.GetOwner(gameObject).displayName, MESSAGE_ONLY_ACTION_SYNC);
+
+                        foreach (SubtitleControlHandler handler in _registeredControlHandlers)
+                            handler.SetTemporaryStatusText(statusText, 3.0f);
+                    }
                 }
             }
 
