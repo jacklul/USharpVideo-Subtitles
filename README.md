@@ -20,19 +20,15 @@ _[This code](https://gist.github.com/hai-vr/b340f9a46952640f81efe7f02da6bdf6) by
 - [USharpVideo](https://github.com/MerlinVR/USharpVideo) v1.0.0+
 
 ## Installation
-1. Install [USharpVideo](https://github.com/MerlinVR/USharpVideo#Installation) first
-2. Install the [latest release](https://github.com/jacklul/USharpVideo-Subtitles/releases/latest)
-3. Drag the **Subtitles** prefab into **USharpVideo** in your scene, this will make **Overlay** position match the screen and **UI** will be right next to the player controls (assuming you didn't reposition them earlier)
-4. When a window asking you to import **TextMeshPro** assets appears just confirm and import them
-5. Add a reference to **USharpVideo** in the **Subtitles** object (**Target Video Player** field)
+1. Install [UdonSharp](https://github.com/vrchat-community/UdonSharp) first if you haven't already
+2. Import [USharpVideo](https://github.com/MerlinVR/USharpVideo/releases/latest) if you haven't already
+3. Import [latest release](https://github.com/jacklul/USharpVideo-Subtitles/releases/latest)
+4. Drag the prefab into your scene:
+    - when using **USharpVideo** - drag the prefab directly into it
+    - otherwise - just drag it into the scene (preferrably at the root)
+5. When a window asking you to import **TextMeshPro Essentials** appears just confirm and import it
+6. Add a reference in the **Subtitles** object (**SubtitleManager** script) to:
+    - (when using **USharpVideo**) **USharpVideoPlayer** script (**Target Video Player** field)
+    - (in any other case) **VRCUnityVideoPlayer** (in most cases) or **VRCAVProVideoPlayer** (depends on which one you're using) in the Subtitles object (**Base Video Player** field) 
 
-## Installation for any other video player
-1. Install [UdonSharp](https://github.com/vrchat-community/UdonSharp)
-2. (Optional) Import [USharpVideo](https://github.com/MerlinVR/USharpVideo/releases/latest) package if you plan on using styling scripts
-3. Install the [latest release](https://github.com/jacklul/USharpVideo-Subtitles/releases/latest)
-4. Drag the **Subtitles** prefab into your scene
-5. When a window asking you to import **TextMeshPro** assets appears just confirm and import them
-6. Add a reference to either **VRCUnityVideoPlayer** or **VRCAVProVideoPlayer** (depends on which one you're using) in the **Subtitles** object (**Base Video Player** field)
-7. You will have a bunch of missing scripts on the object if you didn't import **USharpVideo** package - you can remove them either manually or use [this editor script](https://gist.github.com/ArieLeo/c812b06329dbdc0acef9b7e074b6586d)
-
-To make the subtitles overlay match the video player screen just drag the **Overlay** object into the video player's screen object then reset **Overlay** object's transform values.
+To position the `Subtitles/Overlay` correctly you should drag this object into the video player's screen object and then reset transform values, you can then move it wherever you want as long you don't touch the transform values.
