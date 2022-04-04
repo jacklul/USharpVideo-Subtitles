@@ -684,6 +684,9 @@ namespace UdonSharp.Video.Subtitles
 
             if (!_isLocal)
             {
+                if (!CanControlVideoPlayer())
+                    return;
+
                 if (_chunkSync < _chunkCount)
                 {
                     foreach (SubtitleControlHandler handler in _registeredControlHandlers)
@@ -691,9 +694,6 @@ namespace UdonSharp.Video.Subtitles
 
                     return;
                 }
-
-                if (!CanControlVideoPlayer())
-                    return;
 
                 ClearSubtitlesLocal(); // Must be called first otherwise RestoreStatusText() in OnPostSerialization will send previous status instead of cleared message
                 SetAndTransmitSubtitles("");
@@ -709,14 +709,6 @@ namespace UdonSharp.Video.Subtitles
         {
             if (!_isLocal)
             {
-                if (_chunkSync < _chunkCount)
-                {
-                    foreach (SubtitleControlHandler handler in _registeredControlHandlers)
-                        handler.SetStickyStatusText(MESSAGE_WAIT_SYNC, 3.0f);
-
-                    return;
-                }
-
                 if (_data == "")
                 {
                     foreach (SubtitleControlHandler handler in _registeredControlHandlers)
@@ -727,6 +719,14 @@ namespace UdonSharp.Video.Subtitles
 
                 if (Networking.IsOwner(gameObject)) // Owner is guranteed to have the subtitles
                 {
+                    if (_chunkSync < _chunkCount)
+                    {
+                        foreach (SubtitleControlHandler handler in _registeredControlHandlers)
+                            handler.SetStickyStatusText(MESSAGE_WAIT_SYNC, 3.0f);
+
+                        return;
+                    }
+
                     TransmitSubtitles();
                 }
                 else
