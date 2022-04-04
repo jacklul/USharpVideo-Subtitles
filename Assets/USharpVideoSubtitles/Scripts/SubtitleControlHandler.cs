@@ -31,7 +31,8 @@ namespace UdonSharp.Video.Subtitles
         [Header("Settings")]
         [SerializeField, Tooltip("If you plan on toggling this externally make sure to also toggle visibility of the the button too")]
         private bool settingsPopupButtonEnabled = true;
-        public float settingsPopupScale = 1.5f;
+        [Range(1.5f, 3f)]
+        public float settingsPopupScale = 2f;
         //public float settingsPopupAlpha = 0.9f;
 
         [Header("Input field")]
@@ -515,8 +516,8 @@ namespace UdonSharp.Video.Subtitles
                     settingsMenuCanvasGroup.alpha = settingsPopupAlpha;
                 }*/
 
-                // Corrects the position to the actual center of the screen
-                if (rectTransform) rectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x, rectTransform.anchoredPosition.y - rectTransform.rect.height);
+                // Corrects the position to the more or less center of the screen
+                if (rectTransform) rectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x, rectTransform.anchoredPosition.y - (rectTransform.rect.height*settingsPopupScale/2));
 
                 if (settingsPopupButtonBackground) settingsPopupButtonBackground.color = buttonActivatedColor;
                 if (settingsPopupButtonIcon) settingsPopupButtonIcon.color = iconInvertedColor;

@@ -111,7 +111,10 @@ namespace UdonSharp.Video.Subtitles
 
         public Transform GetTransform()
         {
-            return gameObject.transform;
+            if (gameObject.transform.childCount > 0)
+                return gameObject.transform.GetChild(0);
+
+            return gameObject.transform; // This will most likely flicker the UI on the screen because of exactly same position
         }
 
         public int GetFontSize()
