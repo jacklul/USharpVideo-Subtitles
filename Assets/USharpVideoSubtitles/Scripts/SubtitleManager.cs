@@ -669,6 +669,8 @@ namespace UdonSharp.Video.Subtitles
                     LoadSubtitles(_data, false);
             }
 
+            ResetSubtitleTrackingState();
+
             foreach (SubtitleControlHandler handler in _registeredControlHandlers)
                 handler.UpdateOwner();
         }
