@@ -130,7 +130,7 @@ namespace UdonSharp.Video.Subtitles
         private Slider fontColorBSlider;
         [SerializeField]
         private Image fontColorValue;
-        
+
         [SerializeField]
         private Slider outlineColorRSlider;
         [SerializeField]
@@ -139,7 +139,7 @@ namespace UdonSharp.Video.Subtitles
         private Slider outlineColorBSlider;
         [SerializeField]
         private Image outlineColorValue;
-        
+
         [SerializeField]
         private Slider backgroundColorRSlider;
         [SerializeField]
@@ -238,7 +238,7 @@ namespace UdonSharp.Video.Subtitles
             _expectedStatus = text;
             SendCustomEventDelayedSeconds(nameof(RestoreStatusText), seconds);
         }
-        
+
         public void SetStickyStatusText(string text, float seconds)
         {
             SetStatusText(text);
@@ -502,7 +502,7 @@ namespace UdonSharp.Video.Subtitles
         public void OnSettingsPopupToggle()
         {
             if (!settingsPopupButtonEnabled || !overlayHandler) return;
-            
+
             if (IsSettingsMenuAtOriginalPosition())
             {
                 Transform transform = overlayHandler.GetTransform();
@@ -519,7 +519,7 @@ namespace UdonSharp.Video.Subtitles
                 }*/
 
                 // Corrects the position to the more or less center of the screen
-                if (rectTransform) rectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x, rectTransform.anchoredPosition.y - (rectTransform.rect.height*settingsPopupScale/2));
+                if (rectTransform) rectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x, rectTransform.anchoredPosition.y - (rectTransform.rect.height * settingsPopupScale / 2));
 
                 if (settingsPopupButtonBackground) settingsPopupButtonBackground.color = buttonActivatedColor;
                 if (settingsPopupButtonIcon) settingsPopupButtonIcon.color = iconInvertedColor;
@@ -789,35 +789,35 @@ namespace UdonSharp.Video.Subtitles
         }
 
         public void OnOutlineColorChange()
-		{
+        {
             if (!outlineColorRSlider || !outlineColorGSlider || !outlineColorBSlider) return;
 
-			float valueR = outlineColorRSlider.value;
-			float valueG = outlineColorGSlider.value;
-			float valueB = outlineColorBSlider.value;
+            float valueR = outlineColorRSlider.value;
+            float valueG = outlineColorGSlider.value;
+            float valueB = outlineColorBSlider.value;
 
             Color color = new Color(valueR, valueG, valueB, 1f);
 
             if (overlayHandler) overlayHandler.SetOutlineColor(color);
 
-			SetOutlineColorValue(color);
+            SetOutlineColorValue(color);
             AfterValueChanged();
-		}
+        }
 
-		private void SetOutlineColorValue(Color value)
-		{
+        private void SetOutlineColorValue(Color value)
+        {
             if (!outlineColorValue) return;
 
             outlineColorValue.color = value;
         }
 
         public void OnBackgroundColorChange()
-		{
+        {
             if (!backgroundColorRSlider || !backgroundColorGSlider || !backgroundColorBSlider) return;
 
-			float valueR = backgroundColorRSlider.value;
-			float valueG = backgroundColorGSlider.value;
-			float valueB = backgroundColorBSlider.value;
+            float valueR = backgroundColorRSlider.value;
+            float valueG = backgroundColorGSlider.value;
+            float valueB = backgroundColorBSlider.value;
 
             Color currentColor = overlayHandler.GetBackgroundColor();
             Color color = new Color(valueR, valueG, valueB, currentColor.a);
@@ -825,11 +825,11 @@ namespace UdonSharp.Video.Subtitles
             if (overlayHandler) overlayHandler.SetBackgroundColor(color);
 
             SetBackgroundColorValue(color);
-			AfterValueChanged();
-		}
+            AfterValueChanged();
+        }
 
-		private void SetBackgroundColorValue(Color value)
-		{
+        private void SetBackgroundColorValue(Color value)
+        {
             if (!backgroundColorValue) return;
 
             backgroundColorValue.color = value;

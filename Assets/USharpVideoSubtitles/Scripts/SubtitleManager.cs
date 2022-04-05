@@ -232,7 +232,7 @@ namespace UdonSharp.Video.Subtitles
 
             if (baseVideoPlayer)
                 return baseVideoPlayer.IsPlaying;
-            
+
             return false;
         }
 
