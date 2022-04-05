@@ -409,12 +409,15 @@ namespace UdonSharp.Video.Subtitles
 
             if (settingsMenu.activeSelf)
             {
-                manager.SetPlaceholder(true);
+                if (overlayHandler) overlayHandler.SetPlaceholder(true);
             }
             else
             {
-                manager.SetPlaceholder(false);
-                if (overlayHandler) overlayHandler.ClearSubtitle();
+                if (overlayHandler)
+                {
+                    overlayHandler.ClearSubtitle();
+                    overlayHandler.SetPlaceholder(false);
+                }
             }
         }
 
@@ -667,6 +670,8 @@ namespace UdonSharp.Video.Subtitles
                     }
                 }
             }
+
+            overlayHandler.RefreshSubtitle();
         }
 
         private int SafelyParseInt(string number)
@@ -690,6 +695,12 @@ namespace UdonSharp.Video.Subtitles
         private float RoundFloat(float value)
         {
             return Mathf.Round(value * 100f) / 100f;
+        }
+
+        private void AfterValueChanged()
+        {
+            UpdateSettingsExportString();
+            overlayHandler.RefreshSubtitle();
         }
 
         public void OnSettingsResetButton()
@@ -744,7 +755,7 @@ namespace UdonSharp.Video.Subtitles
             if (overlayHandler) overlayHandler.SetFontSize(value);
 
             SetFontSizeValue(value);
-            UpdateSettingsExportString();
+            AfterValueChanged();
         }
 
         private void SetFontSizeValue(int value)
@@ -767,7 +778,7 @@ namespace UdonSharp.Video.Subtitles
             if (overlayHandler) overlayHandler.SetFontColor(color);
 
             SetFontColorValue(color);
-            UpdateSettingsExportString();
+            AfterValueChanged();
         }
 
         private void SetFontColorValue(Color value)
@@ -790,7 +801,7 @@ namespace UdonSharp.Video.Subtitles
             if (overlayHandler) overlayHandler.SetOutlineColor(color);
 
 			SetOutlineColorValue(color);
-			UpdateSettingsExportString();
+            AfterValueChanged();
 		}
 
 		private void SetOutlineColorValue(Color value)
@@ -814,7 +825,7 @@ namespace UdonSharp.Video.Subtitles
             if (overlayHandler) overlayHandler.SetBackgroundColor(color);
 
             SetBackgroundColorValue(color);
-			UpdateSettingsExportString();
+			AfterValueChanged();
 		}
 
 		private void SetBackgroundColorValue(Color value)
@@ -837,7 +848,7 @@ namespace UdonSharp.Video.Subtitles
             }
 
             SetBackgroundOpacityValue(value);
-            UpdateSettingsExportString();
+            AfterValueChanged();
         }
 
         private void SetBackgroundOpacityValue(float value)
@@ -856,7 +867,7 @@ namespace UdonSharp.Video.Subtitles
             if (overlayHandler) overlayHandler.SetMargin(value);
 
             SetMarginValue(value);
-            UpdateSettingsExportString();
+            AfterValueChanged();
         }
 
         private void SetMarginValue(int value)
@@ -875,7 +886,7 @@ namespace UdonSharp.Video.Subtitles
             overlayHandler.SetAlignment(value);
 
             SetAlignmentValue(value);
-            UpdateSettingsExportString();
+            AfterValueChanged();
         }
 
         private void SetAlignmentValue(int value)

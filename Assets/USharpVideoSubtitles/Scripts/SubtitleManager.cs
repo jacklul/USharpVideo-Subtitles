@@ -31,7 +31,6 @@ namespace UdonSharp.Video.Subtitles
         private const string MESSAGE_ONLY_ACTION_SYNC = "synchronize subtitles";
         private const string MESSAGE_ONLY_ACTION_ADD = "add subtitles";
         private const string MESSAGE_SYNCHRONIZING = "Synchronizing {0} / {1} {2}";
-        private const string SUBTITLE_PLACEHOLDER = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
 
         [SerializeField]
         private USharpVideoPlayer targetVideoPlayer;
@@ -77,7 +76,6 @@ namespace UdonSharp.Video.Subtitles
         private bool _isEnabled = true;
         private bool _isLocal = false;
         private bool _isLocked = true; // Does nothing when USharpVideo is used
-        private bool _showPlaceholder = false;
 
         private VideoPlayerManager _videoManager;
         private SubtitleControlHandler[] _registeredControlHandlers;
@@ -188,7 +186,7 @@ namespace UdonSharp.Video.Subtitles
 
         public void Update()
         {
-            if ((!_isEnabled || _dataTotal == 0) && !_showPlaceholder) return;
+            if (!_isEnabled || _dataTotal == 0) return;
 
             if (_lastUpdateFrame < updateRate)
             {
@@ -196,12 +194,6 @@ namespace UdonSharp.Video.Subtitles
                 return;
             }
             _lastUpdateFrame = 0;
-
-            if (_showPlaceholder)
-            {
-                if (_overlayHandler) _overlayHandler.DisplaySubtitle(SUBTITLE_PLACEHOLDER);
-                return;
-            }
 
             if (IsVideoPlayerPlaying()) // Don't update subtitles if the video is not playing
             {
@@ -425,7 +417,7 @@ namespace UdonSharp.Video.Subtitles
             if (_overlayHandler != null)
                 _overlayHandler.ClearSubtitle();
 
-            SetPlaceholder(false);
+            _overlayHandler.SetPlaceholder(false);
         }
 
         private bool ParseSubtitles(string text)
@@ -683,11 +675,6 @@ namespace UdonSharp.Video.Subtitles
 
             foreach (SubtitleControlHandler handler in _registeredControlHandlers)
                 handler.UpdateOwner();
-        }
-
-        public void SetPlaceholder(bool state)
-        {
-            _showPlaceholder = state;
         }
 
         public void ClearSubtitles()

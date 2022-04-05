@@ -42,8 +42,12 @@ namespace UdonSharp.Video.Subtitles
         private int margin = 50;
         [SerializeField, Range(0, 1), Tooltip("0 means bottom, 1 means top")]
         private int alignment = 0; // To be replaced with "private TextAlignmentOptions alignment = TextAlignmentOptions.Bottom;" which is not exposed to Udon yet
+        [SerializeField]
+        private string placeholder = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
 
         private string _lastText;
+        private bool _showPlaceholder = false;
+
         private int _fontSize;
         private string _backgroundColorHex = "";
         private int _margin;
@@ -66,6 +70,9 @@ namespace UdonSharp.Video.Subtitles
 
         public void DisplaySubtitle(string text)
         {
+            if (_showPlaceholder && text == "")
+                text = placeholder;
+
             if (text == _lastText)
                 return;
 
@@ -110,6 +117,18 @@ namespace UdonSharp.Video.Subtitles
             subtitleBackgroundField.text = "";
             if (subtitleTextFieldTop) subtitleTextFieldTop.text = "";
             if (subtitleBackgroundFieldTop) subtitleBackgroundFieldTop.text = "";
+        }
+
+        public void RefreshSubtitle()
+        {
+            string text = _lastText;
+            _lastText = "";
+            DisplaySubtitle(text);
+        }
+
+        public void SetPlaceholder(bool state)
+        {
+            _showPlaceholder = state;
         }
 
         public void ResetSettings()
