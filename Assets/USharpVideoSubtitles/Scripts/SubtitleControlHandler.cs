@@ -595,7 +595,7 @@ namespace UdonSharp.Video.Subtitles
                             Color outlineColor;
 
                             if (tmpValue.Length == 3)
-                                outlineColor = new Color(SafelyParseFloat(tmpValue[0]), SafelyParseFloat(tmpValue[1]), SafelyParseFloat(tmpValue[2]));
+                                outlineColor = new Color(SafelyParseFloat(tmpValue[0]), SafelyParseFloat(tmpValue[1]), SafelyParseFloat(tmpValue[2]), 1f);
                             else
                                 outlineColor = overlayHandler.GetOutlineColor();
 
@@ -785,7 +785,7 @@ namespace UdonSharp.Video.Subtitles
 			float valueG = outlineColorGSlider.value;
 			float valueB = outlineColorBSlider.value;
 
-            Color color = new Color(valueR, valueG, valueB);
+            Color color = new Color(valueR, valueG, valueB, 1f);
 
             if (overlayHandler) overlayHandler.SetOutlineColor(color);
 
@@ -808,7 +808,8 @@ namespace UdonSharp.Video.Subtitles
 			float valueG = backgroundColorGSlider.value;
 			float valueB = backgroundColorBSlider.value;
 
-            Color color = new Color(valueR, valueG, valueB);
+            Color currentColor = overlayHandler.GetBackgroundColor();
+            Color color = new Color(valueR, valueG, valueB, currentColor.a);
 
             if (overlayHandler) overlayHandler.SetBackgroundColor(color);
 
