@@ -467,12 +467,12 @@ namespace UdonSharp.Video.Subtitles
                 }
                 else if (parserState == 1 && line != "")
                 {
-                    _dataText[currentIndex] = line;
+                    _dataText[currentIndex] = ProcessText(line);
                     parserState = 2;
                 }
                 else if (parserState == 2 && line != "")
                 {
-                    _dataText[currentIndex] += "\n" + line;
+                    _dataText[currentIndex] += "\n" + ProcessText(line);
                 }
                 else if (parserState != 0 && line == "")
                 {
@@ -520,6 +520,14 @@ namespace UdonSharp.Video.Subtitles
             float milliseconds = secondsPart.Length == 0 ? 0f : (int.Parse(secondsPart[1]) * 0.001f);
 
             return int.Parse(allParts[0]) * 3600 + int.Parse(allParts[1]) * 60 + int.Parse(secondsPart[0]) + milliseconds;
+        }
+
+        private string ProcessText(string text)
+        {
+            if (text.Contains("<font "))
+                text = text.Replace("<font  ", "<").Replace("<font ", "<").Replace("</font>", "</color>").Replace("=\"", "=").Replace("\">", ">");
+
+            return text;
         }
 
         public void ProcessInput(string input)
