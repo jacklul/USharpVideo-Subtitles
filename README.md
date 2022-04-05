@@ -28,7 +28,6 @@ _[This code](https://gist.github.com/hai-vr/b340f9a46952640f81efe7f02da6bdf6) by
     - otherwise - just drag it into the scene (preferrably at the root)
 5. When a window asking you to import **TextMeshPro Essentials** appears - just do it
 6. Add a reference in the `Subtitles` object (**SubtitleManager** script) to:
-    - (when using **USharpVideo**) **USharpVideoPlayer** script (**Target Video Player** field)
-    OR
-    - **VRCUnityVideoPlayer** or **VRCAVProVideoPlayer** (**Base Video Player** field) - depends on which one you're using, usually it's the first one
+    - when using **USharpVideo** - **USharpVideoPlayer** script (**Target Video Player** field)
+    - in any other case - **VRCUnityVideoPlayer** or **VRCAVProVideoPlayer** (**Base Video Player** field) - depends on which one you're using, usually it's the first one (for advanced users: this field is set to public so you can change the reference dynamically through scripting)
 7. To display subtitles in the correct position you have to drag `Subtitles/Overlay` object into the video player's screen object and then reset transform values on it.
