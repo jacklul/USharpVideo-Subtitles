@@ -618,7 +618,7 @@ namespace UdonSharp.Video.Subtitles
                             if (tmpValue.Length == 3)
                                 backgroundColor = new Color(SafelyParseFloat(tmpValue[0]), SafelyParseFloat(tmpValue[1]), SafelyParseFloat(tmpValue[2]), currentColor.a);
                             else
-                                backgroundColor = overlayHandler.GetOutlineColor();
+                                backgroundColor = currentColor;
 
                             backgroundColorRSlider.value = backgroundColor.r;
                             backgroundColorGSlider.value = backgroundColor.g;
