@@ -28,6 +28,9 @@ namespace UdonSharp.Video.Subtitles
         [SerializeField]
         private TextMeshProUGUI subtitleBackgroundFieldTop;
 
+        [SerializeField]
+        private GameObject videoScreen;
+
         [Header("Defaults")]
 
         [SerializeField, Range(36, 100)]
@@ -45,6 +48,8 @@ namespace UdonSharp.Video.Subtitles
         [SerializeField]
         private string placeholder = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
 
+        private Transform _originalTransform;
+        private Transform _lastTransform;
         private string _lastText;
         private bool _showPlaceholder = false;
 
@@ -56,10 +61,14 @@ namespace UdonSharp.Video.Subtitles
         private void OnEnable()
         {
             manager.RegisterOverlayHandler(this);
+
         }
 
         private void Start()
         {
+            _originalTransform = gameObject.transform;
+            if (videoScreen) MoveOverlay(videoScreen);
+
             ResetSettings();
         }
 
@@ -131,8 +140,28 @@ namespace UdonSharp.Video.Subtitles
             _showPlaceholder = state;
         }
 
+        public void MoveOverlay(GameObject screen)
+        {
+            _lastTransform = screen.gameObject.transform;
+            gameObject.transform.position = screen.gameObject.transform.position;
+            gameObject.transform.rotation = screen.gameObject.transform.rotation;
+            gameObject.transform.localScale = screen.gameObject.transform.localScale;
+        }
+
+        public void ResetTransform()
+        {
+            if (_originalTransform)
+            {
+                gameObject.transform.position = _originalTransform.transform.position;
+                gameObject.transform.rotation = _originalTransform.transform.rotation;
+                gameObject.transform.localScale = _originalTransform.transform.localScale;
+            }
+        }
+
         public void ResetSettings()
         {
+            if (_lastTransform) MoveOverlay(_lastTransform.gameObject);
+
             SetFontSize(fontSize);
             SetFontColor(fontColor);
             SetOutlineColor(outlineColor);
