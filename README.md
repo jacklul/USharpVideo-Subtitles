@@ -23,31 +23,37 @@ _[This code](https://gist.github.com/hai-vr/b340f9a46952640f81efe7f02da6bdf6) by
 1. Install [UdonSharp](https://github.com/vrchat-community/UdonSharp) first if you haven't already
 2. Import [USharpVideo](https://github.com/MerlinVR/USharpVideo/releases/latest) package if you haven't already
 3. Import [latest release](https://github.com/jacklul/USharpVideo-Subtitles/releases/latest) package
-4. Drag the `USharpVideoSubtitles/Subtitles` prefab into your scene:
-    - when using **USharpVideo** - drag the prefab directly into it
-    - otherwise - just drag it into the scene (preferrably at the root)
+4. Drag the `Subtitles` prefab into your scene
+    - when using **USharpVideo** - set the same transform values to make it match the position
 5. When a window asking you to import **TextMeshPro Essentials** appears - just do it
-6. Add a reference in the `Subtitles` object (**SubtitleManager** script) to:
+6. Add a reference in the `USharpVideoSubtitles` object (**SubtitleManager** script) to:
     - when using **USharpVideo** - **USharpVideoPlayer** script (**Target Video Player** field)
-    - in any other case - **VRCUnityVideoPlayer** or **VRCAVProVideoPlayer** (**Base Video Player** field) - depends on which one you're using, usually it's the first one (for advanced users: this field is set to public so you can change the reference dynamically through scripting)
-7. To display subtitles in the correct position you have to drag `Subtitles/Overlay` object into the video player's screen object and then reset transform values on it
+    - in any other case - **VRCUnityVideoPlayer** or **VRCAVProVideoPlayer** (**Base Video Player** field) - depends on which one you're using ([you can change this dynamically](https://github.com/jacklul/USharpVideo-Subtitles#subtitlemanagersetvideoplayer-basevrcvideoplayer))
+7. Add a reference in the `Subtitles/Overlay` object (**Video Screen** field) to the video player's screen object, the overlay will copy the position and rotation of the screen on world initialisation
+    - if this doesn't work for you then drag `Subtitles/Overlay` object into the video player's screen object and then reset transform values on it 
 
 ## Quick API reference
 
 Methods that you might be interested in using when integrating this addon with other stuff in your world.
 
+### SubtitleManager.SetVideoPlayer(BaseVRCVideoPlayer): void
+
+Use this to change the video player reference that the subtitles are synced with
+
+- Does nothing when using **USharpVideo**
+
 ### SubtitleManager.ProcessInput(string): void
 
 Loads subtitles from the text string globally or locally (depending on `IsLocal()` value)
 
-- When using **USharpVideo** - player who can control the video player can load the subtitles globally
-- For other video players - if `IsLocked()` is `true` then only the Master can load the subtitles globally
+- When using **USharpVideo** - only the player who can control the video player can do this (`USharpVideo.CanControlVideoPlayer()`)
+- For other video players - if `IsLocked()` is `true` then only the Master can do this
 
 ### SubtitleManager.IsLocked(): bool
 
-Whenever the addon is locked (Master only)
+Whenever the access is locked to Master only
 
-- When using **USharpVideo** it shares the same state with it
+- When using **USharpVideo** it shares the same state with the video player
 
 ### SubtitleManager.SetLocked(bool): void
 
@@ -55,29 +61,45 @@ Change lock state, must be executed by the Master
 
 - Does nothing when used with **USharpVideo** as it shares the same state with it
 
-### SubtitleManager.IsEnabled(): bool
-
-Whenever the subtitles are enabled for the local player
-
-### SubtitleManager.SetEnabled(bool): void
-
-Enable or disable the subtitles for the local player
-
 ### SubtitleManager.IsLocal(): bool
 
-Whenever local player is using local subtitles
+Whenever the player is using local subtitles
 
 ### SubtitleManager.SetLocal(bool): void
 
 Switch between using global and local subtitles
 
+### SubtitleManager.IsEnabled(): bool
+
+Whenever the subtitles are enabled for the the player
+
+### SubtitleManager.SetEnabled(bool): void
+
+Enable or disable the subtitles for the the player
+
 ### SubtitleManager.ClearSubtitles(): void
 
 Clears the subtitles globally or locally (depending on `IsLocal()` value)
 
-- When using **USharpVideo** - player who can control the video player can clear the global subtitles
-- For other video players - if `IsLocked()` is `true` then only the Master can clear the global subtitles
+- When using **USharpVideo** - only the player who can control the video player can do this (`USharpVideo.CanControlVideoPlayer()`)
+- For other video players - if `IsLocked()` is `true` then only the Master can do this
 
 ### SubtitleManager.SynchronizeSubtitles(): void
 
-Re-synchronizes the subtitles globally, only the person who loaded them can do this. (this can change when this person leaves the instance though, check the `SubtitleManager.gameObject owner` in this case)
+Re-synchronizes the subtitles globally, only the person who loaded them can do this - this can change when that person leaves the instance though - check the `SubtitleManager.gameObject` owner in this case
+
+### SubtitleOverlayHandler.MoveOverlay(GameObject): void
+
+Moves the overlay to the given object's transform values
+
+### SubtitleOverlayHandler.ResetTransform(): void
+
+Resets the overlay's transform to the default values (just how it was placed in Unity)
+
+### SubtitleOverlayHandler.GetCanvasTransform(): Transform
+
+Use this method to get transform values of the overlay's `Canvas` in case you want to display something on the same screen
+
+### SubtitleControlHandler.ImportSettingsFromString(string): void
+
+Import settings from the given string (the same string which is displayed in the settings window), the format is pretty easy to figure out
