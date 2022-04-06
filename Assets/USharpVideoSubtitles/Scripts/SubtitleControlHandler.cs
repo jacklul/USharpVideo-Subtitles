@@ -499,7 +499,7 @@ namespace UdonSharp.Video.Subtitles
 
             if (IsSettingsMenuAtOriginalPosition())
             {
-                Transform transform = overlayHandler.GetTransform();
+                Transform transform = overlayHandler.GetCanvasTransform();
                 RectTransform rectTransform = settingsMenu.GetComponent<RectTransform>();
 
                 settingsMenu.transform.position = transform.position;

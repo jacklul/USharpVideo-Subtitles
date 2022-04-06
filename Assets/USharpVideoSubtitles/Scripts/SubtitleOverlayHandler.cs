@@ -141,12 +141,18 @@ namespace UdonSharp.Video.Subtitles
             SetAlignment(alignment);
         }
 
-        public Transform GetTransform()
+        public Transform GetCanvasTransform()
         {
             if (gameObject.transform.childCount > 0)
-                return gameObject.transform.GetChild(0);
+            {
+                for (int i = 0; i < gameObject.transform.childCount; i++)
+                {
+                    if (gameObject.transform.GetChild(i).GetComponent<Canvas>())
+                        return gameObject.transform.GetChild(i);
+                }
+            }
 
-            return gameObject.transform; // This will most likely flicker the UI on the screen because of exactly same position
+            return gameObject.transform; // This shouldn't even be reached
         }
 
         public int GetFontSize()
