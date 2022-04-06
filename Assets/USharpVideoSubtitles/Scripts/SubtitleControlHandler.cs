@@ -264,7 +264,7 @@ namespace UdonSharp.Video.Subtitles
 
         public void RestoreStatusText()
         {
-            if (_expectedStatus == "" || _expectedStatus == GetStatusText()) // Makes sure we don't overwrite text that just changed
+            if (_previousStatus != "" && (_expectedStatus == "" || _expectedStatus == GetStatusText()))
                 SetStatusText(_previousStatus);
 
             _expectedStatus = "";
