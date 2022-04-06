@@ -602,7 +602,13 @@ namespace UdonSharp.Video.Subtitles
 
         public void SetLocked(bool state)
         {
-            if (targetVideoPlayer || !Networking.IsMaster) return;
+            if (!Networking.IsMaster) return;
+
+            if (targetVideoPlayer)
+            {
+                LogWarning("Method SetLocked cannot be used with USharpVideo");
+                return;
+            }
 
             _isLocked = state;
 
@@ -623,14 +629,18 @@ namespace UdonSharp.Video.Subtitles
             if (targetVideoPlayer)
                 return Networking.GetOwner(targetVideoPlayer.gameObject);
 
-            VRCPlayerApi[] players = new VRCPlayerApi[VRCPlayerApi.GetPlayerCount()];
-            foreach (VRCPlayerApi player in VRCPlayerApi.GetPlayers(players))
+            /*if (IsLocked())
             {
-                if (player.isMaster)
-                    return player;
-            }
+                foreach (VRCPlayerApi player in VRCPlayerApi.GetPlayers(new VRCPlayerApi[VRCPlayerApi.GetPlayerCount()]))
+                {
+                    if (player.isMaster)
+                        return player;
+                }
 
-            return null;
+                return null;
+            }*/
+
+            return Networking.GetOwner(baseVideoPlayer.gameObject);
         }
 
         public bool IsEnabled()
@@ -680,7 +690,13 @@ namespace UdonSharp.Video.Subtitles
         public void SetVideoPlayer(BaseVRCVideoPlayer videoPlayer)
         {
             if (!targetVideoPlayer)
+            {
                 baseVideoPlayer = videoPlayer;
+
+                ResetSubtitleTrackingState();
+            }
+            else
+                LogWarning("Method SetVideoPlayer cannot be used with USharpVideo");
         }
 
         public void ClearSubtitles()

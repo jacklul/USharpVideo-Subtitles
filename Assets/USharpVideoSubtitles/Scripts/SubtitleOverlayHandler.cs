@@ -61,7 +61,6 @@ namespace UdonSharp.Video.Subtitles
         private void OnEnable()
         {
             manager.RegisterOverlayHandler(this);
-
         }
 
         private void Start()
