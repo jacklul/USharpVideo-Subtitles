@@ -1,6 +1,7 @@
-# Subtitles addon for USharpVideo
+# Subtitles support for USharpVideo
 
-This prefab adds support for SRT subtitles to [USharpVideo](https://github.com/MerlinVR/USharpVideo) or any other video player.
+This prefab adds support for SRT subtitles to [USharpVideo](https://github.com/MerlinVR/USharpVideo).
+_It was build mainly for USharpVideo but will work with any other video player supported by VRChat (Unity and AVPro)._
 
 To check this out in-game visit [this test world](https://vrchat.com/home/world/wrld_dc50af39-1f65-4c47-a0d5-d1729d5c683f).
 
@@ -25,16 +26,17 @@ _[This code](https://gist.github.com/hai-vr/b340f9a46952640f81efe7f02da6bdf6) by
 3. Import [latest release](https://github.com/jacklul/USharpVideo-Subtitles/releases/latest) package
 4. Drag the `Subtitles` prefab into your scene
     - when using **USharpVideo** - set the same transform values to make it match the position
+    - _you can also drag `Subtitles` prefab into `USharpVideo` in your scene and reset transform values_
 5. When a window asking you to import **TextMeshPro Essentials** appears - just do it
 6. Add a reference in the `Subtitles` object (**SubtitleManager** script) to:
-    - when using **USharpVideo** - **USharpVideoPlayer** (**Target Video Player** field)
-    - in any other case - **VRCUnityVideoPlayer** or **VRCAVProVideoPlayer** (**Base Video Player** field) - depends on which one you're using ([you can change this dynamically](https://github.com/jacklul/USharpVideo-Subtitles#subtitlemanagersetvideoplayerbasevrcvideoplayer-void))
+    - when using **USharpVideo** (**Target Video Player** field) - **USharpVideoPlayer** from the `USharpVideo` object
+    - in any other case (**Base Video Player** field) - **VRCUnityVideoPlayer** or **VRCAVProVideoPlayer** that have to be somewhere in your scene - depends on which one you're using ([you can change this dynamically](#subtitlemanagersetvideoplayerbasevrcvideoplayer-void))
 7. Add a reference in the `Subtitles/Overlay` object (**Video Screen** field) to the video player's screen object, the overlay will copy the position and rotation of the screen on start
-    - if this doesn't work for you then you will have to manually adjust `Subtitles/Overlay` object's position and rotation to match the video screen object
+    - if this doesn't work for you then you will have to manually adjust `Subtitles/Overlay` object's position and rotation to match the video screen object (while keeping the mentioned field empty)
 
 ## Quick API reference
 
-Methods that you might be interested in using when integrating this addon with other stuff in your world.
+Methods that you might be interested in using when integrating this prefab with other stuff in your world.
 
 ### SubtitleManager.SetVideoPlayer(BaseVRCVideoPlayer): void
 
