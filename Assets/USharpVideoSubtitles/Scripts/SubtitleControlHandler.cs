@@ -173,9 +173,7 @@ namespace UdonSharp.Video.Subtitles
         public Color buttonActivatedColor = new Color(0.943f, 0.943f, 0.943f);
         public Color iconInvertedColor = new Color(0.196f, 0.196f, 0.196f);
 
-        private Vector3 _originalSettingsMenuPosition;
-        private Quaternion _originalSettingsMenuRotation;
-        private Vector3 _originalSettingsMenuScale;
+        private Transform _originalSettingsMenuTransform;
         private string _previousStatus = "";
         private string _expectedStatus = "";
         private string _stickyStatus = "";
@@ -196,11 +194,7 @@ namespace UdonSharp.Video.Subtitles
         private void Start()
         {
             if (settingsMenu)
-            {
-                _originalSettingsMenuPosition = settingsMenu.transform.position;
-                _originalSettingsMenuRotation = settingsMenu.transform.rotation;
-                _originalSettingsMenuScale = settingsMenu.transform.localScale;
-            }
+                _originalSettingsMenuTransform = settingsMenu.transform;
 
             if (!settingsPopupButtonEnabled) settingsPopupButtonBackground.gameObject.SetActive(false);
 
@@ -423,9 +417,9 @@ namespace UdonSharp.Video.Subtitles
 
         private bool IsSettingsMenuAtOriginalPosition()
         {
-            return settingsMenu.transform.position.x == _originalSettingsMenuPosition.x &&
-                settingsMenu.transform.position.y == _originalSettingsMenuPosition.y &&
-                settingsMenu.transform.position.z == _originalSettingsMenuPosition.z;
+            return settingsMenu.transform.position.x == _originalSettingsMenuTransform.position.x &&
+                settingsMenu.transform.position.y == _originalSettingsMenuTransform.position.y &&
+                settingsMenu.transform.position.z == _originalSettingsMenuTransform.position.z;
         }
 
         public void OnHelpMenuToggle()
@@ -526,9 +520,9 @@ namespace UdonSharp.Video.Subtitles
             }
             else
             {
-                settingsMenu.transform.position = _originalSettingsMenuPosition;
-                settingsMenu.transform.rotation = _originalSettingsMenuRotation;
-                settingsMenu.transform.localScale = _originalSettingsMenuScale;
+                settingsMenu.transform.position = _originalSettingsMenuTransform.position;
+                settingsMenu.transform.rotation = _originalSettingsMenuTransform.rotation;
+                settingsMenu.transform.localScale = _originalSettingsMenuTransform.localScale;
                 //if (settingsMenuCanvasGroup) settingsMenuCanvasGroup.enabled = false;
 
                 if (settingsPopupButtonBackground) settingsPopupButtonBackground.color = buttonBackgroundColor;
