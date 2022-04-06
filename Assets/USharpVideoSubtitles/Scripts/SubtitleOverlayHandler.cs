@@ -45,7 +45,7 @@ namespace UdonSharp.Video.Subtitles
         private int margin = 50;
         [SerializeField, Range(0, 1), Tooltip("0 means bottom, 1 means top")]
         private int alignment = 0; // To be replaced with "private TextAlignmentOptions alignment = TextAlignmentOptions.Bottom;" which is not exposed to Udon yet
-        [SerializeField]
+        [SerializeField, Tooltip("This text is displayed when there is no subtitle currently displayed and user has opened settings menu")]
         private string placeholder = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
 
         private Transform _originalTransform;
