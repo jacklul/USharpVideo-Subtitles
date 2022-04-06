@@ -228,7 +228,7 @@ namespace UdonSharp.Video.Subtitles
             }
 
             if (statusTextField)
-                statusTextField.text = text;
+                statusTextField.text = text + (manager.IsLocal() ? " " + INDICATOR_LOCAL : "");
         }
 
         public void SetTemporaryStatusText(string text, float seconds)
