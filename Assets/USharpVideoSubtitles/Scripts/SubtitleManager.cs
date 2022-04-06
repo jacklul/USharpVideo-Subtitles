@@ -317,8 +317,11 @@ namespace UdonSharp.Video.Subtitles
                 return;
             }
 
-            foreach (SubtitleControlHandler handler in _registeredControlHandlers)
-                handler.SetStatusText(string.Format(@MESSAGE_SYNCHRONIZING, _chunkSync + 1, _chunkCount, ARROW_DOWN));
+            if (!_isLocal)
+            {
+                foreach (SubtitleControlHandler handler in _registeredControlHandlers)
+                    handler.SetStatusText(string.Format(@MESSAGE_SYNCHRONIZING, _chunkSync + 1, _chunkCount, ARROW_DOWN));
+            }
 
             LogMessage($"Received chunk {_chunkSync + 1} / {_chunkCount} ({syncId})");
 
