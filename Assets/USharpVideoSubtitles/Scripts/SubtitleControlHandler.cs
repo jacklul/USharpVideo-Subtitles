@@ -546,7 +546,7 @@ namespace UdonSharp.Video.Subtitles
             ImportSettingsFromString(settingsImportExportField.text.Trim());
         }
 
-        private void ImportSettingsFromString(string settings)
+        public void ImportSettingsFromString(string settings)
         {
             if (!overlayHandler) return;
 
