@@ -403,14 +403,18 @@ namespace UdonSharp.Video.Subtitles
 
             if (settingsMenu.activeSelf)
             {
-                if (overlayHandler) overlayHandler.SetPlaceholder(true);
+                if (overlayHandler)
+                {
+                    overlayHandler.SetPlaceholder(true);
+                    overlayHandler.DisplaySubtitle("");
+                }
             }
             else
             {
                 if (overlayHandler)
                 {
-                    overlayHandler.ClearSubtitle();
                     overlayHandler.SetPlaceholder(false);
+                    overlayHandler.ClearSubtitle();
                 }
             }
         }
