@@ -30,7 +30,7 @@ _[This code](https://gist.github.com/hai-vr/b340f9a46952640f81efe7f02da6bdf6) by
     - when using **USharpVideo** - **USharpVideoPlayer** (**Target Video Player** field)
     - in any other case - **VRCUnityVideoPlayer** or **VRCAVProVideoPlayer** (**Base Video Player** field) - depends on which one you're using ([you can change this dynamically](https://github.com/jacklul/USharpVideo-Subtitles#subtitlemanagersetvideoplayerbasevrcvideoplayer-void))
 7. Add a reference in the `Subtitles/Overlay` object (**Video Screen** field) to the video player's screen object, the overlay will copy the position and rotation of the screen on start
-    - if this doesn't work for you then drag `Subtitles/Overlay` object into the video player's screen object and then reset transform values on it 
+    - if this doesn't work for you then you will have to manually adjust `Subtitles/Overlay` object's position and rotation to match the video screen object
 
 ## Quick API reference
 
@@ -92,9 +92,7 @@ Re-synchronizes the subtitles globally, only the person who loaded them can do t
 
 Moves the overlay to the given object's transform values
 
-### SubtitleOverlayHandler.ResetTransform(): void
-
-Resets the overlay's transform to the default values (just how it was placed in Unity)
+- Make sure that the settings popup is not visible at this time as it will stay in the old position until it is re-opened
 
 ### SubtitleOverlayHandler.GetCanvasTransform(): Transform
 

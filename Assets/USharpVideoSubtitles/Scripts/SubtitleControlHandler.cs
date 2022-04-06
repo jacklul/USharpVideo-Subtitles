@@ -30,9 +30,9 @@ namespace UdonSharp.Video.Subtitles
 
         [Header("Settings")]
         [SerializeField, Tooltip("If you plan on toggling this externally make sure to also toggle visibility of the the button too")]
-        private bool settingsPopupButtonEnabled = true;
+        private bool settingsPopupEnabled = true;
         [Range(1.5f, 3f)]
-        public float settingsPopupScale = 2f;
+        public float settingsPopupScale = 1.5f;
         //public float settingsPopupAlpha = 0.9f;
 
         [Header("Input field")]
@@ -90,8 +90,8 @@ namespace UdonSharp.Video.Subtitles
         [SerializeField]
         private Graphic settingsPopupButtonIcon;
 
-        //[SerializeField, Tooltip("To set the opacity on the popup")]
-        //private CanvasGroup settingsMenuCanvasGroup; // Not supported by Udon yet
+        //[SerializeField]
+        //private CanvasGroup settingsMenuCanvasGroup; // Type not supported by Udon yet
 
         [SerializeField]
         private InputField settingsImportExportField;
@@ -173,7 +173,10 @@ namespace UdonSharp.Video.Subtitles
         public Color buttonActivatedColor = new Color(0.943f, 0.943f, 0.943f);
         public Color iconInvertedColor = new Color(0.196f, 0.196f, 0.196f);
 
-        private Transform _originalSettingsMenuTransform;
+        private Vector3 _originalSettingsMenuPosition;
+        private Quaternion _originalSettingsMenuRotation;
+        private Vector3 _originalSettingsMenuScale;
+        private bool _popupActive = false;
         private string _previousStatus = "";
         private string _expectedStatus = "";
         private string _stickyStatus = "";
@@ -194,9 +197,13 @@ namespace UdonSharp.Video.Subtitles
         private void Start()
         {
             if (settingsMenu)
-                _originalSettingsMenuTransform = settingsMenu.transform;
+            {
+                _originalSettingsMenuPosition = settingsMenu.transform.position;
+                _originalSettingsMenuRotation = settingsMenu.transform.rotation;
+                _originalSettingsMenuScale = settingsMenu.transform.localScale;
+            }
 
-            if (!settingsPopupButtonEnabled) settingsPopupButtonBackground.gameObject.SetActive(false);
+            if (!settingsPopupEnabled) settingsPopupButtonBackground.gameObject.SetActive(false);
 
             SendCustomEventDelayedFrames(nameof(OnSettingsResetButton), 1);
         }
@@ -398,7 +405,7 @@ namespace UdonSharp.Video.Subtitles
 
             ToggleMenu("settings");
 
-            if (!IsSettingsMenuAtOriginalPosition())
+            if (_popupActive)
                 OnSettingsPopupToggle();
 
             if (settingsMenu.activeSelf)
@@ -417,13 +424,6 @@ namespace UdonSharp.Video.Subtitles
                     overlayHandler.ClearSubtitle();
                 }
             }
-        }
-
-        private bool IsSettingsMenuAtOriginalPosition()
-        {
-            return settingsMenu.transform.position.x == _originalSettingsMenuTransform.position.x &&
-                settingsMenu.transform.position.y == _originalSettingsMenuTransform.position.y &&
-                settingsMenu.transform.position.z == _originalSettingsMenuTransform.position.z;
         }
 
         public void OnHelpMenuToggle()
@@ -499,10 +499,12 @@ namespace UdonSharp.Video.Subtitles
 
         public void OnSettingsPopupToggle()
         {
-            if (!settingsPopupButtonEnabled || !overlayHandler) return;
+            if (!settingsPopupEnabled || !overlayHandler) return;
 
-            if (IsSettingsMenuAtOriginalPosition())
+            if (!_popupActive)
             {
+                _popupActive = true;
+
                 Transform transform = overlayHandler.GetCanvasTransform();
                 RectTransform rectTransform = settingsMenu.GetComponent<RectTransform>();
 
@@ -516,7 +518,7 @@ namespace UdonSharp.Video.Subtitles
                     settingsMenuCanvasGroup.alpha = settingsPopupAlpha;
                 }*/
 
-                // Corrects the position to the more or less center of the screen
+                // Corrects the position to the center of the screen (because pivot is not on the center)
                 if (rectTransform) rectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x, rectTransform.anchoredPosition.y - (rectTransform.rect.height * settingsPopupScale / 2));
 
                 if (settingsPopupButtonBackground) settingsPopupButtonBackground.color = buttonActivatedColor;
@@ -524,9 +526,11 @@ namespace UdonSharp.Video.Subtitles
             }
             else
             {
-                settingsMenu.transform.position = _originalSettingsMenuTransform.position;
-                settingsMenu.transform.rotation = _originalSettingsMenuTransform.rotation;
-                settingsMenu.transform.localScale = _originalSettingsMenuTransform.localScale;
+                _popupActive = false;
+
+                settingsMenu.transform.position = _originalSettingsMenuPosition;
+                settingsMenu.transform.rotation = _originalSettingsMenuRotation;
+                settingsMenu.transform.localScale = _originalSettingsMenuScale;
                 //if (settingsMenuCanvasGroup) settingsMenuCanvasGroup.enabled = false;
 
                 if (settingsPopupButtonBackground) settingsPopupButtonBackground.color = buttonBackgroundColor;

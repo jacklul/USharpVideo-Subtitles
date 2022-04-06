@@ -48,13 +48,11 @@ namespace UdonSharp.Video.Subtitles
         [SerializeField, Tooltip("This text is displayed when there is no subtitle currently displayed and user has opened settings menu")]
         private string placeholder = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
 
-        private Transform _originalTransform;
-        private Transform _lastTransform;
-        private string _lastText;
+        private string _lastText = "";
         private bool _showPlaceholder = false;
 
         private int _fontSize;
-        private string _backgroundColorHex = "";
+        private string _backgroundColorHex;
         private int _margin;
         private int _alignment;
 
@@ -65,9 +63,7 @@ namespace UdonSharp.Video.Subtitles
 
         private void Start()
         {
-            _originalTransform = gameObject.transform;
             if (videoScreen) MoveOverlay(videoScreen);
-
             ResetSettings();
         }
 
@@ -141,26 +137,15 @@ namespace UdonSharp.Video.Subtitles
 
         public void MoveOverlay(GameObject screen)
         {
-            _lastTransform = screen.gameObject.transform;
-            gameObject.transform.position = screen.gameObject.transform.position;
-            gameObject.transform.rotation = screen.gameObject.transform.rotation;
-            gameObject.transform.localScale = screen.gameObject.transform.localScale;
-        }
-
-        public void ResetTransform()
-        {
-            if (_originalTransform)
-            {
-                gameObject.transform.position = _originalTransform.transform.position;
-                gameObject.transform.rotation = _originalTransform.transform.rotation;
-                gameObject.transform.localScale = _originalTransform.transform.localScale;
-            }
+            gameObject.name = "SubtitlesOverlay";
+            gameObject.transform.parent = screen.gameObject.transform;
+            gameObject.transform.localRotation = Quaternion.identity;
+            gameObject.transform.localPosition = Vector3.zero;
+            gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
         }
 
         public void ResetSettings()
         {
-            if (_lastTransform) MoveOverlay(_lastTransform.gameObject);
-
             SetFontSize(fontSize);
             SetFontColor(fontColor);
             SetOutlineColor(outlineColor);

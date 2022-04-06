@@ -97,7 +97,7 @@ namespace UdonSharp.Video.Subtitles
                 LogError("No video player reference assigned!");
 
             if (targetVideoPlayer && baseVideoPlayer)
-                LogWarning("Usage with USharpVideoPlayer combined with Unity or AVPro Video Player(s) is not supported!");
+                LogWarning("You cannot reference USharpVideo and Unity or AVPro Video Player at the same time - USharpVideo takes precedence!");
 
             if (_registeredControlHandlers == null)
                 _registeredControlHandlers = new SubtitleControlHandler[0];
@@ -628,17 +628,6 @@ namespace UdonSharp.Video.Subtitles
         {
             if (targetVideoPlayer)
                 return Networking.GetOwner(targetVideoPlayer.gameObject);
-
-            /*if (IsLocked())
-            {
-                foreach (VRCPlayerApi player in VRCPlayerApi.GetPlayers(new VRCPlayerApi[VRCPlayerApi.GetPlayerCount()]))
-                {
-                    if (player.isMaster)
-                        return player;
-                }
-
-                return null;
-            }*/
 
             return Networking.GetOwner(baseVideoPlayer.gameObject);
         }
