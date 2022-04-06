@@ -340,7 +340,7 @@ namespace UdonSharp.Video.Subtitles
 
             if (_localChunkSync == _chunkCount - 1)
             {
-                _chunkSync++; // Increment this because we don't call RequestSerialization anymore at this point, this is required for checks in SynchronizeSubtitles and ClearSubtitles to work after master transfer
+                _chunkSync++; // Increment this because we don't call RequestSerialization anymore at this point and it won't be updated on the receiving ends, required for IsSynchronized()
                 _lastSyncId = syncId;
 
                 LogMessage($"Received all chunks");
@@ -363,6 +363,11 @@ namespace UdonSharp.Video.Subtitles
                 }
             }
         }
+        
+        private bool IsSynchronized()
+        {
+            return _chunkSync == _chunkCount;
+        }
 
         private void ClearSubtitlesLocal()
         {
@@ -379,6 +384,17 @@ namespace UdonSharp.Video.Subtitles
             {
                 handler.ClearSubtitleInput();
                 handler.SetStatusText(MESSAGE_CLEARED);
+            }
+        }
+
+        private void UnsetSubtitlesLocal()
+        {
+            ClearSubtitlesLocal();
+
+            foreach (SubtitleControlHandler handler in _registeredControlHandlers)
+            {
+                handler.ClearSubtitleInput();
+                handler.SetStatusText(MESSAGE_NOT_LOADED);
             }
         }
 
@@ -666,11 +682,20 @@ namespace UdonSharp.Video.Subtitles
             {
                 if (_dataLocal != "")
                     LoadSubtitles(_dataLocal, false);
+                else
+                    UnsetSubtitlesLocal();
             }
             else
             {
                 if (_data != "")
-                    LoadSubtitles(_data, false);
+                {
+                    if (IsSynchronized())
+                        LoadSubtitles(_data, false);
+                    else
+                        UnsetSubtitlesLocal();
+                }
+                else
+                    UnsetSubtitlesLocal();
             }
 
             ResetSubtitleTrackingState();
@@ -700,7 +725,7 @@ namespace UdonSharp.Video.Subtitles
                 if (!CanControlVideoPlayer())
                     return;
 
-                if (_chunkSync < _chunkCount)
+                if (!IsSynchronized())
                 {
                     foreach (SubtitleControlHandler handler in _registeredControlHandlers)
                         handler.SetStickyStatusText(MESSAGE_WAIT_SYNC, 3.0f);
@@ -732,7 +757,7 @@ namespace UdonSharp.Video.Subtitles
 
                 if (Networking.IsOwner(gameObject)) // Owner is guranteed to have the subtitles
                 {
-                    if (_chunkSync < _chunkCount)
+                    if (!IsSynchronized())
                     {
                         foreach (SubtitleControlHandler handler in _registeredControlHandlers)
                             handler.SetStickyStatusText(MESSAGE_WAIT_SYNC, 3.0f);
