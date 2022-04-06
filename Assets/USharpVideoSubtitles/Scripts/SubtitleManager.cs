@@ -785,6 +785,17 @@ namespace UdonSharp.Video.Subtitles
             ResetSubtitleTrackingState();
         }
 
+        public void SynchronizeSettings(SubtitleControlHandler callingHandler)
+        {
+            foreach (SubtitleControlHandler handler in _registeredControlHandlers)
+            {
+                if (handler == callingHandler)
+                    continue;
+
+                handler.UpdateSettingsValues();
+            }
+        }
+
         public void OnUSharpVideoPlay()
         {
             VRCUrl currentURL = targetVideoPlayer.GetCurrentURL();

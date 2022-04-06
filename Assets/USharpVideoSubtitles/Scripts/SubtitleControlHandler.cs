@@ -543,10 +543,17 @@ namespace UdonSharp.Video.Subtitles
             if (!settingsImportExportField || settingsImportExportField.text.Trim().Length == 0 || !overlayHandler) return;
 
             overlayHandler.ResetSettings();
-            ImportSettingsFromString(settingsImportExportField.text.Trim());
+            ImportSettingsFromStringInternal(settingsImportExportField.text.Trim(), true);
+            UpdateSettingsValues();
         }
 
         public void ImportSettingsFromString(string settings)
+        {
+            ImportSettingsFromStringInternal(settings, true);
+            UpdateSettingsValues();
+        }
+
+        private void ImportSettingsFromStringInternal(string settings, bool updateOverlay)
         {
             if (!overlayHandler) return;
 
@@ -570,7 +577,7 @@ namespace UdonSharp.Video.Subtitles
                             fontSizeSlider.value = SafelyParseFloat(tmp[1]);
                             SetFontSizeValue((int)fontSizeSlider.value);
 
-                            if (fontSizeSlider.value > 0)
+                            if (fontSizeSlider.value > 0 && updateOverlay)
                                 overlayHandler.SetFontSize((int)fontSizeSlider.value);
                             break;
                         case "fc": // Font color
@@ -590,7 +597,7 @@ namespace UdonSharp.Video.Subtitles
                             fontColorBSlider.value = fontColor.b;
 
                             SetFontColorValue(fontColor);
-                            overlayHandler.SetFontColor(fontColor);
+                            if (updateOverlay) overlayHandler.SetFontColor(fontColor);
                             break;
                         case "oc": // Outline color
                             if (!outlineColorRSlider || !outlineColorGSlider || !outlineColorBSlider)
@@ -609,7 +616,7 @@ namespace UdonSharp.Video.Subtitles
                             outlineColorBSlider.value = outlineColor.b;
 
                             SetOutlineColorValue(outlineColor);
-                            overlayHandler.SetOutlineColor(outlineColor);
+                            if (updateOverlay) overlayHandler.SetOutlineColor(outlineColor);
                             break;
                         case "bc": // Background color
                             if (!backgroundColorRSlider || !backgroundColorGSlider || !backgroundColorBSlider)
@@ -630,7 +637,7 @@ namespace UdonSharp.Video.Subtitles
                             backgroundColorBSlider.value = backgroundColor.b;
 
                             SetBackgroundColorValue(backgroundColor);
-                            overlayHandler.SetBackgroundColor(backgroundColor);
+                            if (updateOverlay) overlayHandler.SetBackgroundColor(backgroundColor);
                             break;
                         case "bo": // Background opacity
                             if (!backgroundOpacitySlider)
@@ -639,9 +646,11 @@ namespace UdonSharp.Video.Subtitles
                             backgroundOpacitySlider.value = SafelyParseFloat(tmp[1]);
                             SetBackgroundOpacityValue(backgroundOpacitySlider.value);
 
-                            currentColor = overlayHandler.GetBackgroundColor();
-
-                            overlayHandler.SetBackgroundColor(new Color(currentColor.r, currentColor.g, currentColor.b, backgroundOpacitySlider.value));
+                            if (updateOverlay)
+                            {
+                                currentColor = overlayHandler.GetBackgroundColor();
+                                overlayHandler.SetBackgroundColor(new Color(currentColor.r, currentColor.g, currentColor.b, backgroundOpacitySlider.value));
+                            }
                             break;
                         case "pm": // Margin
                             if (!marginSlider)
@@ -650,7 +659,7 @@ namespace UdonSharp.Video.Subtitles
                             marginSlider.value = SafelyParseInt(tmp[1]);
                             SetMarginValue((int)marginSlider.value);
 
-                            if (marginSlider.value >= 0)
+                            if (marginSlider.value >= 0 && updateOverlay)
                                 overlayHandler.SetMargin((int)marginSlider.value);
                             break;
                         case "pa": // Alignment
@@ -667,13 +676,13 @@ namespace UdonSharp.Video.Subtitles
                             else
                                 overlayHandler.SetAlignment("Bottom");*/ // TextAlignmentOptions.Bottom - not exposed to Udon yet
 
-                            overlayHandler.SetAlignment(alignmentValue);
+                            if (updateOverlay) overlayHandler.SetAlignment(alignmentValue);
                             break;
                     }
                 }
             }
 
-            overlayHandler.RefreshSubtitle();
+            if (updateOverlay) overlayHandler.RefreshSubtitle();
         }
 
         private int SafelyParseInt(string number)
@@ -703,6 +712,13 @@ namespace UdonSharp.Video.Subtitles
         {
             UpdateSettingsExportString();
             overlayHandler.RefreshSubtitle();
+            manager.SynchronizeSettings(this);
+        }
+
+        public void UpdateSettingsValues()
+        {
+            UpdateSettingsExportString();
+            ImportSettingsFromStringInternal(_currentSettingsExport, false);
         }
 
         public void OnSettingsResetButton()
@@ -712,7 +728,8 @@ namespace UdonSharp.Video.Subtitles
             overlayHandler.ResetSettings();
 
             UpdateSettingsExportString();
-            ImportSettingsFromString(_currentSettingsExport);
+            ImportSettingsFromStringInternal(_currentSettingsExport, true);
+            UpdateSettingsValues();
         }
 
         private void UpdateSettingsExportString()
