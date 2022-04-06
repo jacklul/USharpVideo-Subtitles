@@ -26,10 +26,10 @@ _[This code](https://gist.github.com/hai-vr/b340f9a46952640f81efe7f02da6bdf6) by
 4. Drag the `Subtitles` prefab into your scene
     - when using **USharpVideo** - set the same transform values to make it match the position
 5. When a window asking you to import **TextMeshPro Essentials** appears - just do it
-6. Add a reference in the `USharpVideoSubtitles` object (**SubtitleManager** script) to:
-    - when using **USharpVideo** - **USharpVideoPlayer** script (**Target Video Player** field)
-    - in any other case - **VRCUnityVideoPlayer** or **VRCAVProVideoPlayer** (**Base Video Player** field) - depends on which one you're using ([you can change this dynamically](https://github.com/jacklul/USharpVideo-Subtitles#subtitlemanagersetvideoplayer-basevrcvideoplayer))
-7. Add a reference in the `Subtitles/Overlay` object (**Video Screen** field) to the video player's screen object, the overlay will copy the position and rotation of the screen on world initialisation
+6. Add a reference in the `Subtitles` object (**SubtitleManager** script) to:
+    - when using **USharpVideo** - **USharpVideoPlayer** (**Target Video Player** field)
+    - in any other case - **VRCUnityVideoPlayer** or **VRCAVProVideoPlayer** (**Base Video Player** field) - depends on which one you're using ([you can change this dynamically](https://github.com/jacklul/USharpVideo-Subtitles#subtitlemanagersetvideoplayerbasevrcvideoplayer-void))
+7. Add a reference in the `Subtitles/Overlay` object (**Video Screen** field) to the video player's screen object, the overlay will copy the position and rotation of the screen on start
     - if this doesn't work for you then drag `Subtitles/Overlay` object into the video player's screen object and then reset transform values on it 
 
 ## Quick API reference
@@ -53,7 +53,7 @@ Loads subtitles from the text string globally or locally (depending on `IsLocal(
 
 Whenever the access is locked to Master only
 
-- When using **USharpVideo** it shares the same state with the video player
+- When using **USharpVideo** it shares the same state with it
 
 ### SubtitleManager.SetLocked(bool): void
 
