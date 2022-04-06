@@ -35,8 +35,8 @@ namespace UdonSharp.Video.Subtitles
         [SerializeField]
         private USharpVideoPlayer targetVideoPlayer;
 
-        [Tooltip("If you wish to use this script with any other video player then you need to assign the base video player object here (this can be either Unity or AVPro Video Player)")]
-        public BaseVRCVideoPlayer baseVideoPlayer;
+        [SerializeField, Tooltip("If you wish to use this script with any other video player then you need to assign the base video player object here (this can be either Unity or AVPro Video Player)")]
+        private BaseVRCVideoPlayer baseVideoPlayer;
 
         [Header("Settings")]
 
@@ -675,6 +675,12 @@ namespace UdonSharp.Video.Subtitles
 
             foreach (SubtitleControlHandler handler in _registeredControlHandlers)
                 handler.UpdateOwner();
+        }
+
+        public void SetVideoPlayer(BaseVRCVideoPlayer videoPlayer)
+        {
+            if (!targetVideoPlayer)
+                baseVideoPlayer = videoPlayer;
         }
 
         public void ClearSubtitles()
