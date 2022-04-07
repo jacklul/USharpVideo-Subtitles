@@ -41,7 +41,7 @@ namespace UdonSharp.Video.Subtitles
         private float outlineSize = 0.2f;
         [SerializeField]
         private Color outlineColor = new Color(0f, 0f, 0f, 1f);
-        [SerializeField]
+        [SerializeField, Tooltip("This also sets background opacity")]
         private Color backgroundColor = new Color(0f, 0f, 0f, 0.5f);
         [SerializeField, Range(0, 600)]
         private int margin = 30;
