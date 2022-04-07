@@ -35,11 +35,11 @@ namespace UdonSharp.Video.Subtitles
 
         [SerializeField, Range(30, 100)]
         private int fontSize = 60;
-        [SerializeField]
+        [SerializeField, ColorUsage(false)]
         private Color fontColor = new Color(1f, 1f, 1f, 1f);
         [SerializeField, Range(0, 1)]
         private float outlineSize = 0.2f;
-        [SerializeField]
+        [SerializeField, ColorUsage(false)]
         private Color outlineColor = new Color(0f, 0f, 0f, 1f);
         [SerializeField, Tooltip("This also sets background opacity")]
         private Color backgroundColor = new Color(0f, 0f, 0f, 0.5f);
@@ -195,6 +195,9 @@ namespace UdonSharp.Video.Subtitles
 
         public void SetFontColor(Color color)
         {
+            if (color.a < 1)
+                color = new Color(color.r, color.g, color.b, 1f);
+
             subtitleTextField.color = color;
             if (subtitleTextFieldTop) subtitleTextFieldTop.color = color;
         }
@@ -206,6 +209,9 @@ namespace UdonSharp.Video.Subtitles
 
         public void SetOutlineColor(Color color)
         {
+            if (color.a < 1)
+                color = new Color(color.r, color.g, color.b, 1f);
+
             subtitleTextField.gameObject.SetActive(false); // When "maskable = true" the color does not update unless we toggle the object...
             subtitleTextField.outlineColor = color;
             subtitleTextField.gameObject.SetActive(true);
