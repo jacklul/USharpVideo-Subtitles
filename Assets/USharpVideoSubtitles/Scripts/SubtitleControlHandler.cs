@@ -49,11 +49,6 @@ namespace UdonSharp.Video.Subtitles
         [SerializeField]
         private InputField statusTextField;
 
-        [Header("Info fields")]
-
-        [SerializeField]
-        private Text ownerField;
-
         [Header("Toggles")]
 
         [SerializeField]
@@ -76,6 +71,9 @@ namespace UdonSharp.Video.Subtitles
         private Graphic inputClearButtonBackground;
         [SerializeField]
         private Graphic inputClearButtonIcon;
+
+        [SerializeField]
+        private Text ownerField;
 
         [Header("Settings menu")]
 
