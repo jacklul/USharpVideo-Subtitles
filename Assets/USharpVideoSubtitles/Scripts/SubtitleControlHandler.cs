@@ -752,16 +752,23 @@ namespace UdonSharp.Video.Subtitles
 
         private float SafelyParseFloat(string number)
         {
-            number = number.Replace('.', ',');
+            string[] tmp = number.Replace('.', ',').Split(',');
+
+            if (tmp.Length > 1)
+                return SafelyParseInt(tmp[0]) + (SafelyParseInt(tmp[1]) / Mathf.Pow(10, tmp[1].Length)); // This lets us parse string floats with both comma and dot no matter if running in Unity or in VRC
+            
             float n;
-            if (float.TryParse(number, out n))
-                return float.Parse(number);
+            if (float.TryParse(tmp[0], out n))
+                return float.Parse(tmp[0]);
 
             return 0f;
         }
 
         private float RoundFloat(float value, int decimals)
         {
+            if (decimals == 0)
+                return Mathf.Round(value);
+
             float n = Mathf.Pow(10, decimals);
             return Mathf.Round(value * n) / n;
         }
