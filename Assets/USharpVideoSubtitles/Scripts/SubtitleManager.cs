@@ -463,7 +463,7 @@ namespace UdonSharp.Video.Subtitles
                     string startStr = line.Substring(0, arrowPos);
                     string endStr = line.Substring(arrowPos + 5);
 
-                    if (endStr.Contains(" ")) // Per SRT specs there can be text coordinates after the timestamp
+                    if (endStr.Contains(" ")) // Per SRT specs there can be text coordinates after the timestamp and we can't support that
                         endStr = endStr.Split(' ')[0];
 
                     float startSecond = ParseTimestamp(startStr);

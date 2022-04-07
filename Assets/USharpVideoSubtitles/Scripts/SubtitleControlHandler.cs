@@ -121,7 +121,7 @@ namespace UdonSharp.Video.Subtitles
         private Slider fontSizeSlider;
         [SerializeField]
         private Text fontSizeValue;
-
+        
         [SerializeField]
         private Slider fontColorRSlider;
         [SerializeField]
@@ -176,6 +176,7 @@ namespace UdonSharp.Video.Subtitles
         private Vector3 _originalSettingsMenuPosition;
         private Quaternion _originalSettingsMenuRotation;
         private Vector3 _originalSettingsMenuScale;
+
         private bool _popupActive = false;
         private string _previousStatus = "";
         private string _expectedStatus = "";
@@ -309,7 +310,6 @@ namespace UdonSharp.Video.Subtitles
             if (manager.IsLocal())
             {
                 if (lockButton && !manager.IsUsingUSharpVideo()) lockButton.SetActive(false);
-                //if (inputClearButtonBackground) inputClearButtonBackground.gameObject.SetActive(true);
 
                 if (lockGraphic) lockGraphic.color = whiteGraphicColor;
                 if (inputClearButtonIcon) inputClearButtonIcon.color = whiteGraphicColor;
@@ -329,8 +329,6 @@ namespace UdonSharp.Video.Subtitles
 
                 if (manager.CanControlVideoPlayer())
                 {
-                    //if (inputClearButtonBackground) inputClearButtonBackground.gameObject.SetActive(true);
-
                     if (lockGraphic) lockGraphic.color = whiteGraphicColor;
                     if (inputClearButtonIcon) inputClearButtonIcon.color = whiteGraphicColor;
 
@@ -339,8 +337,6 @@ namespace UdonSharp.Video.Subtitles
                 }
                 else
                 {
-                    //if (inputClearButtonBackground) inputClearButtonBackground.gameObject.SetActive(false);
-
                     if (lockGraphic) lockGraphic.color = redGraphicColor;
                     if (inputClearButtonIcon) inputClearButtonIcon.color = redGraphicColor;
 
@@ -353,8 +349,6 @@ namespace UdonSharp.Video.Subtitles
             {
                 if (masterLockedIcon) masterLockedIcon.SetActive(false);
                 if (masterUnlockedIcon) masterUnlockedIcon.SetActive(true);
-
-                //if (inputClearButtonBackground) inputClearButtonBackground.gameObject.SetActive(true);
 
                 if (lockGraphic) lockGraphic.color = whiteGraphicColor;
                 if (inputClearButtonIcon) inputClearButtonIcon.color = whiteGraphicColor;
@@ -512,6 +506,7 @@ namespace UdonSharp.Video.Subtitles
                 settingsMenu.transform.rotation = transform.rotation;
                 settingsMenu.transform.localScale = new Vector3(settingsPopupScale, settingsPopupScale, settingsPopupScale);
 
+                // This would let us set opacity on the popup canvas but of course it's not exposed to Udon yet!
                 /*if (settingsMenuCanvasGroup)
                 {
                     settingsMenuCanvasGroup.enabled = true;
@@ -671,10 +666,11 @@ namespace UdonSharp.Video.Subtitles
                             alignmentToggle.isOn = alignmentValue == 1;
                             SetAlignmentValue(alignmentValue);
 
+                            // Not exposed to Udon yet (VerticalAlignmentOptions)
                             /*if (alignmentToggle.isOn)
-                                overlayHandler.SetAlignment("Top"); // TextAlignmentOptions.Top - not exposed to Udon yet
+                                overlayHandler.SetAlignment(VerticalAlignmentOptions.Top);
                             else
-                                overlayHandler.SetAlignment("Bottom");*/ // TextAlignmentOptions.Bottom - not exposed to Udon yet
+                                overlayHandler.SetAlignment(VerticalAlignmentOptions.Bottom);*/
 
                             if (updateOverlay) overlayHandler.SetAlignment(alignmentValue);
                             break;
