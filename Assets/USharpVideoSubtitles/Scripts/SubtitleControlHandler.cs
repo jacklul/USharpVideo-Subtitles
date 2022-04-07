@@ -29,10 +29,10 @@ namespace UdonSharp.Video.Subtitles
         private SubtitleOverlayHandler overlayHandler;
 
         [Header("Settings")]
-        [SerializeField, Tooltip("If you plan on toggling this externally make sure to also toggle visibility of the the button too")]
+        [SerializeField]
         private bool settingsPopupEnabled = true;
-        [Range(1.5f, 3f)]
-        public float settingsPopupScale = 1.5f;
+        [Tooltip("By default (0) it will auto adjust with a scale of 0.9, setting this to positive number changes popup scale based on original size, setting it to negative number changes auto adjust's scale")]
+        public float settingsPopupScale = 0f;
         //public float settingsPopupAlpha = 0.9f;
 
         [Header("Input field")]
@@ -549,9 +549,28 @@ namespace UdonSharp.Video.Subtitles
                 Transform transform = overlayHandler.GetCanvasTransform();
                 RectTransform rectTransform = settingsMenu.GetComponent<RectTransform>();
 
-                settingsMenu.transform.position = transform.position;
-                settingsMenu.transform.rotation = transform.rotation;
-                settingsMenu.transform.localScale = new Vector3(settingsPopupScale, settingsPopupScale, settingsPopupScale);
+                float scale = settingsPopupScale;
+
+                if (scale >= 0)
+                {
+                    if (scale == 0)
+                        scale = 0.9f;
+
+                    settingsMenu.transform.SetParent(transform);
+                    settingsMenu.transform.localPosition = Vector3.zero;
+                    settingsMenu.transform.localRotation = Quaternion.identity;
+                }
+                else
+                {
+                    scale = Mathf.Abs(scale);
+                    settingsMenu.transform.position = transform.position;
+                    settingsMenu.transform.rotation = transform.rotation;
+                }
+
+                settingsMenu.transform.localScale = new Vector3(scale, scale, scale);
+
+                // Corrects the position to the center of the screen (because pivot is not on the center)
+                if (rectTransform) rectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x, rectTransform.anchoredPosition.y - (rectTransform.rect.height * scale / 2));
 
                 // This would let us set opacity on the popup canvas but of course it's not exposed to Udon yet!
                 /*if (settingsMenuCanvasGroup)
@@ -560,15 +579,15 @@ namespace UdonSharp.Video.Subtitles
                     settingsMenuCanvasGroup.alpha = settingsPopupAlpha;
                 }*/
 
-                // Corrects the position to the center of the screen (because pivot is not on the center)
-                if (rectTransform) rectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x, rectTransform.anchoredPosition.y - (rectTransform.rect.height * settingsPopupScale / 2));
-
                 if (settingsPopupButtonBackground) settingsPopupButtonBackground.color = buttonActivatedColor;
                 if (settingsPopupButtonIcon) settingsPopupButtonIcon.color = iconInvertedColor;
             }
             else
             {
                 _popupActive = false;
+
+                if (!settingsMenu.transform.IsChildOf(gameObject.transform))
+                    settingsMenu.transform.SetParent(gameObject.transform);
 
                 settingsMenu.transform.position = _originalSettingsMenuPosition;
                 settingsMenu.transform.rotation = _originalSettingsMenuRotation;
