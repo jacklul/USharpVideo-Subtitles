@@ -743,6 +743,7 @@ namespace UdonSharp.Video.Subtitles
 
         private float SafelyParseFloat(string number)
         {
+            number = number.Replace(',', '.');
             float n;
             if (float.TryParse(number, out n))
                 return float.Parse(number);
@@ -986,19 +987,19 @@ namespace UdonSharp.Video.Subtitles
 
         public void SetPresetWhite()
         {
-            overlayHandler.ResetSettings();
+            OnSettingsResetButton();
             ImportSettingsFromString("fc:1;1;1");
         }
 
         public void SetPresetYellow()
         {
-            overlayHandler.ResetSettings();
+            OnSettingsResetButton();
             ImportSettingsFromString("fc:0,9;0,9;0,5");
         }
 
         public void SetPresetPink()
         {
-            overlayHandler.ResetSettings();
+            OnSettingsResetButton();
             ImportSettingsFromString("fc:1;0,5;0,8/os:0/bo:0,8");
         }
     }
