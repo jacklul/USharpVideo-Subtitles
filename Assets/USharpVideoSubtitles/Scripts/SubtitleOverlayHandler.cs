@@ -28,7 +28,7 @@ namespace UdonSharp.Video.Subtitles
         [SerializeField]
         private TextMeshProUGUI subtitleBackgroundFieldTop;
 
-        [SerializeField]
+        [SerializeField, Tooltip("Optional, will move the overlay to this object on initialization and reset the scale to make it match the screen size\nThis might not work and you will have to move the overlay manually")]
         private GameObject videoScreen;
 
         [Header("Defaults")]
@@ -45,7 +45,7 @@ namespace UdonSharp.Video.Subtitles
         private Color backgroundColor = new Color(0f, 0f, 0f, 0.5f);
         [SerializeField, Range(0, 600)]
         private int margin = 30;
-        [SerializeField, Range(0, 1), Tooltip("0 means bottom, 1 means top")]
+        [SerializeField, Range(0, 1), Tooltip("0 = bottom\n1 = top")]
         private int alignment = 0; // To be replaced with "private VerticalAlignmentOptions alignment = VerticalAlignmentOptions.Bottom;" which is not exposed to Udon yet
         [SerializeField, Tooltip("This text is displayed when there is no subtitle currently displayed and user has opened the settings menu")]
         private string placeholder = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";

@@ -35,21 +35,21 @@ namespace UdonSharp.Video.Subtitles
         [SerializeField]
         private USharpVideoPlayer targetVideoPlayer;
 
-        [SerializeField, Tooltip("If you wish to use this script with any other video player then you need to assign the base video player object here (this can be either Unity or AVPro Video Player)")]
+        [SerializeField]
         private BaseVRCVideoPlayer baseVideoPlayer;
 
         [Header("Settings")]
 
-        [SerializeField, Range(5000, 50000), Tooltip("Maximum size of a single data chunk when syncing the subtitles to others - big chunk sizes can make synchronization fail")]
+        [SerializeField, Range(5000, 50000), Tooltip("Maximum size of a single data chunk when synchronizing the subtitles to others - big chunk sizes can make synchronization fail")]
         private int chunkSize = 10000;
 
-        [Range(10, 60), Tooltip("How many frames to wait before the next subtitle update - higher values decrease time accuracy of the subtitles but increase game performance")]
+        [Range(10, 255), Tooltip("How many frames to wait before the next subtitle update - higher values decrease time accuracy of the subtitles but could increase game performance\nThe default is fine")]
         public int updateRate = 10;
 
-        [Tooltip("Should we automatically clear loaded subtitles when a new video starts (this setting currently works only with USharpVideoPlayer)")]
+        [Tooltip("Should we automatically clear loaded subtitles when a new video starts?\nThis setting only works with USharpVideoPlayer")]
         public bool clearOnNewVideo = false;
 
-        [SerializeField, Tooltip("If this module is locked then only the master can manage subtitles (does nothing when using USharpVideo - lock state is fetched from it directly)")]
+        [SerializeField, Tooltip("If locked then only the master can manage subtitles\nThis setting does nothing when using USharpVideo as lock state is shared with it")]
         private bool defaultLocked = true;
 
         [UdonSynced]

@@ -29,20 +29,20 @@ namespace UdonSharp.Video.Subtitles
         private SubtitleOverlayHandler overlayHandler;
 
         [Header("Settings")]
-        [SerializeField]
+        [SerializeField, Tooltip("Adds a button that popups the settings menu directly on the screen for easier customizing")]
         private bool settingsPopupEnabled = true;
-        [Tooltip("By default (0) it will auto adjust with a scale of 0.9, setting this to positive number changes popup scale based on original size, setting it to negative number changes auto adjust's scale")]
+        [Tooltip("By default (0) it will move the settings menu object into overlay object and set the scale to 0.9\nPositive numbers change the scale while keeping the same behaviour\nNegative numbers do not move the object and set an absolute scale")]
         public float settingsPopupScale = 0f;
         //public float settingsPopupAlpha = 0.9f;
 
         [Header("Input field")]
 
-        [SerializeField, Tooltip("Currently TMP_InputField is not supported by Udon so we are using proxy Text field to fetch the data")]
+        [SerializeField]
         private Text inputField; // To be replaced with TMP_InputField once supported by Udon
         [SerializeField]
         private Text inputPlaceholderText;
-        [SerializeField, Tooltip("We clone this object to hide the pasted text after input")]
-        private GameObject inputFieldObject;
+        [SerializeField]
+        private GameObject inputFieldObject; // We clone this object to hide the pasted text after input, this behaviour will be gone once Udon supports TMP_InputField
 
         [Header("Status field")]
 
