@@ -103,3 +103,7 @@ Use this method to get transform values of the overlay's `Canvas` in case you wa
 ### SubtitleControlHandler.ImportSettingsFromString(string): void
 
 Import settings from the given string (the same string which is displayed in the settings window), the format is pretty easy to figure out
+
+### SubtitleControlHandler.ToggleSettingsPopup(): void
+
+Toggle settings popup anytime

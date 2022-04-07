@@ -538,6 +538,11 @@ namespace UdonSharp.Video.Subtitles
             manager.ClearSubtitles();
         }
 
+        public void OnLockButton()
+        {
+            manager.SetLocked(!manager.IsLocked());
+        }
+
         public void OnSettingsPopupToggle()
         {
             if (!settingsPopupEnabled || !overlayHandler) return;
@@ -843,9 +848,25 @@ namespace UdonSharp.Video.Subtitles
             ToggleMenu("dummy"); // Makes sure everything gets closed and button states reset
         }
 
-        public void OnLockButton()
+        public void ToggleSettingsPopup()
         {
-            manager.SetLocked(!manager.IsLocked());
+            if (settingsMenu.activeSelf)
+            {
+                if (_popupActive)
+                {
+                    OnSettingsMenuToggle();
+                    if (settingsPopupEnabled) settingsPopupButtonBackground.gameObject.SetActive(true);
+                }
+                else
+                    OnSettingsPopupToggle();
+            }
+            else
+            {
+                OnSettingsMenuToggle();
+                OnSettingsPopupToggle();
+            }
+
+            if (settingsPopupEnabled) settingsPopupButtonBackground.gameObject.SetActive(false);
         }
 
         public void OnFontSizeSlider()
