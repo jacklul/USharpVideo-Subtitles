@@ -132,6 +132,11 @@ namespace UdonSharp.Video.Subtitles
         private Image fontColorValue;
 
         [SerializeField]
+        private Slider outlineSizeSlider;
+        [SerializeField]
+        private Text outlineSizeValue;
+
+        [SerializeField]
         private Slider outlineColorRSlider;
         [SerializeField]
         private Slider outlineColorGSlider;
@@ -545,7 +550,7 @@ namespace UdonSharp.Video.Subtitles
         public void ImportSettingsFromString(string settings)
         {
             ImportSettingsFromStringInternal(settings, true);
-            UpdateSettingsValues();
+            UpdateSettingsExportString();
         }
 
         private void ImportSettingsFromStringInternal(string settings, bool updateOverlay)
@@ -554,8 +559,10 @@ namespace UdonSharp.Video.Subtitles
 
             string[] array = settings.Split('/');
 
-            string[] tmpValue;
-            Color currentColor;
+            int tmpInt;
+            float tmpFloat;
+            string[] tmpSplitValue;
+            Color tmpColor;
 
             foreach (string setting in array)
             {
@@ -566,113 +573,121 @@ namespace UdonSharp.Video.Subtitles
                     switch (tmp[0])
                     {
                         case "fs": // Font size
-                            if (!fontSizeSlider)
-                                continue;
+                            tmpFloat = SafelyParseFloat(tmp[1]);
 
-                            fontSizeSlider.value = SafelyParseFloat(tmp[1]);
-                            SetFontSizeValue((int)fontSizeSlider.value);
+                            if (fontSizeSlider)
+                                fontSizeSlider.value = tmpFloat;
 
-                            if (fontSizeSlider.value > 0 && updateOverlay)
-                                overlayHandler.SetFontSize((int)fontSizeSlider.value);
+                            SetFontSizeValue((int)tmpFloat);
+
+                            if (tmpFloat > 0 && updateOverlay)
+                                overlayHandler.SetFontSize((int)tmpFloat);
                             break;
-                        case "fc": // Font color
-                            if (!fontColorRSlider || !fontColorGSlider || !fontColorBSlider)
-                                continue;
+                        case "os": // Outline size
+                            tmpFloat = SafelyParseFloat(tmp[1]);
 
-                            tmpValue = tmp[1].Split(';');
-                            Color fontColor;
+                            if (outlineSizeSlider)
+                                outlineSizeSlider.value = tmpFloat;
 
-                            if (tmpValue.Length == 3)
-                                fontColor = new Color(SafelyParseFloat(tmpValue[0]), SafelyParseFloat(tmpValue[1]), SafelyParseFloat(tmpValue[2]));
-                            else
-                                fontColor = overlayHandler.GetFontColor();
+                            SetOutlineSizeValue(tmpFloat);
 
-                            fontColorRSlider.value = fontColor.r;
-                            fontColorGSlider.value = fontColor.g;
-                            fontColorBSlider.value = fontColor.b;
-
-                            SetFontColorValue(fontColor);
-                            if (updateOverlay) overlayHandler.SetFontColor(fontColor);
-                            break;
-                        case "oc": // Outline color
-                            if (!outlineColorRSlider || !outlineColorGSlider || !outlineColorBSlider)
-                                continue;
-
-                            tmpValue = tmp[1].Split(';');
-                            Color outlineColor;
-
-                            if (tmpValue.Length == 3)
-                                outlineColor = new Color(SafelyParseFloat(tmpValue[0]), SafelyParseFloat(tmpValue[1]), SafelyParseFloat(tmpValue[2]), 1f);
-                            else
-                                outlineColor = overlayHandler.GetOutlineColor();
-
-                            outlineColorRSlider.value = outlineColor.r;
-                            outlineColorGSlider.value = outlineColor.g;
-                            outlineColorBSlider.value = outlineColor.b;
-
-                            SetOutlineColorValue(outlineColor);
-                            if (updateOverlay) overlayHandler.SetOutlineColor(outlineColor);
-                            break;
-                        case "bc": // Background color
-                            if (!backgroundColorRSlider || !backgroundColorGSlider || !backgroundColorBSlider)
-                                continue;
-
-                            tmpValue = tmp[1].Split(';');
-                            Color backgroundColor;
-
-                            currentColor = overlayHandler.GetBackgroundColor();
-
-                            if (tmpValue.Length == 3)
-                                backgroundColor = new Color(SafelyParseFloat(tmpValue[0]), SafelyParseFloat(tmpValue[1]), SafelyParseFloat(tmpValue[2]), currentColor.a);
-                            else
-                                backgroundColor = currentColor;
-
-                            backgroundColorRSlider.value = backgroundColor.r;
-                            backgroundColorGSlider.value = backgroundColor.g;
-                            backgroundColorBSlider.value = backgroundColor.b;
-
-                            SetBackgroundColorValue(backgroundColor);
-                            if (updateOverlay) overlayHandler.SetBackgroundColor(backgroundColor);
+                            if (tmpFloat > 0 && updateOverlay)
+                                overlayHandler.SetOutlineSize(tmpFloat);
                             break;
                         case "bo": // Background opacity
-                            if (!backgroundOpacitySlider)
-                                continue;
+                            tmpFloat = SafelyParseFloat(tmp[1]);
 
-                            backgroundOpacitySlider.value = SafelyParseFloat(tmp[1]);
-                            SetBackgroundOpacityValue(backgroundOpacitySlider.value);
+                            if (backgroundOpacitySlider)
+                                backgroundOpacitySlider.value = tmpFloat;
+
+                            SetBackgroundOpacityValue(tmpFloat);
 
                             if (updateOverlay)
                             {
-                                currentColor = overlayHandler.GetBackgroundColor();
-                                overlayHandler.SetBackgroundColor(new Color(currentColor.r, currentColor.g, currentColor.b, backgroundOpacitySlider.value));
+                                tmpColor = overlayHandler.GetBackgroundColor();
+                                overlayHandler.SetBackgroundColor(new Color(tmpColor.r, tmpColor.g, tmpColor.b, tmpFloat));
                             }
                             break;
+                        case "fc": // Font color
+                            tmpSplitValue = tmp[1].Split(';');
+
+                            if (tmpSplitValue.Length == 3)
+                                tmpColor = new Color(SafelyParseFloat(tmpSplitValue[0]), SafelyParseFloat(tmpSplitValue[1]), SafelyParseFloat(tmpSplitValue[2]));
+                            else
+                                tmpColor = overlayHandler.GetFontColor();
+
+                            if (fontColorRSlider && fontColorGSlider && fontColorBSlider)
+                            {
+                                fontColorRSlider.value = tmpColor.r;
+                                fontColorGSlider.value = tmpColor.g;
+                                fontColorBSlider.value = tmpColor.b;
+                            }
+
+                            SetFontColorValue(tmpColor);
+                            if (updateOverlay) overlayHandler.SetFontColor(tmpColor);
+                            break;
+                        case "oc": // Outline color
+                            tmpSplitValue = tmp[1].Split(';');
+
+                            if (tmpSplitValue.Length == 3)
+                                tmpColor = new Color(SafelyParseFloat(tmpSplitValue[0]), SafelyParseFloat(tmpSplitValue[1]), SafelyParseFloat(tmpSplitValue[2]), 1f);
+                            else
+                                tmpColor = overlayHandler.GetOutlineColor();
+
+                            if (outlineColorRSlider && outlineColorGSlider && outlineColorBSlider)
+                            {
+                                outlineColorRSlider.value = tmpColor.r;
+                                outlineColorGSlider.value = tmpColor.g;
+                                outlineColorBSlider.value = tmpColor.b;
+                            }
+
+                            SetOutlineColorValue(tmpColor);
+                            if (updateOverlay) overlayHandler.SetOutlineColor(tmpColor);
+                            break;
+                        case "bc": // Background color
+                            tmpSplitValue = tmp[1].Split(';');
+
+                            tmpColor = overlayHandler.GetBackgroundColor();
+
+                            if (tmpSplitValue.Length == 3)
+                                tmpColor = new Color(SafelyParseFloat(tmpSplitValue[0]), SafelyParseFloat(tmpSplitValue[1]), SafelyParseFloat(tmpSplitValue[2]), tmpColor.a);
+
+                            if (backgroundColorRSlider && backgroundColorGSlider && backgroundColorBSlider)
+                            {
+                                backgroundColorRSlider.value = tmpColor.r;
+                                backgroundColorGSlider.value = tmpColor.g;
+                                backgroundColorBSlider.value = tmpColor.b;
+                            }
+
+                            SetBackgroundColorValue(tmpColor);
+                            if (updateOverlay) overlayHandler.SetBackgroundColor(tmpColor);
+                            break;
                         case "pm": // Margin
-                            if (!marginSlider)
-                                continue;
+                            tmpInt = SafelyParseInt(tmp[1]);
 
-                            marginSlider.value = SafelyParseInt(tmp[1]);
-                            SetMarginValue((int)marginSlider.value);
+                            if (marginSlider)
+                                marginSlider.value = tmpInt;
 
-                            if (marginSlider.value >= 0 && updateOverlay)
-                                overlayHandler.SetMargin((int)marginSlider.value);
+                            SetMarginValue(tmpInt);
+
+                            if (tmpInt >= 0 && updateOverlay)
+                                overlayHandler.SetMargin(tmpInt);
                             break;
                         case "pa": // Alignment
-                            if (!alignmentToggle)
-                                continue;
+                            tmpInt = SafelyParseInt(tmp[1]);
 
-                            int alignmentValue = SafelyParseInt(tmp[1]);
+                            if (alignmentToggle)
+                                alignmentToggle.isOn = tmpInt == 1;
 
-                            alignmentToggle.isOn = alignmentValue == 1;
-                            SetAlignmentValue(alignmentValue);
+                            SetAlignmentValue(tmpInt);
 
                             // Not exposed to Udon yet (VerticalAlignmentOptions)
-                            /*if (alignmentToggle.isOn)
+                            /*if (tmpInt == 1)
                                 overlayHandler.SetAlignment(VerticalAlignmentOptions.Top);
                             else
                                 overlayHandler.SetAlignment(VerticalAlignmentOptions.Bottom);*/
 
-                            if (updateOverlay) overlayHandler.SetAlignment(alignmentValue);
+                            if (updateOverlay) overlayHandler.SetAlignment(tmpInt);
                             break;
                     }
                 }
@@ -699,9 +714,10 @@ namespace UdonSharp.Video.Subtitles
             return 0f;
         }
 
-        private float RoundFloat(float value)
+        private float RoundFloat(float value, int decimals)
         {
-            return Mathf.Round(value * 100f) / 100f;
+            float n = Mathf.Pow(10, decimals);
+            return Mathf.Round(value * n) / n;
         }
 
         private void AfterValueChanged()
@@ -733,14 +749,15 @@ namespace UdonSharp.Video.Subtitles
             if (!overlayHandler) return;
 
             Color fontColor = overlayHandler.GetFontColor();
-            //Color outlineColor = overlayHandler.GetOutlineColor();
+            Color outlineColor = overlayHandler.GetOutlineColor();
             Color backgroundColor = overlayHandler.GetBackgroundColor();
 
             _currentSettingsExport = "fs:" + overlayHandler.GetFontSize()
-                 + "/fc:" + RoundFloat(fontColor.r) + ";" + RoundFloat(fontColor.g) + ";" + RoundFloat(fontColor.b)
-                 //+ "/oc:" + RoundFloat(outlineColor.r) + ";" + RoundFloat(outlineColor.g) + ";" + RoundFloat(outlineColor.b)
-                 + "/bc:" + RoundFloat(backgroundColor.r) + ";" + RoundFloat(backgroundColor.g) + ";" + RoundFloat(backgroundColor.b)
-                 + "/bo:" + RoundFloat(overlayHandler.GetBackgroundColor().a)
+                 + "/fc:" + RoundFloat(fontColor.r, 3) + ";" + RoundFloat(fontColor.g, 3) + ";" + RoundFloat(fontColor.b, 3)
+                 + "/os:" + RoundFloat(overlayHandler.GetOutlineSize(), 2)
+                 + "/oc:" + RoundFloat(outlineColor.r, 3) + ";" + RoundFloat(outlineColor.g, 3) + ";" + RoundFloat(outlineColor.b, 3)
+                 + "/bc:" + RoundFloat(backgroundColor.r, 3) + ";" + RoundFloat(backgroundColor.g, 3) + ";" + RoundFloat(backgroundColor.b, 3)
+                 + "/bo:" + RoundFloat(overlayHandler.GetBackgroundColor().a, 2)
                  + "/pm:" + overlayHandler.GetMargin()
                  + "/pa:" + overlayHandler.GetAlignment()
                 ;
@@ -801,6 +818,25 @@ namespace UdonSharp.Video.Subtitles
             if (!fontColorValue) return;
 
             fontColorValue.color = value;
+        }
+
+        public void OnOutlineSizeSlider()
+        {
+            if (!outlineSizeSlider) return;
+
+            float value = outlineSizeSlider.value;
+
+            if (overlayHandler) overlayHandler.SetOutlineSize(value);
+
+            SetOutlineSizeValue(value);
+            AfterValueChanged();
+        }
+
+        private void SetOutlineSizeValue(float value)
+        {
+            if (!fontSizeValue) return;
+
+            outlineSizeValue.text = (RoundFloat(value, 2) * 100).ToString() + "%";
         }
 
         public void OnOutlineColorChange()
@@ -870,7 +906,7 @@ namespace UdonSharp.Video.Subtitles
         {
             if (!backgroundOpacityValue) return;
 
-            backgroundOpacityValue.text = (RoundFloat(value) * 100).ToString() + "%";
+            backgroundOpacityValue.text = (RoundFloat(value, 2) * 100).ToString() + "%";
         }
 
         public void OnMarginSlider()
@@ -910,6 +946,24 @@ namespace UdonSharp.Video.Subtitles
 
             if (alignmentSlider) alignmentSlider.value = value;
             alignmentValue.text = value == 0 ? ALIGNMENT_BOTTOM : ALIGNMENT_TOP;
+        }
+
+        public void SetPresetWhite()
+        {
+            overlayHandler.ResetSettings();
+            ImportSettingsFromString("fc:1;1;1");
+        }
+
+        public void SetPresetYellow()
+        {
+            overlayHandler.ResetSettings();
+            ImportSettingsFromString("fc:0,9;0,9;0,5");
+        }
+
+        public void SetPresetPink()
+        {
+            overlayHandler.ResetSettings();
+            ImportSettingsFromString("fc:1;0,5;0,8/os:0/bo:0,8");
         }
     }
 }

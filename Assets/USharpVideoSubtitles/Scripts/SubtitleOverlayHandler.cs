@@ -33,16 +33,18 @@ namespace UdonSharp.Video.Subtitles
 
         [Header("Defaults")]
 
-        [SerializeField, Range(36, 100)]
-        private int fontSize = 58;
+        [SerializeField, Range(30, 100)]
+        private int fontSize = 60;
         [SerializeField]
-        //[SerializeField]
-        private Color outlineColor = new Color(0f, 0f, 0f, 1f); // This currently does not work for whatever reason
         private Color fontColor = new Color(1f, 1f, 1f, 1f);
+        [SerializeField, Range(0, 1)]
+        private float outlineSize = 0.2f;
+        [SerializeField]
+        private Color outlineColor = new Color(0f, 0f, 0f, 1f);
         [SerializeField]
         private Color backgroundColor = new Color(0f, 0f, 0f, 0.5f);
         [SerializeField, Range(0, 600)]
-        private int margin = 80;
+        private int margin = 30;
         [SerializeField, Range(0, 1), Tooltip("0 means bottom, 1 means top")]
         private int alignment = 0; // To be replaced with "private VerticalAlignmentOptions alignment = VerticalAlignmentOptions.Bottom;" which is not exposed to Udon yet
         [SerializeField, Tooltip("This text is displayed when there is no subtitle currently displayed and user has opened the settings menu")]
@@ -148,6 +150,7 @@ namespace UdonSharp.Video.Subtitles
         {
             SetFontSize(fontSize);
             SetFontColor(fontColor);
+            SetOutlineSize(outlineSize);
             SetOutlineColor(outlineColor);
             SetBackgroundColor(backgroundColor); // This also sets the opacity, obviously
             SetMargin(margin);
@@ -203,8 +206,25 @@ namespace UdonSharp.Video.Subtitles
 
         public void SetOutlineColor(Color color)
         {
+            subtitleTextField.gameObject.SetActive(false); // When "maskable = true" the color does not update unless we toggle the object...
             subtitleTextField.outlineColor = color;
+            subtitleTextField.gameObject.SetActive(true);
+
             if (subtitleTextFieldTop) subtitleTextFieldTop.outlineColor = color;
+        }
+
+        public float GetOutlineSize()
+        {
+            return subtitleTextField.outlineWidth;
+        }
+
+        public void SetOutlineSize(float size)
+        {
+            subtitleTextField.gameObject.SetActive(false); // When "maskable = true" the color does not update unless we toggle the object...
+            subtitleTextField.outlineWidth = size;
+            subtitleTextField.gameObject.SetActive(true);
+
+            if (subtitleTextFieldTop) subtitleTextFieldTop.outlineWidth = size;
         }
 
         public Color GetBackgroundColor()
