@@ -15,7 +15,7 @@ namespace UdonSharp.Video.Subtitles
     [UdonBehaviourSyncMode(BehaviourSyncMode.NoVariableSync)]
     public class SubtitleControlHandler : UdonSharpBehaviour
     {
-        private const string MESSAGE_PASTE = "Paste SRT subtitles...";
+        private const string MESSAGE_PASTE = "Paste subtitles...";
         private const string MESSAGE_ONLY_OWNER_CAN_ADD = "Only master {0} can add subtitles";
         private const string INDICATOR_LOCAL = "(local)";
         private const string INDICATOR_ANYONE = "(anyone)";
