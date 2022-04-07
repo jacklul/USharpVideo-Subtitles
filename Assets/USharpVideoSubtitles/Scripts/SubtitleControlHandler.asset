@@ -1935,7 +1935,7 @@ MonoBehaviour:
       Data: 
     - Name: $k
       Entry: 1
-      Data: helpMenu
+      Data: infoMenu
     - Name: $v
       Entry: 7
       Data: 127|UdonSharp.Compiler.FieldDefinition, UdonSharp.Editor
@@ -1956,10 +1956,10 @@ MonoBehaviour:
       Data: UnityEngineGameObject
     - Name: symbolOriginalName
       Entry: 1
-      Data: helpMenu
+      Data: infoMenu
     - Name: symbolUniqueName
       Entry: 1
-      Data: helpMenu
+      Data: infoMenu
     - Name: symbolDefaultValue
       Entry: 6
       Data: 
@@ -1978,7 +1978,7 @@ MonoBehaviour:
       Data: 130|UnityEngine.HeaderAttribute, UnityEngine.CoreModule
     - Name: header
       Entry: 1
-      Data: Help menu
+      Data: Info menu
     - Name: 
       Entry: 8
       Data: 
@@ -2008,7 +2008,7 @@ MonoBehaviour:
       Data: 
     - Name: $k
       Entry: 1
-      Data: helpMenuButtonBackground
+      Data: infoMenuButtonBackground
     - Name: $v
       Entry: 7
       Data: 132|UdonSharp.Compiler.FieldDefinition, UdonSharp.Editor
@@ -2029,10 +2029,10 @@ MonoBehaviour:
       Data: UnityEngineUIGraphic
     - Name: symbolOriginalName
       Entry: 1
-      Data: helpMenuButtonBackground
+      Data: infoMenuButtonBackground
     - Name: symbolUniqueName
       Entry: 1
-      Data: helpMenuButtonBackground
+      Data: infoMenuButtonBackground
     - Name: symbolDefaultValue
       Entry: 6
       Data: 
@@ -2072,7 +2072,7 @@ MonoBehaviour:
       Data: 
     - Name: $k
       Entry: 1
-      Data: helpMenuButtonIcon
+      Data: infoMenuButtonIcon
     - Name: $v
       Entry: 7
       Data: 136|UdonSharp.Compiler.FieldDefinition, UdonSharp.Editor
@@ -2093,10 +2093,10 @@ MonoBehaviour:
       Data: UnityEngineUIGraphic
     - Name: symbolOriginalName
       Entry: 1
-      Data: helpMenuButtonIcon
+      Data: infoMenuButtonIcon
     - Name: symbolUniqueName
       Entry: 1
-      Data: helpMenuButtonIcon
+      Data: infoMenuButtonIcon
     - Name: symbolDefaultValue
       Entry: 6
       Data: 

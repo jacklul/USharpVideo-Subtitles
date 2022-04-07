@@ -96,15 +96,15 @@ namespace UdonSharp.Video.Subtitles
         [SerializeField]
         private InputField settingsImportExportField;
 
-        [Header("Help menu")]
+        [Header("Info menu")]
 
         [SerializeField]
-        private GameObject helpMenu;
+        private GameObject infoMenu;
 
         [SerializeField]
-        private Graphic helpMenuButtonBackground;
+        private Graphic infoMenuButtonBackground;
         [SerializeField]
-        private Graphic helpMenuButtonIcon;
+        private Graphic infoMenuButtonIcon;
 
         [Header("Lock button")]
         [SerializeField]
@@ -461,16 +461,16 @@ namespace UdonSharp.Video.Subtitles
             }
         }
 
-        public void OnHelpMenuToggle()
+        public void OnInfoMenuToggle()
         {
-            if (helpMenu == null) return;
+            if (infoMenu == null) return;
 
-            ToggleMenu("help");
+            ToggleMenu("info");
         }
 
         private void ToggleMenu(string name)
         {
-            string[] menus = new string[3] { "input", "settings", "help" };
+            string[] menus = new string[3] { "input", "settings", "info" };
 
             for (int i = 0; i < menus.Length; i++)
             {
@@ -490,10 +490,10 @@ namespace UdonSharp.Video.Subtitles
                         background = settingsMenuButtonBackground;
                         icon = settingsMenuButtonIcon;
                         break;
-                    case "help":
-                        handle = helpMenu;
-                        background = helpMenuButtonBackground;
-                        icon = helpMenuButtonIcon;
+                    case "info":
+                        handle = infoMenu;
+                        background = infoMenuButtonBackground;
+                        icon = infoMenuButtonIcon;
                         break;
                 }
 
