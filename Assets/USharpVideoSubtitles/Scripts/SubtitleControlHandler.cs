@@ -181,14 +181,16 @@ namespace UdonSharp.Video.Subtitles
         private Vector3 _originalSettingsMenuPosition;
         private Quaternion _originalSettingsMenuRotation;
         private Vector3 _originalSettingsMenuScale;
-
         private GameObject _currentInputFieldObject;
-        private bool _popupActive = false;
+
         private string _previousStatus = "";
         private string _expectedStatus = "";
         private string _stickyStatus = "";
         private string _afterStickyStatus = "";
+
+        private bool _synchronizeSettings = true;
         private string _currentSettingsExport = "";
+        private bool _popupActive = false;
 
         private void OnEnable()
         {
@@ -199,6 +201,7 @@ namespace UdonSharp.Video.Subtitles
             if (lockButton) lockButton.SetActive(!manager.IsUsingUSharpVideo());
 
             UpdateOwner();
+            SendCustomEventDelayedFrames(nameof(UpdateSettingsValues), 1);
         }
 
         private void Start()
@@ -214,8 +217,6 @@ namespace UdonSharp.Video.Subtitles
                 CloneInputField();
 
             if (!settingsPopupEnabled) settingsPopupButtonBackground.gameObject.SetActive(false);
-
-            SendCustomEventDelayedFrames(nameof(OnSettingsResetButton), 1);
         }
 
         private void OnDisable()
@@ -401,15 +402,20 @@ namespace UdonSharp.Video.Subtitles
 
         public void OnSubtitleInput()
         {
-            if (!inputField || inputField.text.Trim().Length == 0) return;
+            if (!inputField) return;
 
-            manager.ProcessInput(inputField.text);
-            inputField.text = "";
+            string text = inputField.text.Trim();
 
-            if (inputFieldObject) // Workaround...
+            if (text.Length > 0)
             {
-                Destroy(_currentInputFieldObject);
-                CloneInputField();
+                manager.ProcessInput(text);
+                inputField.text = "";
+
+                if (inputFieldObject) // Workaround...
+                {
+                    Destroy(_currentInputFieldObject);
+                    CloneInputField();
+                }
             }
         }
 
@@ -429,14 +435,14 @@ namespace UdonSharp.Video.Subtitles
 
         public void OnInputMenuToggle()
         {
-            if (inputMenu == null) return;
+            if (!inputMenu) return;
 
             ToggleMenu("input");
         }
 
         public void OnSettingsMenuToggle()
         {
-            if (settingsMenu == null) return;
+            if (!settingsMenu) return;
 
             ToggleMenu("settings");
 
@@ -463,7 +469,7 @@ namespace UdonSharp.Video.Subtitles
 
         public void OnInfoMenuToggle()
         {
-            if (infoMenu == null) return;
+            if (!infoMenu) return;
 
             ToggleMenu("info");
         }
@@ -576,22 +582,37 @@ namespace UdonSharp.Video.Subtitles
 
         public void OnSettingsImportInput()
         {
-            if (!settingsImportExportField || settingsImportExportField.text.Trim().Length == 0 || !overlayHandler) return;
+            if (!settingsImportExportField) return;
 
-            overlayHandler.ResetSettings();
-            ImportSettingsFromStringInternal(settingsImportExportField.text.Trim(), true);
-            UpdateSettingsValues();
+            string text = settingsImportExportField.text.Trim();
+
+            if (text.Length > 0)
+                ImportSettingsFromStringInternal(settingsImportExportField.text.Trim(), true);
+        }
+
+        public void OnSettingsResetButton()
+        {
+            ImportSettingsFromStringInternal("", true);
         }
 
         public void ImportSettingsFromString(string settings)
         {
             ImportSettingsFromStringInternal(settings, true);
-            UpdateSettingsExportString();
         }
 
         private void ImportSettingsFromStringInternal(string settings, bool updateOverlay)
         {
-            if (!overlayHandler) return;
+            if (updateOverlay)
+            {
+                if (overlayHandler)
+                {
+                    overlayHandler.ResetSettings();
+                    UpdateSettingsExportString();
+                    settings = _currentSettingsExport + "/" + settings;
+                }
+                else
+                    updateOverlay = false;
+            }
 
             string[] array = settings.Split('/');
 
@@ -614,8 +635,6 @@ namespace UdonSharp.Video.Subtitles
                             if (fontSizeSlider)
                                 fontSizeSlider.value = tmpFloat;
 
-                            SetFontSizeValue((int)tmpFloat);
-
                             if (tmpFloat > 0 && updateOverlay)
                                 overlayHandler.SetFontSize((int)tmpFloat);
                             break;
@@ -625,8 +644,6 @@ namespace UdonSharp.Video.Subtitles
                             if (outlineSizeSlider)
                                 outlineSizeSlider.value = tmpFloat;
 
-                            SetOutlineSizeValue(tmpFloat);
-
                             if (tmpFloat > 0 && updateOverlay)
                                 overlayHandler.SetOutlineSize(tmpFloat);
                             break;
@@ -635,8 +652,6 @@ namespace UdonSharp.Video.Subtitles
 
                             if (backgroundOpacitySlider)
                                 backgroundOpacitySlider.value = tmpFloat;
-
-                            SetBackgroundOpacityValue(tmpFloat);
 
                             if (updateOverlay)
                             {
@@ -659,7 +674,6 @@ namespace UdonSharp.Video.Subtitles
                                 fontColorBSlider.value = tmpColor.b;
                             }
 
-                            SetFontColorValue(tmpColor);
                             if (updateOverlay) overlayHandler.SetFontColor(tmpColor);
                             break;
                         case "oc": // Outline color
@@ -677,7 +691,6 @@ namespace UdonSharp.Video.Subtitles
                                 outlineColorBSlider.value = tmpColor.b;
                             }
 
-                            SetOutlineColorValue(tmpColor);
                             if (updateOverlay) overlayHandler.SetOutlineColor(tmpColor);
                             break;
                         case "bc": // Background color
@@ -695,7 +708,6 @@ namespace UdonSharp.Video.Subtitles
                                 backgroundColorBSlider.value = tmpColor.b;
                             }
 
-                            SetBackgroundColorValue(tmpColor);
                             if (updateOverlay) overlayHandler.SetBackgroundColor(tmpColor);
                             break;
                         case "pm": // Margin
@@ -703,8 +715,6 @@ namespace UdonSharp.Video.Subtitles
 
                             if (marginSlider)
                                 marginSlider.value = tmpInt;
-
-                            SetMarginValue(tmpInt);
 
                             if (tmpInt >= 0 && updateOverlay)
                                 overlayHandler.SetMargin(tmpInt);
@@ -714,8 +724,6 @@ namespace UdonSharp.Video.Subtitles
 
                             if (alignmentToggle)
                                 alignmentToggle.isOn = tmpInt == 1;
-
-                            SetAlignmentValue(tmpInt);
 
                             // Not exposed to Udon yet (VerticalAlignmentOptions)
                             /*if (tmpInt == 1)
@@ -729,7 +737,8 @@ namespace UdonSharp.Video.Subtitles
                 }
             }
 
-            if (updateOverlay) overlayHandler.RefreshSubtitle();
+            if (updateOverlay && overlayHandler)
+                overlayHandler.RefreshSubtitle();
         }
 
         private int SafelyParseInt(string number)
@@ -743,7 +752,7 @@ namespace UdonSharp.Video.Subtitles
 
         private float SafelyParseFloat(string number)
         {
-            number = number.Replace(',', '.');
+            number = number.Replace('.', ',');
             float n;
             if (float.TryParse(number, out n))
                 return float.Parse(number);
@@ -757,28 +766,15 @@ namespace UdonSharp.Video.Subtitles
             return Mathf.Round(value * n) / n;
         }
 
-        private void AfterValueChanged()
-        {
-            UpdateSettingsExportString();
-            overlayHandler.RefreshSubtitle();
-            manager.SynchronizeSettings(this);
-        }
-
         public void UpdateSettingsValues()
         {
-            UpdateSettingsExportString();
-            ImportSettingsFromStringInternal(_currentSettingsExport, false);
-        }
-
-        public void OnSettingsResetButton()
-        {
-            if (!overlayHandler) return;
-
-            overlayHandler.ResetSettings();
-
-            UpdateSettingsExportString();
-            ImportSettingsFromStringInternal(_currentSettingsExport, true);
-            UpdateSettingsValues();
+            if (_synchronizeSettings)
+            {
+                _synchronizeSettings = false; // Prevent loops
+                UpdateSettingsExportString();
+                ImportSettingsFromStringInternal(_currentSettingsExport, false);
+                _synchronizeSettings = true;
+            }
         }
 
         private void UpdateSettingsExportString()
@@ -802,9 +798,20 @@ namespace UdonSharp.Video.Subtitles
             if (settingsImportExportField) settingsImportExportField.text = _currentSettingsExport;
         }
 
+        private void AfterValueChanged()
+        {
+            UpdateSettingsExportString();
+
+            if (overlayHandler && _synchronizeSettings)
+            {
+                overlayHandler.RefreshSubtitle();
+                manager.SynchronizeSettings(this);
+            }
+        }
+
         public void CloseInputMenu()
         {
-            if (inputMenu == null) return;
+            if (!inputMenu) return;
 
             inputMenu.SetActive(false);
             ToggleMenu("dummy"); // Makes sure everything gets closed and button states reset
@@ -987,19 +994,16 @@ namespace UdonSharp.Video.Subtitles
 
         public void SetPresetWhite()
         {
-            OnSettingsResetButton();
             ImportSettingsFromString("fc:1;1;1");
         }
 
         public void SetPresetYellow()
         {
-            OnSettingsResetButton();
             ImportSettingsFromString("fc:0,9;0,9;0,5");
         }
 
         public void SetPresetPink()
         {
-            OnSettingsResetButton();
             ImportSettingsFromString("fc:1;0,5;0,8/os:0/bo:0,8");
         }
     }

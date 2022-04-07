@@ -312,6 +312,7 @@ namespace UdonSharp.Video.Subtitles
 
             //SetMargin(margin);
             ClearSubtitle();
+            RefreshSubtitle();
 
             //subtitleTextField.alignment = alignment;
             //subtitleBackgroundField.alignment = alignment;
