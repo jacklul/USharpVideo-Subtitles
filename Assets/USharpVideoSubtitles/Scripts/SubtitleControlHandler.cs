@@ -41,6 +41,8 @@ namespace UdonSharp.Video.Subtitles
         private Text inputField; // To be replaced with TMP_InputField once supported by Udon
         [SerializeField]
         private Text inputPlaceholderText;
+        [SerializeField, Tooltip("We clone this object to hide the pasted text after input")]
+        private GameObject inputFieldObject;
 
         [Header("Status field")]
 
@@ -182,6 +184,7 @@ namespace UdonSharp.Video.Subtitles
         private Quaternion _originalSettingsMenuRotation;
         private Vector3 _originalSettingsMenuScale;
 
+        private GameObject _currentInputFieldObject;
         private bool _popupActive = false;
         private string _previousStatus = "";
         private string _expectedStatus = "";
@@ -209,6 +212,9 @@ namespace UdonSharp.Video.Subtitles
                 _originalSettingsMenuScale = settingsMenu.transform.localScale;
             }
 
+            if (inputFieldObject)
+                CloneInputField();
+
             if (!settingsPopupEnabled) settingsPopupButtonBackground.gameObject.SetActive(false);
 
             SendCustomEventDelayedFrames(nameof(OnSettingsResetButton), 1);
@@ -217,6 +223,38 @@ namespace UdonSharp.Video.Subtitles
         private void OnDisable()
         {
             manager.UnregisterControlHandler(this);
+        }
+
+        private void CloneInputField() // This is the current workaround to be able to clear the text field after pasting
+        {
+            inputFieldObject.SetActive(false);
+            _currentInputFieldObject = VRCInstantiate(inputFieldObject);
+            
+            _currentInputFieldObject.transform.SetParent(inputFieldObject.transform.parent.transform);
+            _currentInputFieldObject.transform.localPosition = inputFieldObject.transform.localPosition;
+            _currentInputFieldObject.transform.localRotation = inputFieldObject.transform.localRotation;
+            _currentInputFieldObject.transform.localScale = inputFieldObject.transform.localScale;
+            _currentInputFieldObject.SetActive(true);
+
+            if (_currentInputFieldObject.transform.childCount > 0)
+            {
+                Transform placeholder = _currentInputFieldObject.transform.GetChild(0).transform.Find("Placeholder");
+                Transform proxy = _currentInputFieldObject.transform.Find("InputProxy");
+
+                if (placeholder && proxy)
+                {
+                    inputPlaceholderText = placeholder.GetComponent<Text>();
+                    inputField = proxy.GetComponent<Text>();
+                    SynchronizeLockState();
+                    return;
+                }
+            }
+
+            // Someone modified the field's layout so we abort
+            inputFieldObject.SetActive(true);
+            inputFieldObject = null;
+            Destroy(_currentInputFieldObject);
+            _currentInputFieldObject = null;
         }
 
         public override void OnPlayerLeft(VRCPlayerApi player)
@@ -363,18 +401,18 @@ namespace UdonSharp.Video.Subtitles
             }
         }
 
-        public void ClearSubtitleInput()
-        {
-            if (!inputField) return;
-
-            inputField.text = "";
-        }
-
         public void OnSubtitleInput()
         {
             if (!inputField || inputField.text.Trim().Length == 0) return;
 
             manager.ProcessInput(inputField.text);
+            inputField.text = "";
+
+            if (inputFieldObject) // Workaround...
+            {
+                Destroy(_currentInputFieldObject);
+                CloneInputField();
+            }
         }
 
         public void OnSubtitlesToggleButton()

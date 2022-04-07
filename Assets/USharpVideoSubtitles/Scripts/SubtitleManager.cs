@@ -355,9 +355,6 @@ namespace UdonSharp.Video.Subtitles
 
                     LogMessage($"Applying synchronized data (length = {_data.Length})");
 
-                    foreach (SubtitleControlHandler handler in _registeredControlHandlers)
-                        handler.ClearSubtitleInput();
-
                     LoadSubtitles(_data, false);
                     ResetSubtitleTrackingState();
                 }
@@ -381,10 +378,7 @@ namespace UdonSharp.Video.Subtitles
             ResetSubtitleTrackingState();
 
             foreach (SubtitleControlHandler handler in _registeredControlHandlers)
-            {
-                handler.ClearSubtitleInput();
                 handler.SetStatusText(MESSAGE_CLEARED);
-            }
         }
 
         private void UnsetSubtitlesLocal()
@@ -392,10 +386,7 @@ namespace UdonSharp.Video.Subtitles
             ClearSubtitlesLocal();
 
             foreach (SubtitleControlHandler handler in _registeredControlHandlers)
-            {
-                handler.ClearSubtitleInput();
                 handler.SetStatusText(MESSAGE_NOT_LOADED);
-            }
         }
 
         private void LoadSubtitles(string subtitles, bool closeInputMenu)
