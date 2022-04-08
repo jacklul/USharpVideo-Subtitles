@@ -908,7 +908,7 @@ namespace UdonSharp.Video.Subtitles
         {
             if (!fontColorValue) return;
 
-            fontColorValue.color = value;
+            fontColorValue.color = new Color(value.r, value.g, value.b); // You might think this is useless but actually this make sure the color preview on the UI is not affected by value's opacity
         }
 
         public void OnOutlineSizeSlider()
@@ -950,7 +950,7 @@ namespace UdonSharp.Video.Subtitles
         {
             if (!outlineColorValue) return;
 
-            outlineColorValue.color = value;
+            outlineColorValue.color = new Color(value.r, value.g, value.b);
         }
 
         public void OnBackgroundColorChange()
@@ -974,7 +974,7 @@ namespace UdonSharp.Video.Subtitles
         {
             if (!backgroundColorValue) return;
 
-            backgroundColorValue.color = value;
+            backgroundColorValue.color = new Color(value.r, value.g, value.b);
         }
 
         public void OnBackgroundOpacitySlider()
