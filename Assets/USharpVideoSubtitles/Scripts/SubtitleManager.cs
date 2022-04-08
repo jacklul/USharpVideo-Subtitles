@@ -437,7 +437,7 @@ namespace UdonSharp.Video.Subtitles
             int initialSubtitleCount = FindSubtitleCount(array) + 1; // Add one in case the counter started at 0
 
             if (initialSubtitleCount <= 0) // If we couldn't find the count fallback to manual calculation
-                initialSubtitleCount = array.Length / 3; // File might not have a counter and when dividing by 4 we will run out of array space
+                initialSubtitleCount = array.Length / 3 + 1; // File might not have a counter and when dividing by 4 we will run out of array space
 
             _dataText = new string[initialSubtitleCount];
             _dataStart = new float[initialSubtitleCount];
