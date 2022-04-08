@@ -449,6 +449,9 @@ namespace UdonSharp.Video.Subtitles
             if (_popupActive)
                 OnSettingsPopupToggle();
 
+            if (settingsPopupEnabled)
+                settingsPopupButtonBackground.gameObject.SetActive(true);
+
             if (settingsMenu.activeSelf)
             {
                 if (overlayHandler)
@@ -853,10 +856,7 @@ namespace UdonSharp.Video.Subtitles
             if (settingsMenu.activeSelf)
             {
                 if (_popupActive)
-                {
                     OnSettingsMenuToggle();
-                    if (settingsPopupEnabled) settingsPopupButtonBackground.gameObject.SetActive(true);
-                }
                 else
                     OnSettingsPopupToggle();
             }
