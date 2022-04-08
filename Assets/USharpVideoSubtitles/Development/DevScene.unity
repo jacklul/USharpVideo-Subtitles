@@ -366,7 +366,7 @@ PrefabInstance:
     - target: {fileID: 6421412928178292073, guid: 87d772cf1b1ec7b49839dde29eb427be,
         type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 6421412928178292073, guid: 87d772cf1b1ec7b49839dde29eb427be,
         type: 3}
@@ -932,10 +932,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1442731301, guid: 79b0ea249ffa6a54bb5f55191b085d00, type: 3}
-      propertyPath: _syncMethod
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 368572902303537914, guid: 79b0ea249ffa6a54bb5f55191b085d00,
         type: 3}
       propertyPath: serializedPublicVariablesBytesString
@@ -959,7 +955,7 @@ PrefabInstance:
     - target: {fileID: 368572902303537917, guid: 79b0ea249ffa6a54bb5f55191b085d00,
         type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 368572902303537917, guid: 79b0ea249ffa6a54bb5f55191b085d00,
         type: 3}
@@ -1486,7 +1482,7 @@ Transform:
   - {fileID: 1429785602}
   - {fileID: 368572903783996469}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2096184884 stripped
 MonoBehaviour:
@@ -1812,7 +1808,7 @@ PrefabInstance:
     - target: {fileID: 1555380924737070346, guid: 07a8344aed11c464d9ca30fde8ee3351,
         type: 3}
       propertyPath: m_RootOrder
-      value: 8
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1555380924737070346, guid: 07a8344aed11c464d9ca30fde8ee3351,
         type: 3}
