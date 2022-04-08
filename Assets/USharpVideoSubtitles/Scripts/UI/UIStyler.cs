@@ -72,6 +72,7 @@ namespace UdonSharp.Video.Subtitles.UI
                 {
                     InputField input = markup.GetComponent<InputField>();
                     TMP_InputField inputTmp = markup.GetComponent<TMP_InputField>();
+                    VRCUrlInputField vrcInput = markup.GetComponent<VRCUrlInputField>();
 
                     if (input != null)
                     {
@@ -85,9 +86,8 @@ namespace UdonSharp.Video.Subtitles.UI
                         inputTmp.selectionColor = graphicColor;
                         RecordObject(inputTmp);
                     }
-                    else if (markup.TryGetComponent(typeof(VRCUrlInputField), out Component component))
+                    else if (vrcInput != null)
                     {
-                        var vrcInput = component.GetComponent<VRCUrlInputField>();
                         Undo.RecordObject(vrcInput, "Apply UI Style");
                         vrcInput.selectionColor = graphicColor;
                         RecordObject(vrcInput);
@@ -97,6 +97,7 @@ namespace UdonSharp.Video.Subtitles.UI
                 {
                     InputField input = markup.GetComponent<InputField>();
                     TMP_InputField inputTmp = markup.GetComponent<TMP_InputField>();
+                    VRCUrlInputField vrcInput = markup.GetComponent<VRCUrlInputField>();
 
                     if (input != null)
                     {
@@ -110,9 +111,8 @@ namespace UdonSharp.Video.Subtitles.UI
                         inputTmp.caretColor = graphicColor;
                         RecordObject(inputTmp);
                     }
-                    else if (markup.TryGetComponent(typeof(VRCUrlInputField), out Component component))
+                    else if (vrcInput != null)
                     {
-                        var vrcInput = component.GetComponent<VRCUrlInputField>();
                         Undo.RecordObject(vrcInput, "Apply UI Style");
                         vrcInput.caretColor = graphicColor;
                         RecordObject(vrcInput);
