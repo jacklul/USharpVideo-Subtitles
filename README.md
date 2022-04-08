@@ -32,7 +32,7 @@ _[This code](https://gist.github.com/hai-vr/b340f9a46952640f81efe7f02da6bdf6) by
     - when using **USharpVideo** (**Target Video Player** field) - **USharpVideoPlayer** from the `USharpVideo` object
     - in any other case (**Base Video Player** field) - **VRCUnityVideoPlayer** or **VRCAVProVideoPlayer** that have to be somewhere in your scene - depends on which one you're using ([you can change this dynamically](#subtitlemanagersetvideoplayerbasevrcvideoplayer-void))
 7. Add a reference in the `Subtitles/Overlay` object (**Video Screen** field) to the video player's screen object, the overlay will copy the position and rotation of the screen on start
-    - if this doesn't work for you then you will have to manually adjust `Subtitles/Overlay` object's position and rotation to match the video screen object (while keeping the mentioned field empty)
+    - if this doesn't work for you then you will have to manually adjust `Subtitles/Overlay` object's position and rotation to match the video screen object (while keeping the mentioned earlier field empty)
 
 ## Quick API reference
 
@@ -106,4 +106,4 @@ Import settings from the given string (the same string which is displayed in the
 
 ### SubtitleControlHandler.ToggleSettingsPopup(): void
 
-Toggle settings popup anytime
+Toggle settings popup, use this to show and hide the popup using separate button
