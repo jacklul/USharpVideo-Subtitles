@@ -1041,17 +1041,22 @@ namespace UdonSharp.Video.Subtitles
 
         public void SetPresetWhite()
         {
-            ImportSettingsFromString("fc:1;1;1");
+            ImportSettingsFromString("fc:1;1;1/os:0,3/oc:0;0;0/bc:0;0;0/bo:0");
+        }
+
+        public void SetPresetWhiteWithBG()
+        {
+            ImportSettingsFromString("fc:1;1;1/os:0,2/oc:0;0;0/bc:0;0;0/bo:0,6");
         }
 
         public void SetPresetYellow()
         {
-            ImportSettingsFromString("fc:0,9;0,9;0,5");
+            ImportSettingsFromString("fc:0,9;0,9;0/os:0,3/oc:0;0;0/bc:0;0;0/bo:0");
         }
 
-        public void SetPresetPink()
+        public void SetPresetYellowWithBG()
         {
-            ImportSettingsFromString("fc:1;0,5;0,8/os:0/bo:0,8");
+            ImportSettingsFromString("fc:0,9;0,9;0/os:0,2/oc:0;0;0/bc:0;0;0/bo:0,6");
         }
     }
 }
