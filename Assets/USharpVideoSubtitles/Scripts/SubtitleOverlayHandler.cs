@@ -34,15 +34,15 @@ namespace UdonSharp.Video.Subtitles
         [Header("Defaults")]
 
         [SerializeField, Range(30, 100)]
-        private int fontSize = 60;
+        private int fontSize = 65;
         [SerializeField, ColorUsage(false)]
         private Color fontColor = new Color(1f, 1f, 1f, 1f);
         [SerializeField, Range(0, 1)]
-        private float outlineSize = 0.2f;
+        private float outlineSize = 0.3f;
         [SerializeField, ColorUsage(false)]
         private Color outlineColor = new Color(0f, 0f, 0f, 1f);
         [SerializeField, Tooltip("This also sets background opacity")]
-        private Color backgroundColor = new Color(0f, 0f, 0f, 0.5f);
+        private Color backgroundColor = new Color(0f, 0f, 0f, 0f);
         [SerializeField, Range(0, 600)]
         private int margin = 30;
         [SerializeField, Range(0, 1), Tooltip("0 = bottom\n1 = top")]

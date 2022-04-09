@@ -35,6 +35,24 @@ namespace UdonSharp.Video.Subtitles
         public float settingsPopupScale = 0f;
         //public float settingsPopupAlpha = 0.9f;
 
+        [Header("Presets")]
+        [SerializeField]
+        private GameObject preset1Object;
+        [SerializeField]
+        private string preset1Settings = "fc:1;1;1/os:0,3/oc:0;0;0/bc:0;0;0/bo:0";
+        [SerializeField]
+        private GameObject preset2Object;
+        [SerializeField]
+        private string preset2Settings = "fc:0,9;0,9;0/os:0,3/oc:0;0;0/bc:0;0;0/bo:0";
+        [SerializeField]
+        private GameObject preset3Object;
+        [SerializeField]
+        private string preset3Settings = "fc:1;1;1/os:0,2/oc:0;0;0/bc:0;0;0/bo:0,6";
+        [SerializeField]
+        private GameObject preset4Object;
+        [SerializeField]
+        private string preset4Settings = "fc:0,9;0,9;0/os:0,2/oc:0;0;0/bc:0;0;0/bo:0,6";
+
         [Header("Input field")]
 
         [SerializeField]
@@ -178,6 +196,10 @@ namespace UdonSharp.Video.Subtitles
         public Color buttonActivatedColor = new Color(0.943f, 0.943f, 0.943f);
         public Color iconInvertedColor = new Color(0.196f, 0.196f, 0.196f);
 
+        private const int IMPORT_NONE = 0; // Just set the values on the UI
+        private const int IMPORT_UPDATE = 1; // Update overlay (without settings reset)
+        private const int IMPORT_RESET = 2; // Update overlay with settings reset
+
         private Vector3 _originalSettingsMenuPosition;
         private Quaternion _originalSettingsMenuRotation;
         private Vector3 _originalSettingsMenuScale;
@@ -217,11 +239,115 @@ namespace UdonSharp.Video.Subtitles
                 CloneInputField();
 
             if (!settingsPopupEnabled) settingsPopupButtonBackground.gameObject.SetActive(false);
+
+            if (preset1Object)
+            {
+                if (preset1Settings.Length > 0)
+                    UpdatePresetPreview(preset1Object, preset1Settings);
+                else
+                    preset1Object.SetActive(false);
+            }
+
+            if (preset2Object)
+            {
+                if (preset2Settings.Length > 0)
+                    UpdatePresetPreview(preset2Object, preset2Settings);
+                else
+                    preset2Object.SetActive(false);
+            }
+
+            if (preset3Object)
+            {
+                if (preset3Settings.Length > 0)
+                    UpdatePresetPreview(preset3Object, preset3Settings);
+                else
+                    preset3Object.SetActive(false);
+            }
+
+            if (preset4Object)
+            {
+                if (preset4Settings.Length > 0)
+                    UpdatePresetPreview(preset4Object, preset4Settings);
+                else
+                    preset4Object.SetActive(false);
+            }
         }
 
         private void OnDisable()
         {
             manager.UnregisterControlHandler(this);
+        }
+
+        private void UpdatePresetPreview(GameObject previewGameObject, string settings)
+        {
+            string[] array = settings.Split('/');
+
+            float tmpFloat;
+            string[] tmpSplitValue;
+            Color tmpColor;
+            Transform tmpTransform;
+            Image tmpImage;
+
+            foreach (string setting in array)
+            {
+                string[] tmp = setting.Split(':');
+
+                if (tmp.Length > 0)
+                {
+                    switch (tmp[0])
+                    {
+                        case "fc": // Font color
+                            tmpTransform = previewGameObject.transform.Find("Color");
+                            if (tmpTransform)
+                            {
+                                tmpImage = tmpTransform.GetComponent<Image>();
+                                if (tmpImage)
+                                {
+                                    Debug.Log("Yes");
+                                    tmpSplitValue = tmp[1].Split(';');
+
+                                    if (tmpSplitValue.Length == 3)
+                                        tmpColor = new Color(SafelyParseFloat(tmpSplitValue[0]), SafelyParseFloat(tmpSplitValue[1]), SafelyParseFloat(tmpSplitValue[2]));
+                                    else
+                                        tmpColor = overlayHandler.GetFontColor();
+
+                                    tmpImage.color = tmpColor;
+                                }
+                            }
+                            break;
+                        case "bc": // Background color
+                            tmpTransform = previewGameObject.transform.Find("Background");
+                            if (tmpTransform)
+                            {
+                                tmpImage = tmpTransform.GetComponent<Image>();
+                                if (tmpImage)
+                                {
+                                    tmpSplitValue = tmp[1].Split(';');
+                                    tmpColor = overlayHandler.GetBackgroundColor();
+
+                                    if (tmpSplitValue.Length == 3)
+                                        tmpColor = new Color(SafelyParseFloat(tmpSplitValue[0]), SafelyParseFloat(tmpSplitValue[1]), SafelyParseFloat(tmpSplitValue[2]), tmpImage.color.a);
+
+                                    tmpImage.color = tmpColor;
+                                }
+                            }
+                            break;
+                        case "bo": // Background opacity
+                            tmpTransform = previewGameObject.transform.Find("Background");
+                            if (tmpTransform)
+                            {
+                                tmpImage = tmpTransform.GetComponent<Image>();
+                                if (tmpImage)
+                                {
+                                    tmpFloat = SafelyParseFloat(tmp[1]);
+                                    tmpColor = new Color(tmpImage.color.r, tmpImage.color.g, tmpImage.color.b, tmpFloat);
+                                    tmpImage.color = tmpColor;
+                                }
+                            }
+                            break;
+                    }
+                }
+            }
         }
 
         private void CloneInputField() // This is the current workaround to be able to clear the text field after pasting
@@ -614,31 +740,38 @@ namespace UdonSharp.Video.Subtitles
             string text = settingsImportExportField.text.Trim();
 
             if (text.Length > 0)
-                ImportSettingsFromStringInternal(settingsImportExportField.text.Trim(), true);
+                ImportSettingsFromString(text);
         }
 
         public void OnSettingsResetButton()
         {
-            ImportSettingsFromStringInternal("", true);
+            ImportSettingsFromStringInternal("", IMPORT_RESET);
         }
 
         public void ImportSettingsFromString(string settings)
         {
-            ImportSettingsFromStringInternal(settings, true);
+            ImportSettingsFromStringInternal(settings, IMPORT_RESET);
         }
 
-        private void ImportSettingsFromStringInternal(string settings, bool updateOverlay)
+        private void ImportSettingsFromStringInternal(string settings, int mode)
         {
-            if (updateOverlay)
+            bool updateOverlay = false;
+
+            if (mode > IMPORT_NONE)
             {
-                if (overlayHandler)
+                updateOverlay = true;
+
+                if (mode == IMPORT_RESET)
                 {
-                    overlayHandler.ResetSettings();
-                    UpdateSettingsExportString();
-                    settings = _currentSettingsExport + "/" + settings;
+                    if (overlayHandler)
+                    {
+                        overlayHandler.ResetSettings();
+                        UpdateSettingsExportString();
+                        settings = _currentSettingsExport + "/" + settings;
+                    }
+                    else
+                        updateOverlay = false;
                 }
-                else
-                    updateOverlay = false;
             }
 
             string[] array = settings.Split('/');
@@ -806,7 +939,7 @@ namespace UdonSharp.Video.Subtitles
             {
                 _synchronizeSettings = false; // Prevent loops
                 UpdateSettingsExportString();
-                ImportSettingsFromStringInternal(_currentSettingsExport, false);
+                ImportSettingsFromStringInternal(_currentSettingsExport, IMPORT_NONE);
                 _synchronizeSettings = true;
             }
         }
@@ -1039,24 +1172,24 @@ namespace UdonSharp.Video.Subtitles
             alignmentValue.text = value == 0 ? ALIGNMENT_BOTTOM : ALIGNMENT_TOP;
         }
 
-        public void SetPresetWhite()
+        public void SetPreset1()
         {
-            ImportSettingsFromString("fc:1;1;1/os:0,3/oc:0;0;0/bc:0;0;0/bo:0");
+            ImportSettingsFromStringInternal(preset1Settings, IMPORT_UPDATE);
         }
 
-        public void SetPresetWhiteWithBG()
+        public void SetPreset2()
         {
-            ImportSettingsFromString("fc:1;1;1/os:0,2/oc:0;0;0/bc:0;0;0/bo:0,6");
+            ImportSettingsFromStringInternal(preset2Settings, IMPORT_UPDATE);
         }
 
-        public void SetPresetYellow()
+        public void SetPreset3()
         {
-            ImportSettingsFromString("fc:0,9;0,9;0/os:0,3/oc:0;0;0/bc:0;0;0/bo:0");
+            ImportSettingsFromStringInternal(preset3Settings, IMPORT_UPDATE);
         }
 
-        public void SetPresetYellowWithBG()
+        public void SetPreset4()
         {
-            ImportSettingsFromString("fc:0,9;0,9;0/os:0,2/oc:0;0;0/bc:0;0;0/bo:0,6");
+            ImportSettingsFromStringInternal(preset4Settings, IMPORT_UPDATE);
         }
     }
 }
