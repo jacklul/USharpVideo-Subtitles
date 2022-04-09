@@ -223,6 +223,7 @@ namespace UdonSharp.Video.Subtitles
             if (lockButton) lockButton.SetActive(!manager.IsUsingUSharpVideo());
 
             UpdateOwner();
+            SynchronizeLockState();
             SendCustomEventDelayedFrames(nameof(UpdateSettingsValues), 1);
         }
 
@@ -382,11 +383,6 @@ namespace UdonSharp.Video.Subtitles
             _currentInputFieldObject = null;
         }
 
-        public override void OnPlayerLeft(VRCPlayerApi player)
-        {
-            UpdateOwner();
-        }
-
         public void SetStatusText(string text)
         {
             if (_stickyStatus != "")
@@ -402,15 +398,21 @@ namespace UdonSharp.Video.Subtitles
 
         public void SetTemporaryStatusText(string text, float seconds)
         {
+            if (_expectedStatus == text)
+                return;
+
             SaveStatusText();
             SetStatusText(text);
-
             _expectedStatus = text;
+
             SendCustomEventDelayedSeconds(nameof(RestoreStatusText), seconds);
         }
 
         public void SetStickyStatusText(string text, float seconds)
         {
+            if (_stickyStatus == text)
+                return;
+
             SetStatusText(text);
             _stickyStatus = text;
 
@@ -427,6 +429,9 @@ namespace UdonSharp.Video.Subtitles
 
         public void SaveStatusText()
         {
+            if (_stickyStatus != "")
+                AfterStickyStatusText();
+
             if (_previousStatus == "")
                 _previousStatus = GetStatusText();
         }
@@ -469,8 +474,6 @@ namespace UdonSharp.Video.Subtitles
                         ownerField.text = "";
                 }
             }
-
-            SynchronizeLockState();
         }
 
         public void SynchronizeLockState()
@@ -495,7 +498,7 @@ namespace UdonSharp.Video.Subtitles
                 if (masterLockedIcon) masterLockedIcon.SetActive(true);
                 if (masterUnlockedIcon) masterUnlockedIcon.SetActive(false);
 
-                if (manager.CanControlVideoPlayer())
+                if (manager.CanControlSubtitles())
                 {
                     if (lockGraphic) lockGraphic.color = whiteGraphicColor;
                     if (inputClearButtonIcon) inputClearButtonIcon.color = whiteGraphicColor;
@@ -509,7 +512,7 @@ namespace UdonSharp.Video.Subtitles
                     if (inputClearButtonIcon) inputClearButtonIcon.color = redGraphicColor;
 
                     //if (inputField) inputField.readOnly = true;
-                    VRCPlayerApi owner = manager.GetVideoPlayerOwner();
+                    VRCPlayerApi owner = manager.GetOwner();
                     if (inputPlaceholderText) inputPlaceholderText.text = string.Format(@MESSAGE_ONLY_OWNER_CAN_ADD, owner != null ? owner.displayName : "");
                 }
             }
@@ -537,7 +540,7 @@ namespace UdonSharp.Video.Subtitles
                 manager.ProcessInput(text);
                 inputField.text = "";
 
-                if (inputFieldObject) // Workaround...
+                if (inputFieldObject) // This leads us to workaround in CloneInputField(), to be removed once Udon supports TMP fields
                 {
                     Destroy(_currentInputFieldObject);
                     CloneInputField();
@@ -703,7 +706,7 @@ namespace UdonSharp.Video.Subtitles
 
                 settingsMenu.transform.localScale = new Vector3(scale, scale, scale);
 
-                // Corrects the position to the center of the screen (because pivot is not on the center)
+                // Corrects the position to the center of the screen (because pivot is not in the center)
                 if (rectTransform) rectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x, rectTransform.anchoredPosition.y - (rectTransform.rect.height * scale / 2));
 
                 // This would let us set opacity on the popup canvas but of course it's not exposed to Udon yet!
