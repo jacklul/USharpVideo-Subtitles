@@ -1930,7 +1930,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1094421957010841707}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 3}
+  m_LocalPosition: {x: 0, y: 0.1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -2051,17 +2051,17 @@ PrefabInstance:
     - target: {fileID: 3973345647856182095, guid: a7b438beb9333a54092bcbda3dbb9b54,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -0.25
       objectReference: {fileID: 0}
     - target: {fileID: 3973345647856182095, guid: a7b438beb9333a54092bcbda3dbb9b54,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3973345647856182095, guid: a7b438beb9333a54092bcbda3dbb9b54,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 9.98
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 3973345647856182095, guid: a7b438beb9333a54092bcbda3dbb9b54,
         type: 3}
@@ -2138,9 +2138,9 @@ MonoBehaviour:
   useAssignedLayers: 0
   DynamicPrefabs: []
   DynamicMaterials:
-  - {fileID: 2100000, guid: cba30de4550b90f4f8ef7bc7d94faf95, type: 2}
   - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   - {fileID: 2100000, guid: f9f0ca4e1c93d7c449df855cc90deab0, type: 2}
+  - {fileID: 2100000, guid: cba30de4550b90f4f8ef7bc7d94faf95, type: 2}
   LightMapsNear: []
   LightMapsFar: []
   LightMode: 0
