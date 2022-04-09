@@ -31,6 +31,9 @@ namespace UdonSharp.Video.Subtitles
         [SerializeField, Tooltip("Optional, will move the overlay to this object on initialization and reset the scale to make it match the screen size\nThis might not work and you will have to move the overlay manually")]
         private GameObject videoScreen;
 
+        [SerializeField, Tooltip("This text is displayed when there is no subtitle currently displayed and user has opened the settings menu")]
+        private string placeholder = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
+
         [Header("Defaults")]
 
         [SerializeField, Range(30, 100)]
@@ -47,8 +50,6 @@ namespace UdonSharp.Video.Subtitles
         private int margin = 30;
         [SerializeField, Range(0, 1), Tooltip("0 = bottom\n1 = top")]
         private int alignment = 0; // To be replaced with "private VerticalAlignmentOptions alignment = VerticalAlignmentOptions.Bottom;" which is not exposed to Udon yet
-        [SerializeField, Tooltip("This text is displayed when there is no subtitle currently displayed and user has opened the settings menu")]
-        private string placeholder = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
 
         private string _lastText = "";
         private bool _showPlaceholder = false;

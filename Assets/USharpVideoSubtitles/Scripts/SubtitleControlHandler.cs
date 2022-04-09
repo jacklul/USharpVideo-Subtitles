@@ -15,7 +15,7 @@ namespace UdonSharp.Video.Subtitles
     [UdonBehaviourSyncMode(BehaviourSyncMode.NoVariableSync)]
     public class SubtitleControlHandler : UdonSharpBehaviour
     {
-        private const string MESSAGE_PASTE = "Paste subtitles...";
+        private const string MESSAGE_PASTE = "Paste SRT subtitles...";
         private const string MESSAGE_ONLY_OWNER_CAN_ADD = "Only master {0} can add subtitles";
         private const string INDICATOR_LOCAL = "(local)";
         private const string INDICATOR_ANYONE = "(anyone)";
@@ -31,7 +31,7 @@ namespace UdonSharp.Video.Subtitles
         [Header("Settings")]
         [SerializeField, Tooltip("Adds a button that popups the settings menu directly on the screen for easier customizing")]
         private bool settingsPopupEnabled = true;
-        [Tooltip("By default (0) it will move the settings menu object into overlay object and set the scale to 0.9\nPositive numbers change the scale while keeping the same behaviour\nNegative numbers do not move the object and set an absolute scale")]
+        [Tooltip("Default value (0) will move the settings menu object into overlay object and set the scale to 0.9\nPositive numbers change the scale while keeping the same behaviour\nNegative numbers do not move the object and set an absolute scale")]
         public float settingsPopupScale = 0f;
         //public float settingsPopupAlpha = 0.9f;
 
@@ -956,8 +956,8 @@ namespace UdonSharp.Video.Subtitles
                  + "/fc:" + RoundFloat(fontColor.r, 3) + ";" + RoundFloat(fontColor.g, 3) + ";" + RoundFloat(fontColor.b, 3)
                  + "/os:" + RoundFloat(overlayHandler.GetOutlineSize(), 2)
                  + "/oc:" + RoundFloat(outlineColor.r, 3) + ";" + RoundFloat(outlineColor.g, 3) + ";" + RoundFloat(outlineColor.b, 3)
+                 + "/bo:" + RoundFloat(backgroundColor.a, 2)
                  + "/bc:" + RoundFloat(backgroundColor.r, 3) + ";" + RoundFloat(backgroundColor.g, 3) + ";" + RoundFloat(backgroundColor.b, 3)
-                 + "/bo:" + RoundFloat(overlayHandler.GetBackgroundColor().a, 2)
                  + "/pm:" + overlayHandler.GetMargin()
                  + "/pa:" + overlayHandler.GetAlignment()
                 ;
