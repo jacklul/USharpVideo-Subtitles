@@ -25,11 +25,6 @@ namespace UdonSharp.Video.Subtitles
         private const string MESSAGE_CLEARED = "Subtitles cleared";
         private const string MESSAGE_PARSING = "Parsing... (length={0})";
         private const string MESSAGE_FAILED = "Failed to parse subtitles";
-        private const string MESSAGE_EMPTY = "Input data is empty";
-        private const string MESSAGE_WAIT_SYNC = "Wait for synchronization to finish";
-        private const string MESSAGE_ONLY_OWNER_CAN = "Only {0} can {1}";
-        private const string MESSAGE_ONLY_ACTION_SYNC = "synchronize subtitles";
-        private const string MESSAGE_ONLY_ACTION_ADD = "add subtitles";
         private const string MESSAGE_SYNCHRONIZING = "Synchronizing {0} / {1} {2}";
 
         [SerializeField]
@@ -46,16 +41,16 @@ namespace UdonSharp.Video.Subtitles
         [Range(10, 255), Tooltip("How many frames to wait before the next subtitle update - higher values decrease time accuracy of the subtitles but could increase game performance\nThe default is fine")]
         public int updateRate = 10;
 
-        [Tooltip("Should we automatically clear loaded subtitles when a new video starts?\nThis setting only works with USharpVideoPlayer")]
+        [Tooltip("Should we automatically clear loaded subtitles when a new video starts?\nThis setting only works when using USharpVideo")]
         public bool clearOnNewVideo = false;
 
-        [SerializeField, Tooltip("If locked then only the master can manage subtitles\nThis setting does nothing when using USharpVideo as lock state is shared with it")]
-        private bool defaultLocked = true;
+        [SerializeField, Tooltip("When false then only the master can manage the subtitles\nThis setting does nothing when using USharpVideo as the lock state is shared with it")]
+        private bool defaultUnlocked = true;
 
         [UdonSynced]
-        private string syncedChunk;
+        private string _syncedChunk;
         [UdonSynced]
-        private int syncId;
+        private int _syncId;
 
         private string _data = "";
         private string _dataLocal = "";
@@ -79,15 +74,17 @@ namespace UdonSharp.Video.Subtitles
         [UdonSynced]
         private bool _isLocked = true; // Does nothing when USharpVideo is used
         private bool _lastLocked;
-
+        
         private VideoPlayerManager _videoManager;
-        private SubtitleControlHandler[] _registeredControlHandlers;
         private SubtitleOverlayHandler _overlayHandler;
+        private SubtitleControlHandler[] _registeredControlHandlers;
 
         private int _lastUpdateFrame = 0;
         private int _currentDataIndex = 0;
         private float _lastVideoTime = 0;
         private VRCUrl _lastVideoURL = VRCUrl.Empty;
+        private VRCPlayerApi _currentOwner;
+        private VRCPlayerApi _previousOwner;
 
         private void OnEnable()
         {
@@ -97,7 +94,7 @@ namespace UdonSharp.Video.Subtitles
         private void Start()
         {
             if (!targetVideoPlayer && !baseVideoPlayer)
-                LogError("No video player reference assigned!");
+                LogWarning("No video player reference assigned!");
 
             if (targetVideoPlayer && baseVideoPlayer)
                 LogWarning("You cannot reference USharpVideo and Unity or AVPro Video Player at the same time - USharpVideo takes precedence!");
@@ -108,12 +105,27 @@ namespace UdonSharp.Video.Subtitles
             if (targetVideoPlayer)
             {
                 _videoManager = targetVideoPlayer.GetVideoManager();
+                
+                if (Networking.IsOwner(gameObject))
+                    SendCustomEventDelayedFrames(nameof(OnUSharpVideoLockChange), 1); // The event will be initially triggered only for non-master players, this fixes the issue with wrong lock state on master player
             }
             else
             {
-                _isLocked = defaultLocked;
+                if (Networking.IsOwner(gameObject))
+                {
+                    _isLocked = !defaultUnlocked;
+                    
+                    SendCustomEventDelayedFrames(nameof(_QueueSerialize), 1); // Send lock state to everyone as initial state
+
+                    foreach (SubtitleControlHandler handler in _registeredControlHandlers)
+                        handler.SynchronizeLockState();
+                }
+
                 _lastLocked = _isLocked;
             }
+            
+            _previousOwner = Networking.GetOwner(gameObject);
+            _currentOwner = _previousOwner;
 
             ResetSubtitleTrackingState();
         }
@@ -194,7 +206,8 @@ namespace UdonSharp.Video.Subtitles
 
         public void Update()
         {
-            if (!_isEnabled || _dataTotal == 0) return;
+            if (!_isEnabled || _dataTotal == 0)
+                return;
 
             if (_lastUpdateFrame < updateRate)
             {
@@ -207,11 +220,13 @@ namespace UdonSharp.Video.Subtitles
             {
                 float time = GetVideoTime();
 
-                if (time == _lastVideoTime) return;
+                if (time == _lastVideoTime)
+                    return;
+                
                 if (time < _lastVideoTime)
                     ResetSubtitleTrackingState();
+                
                 _lastVideoTime = time;
-
                 string text = "";
 
                 for (int i = _currentDataIndex; i < _dataText.Length; i++)
@@ -255,18 +270,13 @@ namespace UdonSharp.Video.Subtitles
             return 0.0f;
         }
 
-        public override void OnPlayerJoined(VRCPlayerApi player)
-        {
-            if (Networking.IsOwner(gameObject) && _data != "")
-                TransmitSubtitles();
-        }
-
         private void TransmitSubtitles()
         {
             if (!Networking.IsOwner(gameObject))
                 return;
 
-            if (VRCPlayerApi.GetPlayerCount() == 1) return; // No point to even attempt to synchronize when alone in the instance
+            if (VRCPlayerApi.GetPlayerCount() == 1) // No point to even attempt to synchronize when alone in the instance
+                return;
 
             LogMessage($"Transmitting subtitles... (length = {_data.Length})");
 
@@ -286,30 +296,32 @@ namespace UdonSharp.Video.Subtitles
         {
             if (_chunkSync < _chunkCount) // Makes sure this doesn't run while syncing just the lock state
             {
-                LogMessage($"About to send chunk {_chunkSync + 1} / {_chunkCount} ({syncId})");
+                LogMessage($"About to send chunk {_chunkSync + 1} / {_chunkCount} ({_syncId})");
 
-                syncedChunk = _data.Substring(
-                    Mathf.Min(_chunkSync * chunkSize, _data.Length),
-                    Mathf.Min(chunkSize, _data.Length - _chunkSync * chunkSize)
-                );
+                int start = Mathf.Min(_chunkSync * chunkSize, _data.Length);
+                int length = Mathf.Min(chunkSize, _data.Length - _chunkSync * chunkSize);
+
+                if (length < 0) // This can happen when master presses the lock button at the same time as someone else is starting to send the subtitles, this will also bug out UI for both players (toggling local mode cleans up the UI)
+                    length = chunkSize;
+
+                _syncedChunk = _data.Substring(start, length);
             }
         }
 
         public override void OnPostSerialization(SerializationResult result)
         {
-            if (_chunkSync < _chunkCount) // Makes sure this doesn't run while syncing just the lock state
+            if (_chunkSync < _chunkCount)
             {
                 foreach (SubtitleControlHandler handler in _registeredControlHandlers)
                     handler.SetStatusText(string.Format(@MESSAGE_SYNCHRONIZING, _chunkSync + 1, _chunkCount, ARROW_UP));
 
-                LogMessage($"Sent chunk {_chunkSync + 1} / {_chunkCount} ({syncId})");
+                LogMessage($"Sent chunk {_chunkSync + 1} / {_chunkCount} ({_syncId})");
 
                 _chunkSync++;
 
                 if (_chunkSync < _chunkCount)
                 {
                     LogMessage("Will send another chunk...");
-                    SendCustomEventDelayedFrames(nameof(_SendNextChunk), 1);
                 }
                 else
                 {
@@ -318,10 +330,12 @@ namespace UdonSharp.Video.Subtitles
                     foreach (SubtitleControlHandler handler in _registeredControlHandlers)
                         handler.RestoreStatusText();
                 }
+                
+                SendCustomEventDelayedFrames(nameof(_QueueSerialize), 1);
             }
         }
 
-        public void _SendNextChunk()
+        public void _QueueSerialize()
         {
             if (Networking.IsOwner(gameObject))
                 RequestSerialization();
@@ -340,12 +354,12 @@ namespace UdonSharp.Video.Subtitles
                     handler.SynchronizeLockState();
             }
 
-            if (_chunkSync + 1 > _chunkCount) // This will happen when syncing the lock state
+            if (IsSynchronized()) // This will only happen when syncing just the lock state or after the last chunk was received
                 return;
 
-            if (_lastSyncId == syncId)
+            if (IsSameSyncId())
             {
-                LogMessage($"Not loading chunk {_chunkSync + 1} / {_chunkCount} because it has the same identifier ({syncId}) as the previously loaded one ({_lastSyncId})");
+                LogMessage($"Not loading chunk {_chunkSync + 1} / {_chunkCount} because it has the same identifier ({_syncId}) as the previously loaded one ({_lastSyncId})");
                 return;
             }
 
@@ -355,25 +369,24 @@ namespace UdonSharp.Video.Subtitles
                     handler.SetStatusText(string.Format(@MESSAGE_SYNCHRONIZING, _chunkSync + 1, _chunkCount, ARROW_DOWN));
             }
 
-            LogMessage($"Received chunk {_chunkSync + 1} / {_chunkCount} ({syncId})");
+            LogMessage($"Received chunk {_chunkSync + 1} / {_chunkCount} ({_syncId})");
 
             if (_chunkSync == 0)
             {
                 _localChunkSync = 0;
-                _data = syncedChunk;
+                _data = _syncedChunk;
             }
             else if (_localChunkSync == _chunkSync - 1)
             {
                 _localChunkSync++;
-                _data += syncedChunk;
+                _data += _syncedChunk;
             }
             else
                 LogWarning($"Rejected chunk {_chunkSync + 1} because local chunk is {_localChunkSync}");
 
             if (_localChunkSync == _chunkCount - 1)
             {
-                _chunkSync++; // Increment this because we don't call RequestSerialization() anymore at this point and it won't be updated on the receiving ends, required for IsSynchronized()
-                _lastSyncId = syncId;
+                _lastSyncId = _syncId;
 
                 LogMessage($"Received all chunks");
 
@@ -393,49 +406,14 @@ namespace UdonSharp.Video.Subtitles
             }
         }
 
-        public override void OnPlayerLeft(VRCPlayerApi player)
+        public bool IsSynchronized()
         {
-            if (!IsSynchronized())
-            {
-                if (Networking.IsOwner(gameObject))
-                {
-                    _data = "";
-                    _chunkCount = 0;
-                    _chunkSync = 0;
-                }
-
-                if (!_isLocal)
-                {
-                    foreach (SubtitleControlHandler handler in _registeredControlHandlers)
-                        handler.SetStatusText(MESSAGE_NOT_LOADED);
-                }
-            }
+            return _chunkSync == _chunkCount && IsSameSyncId();
         }
-
-        // Similary to how it is in USharpVideo - uncomment this to prevent people from taking ownership when they shouldn't be able to
-        //public override bool OnOwnershipRequest(VRCPlayerApi requestingPlayer, VRCPlayerApi requestedOwner)
-        //{
-        //    if (targetVideoPlayer)
-        //        return !targetVideoPlayer.IsLocked() || targetVideoPlayer.IsPrivilegedUser(requestedOwner);
-        //
-        //    return !_isLocked || requestedOwner.isMaster;
-        //}
-
-        public override void OnOwnershipTransferred(VRCPlayerApi player)
+        
+        public bool IsSameSyncId()
         {
-            if (!_isLocal)
-            {
-                foreach (SubtitleControlHandler handler in _registeredControlHandlers)
-                {
-                    handler.UpdateOwner();
-                    handler.SynchronizeLockState();
-                }
-            }
-        }
-
-        private bool IsSynchronized()
-        {
-            return _chunkSync == _chunkCount;
+            return _lastSyncId == _syncId;
         }
 
         private void ClearSubtitlesLocal()
@@ -483,12 +461,7 @@ namespace UdonSharp.Video.Subtitles
                 }
             }
             else
-            {
-                foreach (SubtitleControlHandler handler in _registeredControlHandlers)
-                    handler.SetStatusText(MESSAGE_EMPTY);
-
                 LogError("Requested to load empty data - this shouldn't happen");
-            }
         }
 
         private void ResetSubtitleTrackingState()
@@ -496,10 +469,11 @@ namespace UdonSharp.Video.Subtitles
             _currentDataIndex = 0;
             _lastVideoTime = 0;
 
-            if (_overlayHandler != null)
+            if (_overlayHandler)
+            {
                 _overlayHandler.ClearSubtitle();
-
-            _overlayHandler.SetPlaceholder(false);
+                _overlayHandler.SetPlaceholder(false);
+            }
         }
 
         private bool ParseSubtitles(string text)
@@ -594,7 +568,8 @@ namespace UdonSharp.Video.Subtitles
         {
             string[] allParts = timestamp.Split(':');
 
-            if (allParts.Length != 3) return 0;
+            if (allParts.Length != 3)
+                return 0;
 
             string[] secondsPart = allParts[2].Replace('.', ',').Split(','); // Sometimes instead of comma we have a dot, this change also makes VTT files parsable
             float milliseconds = secondsPart.Length == 0 ? 0f : (int.Parse(secondsPart[1]) * 0.001f);
@@ -612,20 +587,10 @@ namespace UdonSharp.Video.Subtitles
 
         public void ProcessInput(string input)
         {
+            if (!_isLocal && !CanControlSubtitles())
+                return;
+
             LogMessage("Loaded input of length " + input.Length);
-
-            if (!_isLocal)
-            {
-                if (!CanControlSubtitles())
-                {
-                    string statusText = string.Format(@MESSAGE_ONLY_OWNER_CAN, Networking.GetOwner(gameObject).displayName, MESSAGE_ONLY_ACTION_ADD);
-
-                    foreach (SubtitleControlHandler handler in _registeredControlHandlers)
-                        handler.SetTemporaryStatusText(statusText, 3.0f);
-
-                    return;
-                }
-            }
 
             LoadSubtitles(input, true);
 
@@ -645,17 +610,19 @@ namespace UdonSharp.Video.Subtitles
             TakeOwnership();
 
             _data = text;
-            syncId = Networking.GetServerTimeInMilliseconds();
-            _lastSyncId = syncId;
+            _syncId = Networking.GetServerTimeInMilliseconds();
+            _lastSyncId = _syncId;
 
             TransmitSubtitles();
         }
 
         private void TakeOwnership()
         {
-            if (Networking.IsOwner(gameObject)) return;
+            if (Networking.IsOwner(gameObject))
+                return;
 
-            Networking.SetOwner(Networking.LocalPlayer, gameObject);
+            if (CanControlSubtitles())
+                Networking.SetOwner(Networking.LocalPlayer, gameObject);
         }
 
         private void LogMessage(string message)
@@ -673,9 +640,68 @@ namespace UdonSharp.Video.Subtitles
             Debug.LogError(LOG_PREFIX + " " + message, this);
         }
 
+        public override void OnPlayerJoined(VRCPlayerApi player)
+        {
+            if (Networking.IsOwner(gameObject) && _data != "")
+                TransmitSubtitles();
+        }
+        
+        public override void OnPlayerLeft(VRCPlayerApi player)
+        {
+            if (Networking.IsOwner(gameObject) && player == _previousOwner && !IsSynchronized() && IsSameSyncId()) // Player who left was running the synchronization, resume it as we have all the data
+            {
+                if (!_isLocal)
+                {
+                    foreach (SubtitleControlHandler handler in _registeredControlHandlers) // This will prevent the status being stuck at "synchronizing last chunk"
+                    {
+                        if (_data != "")
+                            handler.SetStatusText(MESSAGE_LOADED);
+                        else
+                            handler.SetStatusText(MESSAGE_NOT_LOADED);
+                            
+                        handler.SaveStatusText();
+                    }
+                }
+                    
+                RequestSerialization();
+            }
+        }
+
+        // Similary to how it is in USharpVideo - uncomment this to prevent people from taking ownership when they shouldn't be able to
+        //public override bool OnOwnershipRequest(VRCPlayerApi requestingPlayer, VRCPlayerApi requestedOwner)
+        //{
+        //    if (targetVideoPlayer)
+        //        return !targetVideoPlayer.IsLocked() || targetVideoPlayer.IsPrivilegedUser(requestedOwner);
+        //    
+        //    return !_isLocked || IsPrivilegedUser(requestedOwner);
+        //}
+
+        public override void OnOwnershipTransferred(VRCPlayerApi player)
+        {
+            _previousOwner = _currentOwner;
+            _currentOwner = Networking.GetOwner(gameObject);
+
+            if (!_isLocal)
+            {
+                foreach (SubtitleControlHandler handler in _registeredControlHandlers)
+                {
+                    handler.UpdateOwner();
+                    handler.SynchronizeLockState();
+                }
+            }
+        }
+
         public bool IsUsingUSharpVideo()
         {
             return targetVideoPlayer != null;
+        }
+
+        public VRCPlayerApi GetUSharpVideoOwner()
+        {
+            if (targetVideoPlayer)
+                return Networking.GetOwner(targetVideoPlayer.gameObject);
+
+            return null; // Should never happen
         }
 
         public bool IsLocked()
@@ -688,28 +714,24 @@ namespace UdonSharp.Video.Subtitles
 
         public void SetLocked(bool state)
         {
-            if (!Networking.IsMaster) return;
+            if (!IsPrivilegedUser(Networking.LocalPlayer))
+                return;
 
             if (targetVideoPlayer)
             {
-                LogError("Method SetLocked cannot be used when using USharpVideo");
+                LogError("Method SetLocked cannot be used while using USharpVideo");
                 return;
             }
 
             if (!IsSynchronized() && !Networking.IsOwner(gameObject)) // Prevent locking when someone else is redistributing the subtitles as this would break the sync for everyone
-            {
-                foreach (SubtitleControlHandler handler in _registeredControlHandlers)
-                    handler.SetStickyStatusText(MESSAGE_WAIT_SYNC, 3.0f);
-
                 return;
-            }
 
             TakeOwnership();
 
             _isLocked = state;
             _lastLocked = _isLocked;
 
-            if (_chunkSync + 1 >= _chunkCount) // As long we are not on the last chunk then the synchronization is still going and we do not have to call RequestSerialization()
+            if (IsSynchronized()) // We don't have to call this when the synchronization is still going
                 RequestSerialization();
 
             foreach (SubtitleControlHandler handler in _registeredControlHandlers)
@@ -721,15 +743,15 @@ namespace UdonSharp.Video.Subtitles
             if (targetVideoPlayer)
                 return targetVideoPlayer.CanControlVideoPlayer();
 
-            return !_isLocked || Networking.IsMaster;
+            return !_isLocked || IsPrivilegedUser(Networking.LocalPlayer);
         }
-
-        public VRCPlayerApi GetOwner()
+        
+        public bool IsPrivilegedUser(VRCPlayerApi player)
         {
             if (targetVideoPlayer)
-                return Networking.GetOwner(targetVideoPlayer.gameObject);
+                return targetVideoPlayer.IsPrivilegedUser(player);
 
-            return Networking.GetOwner(gameObject);
+            return player.isMaster;
         }
 
         public bool IsEnabled()
@@ -799,8 +821,6 @@ namespace UdonSharp.Video.Subtitles
 
         public void ClearSubtitles()
         {
-            if (_dataTotal == 0) return;
-
             if (!_isLocal)
             {
                 if (!CanControlSubtitles())
@@ -809,7 +829,7 @@ namespace UdonSharp.Video.Subtitles
                 if (!IsSynchronized())
                 {
                     foreach (SubtitleControlHandler handler in _registeredControlHandlers)
-                        handler.RestoreStatusText(); // Prevent "subtitles loaded" status to be set after clearing
+                        handler.RestoreStatusText(); // Prevent "subtitles loaded" status to be set after clearing when synchronization is still running
                 }
 
                 ClearSubtitlesLocal(); // Must be called first otherwise RestoreStatusText() in OnPostSerialization will send previous status instead of cleared message
@@ -827,41 +847,21 @@ namespace UdonSharp.Video.Subtitles
             if (!_isLocal)
             {
                 if (_data == "")
-                {
-                    foreach (SubtitleControlHandler handler in _registeredControlHandlers)
-                        handler.SetStatusText(MESSAGE_NOT_LOADED);
-
                     return;
-                }
 
-                if (Networking.IsOwner(gameObject)) // Owner is guranteed to have the subtitles
+                if (CanSynchronizeSubtitles() && IsSynchronized()) // Owner is guranteed to have the subtitles and master should always be able to resync
                 {
-                    if (!IsSynchronized())
-                    {
-                        foreach (SubtitleControlHandler handler in _registeredControlHandlers)
-                            handler.SetStickyStatusText(MESSAGE_WAIT_SYNC, 3.0f);
-
-                        return;
-                    }
-
+                    TakeOwnership();
                     TransmitSubtitles();
-                }
-                else
-                {
-                    int _dataTotalBefore = _dataTotal;
-                    ParseSubtitles(_data); // Just in case something went wrong and subtitles didn't load in SetLocal()
-
-                    if (_dataTotalBefore == _dataTotal)
-                    {
-                        string statusText = string.Format(@MESSAGE_ONLY_OWNER_CAN, Networking.GetOwner(gameObject).displayName, MESSAGE_ONLY_ACTION_SYNC);
-
-                        foreach (SubtitleControlHandler handler in _registeredControlHandlers)
-                            handler.SetTemporaryStatusText(statusText, 3.0f);
-                    }
                 }
             }
 
             ResetSubtitleTrackingState();
+        }
+
+        public bool CanSynchronizeSubtitles()
+        {
+            return Networking.IsOwner(gameObject) || IsPrivilegedUser(Networking.LocalPlayer);
         }
 
         public void SynchronizeSettings(SubtitleControlHandler callingHandler)
@@ -899,12 +899,39 @@ namespace UdonSharp.Video.Subtitles
         {
             foreach (SubtitleControlHandler handler in _registeredControlHandlers)
                 handler.SynchronizeLockState();
+
+            // Uncomment this if you want to force the owner of this object to be whoever owns the video player when this callback triggers (this will usually be the master or instance creator)
+            //_MigrateToUSharpVideoOwner();
         }
 
+        public void _MigrateToUSharpVideoOwner()
+        {
+            VRCPlayerApi videoPlayerOwner = Networking.GetOwner(targetVideoPlayer.gameObject);
+            
+            if (targetVideoPlayer.IsLocked() && Networking.LocalPlayer == videoPlayerOwner && Networking.GetOwner(gameObject) != videoPlayerOwner)
+            {
+                if (IsSynchronized())
+                {
+                    LogMessage("Taking ownership because USharpVideo is now locked...");
+                    
+                    TakeOwnership();
+                }
+                else
+                {
+                    LogMessage("Waiting 1 second before taking ownership because the synchronization is still running...");
+
+                    SendCustomEventDelayedSeconds(nameof(_MigrateToUSharpVideoOwner), 1f);
+                }
+            }
+        }
+        
         public void OnUSharpVideoOwnershipChange()
         {
-            foreach (SubtitleControlHandler handler in _registeredControlHandlers)
-                handler.SynchronizeLockState();
+            if (targetVideoPlayer.IsLocked()) // Only to update the master in the input field's placeholder
+            {
+                foreach (SubtitleControlHandler handler in _registeredControlHandlers)
+                    handler.SynchronizeLockState();
+            }
         }
     }
 }

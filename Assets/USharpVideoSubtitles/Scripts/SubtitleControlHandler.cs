@@ -16,7 +16,9 @@ namespace UdonSharp.Video.Subtitles
     public class SubtitleControlHandler : UdonSharpBehaviour
     {
         private const string MESSAGE_PASTE = "Paste SRT subtitles...";
-        private const string MESSAGE_ONLY_OWNER_CAN_ADD = "Only master {0} can add subtitles";
+        private const string MESSAGE_WAIT_SYNC = "Wait for synchronization to finish";
+        private const string MESSAGE_ONLY_MASTER_CAN_ADD = "Only master {0} can add subtitles";
+        private const string MESSAGE_ONLY_OWNER_CAN_SYNC = "Only {0} can synchronize subtitles";
         private const string INDICATOR_LOCAL = "(local)";
         private const string INDICATOR_ANYONE = "(anyone)";
         private const string ALIGNMENT_BOTTOM = "Bottom";
@@ -133,6 +135,12 @@ namespace UdonSharp.Video.Subtitles
         [SerializeField]
         private GameObject masterLockedIcon, masterUnlockedIcon;
 
+        [Header("Reload button")]
+        [SerializeField]
+        private GameObject reloadButton;
+        [SerializeField]
+        private Graphic reloadGraphic;
+
         [Header("Settings fields")]
 
         [SerializeField]
@@ -178,9 +186,14 @@ namespace UdonSharp.Video.Subtitles
         private Text backgroundOpacityValue;
 
         [SerializeField]
-        private Slider marginSlider;
+        private Slider verticalMarginSlider;
         [SerializeField]
-        private Text marginValue;
+        private Text verticalMarginValue;
+        
+        //[SerializeField]
+        //private Slider horizontalMarginSlider;
+        //[SerializeField]
+        //private Text horizontalMarginValue;
 
         [SerializeField]
         private Toggle alignmentToggle;
@@ -205,10 +218,8 @@ namespace UdonSharp.Video.Subtitles
         private Vector3 _originalSettingsMenuScale;
         private GameObject _currentInputFieldObject;
 
-        private string _previousStatus = "";
-        private string _expectedStatus = "";
-        private string _stickyStatus = "";
-        private string _afterStickyStatus = "";
+        private string _savedStatus = "";
+        private string _lastStatus = "";
 
         private bool _synchronizeSettings = true;
         private string _currentSettingsExport = "";
@@ -278,7 +289,7 @@ namespace UdonSharp.Video.Subtitles
         {
             manager.UnregisterControlHandler(this);
         }
-
+        
         private void UpdatePresetPreview(GameObject previewGameObject, string settings)
         {
             string[] array = settings.Split('/');
@@ -304,7 +315,6 @@ namespace UdonSharp.Video.Subtitles
                                 tmpImage = tmpTransform.GetComponent<Image>();
                                 if (tmpImage)
                                 {
-                                    Debug.Log("Yes");
                                     tmpSplitValue = tmp[1].Split(';');
 
                                     if (tmpSplitValue.Length == 3)
@@ -385,10 +395,9 @@ namespace UdonSharp.Video.Subtitles
 
         public void SetStatusText(string text)
         {
-            if (_stickyStatus != "")
+            if (_lastStatus != "")
             {
-                _afterStickyStatus = text;
-
+                _lastStatus = text;
                 return;
             }
 
@@ -396,27 +405,10 @@ namespace UdonSharp.Video.Subtitles
                 statusTextField.text = text + (manager.IsLocal() ? " " + INDICATOR_LOCAL : "");
         }
 
-        public void SetTemporaryStatusText(string text, float seconds)
+        public void SaveStatusText()
         {
-            if (_expectedStatus == text)
-                return;
-
-            SaveStatusText();
-            SetStatusText(text);
-            _expectedStatus = text;
-
-            SendCustomEventDelayedSeconds(nameof(RestoreStatusText), seconds);
-        }
-
-        public void SetStickyStatusText(string text, float seconds)
-        {
-            if (_stickyStatus == text)
-                return;
-
-            SetStatusText(text);
-            _stickyStatus = text;
-
-            SendCustomEventDelayedSeconds(nameof(AfterStickyStatusText), seconds);
+            if (_savedStatus == "")
+                _savedStatus = GetStatusText();
         }
 
         public string GetStatusText()
@@ -427,32 +419,33 @@ namespace UdonSharp.Video.Subtitles
             return "";
         }
 
-        public void SaveStatusText()
-        {
-            if (_stickyStatus != "")
-                AfterStickyStatusText();
-
-            if (_previousStatus == "")
-                _previousStatus = GetStatusText();
-        }
-
         public void RestoreStatusText()
         {
-            if (_previousStatus != "" && (_expectedStatus == "" || _expectedStatus == GetStatusText()))
-                SetStatusText(_previousStatus);
+            if (_savedStatus != "")
+                SetStatusText(_savedStatus);
 
-            _expectedStatus = "";
-            _previousStatus = "";
+            _savedStatus = "";
         }
 
-        public void AfterStickyStatusText()
+        public void SetStickyStatusText(string text, float seconds)
         {
-            _stickyStatus = "";
+            if (_lastStatus != "")
+                return;
+            
+            string last = GetStatusText();
+            SetStatusText(text);
+            _lastStatus = last;
 
-            if (_afterStickyStatus != "")
+            SendCustomEventDelayedSeconds(nameof(_AfterStickyStatusText), seconds);
+        }
+        
+        public void _AfterStickyStatusText()
+        {
+            if (_lastStatus != "")
             {
-                SetStatusText(_afterStickyStatus);
-                _afterStickyStatus = "";
+                string text = _lastStatus;
+                _lastStatus = "";
+                SetStatusText(text);
             }
         }
 
@@ -461,21 +454,24 @@ namespace UdonSharp.Video.Subtitles
             if (ownerField)
             {
                 if (manager.IsLocal())
-                {
                     ownerField.text = Networking.LocalPlayer.displayName + " " + INDICATOR_LOCAL;
+                else
+                    ownerField.text = Networking.GetOwner(manager.gameObject).displayName;
+            }
+
+            /*if (reloadButton)
+            {
+                if (Networking.LocalPlayer == Networking.GetOwner(manager.gameObject) || manager.IsPrivilegedUser(Networking.LocalPlayer))
+                {
+                    if (reloadGraphic) reloadGraphic.color = whiteGraphicColor;
                 }
                 else
                 {
-                    VRCPlayerApi owner = Networking.GetOwner(manager.gameObject);
-
-                    if (Utilities.IsValid(owner))
-                        ownerField.text = Networking.GetOwner(manager.gameObject).displayName;
-                    else
-                        ownerField.text = "";
+                    if (reloadGraphic) reloadGraphic.color = redGraphicColor;
                 }
-            }
+            }*/
         }
-
+        
         public void SynchronizeLockState()
         {
             if (manager.IsLocal())
@@ -512,8 +508,10 @@ namespace UdonSharp.Video.Subtitles
                     if (inputClearButtonIcon) inputClearButtonIcon.color = redGraphicColor;
 
                     //if (inputField) inputField.readOnly = true;
-                    VRCPlayerApi owner = manager.GetOwner();
-                    if (inputPlaceholderText) inputPlaceholderText.text = string.Format(@MESSAGE_ONLY_OWNER_CAN_ADD, owner != null ? owner.displayName : "");
+                    if (inputPlaceholderText) inputPlaceholderText.text = string.Format(
+                        @MESSAGE_ONLY_MASTER_CAN_ADD,
+                        (manager.IsUsingUSharpVideo() ? manager.GetUSharpVideoOwner() : Networking.GetOwner(manager.gameObject)).displayName
+                    );
                 }
             }
             else
@@ -531,7 +529,8 @@ namespace UdonSharp.Video.Subtitles
 
         public void OnSubtitleInput()
         {
-            if (!inputField) return;
+            if (!inputField)
+                return;
 
             string text = inputField.text.Trim();
 
@@ -548,30 +547,39 @@ namespace UdonSharp.Video.Subtitles
             }
         }
 
+        public void OnClearButton()
+        {
+            manager.ClearSubtitles();
+        }
+
         public void OnSubtitlesToggleButton()
         {
-            if (!subtitlesToggle) return;
+            if (!subtitlesToggle)
+                return;
 
             manager.SetEnabled(subtitlesToggle.isOn);
         }
 
         public void OnLocalToggleButton()
         {
-            if (!localToggle) return;
+            if (!localToggle)
+                return;
 
             manager.SetLocal(localToggle.isOn);
         }
 
         public void OnInputMenuToggle()
         {
-            if (!inputMenu) return;
+            if (!inputMenu)
+                return;
 
             ToggleMenu("input");
         }
 
         public void OnSettingsMenuToggle()
         {
-            if (!settingsMenu) return;
+            if (!settingsMenu)
+                return;
 
             ToggleMenu("settings");
 
@@ -601,7 +609,8 @@ namespace UdonSharp.Video.Subtitles
 
         public void OnInfoMenuToggle()
         {
-            if (!infoMenu) return;
+            if (!infoMenu)
+                return;
 
             ToggleMenu("info");
         }
@@ -662,22 +671,52 @@ namespace UdonSharp.Video.Subtitles
 
         public void OnReloadButton()
         {
-            manager.SynchronizeSubtitles();
-        }
+            if (!manager.IsLocal())
+            {
+                if (manager.CanSynchronizeSubtitles())
+                {
+                    if (!manager.IsSynchronized())
+                    {
+                        SetStickyStatusText(MESSAGE_WAIT_SYNC, 3.0f);
+                        return;
+                    }
+                }
+                else
+                {
+                    SetStickyStatusText(string.Format(MESSAGE_ONLY_OWNER_CAN_SYNC, Networking.GetOwner(manager.gameObject).displayName), 3.0f);
+                    return;
+                }
+            }
 
-        public void OnClearButton()
-        {
-            manager.ClearSubtitles();
+            if (reloadButton)
+            {
+                Animator animator = reloadButton.GetComponent<Animator>();
+
+                if (animator)
+                    animator.SetTrigger("Rotate");
+            }
+            
+            manager.SynchronizeSubtitles();
         }
 
         public void OnLockButton()
         {
-            manager.SetLocked(!manager.IsLocked());
+            if (manager.IsPrivilegedUser(Networking.LocalPlayer))
+            {
+                if (!manager.IsSynchronized() && !Networking.IsOwner(manager.gameObject))
+                {
+                    SetStickyStatusText(MESSAGE_WAIT_SYNC, 3.0f);
+                    return;
+                }
+
+                manager.SetLocked(!manager.IsLocked());
+            }
         }
 
         public void OnSettingsPopupToggle()
         {
-            if (!settingsPopupEnabled || !overlayHandler) return;
+            if (!settingsPopupEnabled || !overlayHandler)
+                return;
 
             if (!_popupActive)
             {
@@ -738,7 +777,8 @@ namespace UdonSharp.Video.Subtitles
 
         public void OnSettingsImportInput()
         {
-            if (!settingsImportExportField) return;
+            if (!settingsImportExportField)
+                return;
 
             string text = settingsImportExportField.text.Trim();
 
@@ -873,15 +913,24 @@ namespace UdonSharp.Video.Subtitles
 
                             if (updateOverlay) overlayHandler.SetBackgroundColor(tmpColor);
                             break;
-                        case "pm": // Margin
+                        case "vm": // Vertical Margin
                             tmpInt = SafelyParseInt(tmp[1]);
 
-                            if (marginSlider)
-                                marginSlider.value = tmpInt;
+                            if (verticalMarginSlider)
+                                verticalMarginSlider.value = tmpInt;
 
                             if (tmpInt >= 0 && updateOverlay)
-                                overlayHandler.SetMargin(tmpInt);
+                                overlayHandler.SetVerticalMargin(tmpInt);
                             break;
+                        /*case "hm": // Horizontal Margin
+                            tmpInt = SafelyParseInt(tmp[1]);
+
+                            if (horizontalMarginSlider)
+                                horizontalMarginSlider.value = tmpInt;
+
+                            if (tmpInt >= 0 && updateOverlay)
+                                overlayHandler.SetHorizontalMargin(tmpInt);
+                            break;*/
                         case "pa": // Alignment
                             tmpInt = SafelyParseInt(tmp[1]);
 
@@ -949,7 +998,8 @@ namespace UdonSharp.Video.Subtitles
 
         private void UpdateSettingsExportString()
         {
-            if (!overlayHandler) return;
+            if (!overlayHandler)
+                return;
 
             Color fontColor = overlayHandler.GetFontColor();
             Color outlineColor = overlayHandler.GetOutlineColor();
@@ -961,7 +1011,8 @@ namespace UdonSharp.Video.Subtitles
                  + "/oc:" + RoundFloat(outlineColor.r, 3) + ";" + RoundFloat(outlineColor.g, 3) + ";" + RoundFloat(outlineColor.b, 3)
                  + "/bo:" + RoundFloat(backgroundColor.a, 2)
                  + "/bc:" + RoundFloat(backgroundColor.r, 3) + ";" + RoundFloat(backgroundColor.g, 3) + ";" + RoundFloat(backgroundColor.b, 3)
-                 + "/pm:" + overlayHandler.GetMargin()
+                 + "/vm:" + overlayHandler.GetVerticalMargin()
+                 //+ "/hm:" + overlayHandler.GetHorizontalMargin()
                  + "/pa:" + overlayHandler.GetAlignment()
                 ;
 
@@ -981,7 +1032,8 @@ namespace UdonSharp.Video.Subtitles
 
         public void CloseInputMenu()
         {
-            if (!inputMenu) return;
+            if (!inputMenu)
+                return;
 
             inputMenu.SetActive(false);
             ToggleMenu("dummy"); // Makes sure everything gets closed and button states reset
@@ -1007,7 +1059,8 @@ namespace UdonSharp.Video.Subtitles
 
         public void OnFontSizeSlider()
         {
-            if (!fontSizeSlider) return;
+            if (!fontSizeSlider)
+                return;
 
             int value = (int)fontSizeSlider.value;
 
@@ -1019,14 +1072,16 @@ namespace UdonSharp.Video.Subtitles
 
         private void SetFontSizeValue(int value)
         {
-            if (!fontSizeValue) return;
+            if (!fontSizeValue)
+                return;
 
             fontSizeValue.text = value.ToString();
         }
 
         public void OnFontColorChange()
         {
-            if (!fontColorRSlider || !fontColorGSlider || !fontColorBSlider) return;
+            if (!fontColorRSlider || !fontColorGSlider || !fontColorBSlider)
+                return;
 
             float valueR = fontColorRSlider.value;
             float valueG = fontColorGSlider.value;
@@ -1042,14 +1097,16 @@ namespace UdonSharp.Video.Subtitles
 
         private void SetFontColorValue(Color value)
         {
-            if (!fontColorValue) return;
+            if (!fontColorValue)
+                return;
 
             fontColorValue.color = new Color(value.r, value.g, value.b); // You might think this is useless but actually this make sure the color preview on the UI is not affected by value's opacity
         }
 
         public void OnOutlineSizeSlider()
         {
-            if (!outlineSizeSlider) return;
+            if (!outlineSizeSlider)
+                return;
 
             float value = outlineSizeSlider.value;
 
@@ -1061,14 +1118,16 @@ namespace UdonSharp.Video.Subtitles
 
         private void SetOutlineSizeValue(float value)
         {
-            if (!fontSizeValue) return;
+            if (!fontSizeValue)
+                return;
 
             outlineSizeValue.text = (RoundFloat(value, 2) * 100).ToString() + "%";
         }
 
         public void OnOutlineColorChange()
         {
-            if (!outlineColorRSlider || !outlineColorGSlider || !outlineColorBSlider) return;
+            if (!outlineColorRSlider || !outlineColorGSlider || !outlineColorBSlider)
+                return;
 
             float valueR = outlineColorRSlider.value;
             float valueG = outlineColorGSlider.value;
@@ -1084,14 +1143,16 @@ namespace UdonSharp.Video.Subtitles
 
         private void SetOutlineColorValue(Color value)
         {
-            if (!outlineColorValue) return;
+            if (!outlineColorValue)
+                return;
 
             outlineColorValue.color = new Color(value.r, value.g, value.b);
         }
 
         public void OnBackgroundColorChange()
         {
-            if (!backgroundColorRSlider || !backgroundColorGSlider || !backgroundColorBSlider) return;
+            if (!backgroundColorRSlider || !backgroundColorGSlider || !backgroundColorBSlider)
+                return;
 
             float valueR = backgroundColorRSlider.value;
             float valueG = backgroundColorGSlider.value;
@@ -1108,14 +1169,16 @@ namespace UdonSharp.Video.Subtitles
 
         private void SetBackgroundColorValue(Color value)
         {
-            if (!backgroundColorValue) return;
+            if (!backgroundColorValue)
+                return;
 
             backgroundColorValue.color = new Color(value.r, value.g, value.b);
         }
 
         public void OnBackgroundOpacitySlider()
         {
-            if (!backgroundOpacitySlider) return;
+            if (!backgroundOpacitySlider)
+                return;
 
             float value = backgroundOpacitySlider.value;
 
@@ -1131,33 +1194,58 @@ namespace UdonSharp.Video.Subtitles
 
         private void SetBackgroundOpacityValue(float value)
         {
-            if (!backgroundOpacityValue) return;
+            if (!backgroundOpacityValue)
+                return;
 
             backgroundOpacityValue.text = (RoundFloat(value, 2) * 100).ToString() + "%";
         }
 
-        public void OnMarginSlider()
+        public void OnVerticalMarginSlider()
         {
-            if (!marginSlider) return;
+            if (!verticalMarginSlider)
+                return;
 
-            int value = (int)marginSlider.value;
+            int value = (int)verticalMarginSlider.value;
 
-            if (overlayHandler) overlayHandler.SetMargin(value);
+            if (overlayHandler) overlayHandler.SetVerticalMargin(value);
 
-            SetMarginValue(value);
+            SetVerticalMarginValue(value);
             AfterValueChanged();
         }
 
-        private void SetMarginValue(int value)
+        private void SetVerticalMarginValue(int value)
         {
-            if (!marginValue) return;
+            if (!verticalMarginValue)
+                return;
 
-            marginValue.text = value.ToString();
+            verticalMarginValue.text = value.ToString();
         }
+
+        /*public void OnHorizontalMarginSlider()
+        {
+            if (!horizontalMarginSlider)
+                return;
+
+            int value = (int)horizontalMarginSlider.value;
+
+            if (overlayHandler) overlayHandler.SetVerticalMargin(value);
+
+            SetHorizontalMarginValue(value);
+            AfterValueChanged();
+        }
+
+        private void SetHorizontalMarginValue(int value)
+        {
+            if (!horizontalMarginValue)
+                return;
+
+            horizontalMarginValue.text = value.ToString();
+        }*/
 
         public void OnAlignmentToggle()
         {
-            if (!alignmentToggle) return;
+            if (!alignmentToggle)
+                return;
 
             int value = alignmentToggle.isOn ? 1 : 0;
 
@@ -1169,7 +1257,8 @@ namespace UdonSharp.Video.Subtitles
 
         private void SetAlignmentValue(int value)
         {
-            if (!alignmentValue) return;
+            if (!alignmentValue)
+                return;
 
             if (alignmentSlider) alignmentSlider.value = value;
             alignmentValue.text = value == 0 ? ALIGNMENT_BOTTOM : ALIGNMENT_TOP;

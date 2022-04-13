@@ -62,7 +62,7 @@ Whenever the access is locked to Master only
 Change lock state, must be executed by the Master
 
 - Does nothing when used with **USharpVideo** as it shares the same state with it
-- This can silently fail if the synchronization is ongoing and it wasn't initiated by the Master
+- This can silently fail if the synchronization is ongoing and it wasn't initiated by the Master - check if `SubtitleManager.IsSynchronized()` is `true` before running it
 
 ### SubtitleManager.IsLocal(): bool
 
@@ -89,9 +89,9 @@ Clears the subtitles globally or locally (depending on `IsLocal()` value)
 
 ### SubtitleManager.SynchronizeSubtitles(): void
 
-Re-synchronizes the subtitles globally, only the person who loaded them can do this - this can change when that person leaves the instance or lock state changes - check the `SubtitleManager.gameObject` owner in this case
+Re-synchronizes the subtitles globally, only the person who loaded them can do this (or the master if the synchronization is finished) - this can change when that person leaves the instance or lock state changes - check the `SubtitleManager.gameObject` owner in this case
 
-- This can silently fail if the synchronization is ongoing
+- This can silently fail if the synchronization is ongoing - check if `SubtitleManager.IsSynchronized()` is `true` before running it
 
 ### SubtitleOverlayHandler.MoveOverlay(GameObject): void
 

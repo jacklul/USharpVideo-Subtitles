@@ -961,7 +961,7 @@ MonoBehaviour:
       Data: 
     - Name: $k
       Entry: 1
-      Data: margin
+      Data: verticalMargin
     - Name: $v
       Entry: 7
       Data: 65|UdonSharp.Compiler.FieldDefinition, UdonSharp.Editor
@@ -982,10 +982,10 @@ MonoBehaviour:
       Data: SystemInt32
     - Name: symbolOriginalName
       Entry: 1
-      Data: margin
+      Data: verticalMargin
     - Name: symbolUniqueName
       Entry: 1
-      Data: margin
+      Data: verticalMargin
     - Name: symbolDefaultValue
       Entry: 6
       Data: 
@@ -1012,7 +1012,7 @@ MonoBehaviour:
       Data: 0
     - Name: max
       Entry: 4
-      Data: 600
+      Data: 540
     - Name: 
       Entry: 8
       Data: 
