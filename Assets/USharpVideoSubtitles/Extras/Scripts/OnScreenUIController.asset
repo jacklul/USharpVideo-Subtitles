@@ -121,7 +121,7 @@ MonoBehaviour:
       Data: 
     - Name: $k
       Entry: 1
-      Data: subtileControlHandler
+      Data: subtitleControlHandler
     - Name: $v
       Entry: 7
       Data: 7|UdonSharp.Compiler.FieldDefinition, UdonSharp.Editor
@@ -148,10 +148,10 @@ MonoBehaviour:
       Data: VRCUdonUdonBehaviour
     - Name: symbolOriginalName
       Entry: 1
-      Data: subtileControlHandler
+      Data: subtitleControlHandler
     - Name: symbolUniqueName
       Entry: 1
-      Data: subtileControlHandler
+      Data: subtitleControlHandler
     - Name: symbolDefaultValue
       Entry: 6
       Data: 

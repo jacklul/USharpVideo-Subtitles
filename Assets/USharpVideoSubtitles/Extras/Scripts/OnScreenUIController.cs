@@ -17,7 +17,7 @@ namespace UdonSharp.Video.UI
         private USharpVideoPlayer targetVideoPlayer;
 
         [SerializeField]
-        private SubtitleControlHandler subtileControlHandler;
+        private SubtitleControlHandler subtitleControlHandler;
 
         [SerializeField, Tooltip("Optional")]
         private GameObject videoScreen;
@@ -88,8 +88,8 @@ namespace UdonSharp.Video.UI
 
         public void OnSubtitleSettingsToggle()
         {
-            if (subtileControlHandler)
-                subtileControlHandler.ToggleSettingsPopup();
+            if (subtitleControlHandler)
+                subtitleControlHandler.ToggleSettingsPopup();
         }
     }
 }
