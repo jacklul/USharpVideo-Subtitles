@@ -77,4 +77,3 @@ crashlytics-build.properties
 /[Aa]ssets/*
 !/Assets/USharpVideoSubtitles/
 !/Assets/USharpVideoSubtitles.meta
-/*.bat
