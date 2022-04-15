@@ -48,14 +48,6 @@ namespace UdonSharp.Video.UI
                 gameObject.transform.localRotation = Quaternion.identity;
                 gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
             }
-
-            RectTransform rect = toggle.GetComponent<RectTransform>();
-
-            if (rect)
-            {
-                initialPosition = rect.anchoredPosition;
-                initialSize = rect.sizeDelta;
-            }
         }
 
         public void OnToggle()
@@ -80,6 +72,9 @@ namespace UdonSharp.Video.UI
 
                 if (rect)
                 {
+                    initialPosition = rect.anchoredPosition;
+                    initialSize = rect.sizeDelta;
+
                     rect.anchoredPosition = new Vector2(rect.anchoredPosition.x, 0);
                     rect.sizeDelta = new Vector2(500, 500);
                 }
