@@ -51,6 +51,12 @@ Loads subtitles from the text string globally or locally (depending on `IsLocal(
 - When using **USharpVideo** - only the player who can control the video player can do this (`USharpVideo.CanControlVideoPlayer()`)
 - For other video players - if `IsLocked()` is `true` then only the Master can do this
 
+### SubtitleManager.HasSubtitles(): bool
+
+Whenever subtitles are currently loaded
+
+- It will always return `true` if subtitles are loaded for the current mode (global/local - see `IsLocal()`)
+
 ### SubtitleManager.IsLocked(): bool
 
 Whenever the access is locked to Master only

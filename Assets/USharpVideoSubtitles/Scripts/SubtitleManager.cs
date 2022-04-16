@@ -807,6 +807,11 @@ namespace UdonSharp.Video.Subtitles
                 handler.SynchronizeLockState();
         }
 
+        public bool HasSubtitles()
+        {
+            return _isLocal ? _dataLocal != "" : _data != "";
+        }
+
         public void SetVideoPlayer(BaseVRCVideoPlayer videoPlayer)
         {
             if (!targetVideoPlayer)
