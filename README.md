@@ -53,9 +53,9 @@ Loads subtitles from the text string globally or locally (depending on `IsLocal(
 
 ### SubtitleManager.HasSubtitles(): bool
 
-Whenever subtitles are currently loaded
+Check whenever subtitles are currently loaded
 
-- It will always return `true` if subtitles are loaded for the current mode (global/local - see `IsLocal()`)
+- It will return `true` if subtitles are loaded for the current mode (`IsLocal()`)
 
 ### SubtitleManager.IsLocked(): bool
 
@@ -111,7 +111,7 @@ Use this method to get transform values of the overlay's `Canvas` in case you wa
 
 ### SubtitleOverlayHandler.IsSettingsPopupActive(): bool
 
-Whenever settings popup is currently open
+Check if settings popup is currently open
 
 ### SubtitleControlHandler.ImportSettingsFromString(string): void
 
