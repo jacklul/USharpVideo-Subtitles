@@ -17,7 +17,7 @@ namespace UdonSharp.Video.Subtitles.UI
         public string placeholder = "{VERSION}";
 
 #if UNITY_EDITOR
-        private void OnEnable()
+        private void Update()
         {
             if (versionFile == null || inputField == null) return;
 
