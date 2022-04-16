@@ -109,6 +109,10 @@ Moves the overlay to the given object's transform values
 
 Use this method to get transform values of the overlay's `Canvas` in case you want to display something on the same screen
 
+### SubtitleOverlayHandler.IsSettingsPopupActive(): bool
+
+Whenever settings popup is currently open
+
 ### SubtitleControlHandler.ImportSettingsFromString(string): void
 
 Import settings from the given string (the same string which is displayed in the settings window), the format is pretty easy to figure out

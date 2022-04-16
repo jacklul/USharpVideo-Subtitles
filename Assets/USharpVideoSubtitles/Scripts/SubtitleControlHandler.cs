@@ -1039,6 +1039,11 @@ namespace UdonSharp.Video.Subtitles
             ToggleMenu("dummy"); // Makes sure everything gets closed and button states reset
         }
 
+        public bool IsSettingsPopupActive()
+        {
+            return _popupActive;
+        }
+
         public void ToggleSettingsPopup()
         {
             if (settingsMenu.activeSelf)
