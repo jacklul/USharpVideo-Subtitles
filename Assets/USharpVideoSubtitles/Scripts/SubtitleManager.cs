@@ -831,6 +831,9 @@ namespace UdonSharp.Video.Subtitles
 
         public void SetEnabled(bool state)
         {
+            if (_isEnabled == state)
+                return;
+
             if (state)
             {
                 _isEnabled = true;
@@ -854,6 +857,9 @@ namespace UdonSharp.Video.Subtitles
 
         public void SetLocal(bool state)
         {
+            if (_isLocal == state)
+                return;
+
             _isLocal = state;
 
             if (state)
