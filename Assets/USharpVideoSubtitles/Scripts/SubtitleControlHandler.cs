@@ -216,6 +216,7 @@ namespace UdonSharp.Video.Subtitles
         private Vector3 _originalSettingsMenuPosition;
         private Quaternion _originalSettingsMenuRotation;
         private Vector3 _originalSettingsMenuScale;
+        private Vector2 _originalSettingsAnchoredPosition;
         private GameObject _currentInputFieldObject;
 
         private string _savedStatus = "";
@@ -240,13 +241,6 @@ namespace UdonSharp.Video.Subtitles
 
         private void Start()
         {
-            if (settingsMenu)
-            {
-                _originalSettingsMenuPosition = settingsMenu.transform.position;
-                _originalSettingsMenuRotation = settingsMenu.transform.rotation;
-                _originalSettingsMenuScale = settingsMenu.transform.localScale;
-            }
-
             if (inputFieldObject)
                 CloneInputField();
 
@@ -731,15 +725,28 @@ namespace UdonSharp.Video.Subtitles
 
         public void OnSettingsPopupToggle()
         {
-            if (!settingsPopupEnabled || !overlayHandler)
+            if (!settingsPopupEnabled || !overlayHandler || !settingsMenu)
                 return;
+
+            RectTransform rectTransform = settingsMenu.GetComponent<RectTransform>();
+
+            if (_originalSettingsMenuPosition == Vector3.zero)
+                _originalSettingsMenuPosition = settingsMenu.transform.localPosition;
+
+            if (_originalSettingsMenuRotation == Quaternion.identity)
+                _originalSettingsMenuRotation = settingsMenu.transform.localRotation;
+
+            if (_originalSettingsMenuScale == Vector3.zero)
+                _originalSettingsMenuScale = settingsMenu.transform.localScale;
+
+            if (rectTransform && _originalSettingsAnchoredPosition == Vector2.zero)
+                _originalSettingsAnchoredPosition = rectTransform.anchoredPosition;
 
             if (!_popupActive)
             {
                 _popupActive = true;
 
                 Transform transform = overlayHandler.GetCanvasTransform();
-                RectTransform rectTransform = settingsMenu.GetComponent<RectTransform>();
 
                 float scale = settingsPopupScale;
 
@@ -781,10 +788,12 @@ namespace UdonSharp.Video.Subtitles
                 if (!settingsMenu.transform.IsChildOf(gameObject.transform))
                     settingsMenu.transform.SetParent(gameObject.transform);
 
-                settingsMenu.transform.position = _originalSettingsMenuPosition;
-                settingsMenu.transform.rotation = _originalSettingsMenuRotation;
+                settingsMenu.transform.localPosition = _originalSettingsMenuPosition;
+                settingsMenu.transform.localRotation = _originalSettingsMenuRotation;
                 settingsMenu.transform.localScale = _originalSettingsMenuScale;
                 //if (settingsMenuCanvasGroup) settingsMenuCanvasGroup.enabled = false;
+
+                if (rectTransform) rectTransform.anchoredPosition = _originalSettingsAnchoredPosition;
 
                 if (settingsPopupButtonBackground) settingsPopupButtonBackground.color = buttonBackgroundColor;
                 if (settingsPopupButtonIcon) settingsPopupButtonIcon.color = whiteGraphicColor;
