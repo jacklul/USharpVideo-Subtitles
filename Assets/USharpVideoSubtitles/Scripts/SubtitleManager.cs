@@ -78,6 +78,7 @@ namespace UdonSharp.Video.Subtitles
         private VideoPlayerManager _videoManager;
         private SubtitleOverlayHandler _overlayHandler;
         private SubtitleControlHandler[] _registeredControlHandlers;
+        private UdonSharpBehaviour[] _registeredCallbackReceivers;
 
         private int _lastUpdateFrame = 0;
         private int _currentDataIndex = 0;
@@ -102,6 +103,9 @@ namespace UdonSharp.Video.Subtitles
             if (_registeredControlHandlers == null)
                 _registeredControlHandlers = new SubtitleControlHandler[0];
 
+            if (_registeredCallbackReceivers == null)
+                _registeredCallbackReceivers = new UdonSharpBehaviour[0];
+            
             if (targetVideoPlayer)
             {
                 _videoManager = targetVideoPlayer.GetVideoManager();
@@ -204,6 +208,57 @@ namespace UdonSharp.Video.Subtitles
             }
         }
 
+        public void RegisterCallbackReceiver(UdonSharpBehaviour callbackReceiver)
+        {
+            if (!Utilities.IsValid(callbackReceiver))
+                return;
+
+            if (_registeredCallbackReceivers == null)
+                _registeredCallbackReceivers = new UdonSharpBehaviour[0];
+
+            foreach (UdonSharpBehaviour currReceiver in _registeredCallbackReceivers)
+            {
+                if (callbackReceiver == currReceiver)
+                    return;
+            }
+
+            UdonSharpBehaviour[] newControlHandlers = new UdonSharpBehaviour[_registeredCallbackReceivers.Length + 1];
+            _registeredCallbackReceivers.CopyTo(newControlHandlers, 0);
+            _registeredCallbackReceivers = newControlHandlers;
+
+            _registeredCallbackReceivers[_registeredCallbackReceivers.Length - 1] = callbackReceiver;
+        }
+
+        public void UnregisterCallbackReceiver(UdonSharpBehaviour callbackReceiver)
+        {
+            if (!Utilities.IsValid(callbackReceiver))
+                return;
+
+            if (_registeredCallbackReceivers == null)
+                _registeredCallbackReceivers = new UdonSharpBehaviour[0];
+
+            int callbackReceiverCount = _registeredControlHandlers.Length;
+            for (int i = 0; i < callbackReceiverCount; ++i)
+            {
+                UdonSharpBehaviour currHandler = _registeredCallbackReceivers[i];
+
+                if (callbackReceiver == currHandler)
+                {
+                    UdonSharpBehaviour[] newCallbackReceivers = new UdonSharpBehaviour[callbackReceiverCount - 1];
+
+                    for (int j = 0; j < i; ++j)
+                        newCallbackReceivers[j] = _registeredCallbackReceivers[j];
+
+                    for (int j = i + 1; j < callbackReceiverCount; ++j)
+                        newCallbackReceivers[j - 1] = _registeredCallbackReceivers[j];
+
+                    _registeredCallbackReceivers = newCallbackReceivers;
+
+                    return;
+                }
+            }
+        }
+
         public void Update()
         {
             if (!_isEnabled || _dataTotal == 0)
@@ -290,6 +345,7 @@ namespace UdonSharp.Video.Subtitles
             }
 
             RequestSerialization();
+            SendCallback("OnUSharpVideoSubtitlesTransmitStart");
         }
 
         public override void OnPreSerialization()
@@ -322,6 +378,8 @@ namespace UdonSharp.Video.Subtitles
                 if (_chunkSync < _chunkCount)
                 {
                     LogMessage("Will send another chunk...");
+
+                    SendCallback("OnUSharpVideoSubtitlesTransmitProgress");
                 }
                 else
                 {
@@ -329,6 +387,8 @@ namespace UdonSharp.Video.Subtitles
 
                     foreach (SubtitleControlHandler handler in _registeredControlHandlers)
                         handler.RestoreStatusText();
+
+                    SendCallback("OnUSharpVideoSubtitlesTransmitEnd");
                 }
                 
                 SendCustomEventDelayedFrames(nameof(_QueueSerialize), 1);
@@ -429,6 +489,8 @@ namespace UdonSharp.Video.Subtitles
 
             foreach (SubtitleControlHandler handler in _registeredControlHandlers)
                 handler.SetStatusText(MESSAGE_CLEARED);
+            
+            SendCallback("OnUSharpVideoSubtitlesClear");
         }
 
         private void UnsetSubtitlesLocal()
@@ -453,11 +515,15 @@ namespace UdonSharp.Video.Subtitles
                         handler.SetStatusText(MESSAGE_LOADED);
                         if (closeInputMenu) handler.CloseInputMenu();
                     }
+                    
+                    SendCallback("OnUSharpVideoSubtitlessLoad");
                 }
                 else
                 {
                     foreach (SubtitleControlHandler handler in _registeredControlHandlers)
                         handler.SetStatusText(MESSAGE_FAILED);
+                    
+                    SendCallback("OnUSharpVideoSubtitlesError");
                 }
             }
             else
@@ -689,6 +755,8 @@ namespace UdonSharp.Video.Subtitles
                     handler.SynchronizeLockState();
                 }
             }
+            
+            SendCallback("OnUSharpVideoSubtitlesOwnershipChange");
         }
 
         public bool IsUsingUSharpVideo()
@@ -736,6 +804,8 @@ namespace UdonSharp.Video.Subtitles
 
             foreach (SubtitleControlHandler handler in _registeredControlHandlers)
                 handler.SynchronizeLockState();
+            
+            SendCallback("OnUSharpVideoSubtitlesLockChange");
         }
 
         public bool CanControlSubtitles()
@@ -774,6 +844,7 @@ namespace UdonSharp.Video.Subtitles
             foreach (SubtitleControlHandler handler in _registeredControlHandlers)
                 handler.SetToggleButtonState(_isEnabled);
 
+            SendCallback("OnUSharpVideoSubtitlesEnabledChange");
         }
 
         public bool IsLocal()
@@ -812,6 +883,8 @@ namespace UdonSharp.Video.Subtitles
 
             foreach (SubtitleControlHandler handler in _registeredControlHandlers)
                 handler.SynchronizeLockState();
+
+            SendCallback("OnUSharpVideoSubtitlesModeChange");
         }
 
         public bool HasSubtitles()
@@ -869,6 +942,7 @@ namespace UdonSharp.Video.Subtitles
             }
 
             ResetSubtitleTrackingState();
+            SendCallback("OnUSharpVideoSubtitlesReload");
         }
 
         public bool CanSynchronizeSubtitles()
@@ -885,6 +959,8 @@ namespace UdonSharp.Video.Subtitles
 
                 handler.UpdateSettingsValues();
             }
+            
+            SendCallback("OnUSharpVideoSubtitlesSettingsUpdate");
         }
 
         public void OnUSharpVideoPlay()
@@ -911,6 +987,8 @@ namespace UdonSharp.Video.Subtitles
         {
             foreach (SubtitleControlHandler handler in _registeredControlHandlers)
                 handler.SynchronizeLockState();
+
+            SendCallback("OnUSharpVideoSubtitlesLockChange");
 
             // Uncomment this if you want to force the owner of this object to be whoever owns the video player when this callback triggers (this will usually be the master or instance creator)
             //_MigrateToUSharpVideoOwner();
@@ -943,6 +1021,17 @@ namespace UdonSharp.Video.Subtitles
             {
                 foreach (SubtitleControlHandler handler in _registeredControlHandlers)
                     handler.SynchronizeLockState();
+            }
+
+            SendCallback("OnUSharpVideoSubtitlesOwnershipChange");
+        }
+
+        private void SendCallback(string callbackName)
+        {
+            foreach (UdonSharpBehaviour callbackReceiver in _registeredCallbackReceivers)
+            {
+                if (Utilities.IsValid(callbackReceiver))
+                    callbackReceiver.SendCustomEvent(callbackName);
             }
         }
     }
