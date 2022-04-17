@@ -788,7 +788,7 @@ MonoBehaviour:
     - Name: tooltip
       Entry: 1
       Data: 'Default value (0) will move the settings menu object into overlay object
-        and set the scale to 0.9
+        and set the scale to 0.8
 
         Positive numbers change the scale while
         keeping the same behaviour

@@ -15,6 +15,8 @@ namespace UdonSharp.Video.Subtitles.UI
         public TMP_Text inputField;
         public TextAsset versionFile;
         public string placeholder = "{VERSION}";
+        [TextArea]
+        public string text = "Version: {VERSION}";
 
 #if UNITY_EDITOR
         private void Update()
@@ -23,8 +25,12 @@ namespace UdonSharp.Video.Subtitles.UI
 
             string version = versionFile.text.Trim();
 
-            if (version[0] == 'v' && !inputField.text.Contains(version))
-                inputField.text = inputField.text.Replace(placeholder, version);
+            if (version[0] == 'v')
+            {
+                if (!inputField.text.Contains(version)) inputField.text = text.Replace(placeholder, version);
+            }
+            else if (inputField.text != text)
+                inputField.text = text;
         }
 #endif
     }
