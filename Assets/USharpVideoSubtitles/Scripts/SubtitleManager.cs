@@ -906,7 +906,7 @@ namespace UdonSharp.Video.Subtitles
 
         public bool HasSubtitles()
         {
-            return (_isLocal ? _dataLocal != "" : _data != "") && _dataTotal > 0;
+            return _dataTotal > 0;
         }
 
         public void SetVideoPlayer(BaseVRCVideoPlayer videoPlayer)
