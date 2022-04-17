@@ -770,6 +770,10 @@ namespace UdonSharp.Video.Subtitles
                 _isEnabled = false;
                 if (_overlayHandler) _overlayHandler.ClearSubtitle();
             }
+
+            foreach (SubtitleControlHandler handler in _registeredControlHandlers)
+                handler.SetToggleButtonState(_isEnabled);
+
         }
 
         public bool IsLocal()
@@ -802,6 +806,9 @@ namespace UdonSharp.Video.Subtitles
             }
 
             ResetSubtitleTrackingState();
+
+            foreach (SubtitleControlHandler handler in _registeredControlHandlers)
+                handler.SetLocalToggleButtonState(_isLocal);
 
             foreach (SubtitleControlHandler handler in _registeredControlHandlers)
                 handler.SynchronizeLockState();

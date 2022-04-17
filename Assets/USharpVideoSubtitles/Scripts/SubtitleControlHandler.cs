@@ -559,6 +559,14 @@ namespace UdonSharp.Video.Subtitles
 
             manager.SetEnabled(subtitlesToggle.isOn);
         }
+        
+        public void SetToggleButtonState(bool state)
+        {
+            if (!subtitlesToggle)
+                return;
+            
+            subtitlesToggle.isOn = state;
+        }
 
         public void OnLocalToggleButton()
         {
@@ -566,6 +574,14 @@ namespace UdonSharp.Video.Subtitles
                 return;
 
             manager.SetLocal(localToggle.isOn);
+        }
+
+        public void SetLocalToggleButtonState(bool state)
+        {
+            if (!subtitlesToggle)
+                return;
+
+            localToggle.isOn = state;
         }
 
         public void OnInputMenuToggle()
