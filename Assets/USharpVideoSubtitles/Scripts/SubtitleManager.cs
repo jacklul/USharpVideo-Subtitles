@@ -139,135 +139,6 @@ namespace UdonSharp.Video.Subtitles
             if (targetVideoPlayer) targetVideoPlayer.UnregisterCallbackReceiver(this);
         }
 
-        public void RegisterOverlayHandler(SubtitleOverlayHandler handler)
-        {
-            if (_overlayHandler == null)
-            {
-                _overlayHandler = handler;
-                _overlayHandler.ClearSubtitle();
-            }
-            else
-                LogError("SubtitleOverlayHandler is already registered, only one can be active at the same time");
-        }
-
-        public void UnregisterOverlayHandler(SubtitleOverlayHandler handler)
-        {
-            if (handler == _overlayHandler)
-                _overlayHandler = null;
-            else
-                LogError("This method must be called by the currently registered SubtitleOverlayHandler");
-        }
-
-        public void RegisterControlHandler(SubtitleControlHandler newControlHandler)
-        {
-            if (_registeredControlHandlers == null)
-                _registeredControlHandlers = new SubtitleControlHandler[0];
-
-            foreach (SubtitleControlHandler controlHandler in _registeredControlHandlers)
-            {
-                if (newControlHandler == controlHandler)
-                    return;
-            }
-
-            SubtitleControlHandler[] newControlHandlers = new SubtitleControlHandler[_registeredControlHandlers.Length + 1];
-            _registeredControlHandlers.CopyTo(newControlHandlers, 0);
-            _registeredControlHandlers = newControlHandlers;
-
-            _registeredControlHandlers[_registeredControlHandlers.Length - 1] = newControlHandler;
-
-            if (_dataTotal > 0)
-                newControlHandler.SetStatusText(MESSAGE_LOADED);
-            else
-                newControlHandler.SetStatusText(MESSAGE_NOT_LOADED);
-        }
-
-        public void UnregisterControlHandler(SubtitleControlHandler controlHandler)
-        {
-            if (_registeredControlHandlers == null)
-                _registeredControlHandlers = new SubtitleControlHandler[0];
-
-            int controlHandlerCount = _registeredControlHandlers.Length;
-            for (int i = 0; i < controlHandlerCount; ++i)
-            {
-                SubtitleControlHandler handler = _registeredControlHandlers[i];
-
-                if (controlHandler == handler)
-                {
-                    SubtitleControlHandler[] newControlHandlers = new SubtitleControlHandler[controlHandlerCount - 1];
-
-                    for (int j = 0; j < i; ++j)
-                        newControlHandlers[j] = _registeredControlHandlers[j];
-
-                    for (int j = i + 1; j < controlHandlerCount; ++j)
-                        newControlHandlers[j - 1] = _registeredControlHandlers[j];
-
-                    _registeredControlHandlers = newControlHandlers;
-
-                    return;
-                }
-            }
-        }
-
-        public void RegisterCallbackReceiver(UdonSharpBehaviour callbackReceiver)
-        {
-            if (!Utilities.IsValid(callbackReceiver))
-                return;
-
-            if (_registeredCallbackReceivers == null)
-                _registeredCallbackReceivers = new UdonSharpBehaviour[0];
-
-            foreach (UdonSharpBehaviour currReceiver in _registeredCallbackReceivers)
-            {
-                if (callbackReceiver == currReceiver)
-                    return;
-            }
-
-            UdonSharpBehaviour[] newControlHandlers = new UdonSharpBehaviour[_registeredCallbackReceivers.Length + 1];
-            _registeredCallbackReceivers.CopyTo(newControlHandlers, 0);
-            _registeredCallbackReceivers = newControlHandlers;
-
-            _registeredCallbackReceivers[_registeredCallbackReceivers.Length - 1] = callbackReceiver;
-        }
-
-        public void UnregisterCallbackReceiver(UdonSharpBehaviour callbackReceiver)
-        {
-            if (!Utilities.IsValid(callbackReceiver))
-                return;
-
-            if (_registeredCallbackReceivers == null)
-                _registeredCallbackReceivers = new UdonSharpBehaviour[0];
-
-            int callbackReceiverCount = _registeredControlHandlers.Length;
-            for (int i = 0; i < callbackReceiverCount; ++i)
-            {
-                UdonSharpBehaviour currHandler = _registeredCallbackReceivers[i];
-
-                if (callbackReceiver == currHandler)
-                {
-                    UdonSharpBehaviour[] newCallbackReceivers = new UdonSharpBehaviour[callbackReceiverCount - 1];
-
-                    for (int j = 0; j < i; ++j)
-                        newCallbackReceivers[j] = _registeredCallbackReceivers[j];
-
-                    for (int j = i + 1; j < callbackReceiverCount; ++j)
-                        newCallbackReceivers[j - 1] = _registeredCallbackReceivers[j];
-
-                    _registeredCallbackReceivers = newCallbackReceivers;
-
-                    return;
-                }
-            }
-        }
-
-        private void SendCallback(string callbackName)
-        {
-            foreach (UdonSharpBehaviour callbackReceiver in _registeredCallbackReceivers)
-            {
-                if (Utilities.IsValid(callbackReceiver))
-                    callbackReceiver.SendCustomEvent(callbackName);
-            }
-        }
-
         public void Update()
         {
             if (!_isEnabled || _dataTotal == 0)
@@ -1049,6 +920,135 @@ namespace UdonSharp.Video.Subtitles
             {
                 foreach (SubtitleControlHandler handler in _registeredControlHandlers)
                     handler.SynchronizeLockState();
+            }
+        }
+
+        public void RegisterOverlayHandler(SubtitleOverlayHandler handler)
+        {
+            if (_overlayHandler == null)
+            {
+                _overlayHandler = handler;
+                _overlayHandler.ClearSubtitle();
+            }
+            else
+                LogError("SubtitleOverlayHandler is already registered, only one can be active at the same time");
+        }
+
+        public void UnregisterOverlayHandler(SubtitleOverlayHandler handler)
+        {
+            if (handler == _overlayHandler)
+                _overlayHandler = null;
+            else
+                LogError("This method must be called by the currently registered SubtitleOverlayHandler");
+        }
+
+        public void RegisterControlHandler(SubtitleControlHandler newControlHandler)
+        {
+            if (_registeredControlHandlers == null)
+                _registeredControlHandlers = new SubtitleControlHandler[0];
+
+            foreach (SubtitleControlHandler controlHandler in _registeredControlHandlers)
+            {
+                if (newControlHandler == controlHandler)
+                    return;
+            }
+
+            SubtitleControlHandler[] newControlHandlers = new SubtitleControlHandler[_registeredControlHandlers.Length + 1];
+            _registeredControlHandlers.CopyTo(newControlHandlers, 0);
+            _registeredControlHandlers = newControlHandlers;
+
+            _registeredControlHandlers[_registeredControlHandlers.Length - 1] = newControlHandler;
+
+            if (_dataTotal > 0)
+                newControlHandler.SetStatusText(MESSAGE_LOADED);
+            else
+                newControlHandler.SetStatusText(MESSAGE_NOT_LOADED);
+        }
+
+        public void UnregisterControlHandler(SubtitleControlHandler controlHandler)
+        {
+            if (_registeredControlHandlers == null)
+                _registeredControlHandlers = new SubtitleControlHandler[0];
+
+            int controlHandlerCount = _registeredControlHandlers.Length;
+            for (int i = 0; i < controlHandlerCount; ++i)
+            {
+                SubtitleControlHandler handler = _registeredControlHandlers[i];
+
+                if (controlHandler == handler)
+                {
+                    SubtitleControlHandler[] newControlHandlers = new SubtitleControlHandler[controlHandlerCount - 1];
+
+                    for (int j = 0; j < i; ++j)
+                        newControlHandlers[j] = _registeredControlHandlers[j];
+
+                    for (int j = i + 1; j < controlHandlerCount; ++j)
+                        newControlHandlers[j - 1] = _registeredControlHandlers[j];
+
+                    _registeredControlHandlers = newControlHandlers;
+
+                    return;
+                }
+            }
+        }
+
+        public void RegisterCallbackReceiver(UdonSharpBehaviour callbackReceiver)
+        {
+            if (!Utilities.IsValid(callbackReceiver))
+                return;
+
+            if (_registeredCallbackReceivers == null)
+                _registeredCallbackReceivers = new UdonSharpBehaviour[0];
+
+            foreach (UdonSharpBehaviour currReceiver in _registeredCallbackReceivers)
+            {
+                if (callbackReceiver == currReceiver)
+                    return;
+            }
+
+            UdonSharpBehaviour[] newControlHandlers = new UdonSharpBehaviour[_registeredCallbackReceivers.Length + 1];
+            _registeredCallbackReceivers.CopyTo(newControlHandlers, 0);
+            _registeredCallbackReceivers = newControlHandlers;
+
+            _registeredCallbackReceivers[_registeredCallbackReceivers.Length - 1] = callbackReceiver;
+        }
+
+        public void UnregisterCallbackReceiver(UdonSharpBehaviour callbackReceiver)
+        {
+            if (!Utilities.IsValid(callbackReceiver))
+                return;
+
+            if (_registeredCallbackReceivers == null)
+                _registeredCallbackReceivers = new UdonSharpBehaviour[0];
+
+            int callbackReceiverCount = _registeredControlHandlers.Length;
+            for (int i = 0; i < callbackReceiverCount; ++i)
+            {
+                UdonSharpBehaviour currHandler = _registeredCallbackReceivers[i];
+
+                if (callbackReceiver == currHandler)
+                {
+                    UdonSharpBehaviour[] newCallbackReceivers = new UdonSharpBehaviour[callbackReceiverCount - 1];
+
+                    for (int j = 0; j < i; ++j)
+                        newCallbackReceivers[j] = _registeredCallbackReceivers[j];
+
+                    for (int j = i + 1; j < callbackReceiverCount; ++j)
+                        newCallbackReceivers[j - 1] = _registeredCallbackReceivers[j];
+
+                    _registeredCallbackReceivers = newCallbackReceivers;
+
+                    return;
+                }
+            }
+        }
+
+        private void SendCallback(string callbackName)
+        {
+            foreach (UdonSharpBehaviour callbackReceiver in _registeredCallbackReceivers)
+            {
+                if (Utilities.IsValid(callbackReceiver))
+                    callbackReceiver.SendCustomEvent(callbackName);
             }
         }
     }
