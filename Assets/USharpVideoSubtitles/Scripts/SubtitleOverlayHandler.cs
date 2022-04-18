@@ -69,21 +69,14 @@ namespace UdonSharp.Video.Subtitles
         private void Start()
         {
             ResetSettings();
-            SendCustomEventDelayedFrames(nameof(_MoveOverlayOnStart), 10); // If the video screen object moves at the same time the overlay will be stuck at the wrong position
+            
+            if (videoScreen)
+                MoveOverlay(videoScreen);
         }
 
         private void OnDisable()
         {
             manager.UnregisterOverlayHandler(this);
-        }
-
-        public void _MoveOverlayOnStart()
-        {
-            if (videoScreen)
-            {
-                MoveOverlay(videoScreen);
-                videoScreen = null;
-            }
         }
 
         public void DisplaySubtitle(string text)
