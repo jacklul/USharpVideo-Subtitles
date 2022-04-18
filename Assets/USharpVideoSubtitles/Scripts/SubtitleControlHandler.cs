@@ -445,13 +445,16 @@ namespace UdonSharp.Video.Subtitles
 
         public void UpdateOwner()
         {
+#if !UNITY_EDITOR
             if (ownerField)
             {
                 if (manager.IsLocal())
                     ownerField.text = Networking.LocalPlayer.displayName + " " + INDICATOR_LOCAL;
                 else
+                    ownerField.text = "";
                     ownerField.text = Networking.GetOwner(manager.gameObject).displayName;
             }
+#endif
 
             /*if (reloadButton)
             {
@@ -502,10 +505,12 @@ namespace UdonSharp.Video.Subtitles
                     if (inputClearButtonIcon) inputClearButtonIcon.color = redGraphicColor;
 
                     //if (inputField) inputField.readOnly = true;
+#if !UNITY_EDITOR
                     if (inputPlaceholderText) inputPlaceholderText.text = string.Format(
                         @MESSAGE_ONLY_MASTER_CAN_ADD,
                         (manager.IsUsingUSharpVideo() ? manager.GetUSharpVideoOwner() : Networking.GetOwner(manager.gameObject)).displayName
                     );
+#endif
                 }
             }
             else
