@@ -347,10 +347,13 @@ namespace UdonSharp.Video.Subtitles
             _chunkCount = _data.Length / chunkSize + 1;
             _chunkSync = 0;
 
-            foreach (SubtitleControlHandler handler in _registeredControlHandlers)
+            if (!_isLocal)
             {
-                handler.SaveStatusText();
-                handler.SetStatusText(string.Format(@MESSAGE_SYNCHRONIZING, 0, _chunkCount, ARROW_UP));
+                foreach (SubtitleControlHandler handler in _registeredControlHandlers)
+                {
+                    handler.SaveStatusText();
+                    handler.SetStatusText(string.Format(@MESSAGE_SYNCHRONIZING, 0, _chunkCount, ARROW_UP));
+                }
             }
 
             RequestSerialization();
@@ -377,8 +380,11 @@ namespace UdonSharp.Video.Subtitles
         {
             if (_chunkSync < _chunkCount)
             {
-                foreach (SubtitleControlHandler handler in _registeredControlHandlers)
-                    handler.SetStatusText(string.Format(@MESSAGE_SYNCHRONIZING, _chunkSync + 1, _chunkCount, ARROW_UP));
+                if (!_isLocal)
+                {
+                    foreach (SubtitleControlHandler handler in _registeredControlHandlers)
+                        handler.SetStatusText(string.Format(@MESSAGE_SYNCHRONIZING, _chunkSync + 1, _chunkCount, ARROW_UP));
+                }
 
                 LogMessage($"Sent chunk {_chunkSync + 1} / {_chunkCount} ({_syncId})");
 
@@ -394,12 +400,15 @@ namespace UdonSharp.Video.Subtitles
                 {
                     LogMessage($"Sent all chunks");
 
-                    foreach (SubtitleControlHandler handler in _registeredControlHandlers)
-                        handler.RestoreStatusText();
+                    if (!_isLocal)
+                    {
+                        foreach (SubtitleControlHandler handler in _registeredControlHandlers)
+                            handler.RestoreStatusText();
+                    }
 
                     SendCallback("OnUSharpVideoSubtitlesTransmitFinish");
                 }
-                
+
                 SendCustomEventDelayedFrames(nameof(_QueueSerialize), 1);
             }
         }

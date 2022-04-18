@@ -401,8 +401,7 @@ namespace UdonSharp.Video.Subtitles
 
         public void SaveStatusText()
         {
-            if (_savedStatus == "")
-                _savedStatus = GetStatusText();
+            _savedStatus = GetStatusText();
         }
 
         public string GetStatusText()
