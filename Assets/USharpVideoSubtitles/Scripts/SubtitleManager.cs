@@ -959,10 +959,9 @@ namespace UdonSharp.Video.Subtitles
 
             _registeredControlHandlers[_registeredControlHandlers.Length - 1] = newControlHandler;
 
-            if (_dataTotal > 0)
-                newControlHandler.SetStatusText(MESSAGE_LOADED);
-            else
-                newControlHandler.SetStatusText(MESSAGE_NOT_LOADED);
+            newControlHandler.SetToggleButtonState(_isEnabled);
+            newControlHandler.SetLocalToggleButtonState(_isLocal);
+            newControlHandler.SetStatusText(_dataTotal > 0 ? MESSAGE_LOADED : MESSAGE_NOT_LOADED);
         }
 
         public void UnregisterControlHandler(SubtitleControlHandler controlHandler)
