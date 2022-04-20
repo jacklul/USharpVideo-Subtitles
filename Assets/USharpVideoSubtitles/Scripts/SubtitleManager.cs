@@ -369,7 +369,7 @@ namespace UdonSharp.Video.Subtitles
 
         private void ClearSubtitlesLocal()
         {
-            LogMessage("Clearing subtitles locally");
+            if (_dataTotal > 0 ) LogMessage("Clearing subtitles locally");
 
             _dataText = new string[0];
             _dataStart = new float[0];
