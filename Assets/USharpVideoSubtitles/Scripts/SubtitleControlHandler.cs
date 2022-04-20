@@ -442,6 +442,19 @@ namespace UdonSharp.Video.Subtitles
             }
         }
 
+        // Only allow the master to own this
+        public override bool OnOwnershipRequest(VRCPlayerApi requestingPlayer, VRCPlayerApi requestedOwner)
+        {
+            return false;
+        }
+        
+        // Master has changed and we have to update reload button state
+        public override void OnOwnershipTransferred(VRCPlayerApi player)
+        {
+            if (!manager.IsLocal())
+                UpdateOwner();
+        }
+
         public void UpdateOwner()
         {
 #if !UNITY_EDITOR
@@ -450,14 +463,13 @@ namespace UdonSharp.Video.Subtitles
                 if (manager.IsLocal())
                     ownerField.text = Networking.LocalPlayer.displayName + " " + INDICATOR_LOCAL;
                 else
-                    ownerField.text = "";
                     ownerField.text = Networking.GetOwner(manager.gameObject).displayName;
             }
 #endif
 
-            /*if (reloadButton)
+            if (reloadButton)
             {
-                if (Networking.LocalPlayer == Networking.GetOwner(manager.gameObject) || manager.IsPrivilegedUser(Networking.LocalPlayer))
+                if (manager.CanSynchronizeSubtitles() || manager.IsLocal())
                 {
                     if (reloadGraphic) reloadGraphic.color = whiteGraphicColor;
                 }
