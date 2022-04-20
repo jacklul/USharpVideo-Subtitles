@@ -235,7 +235,7 @@ namespace UdonSharp.Video.Subtitles
             if (lockButton) lockButton.SetActive(!manager.IsUsingUSharpVideo());
 
             UpdateOwner();
-            SynchronizeLockState();
+            UpdateLockState();
             SendCustomEventDelayedFrames(nameof(UpdateSettingsValues), 1);
         }
 
@@ -375,7 +375,7 @@ namespace UdonSharp.Video.Subtitles
                 {
                     inputPlaceholderText = placeholder.GetComponent<Text>();
                     inputField = proxy.GetComponent<Text>();
-                    SynchronizeLockState();
+                    UpdateLockState();
                     return;
                 }
             }
@@ -465,10 +465,10 @@ namespace UdonSharp.Video.Subtitles
                 {
                     if (reloadGraphic) reloadGraphic.color = redGraphicColor;
                 }
-            }*/
+            }
         }
-        
-        public void SynchronizeLockState()
+
+        public void UpdateLockState()
         {
             if (manager.IsLocal())
             {

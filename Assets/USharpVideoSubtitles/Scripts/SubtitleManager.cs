@@ -122,7 +122,7 @@ namespace UdonSharp.Video.Subtitles
                     SendCustomEventDelayedFrames(nameof(_QueueSerialize), 1); // Send lock state to everyone as initial state
 
                     foreach (SubtitleControlHandler handler in _registeredControlHandlers)
-                        handler.SynchronizeLockState();
+                        handler.UpdateLockState();
                 }
 
                 _lastLocked = _isLocked;
@@ -300,7 +300,7 @@ namespace UdonSharp.Video.Subtitles
                 _lastLocked = _isLocked;
 
                 foreach (SubtitleControlHandler handler in _registeredControlHandlers)
-                    handler.SynchronizeLockState();
+                    handler.UpdateLockState();
 
                 SendCallback("OnUSharpVideoSubtitlesLockChange");
             }
@@ -643,7 +643,7 @@ namespace UdonSharp.Video.Subtitles
                 foreach (SubtitleControlHandler handler in _registeredControlHandlers)
                 {
                     handler.UpdateOwner();
-                    handler.SynchronizeLockState();
+                    handler.UpdateLockState();
                 }
             }
             
@@ -694,7 +694,7 @@ namespace UdonSharp.Video.Subtitles
                 RequestSerialization();
 
             foreach (SubtitleControlHandler handler in _registeredControlHandlers)
-                handler.SynchronizeLockState();
+                handler.UpdateLockState();
             
             SendCallback("OnUSharpVideoSubtitlesLockChange");
         }
@@ -779,7 +779,10 @@ namespace UdonSharp.Video.Subtitles
                 handler.SetLocalToggleButtonState(_isLocal);
 
             foreach (SubtitleControlHandler handler in _registeredControlHandlers)
-                handler.SynchronizeLockState();
+                handler.UpdateOwner();
+
+            foreach (SubtitleControlHandler handler in _registeredControlHandlers)
+                handler.UpdateLockState();
 
             SendCallback("OnUSharpVideoSubtitlesModeChange");
         }
@@ -885,7 +888,7 @@ namespace UdonSharp.Video.Subtitles
         public void OnUSharpVideoLockChange()
         {
             foreach (SubtitleControlHandler handler in _registeredControlHandlers)
-                handler.SynchronizeLockState();
+                handler.UpdateLockState();
 
             SendCallback("OnUSharpVideoSubtitlesLockChange");
 
@@ -919,7 +922,7 @@ namespace UdonSharp.Video.Subtitles
             if (targetVideoPlayer.IsLocked()) // Only to update the master in the input field's placeholder
             {
                 foreach (SubtitleControlHandler handler in _registeredControlHandlers)
-                    handler.SynchronizeLockState();
+                    handler.UpdateLockState();
             }
         }
 
