@@ -44,18 +44,27 @@ Use this to change the video player reference that the subtitles are synced with
 
 - Does nothing when using **USharpVideo**
 
-### SubtitleManager.ProcessInput(string): void
-
-Loads subtitles from the text string globally or locally (depending on `IsLocal()` value)
-
-- When using **USharpVideo** - only the player who can control the video player can do this (`USharpVideo.CanControlVideoPlayer()`)
-- For other video players - if `IsLocked()` is `true` then only the Master can do this
-
 ### SubtitleManager.HasSubtitles(): bool
 
 Check whenever subtitles are currently loaded
 
 - It will return `true` if subtitles are loaded for the current mode (`IsLocal()`)
+
+### SubtitleManager.ProcessInput(string): void
+
+Loads subtitles from the text string globally or locally (depending on `IsLocal()` value)
+
+- When using **USharpVideo** - only the player who can control the video player can do this
+- For other video players - if `IsLocked()` is `true` then only the Master can do this
+- To check whenever player is able to execute this - use `SubtitleManager.CanControlSubtitles()`
+
+### SubtitleManager.ClearSubtitles(): void
+
+Clears the subtitles globally or locally (depending on `IsLocal()` value)
+
+- When using **USharpVideo** - only the player who can control the video player can do this
+- For other video players - if `IsLocked()` is `true` then only the Master can do this
+- To check whenever player is able to execute this - use `SubtitleManager.CanControlSubtitles()`
 
 ### SubtitleManager.IsLocked(): bool
 
@@ -68,15 +77,8 @@ Whenever the access is locked to Master only
 Change lock state, must be executed by the Master
 
 - Does nothing when used with **USharpVideo** as it shares the same state with it
-- This can silently fail if the synchronization is ongoing and it wasn't initiated by the Master - check if `SubtitleManager.IsSynchronized()` is `true` before running it
-
-### SubtitleManager.IsLocal(): bool
-
-Whenever the player is using local subtitles
-
-### SubtitleManager.SetLocal(bool): void
-
-Switch between using global and local subtitles
+- This can fail if the synchronization is ongoing - check if `SubtitleManager.IsSynchronized()` is `true` before running it
+- To check whenever player is able to execute this - use `SubtitleManager.IsPrivilegedUser(VRCPlayerApi)`
 
 ### SubtitleManager.IsEnabled(): bool
 
@@ -86,18 +88,24 @@ Whenever the subtitles are enabled for the the player
 
 Enable or disable the subtitles for the the player
 
-### SubtitleManager.ClearSubtitles(): void
+### SubtitleManager.IsLocal(): bool
 
-Clears the subtitles globally or locally (depending on `IsLocal()` value)
+Whenever the player is using local subtitles
 
-- When using **USharpVideo** - only the player who can control the video player can do this (`USharpVideo.CanControlVideoPlayer()`)
-- For other video players - if `IsLocked()` is `true` then only the Master can do this
+### SubtitleManager.SetLocal(bool): void
+
+Switch between using global and local subtitles
 
 ### SubtitleManager.SynchronizeSubtitles(): void
 
 Re-synchronizes the subtitles globally, only the person who loaded them can do this (or the master if the synchronization is finished) - this can change when that person leaves the instance or lock state changes - check the `SubtitleManager.gameObject` owner in this case
 
-- This can silently fail if the synchronization is ongoing - check if `SubtitleManager.IsSynchronized()` is `true` before running it
+- This can fail if the synchronization is ongoing - check if `SubtitleManager.IsSynchronized()` is `true` before running it
+- To check whenever player is able to execute this - use `SubtitleManager.CanSynchronizeSubtitles()`
+
+### SubtitleOverlayHandler.GetCanvasTransform(): Transform
+
+Use this method to get transform values of the overlay's `Canvas` in case you want to display something on the same screen
 
 ### SubtitleOverlayHandler.MoveOverlay(GameObject): void
 
@@ -105,18 +113,14 @@ Moves the overlay to the given object's transform values
 
 - Make sure that the settings popup is not visible at this time as it will stay in the old position until it is re-opened
 
-### SubtitleOverlayHandler.GetCanvasTransform(): Transform
-
-Use this method to get transform values of the overlay's `Canvas` in case you want to display something on the same screen
-
-### SubtitleOverlayHandler.IsSettingsPopupActive(): bool
+### SubtitleControlHandler.IsSettingsPopupActive(): bool
 
 Check if settings popup is currently open
-
-### SubtitleControlHandler.ImportSettingsFromString(string): void
-
-Import settings from the given string (the same string which is displayed in the settings window), the format is pretty easy to figure out
 
 ### SubtitleControlHandler.ToggleSettingsPopup(): void
 
 Toggle settings popup, use this to show and hide the popup using separate button
+
+### SubtitleControlHandler.ImportSettingsFromString(string): void
+
+Import settings from the given string (the same string which is displayed in the settings window), the format is pretty easy to figure out
