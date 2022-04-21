@@ -1023,7 +1023,7 @@ namespace UdonSharp.Video.Subtitles
             if (_registeredCallbackReceivers == null)
                 _registeredCallbackReceivers = new UdonSharpBehaviour[0];
 
-            int callbackReceiverCount = _registeredControlHandlers.Length;
+            int callbackReceiverCount = _registeredCallbackReceivers.Length;
             for (int i = 0; i < callbackReceiverCount; ++i)
             {
                 UdonSharpBehaviour currHandler = _registeredCallbackReceivers[i];
