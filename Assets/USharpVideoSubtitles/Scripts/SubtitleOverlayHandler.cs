@@ -145,7 +145,7 @@ namespace UdonSharp.Video.Subtitles
         public void MoveOverlay(GameObject screen)
         {
             gameObject.name = "SubtitlesOverlay";
-            gameObject.transform.SetParent(screen.gameObject.transform);
+            gameObject.transform.SetParent(screen.transform);
             gameObject.transform.localPosition = Vector3.zero;
             gameObject.transform.localRotation = Quaternion.identity;
             gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
