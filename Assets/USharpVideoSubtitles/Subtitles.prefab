@@ -2162,7 +2162,6 @@ GameObject:
   - component: {fileID: 368572902012170220}
   - component: {fileID: 368572902012170218}
   - component: {fileID: 368572902012170219}
-  - component: {fileID: 1044043327}
   m_Layer: 0
   m_Name: UI
   m_TagString: Untagged
@@ -2379,24 +2378,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 188.62, z: 0}
---- !u!114 &1044043327
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 368572902012170217}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c162faec4d5d78f46837629d4112214d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  inputField: {fileID: 1018620858}
-  versionFile: {fileID: 4900000, guid: 3dab433e2815cc04994dfef5ca4c4daa, type: 3}
-  placeholder: (development version)
-  text: 'github.com/jacklul/USharpVideo-Subtitles
-
-    (development version)'
 --- !u!1 &368572902017789850
 GameObject:
   m_ObjectHideFlags: 0
@@ -3219,6 +3200,7 @@ Transform:
   m_Children:
   - {fileID: 5809803670258694622}
   - {fileID: 368572902012170216}
+  - {fileID: 1661566242436806473}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -9664,6 +9646,55 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   styleClass: 9
   targetGraphic: {fileID: 303435994008128141}
+--- !u!1 &1540305167077717720
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1661566242436806473}
+  - component: {fileID: 2618211059427330098}
+  m_Layer: 0
+  m_Name: EditorOnly
+  m_TagString: EditorOnly
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1661566242436806473
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1540305167077717720}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 368572902303537917}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2618211059427330098
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1540305167077717720}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c162faec4d5d78f46837629d4112214d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputField: {fileID: 1018620858}
+  versionFile: {fileID: 4900000, guid: 3dab433e2815cc04994dfef5ca4c4daa, type: 3}
+  placeholder: (development version)
+  text: 'github.com/jacklul/USharpVideo-Subtitles
+
+    (development version)'
 --- !u!1 &1725164073862026495
 GameObject:
   m_ObjectHideFlags: 0
