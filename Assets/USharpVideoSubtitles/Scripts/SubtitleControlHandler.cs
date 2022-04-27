@@ -35,7 +35,8 @@ namespace UdonSharp.Video.Subtitles
         private bool settingsPopupEnabled = true;
         [Tooltip("Default value (0) will move the settings menu object into overlay object and set the scale to 0.8\nPositive numbers change the scale while keeping the same behaviour\nNegative numbers do not move the object and set an absolute scale")]
         public float settingsPopupScale = 0f;
-        //public float settingsPopupAlpha = 0.9f;
+        [Tooltip("How much transparent should the popup window be")]
+        public float settingsPopupAlpha = 0.85f;
 
         [Header("Presets")]
         [SerializeField]
@@ -109,9 +110,6 @@ namespace UdonSharp.Video.Subtitles
         private Graphic settingsPopupButtonBackground;
         [SerializeField]
         private Graphic settingsPopupButtonIcon;
-
-        //[SerializeField]
-        //private CanvasGroup settingsMenuCanvasGroup; // Type not supported by Udon yet
 
         [SerializeField]
         private InputField settingsImportExportField;
@@ -662,6 +660,7 @@ namespace UdonSharp.Video.Subtitles
                         handle = settingsMenu;
                         background = settingsMenuButtonBackground;
                         icon = settingsMenuButtonIcon;
+                        if (_popupActive && name != "settings") continue; // Prevents toggling off popup window by opening other menu
                         break;
                     case "info":
                         handle = infoMenu;
@@ -745,6 +744,7 @@ namespace UdonSharp.Video.Subtitles
                 return;
 
             RectTransform rectTransform = settingsMenu.GetComponent<RectTransform>();
+            Graphic[] graphicComponents = settingsMenu.GetComponentsInChildren<Graphic>();
 
             if (_originalSettingsMenuPosition == Vector3.zero)
                 _originalSettingsMenuPosition = settingsMenu.transform.localPosition;
@@ -771,7 +771,13 @@ namespace UdonSharp.Video.Subtitles
                     if (scale == 0)
                         scale = 0.8f;
 
-                    settingsMenu.transform.SetParent(transform);
+                    Transform transparentCanvas = transform.Find("TransparentCanvas2");
+                    
+                    if (transparentCanvas)
+                        settingsMenu.transform.SetParent(transparentCanvas);
+                    else
+                        settingsMenu.transform.SetParent(transform);
+
                     settingsMenu.transform.localPosition = Vector3.zero;
                     settingsMenu.transform.localRotation = Quaternion.identity;
                 }
@@ -787,12 +793,16 @@ namespace UdonSharp.Video.Subtitles
                 // Corrects the position to the center of the screen (because pivot is not in the center)
                 if (rectTransform) rectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x, rectTransform.anchoredPosition.y - (rectTransform.rect.height * scale / 2));
 
-                // This would let us set opacity on the popup canvas but of course it's not exposed to Udon yet!
-                /*if (settingsMenuCanvasGroup)
+                if (settingsPopupAlpha < 1 && graphicComponents.Length > 0)
                 {
-                    settingsMenuCanvasGroup.enabled = true;
-                    settingsMenuCanvasGroup.alpha = settingsPopupAlpha;
-                }*/
+                    foreach (Graphic graphic in graphicComponents)
+                    {
+                        if (graphic.name == "Handle") // Looks bad with transparency
+                            continue;
+
+                        graphic.color = new Color(graphic.color.r, graphic.color.g, graphic.color.b, settingsPopupAlpha);
+                    }
+                }
 
                 if (settingsPopupButtonBackground) settingsPopupButtonBackground.color = buttonActivatedColor;
                 if (settingsPopupButtonIcon) settingsPopupButtonIcon.color = iconInvertedColor;
@@ -807,9 +817,14 @@ namespace UdonSharp.Video.Subtitles
                 settingsMenu.transform.localPosition = _originalSettingsMenuPosition;
                 settingsMenu.transform.localRotation = _originalSettingsMenuRotation;
                 settingsMenu.transform.localScale = _originalSettingsMenuScale;
-                //if (settingsMenuCanvasGroup) settingsMenuCanvasGroup.enabled = false;
-
+                
                 if (rectTransform) rectTransform.anchoredPosition = _originalSettingsAnchoredPosition;
+
+                if (settingsPopupAlpha < 1 && graphicComponents.Length > 0)
+                {
+                    foreach (Graphic graphic in graphicComponents)
+                        graphic.color = new Color(graphic.color.r, graphic.color.g, graphic.color.b, 1f);
+                }
 
                 if (settingsPopupButtonBackground) settingsPopupButtonBackground.color = buttonBackgroundColor;
                 if (settingsPopupButtonIcon) settingsPopupButtonIcon.color = whiteGraphicColor;
