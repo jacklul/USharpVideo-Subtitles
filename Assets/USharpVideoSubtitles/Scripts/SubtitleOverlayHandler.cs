@@ -56,8 +56,10 @@ namespace UdonSharp.Video.Subtitles
         private string _lastText = "";
         private bool _showPlaceholder = false;
 
-        RectTransform _textFieldRectTransform;
-        RectTransform _backgroundFieldRectTransform;
+        private RectTransform _textFieldRectTransform;
+        private RectTransform _backgroundFieldRectTransform;
+        private RectTransform _textFieldRectTransformTop;
+        private RectTransform _backgroundFieldRectTransformTop;
 
         private int _fontSize;
         private string _backgroundColorHex;
@@ -69,8 +71,10 @@ namespace UdonSharp.Video.Subtitles
 
         private void Start()
         {
-            _textFieldRectTransform = subtitleTextField.gameObject.GetComponent<RectTransform>();
-            _backgroundFieldRectTransform = subtitleBackgroundField.gameObject.GetComponent<RectTransform>();
+            _textFieldRectTransform = subtitleTextField.GetComponent<RectTransform>();
+            _backgroundFieldRectTransform = subtitleBackgroundField.GetComponent<RectTransform>();
+            if (subtitleTextFieldTop) _textFieldRectTransformTop = subtitleTextFieldTop.GetComponent<RectTransform>();
+            if (subtitleBackgroundFieldTop) _backgroundFieldRectTransformTop = subtitleBackgroundFieldTop.GetComponent<RectTransform>();
 
             ResetSettings();
 
@@ -293,13 +297,13 @@ namespace UdonSharp.Video.Subtitles
             _backgroundFieldRectTransform.offsetMin = new Vector2(margin.x, margin.w);
             _backgroundFieldRectTransform.offsetMax = new Vector2(-margin.z, -margin.y);
             
-            if (subtitleTextFieldTop && subtitleBackgroundFieldTop)
+            if (_textFieldRectTransformTop && _backgroundFieldRectTransformTop)
             {
-                subtitleTextFieldTop.GetComponent<RectTransform>().offsetMin = new Vector2(margin.x, margin.w);
-                subtitleTextFieldTop.GetComponent<RectTransform>().offsetMax = new Vector2(-margin.z, -margin.y);
+                _textFieldRectTransformTop.offsetMin = new Vector2(margin.x, margin.w);
+                _textFieldRectTransformTop.offsetMax = new Vector2(-margin.z, -margin.y);
 
-                subtitleBackgroundFieldTop.GetComponent<RectTransform>().offsetMin = new Vector2(margin.x, margin.w);
-                subtitleBackgroundFieldTop.GetComponent<RectTransform>().offsetMax = new Vector2(-margin.z, -margin.y);
+                _backgroundFieldRectTransformTop.offsetMin = new Vector2(margin.x, margin.w);
+                _backgroundFieldRectTransformTop.offsetMax = new Vector2(-margin.z, -margin.y);
             }
             
             //subtitleTextField.margin = margin;
