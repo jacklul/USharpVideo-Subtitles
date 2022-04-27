@@ -47,19 +47,20 @@ namespace UdonSharp.Video.Subtitles
         [SerializeField, Tooltip("This also sets background opacity")]
         private Color backgroundColor = new Color(0f, 0f, 0f, 0f);
         [SerializeField, Range(0, 540)]
-        private int verticalMargin = 60;
-        //[SerializeField, Range(0, 960)]
-        //private int horizontalMargin = 60;
+        private int verticalMargin = 80;
+        [SerializeField, Range(0, 960)]
+        private int horizontalMargin = 80;
         [SerializeField, Range(0, 1), Tooltip("0 = bottom\n1 = top")]
         private int alignment = 0; // To be replaced with "private VerticalAlignmentOptions alignment = VerticalAlignmentOptions.Bottom;" which is not exposed to Udon yet
         
         private string _lastText = "";
         private bool _showPlaceholder = false;
 
+        RectTransform _textFieldRectTransform;
+        RectTransform _backgroundFieldRectTransform;
+
         private int _fontSize;
         private string _backgroundColorHex;
-        private int _margin;
-        private int _alignment;
 
         private void OnEnable()
         {
@@ -68,8 +69,11 @@ namespace UdonSharp.Video.Subtitles
 
         private void Start()
         {
+            _textFieldRectTransform = subtitleTextField.gameObject.GetComponent<RectTransform>();
+            _backgroundFieldRectTransform = subtitleBackgroundField.gameObject.GetComponent<RectTransform>();
+
             ResetSettings();
-            
+
             if (videoScreen)
                 MoveOverlay(videoScreen);
         }
@@ -95,29 +99,18 @@ namespace UdonSharp.Video.Subtitles
                 return;
             }
 
-            string margin = "";
-
-            if (_margin > 0)
-                margin = $"<size={(int)(_margin * 0.9f)}> </size>"; // This calculation is very close to what we would get by using the margin property
-
             string subtitle = $"<size={_fontSize}>{text}</size>";
             string background = $"<mark={_backgroundColorHex}><size={_fontSize}>{text}</size></mark>";
 
-            if (_alignment == 0)
+            if (GetAlignment() == 0)
             {
-                if (margin != "")
-                    margin = "\n" + margin;
-
-                subtitleTextField.text = subtitle + margin;
-                subtitleBackgroundField.text = background + margin;
+                subtitleTextField.text = subtitle;
+                subtitleBackgroundField.text = background;
             }
             else if (subtitleTextFieldTop && subtitleBackgroundFieldTop) // This is very dirty way of achieving this but it'll do until we get access to alignment property
             {
-                if (margin != "")
-                    margin = margin + "\n";
-
-                subtitleTextFieldTop.text = margin + subtitle;
-                subtitleBackgroundFieldTop.text = margin + background;
+                subtitleTextFieldTop.text = subtitle;
+                subtitleBackgroundFieldTop.text = background;
             }
         }
 
@@ -159,7 +152,7 @@ namespace UdonSharp.Video.Subtitles
             SetOutlineColor(outlineColor);
             SetBackgroundColor(backgroundColor); // This also sets the opacity, obviously
             SetVerticalMargin(verticalMargin);
-            //SetHorizontalMargin(horizontalMargin);
+            SetHorizontalMargin(horizontalMargin);
             SetAlignment(alignment);
         }
 
@@ -188,8 +181,8 @@ namespace UdonSharp.Video.Subtitles
             _fontSize = size;
 
             // Not exposed to Udon yet, we'are using <size=> magic in Display() for now
-            /*subtitlesTextField.fontSize = size; 
-            subtitlesBackgroundField.fontSize = size;*/
+            //subtitlesTextField.fontSize = size; 
+            //subtitlesBackgroundField.fontSize = size;
         }
 
         public Color GetFontColor()
@@ -252,48 +245,81 @@ namespace UdonSharp.Video.Subtitles
 
         public int GetVerticalMargin()
         {
-            return _margin;
+            if (!_textFieldRectTransform)
+                return 0;
+
+            return Mathf.Abs(GetAlignment() == 1 ? (int)_textFieldRectTransform.offsetMax.y : (int)_textFieldRectTransform.offsetMin.y);
             //return GetAlignment() == 1 ? (int)subtitleTextField.margin.y : (int)subtitleTextField.margin.z;
         }
 
         public void SetVerticalMargin(int margin)
         {
-            _margin = margin; // This is very close to using the margin property
+            if (!_textFieldRectTransform)
+                return;
 
-            // Not exposed to Udon yet, we'are using <size=> magic in Display() for now
-            /*if (GetAlignment() == 1)
-                SetMarginInternal(new Vector4(subtitleTextField.margin.x, margin, subtitleTextField.margin.z, 0));
+            if (GetAlignment() == 1)
+                SetMarginInternal(new Vector4(Mathf.Abs(_textFieldRectTransform.offsetMin.x), margin, Mathf.Abs(_textFieldRectTransform.offsetMax.x), 0));
             else
-                SetMarginInternal(new Vector4(subtitleTextField.margin.x, 0, subtitleTextField.margin.z, margin));*/
+                SetMarginInternal(new Vector4(Mathf.Abs(_textFieldRectTransform.offsetMin.x), 0, Mathf.Abs(_textFieldRectTransform.offsetMax.x), margin));
+
+            //if (GetAlignment() == 1)
+            //    SetMarginInternal(new Vector4(subtitleTextField.margin.x, margin, subtitleTextField.margin.z, 0));
+            //else
+            //    SetMarginInternal(new Vector4(subtitleTextField.margin.x, 0, subtitleTextField.margin.z, margin));
         }
 
-        /*public float GetHorizontalMargin()
+        public float GetHorizontalMargin()
         {
-            return subtitleTextField.margin.x;
+            if (!_textFieldRectTransform)
+                return 0;
+
+            return Mathf.Abs(_textFieldRectTransform.offsetMin.x);
+            //return subtitleTextField.margin.x;
         }
 
         public void SetHorizontalMargin(int margin)
         {
-            SetMarginInternal(new Vector4(margin, subtitleTextField.margin.y, margin, subtitleTextField.margin.w));
+            if (!_textFieldRectTransform)
+                return;
+
+            SetMarginInternal(new Vector4(margin, Mathf.Abs(_textFieldRectTransform.offsetMax.y), margin, Mathf.Abs(_textFieldRectTransform.offsetMin.y)));
         }
 
         private void SetMarginInternal(Vector4 margin)
         {
-            subtitleTextField.margin = margin;
-            subtitleBackgroundField.margin = margin;
-        }*/
+            _textFieldRectTransform.offsetMin = new Vector2(margin.x, margin.w);
+            _textFieldRectTransform.offsetMax = new Vector2(-margin.z, -margin.y);
+
+            _backgroundFieldRectTransform.offsetMin = new Vector2(margin.x, margin.w);
+            _backgroundFieldRectTransform.offsetMax = new Vector2(-margin.z, -margin.y);
+            
+            if (subtitleTextFieldTop && subtitleBackgroundFieldTop)
+            {
+                subtitleTextFieldTop.GetComponent<RectTransform>().offsetMin = new Vector2(margin.x, margin.w);
+                subtitleTextFieldTop.GetComponent<RectTransform>().offsetMax = new Vector2(-margin.z, -margin.y);
+
+                subtitleBackgroundFieldTop.GetComponent<RectTransform>().offsetMin = new Vector2(margin.x, margin.w);
+                subtitleBackgroundFieldTop.GetComponent<RectTransform>().offsetMax = new Vector2(-margin.z, -margin.y);
+            }
+            
+            //subtitleTextField.margin = margin;
+            //subtitleBackgroundField.margin = margin;
+        }
 
         public int GetAlignment() // Not exposed to Udon yet, to be replaced with "public VerticalAlignmentOptions GetAlignment()"
         {
-            return _alignment;
+            return subtitleTextField.gameObject.activeSelf ? 0 : 1;
             //return subtitleTextField.alignment;
         }
 
-        public void SetAlignment(int alignment) // Not exposed to Udon yet, to be replaced with "public void SetAlignment(VerticalAlignmentOptions alignment)"
+        public void SetAlignment(int value) // Not exposed to Udon yet, to be replaced with "public void SetAlignment(VerticalAlignmentOptions alignment)"
         {
-            _alignment = alignment;
+            if (!subtitleTextFieldTop || !subtitleBackgroundFieldTop)
+                return;
+            
+            int currentMargin = GetVerticalMargin();
 
-            if (_alignment == 0)
+            if (value == 0)
             {
                 subtitleTextField.gameObject.SetActive(true);
                 subtitleBackgroundField.gameObject.SetActive(true);
@@ -308,13 +334,12 @@ namespace UdonSharp.Video.Subtitles
                 subtitleBackgroundField.gameObject.SetActive(false);
             }
 
+            SetVerticalMargin(currentMargin);
             ClearSubtitle();
             RefreshSubtitle();
 
-            /*int _margin = GetMargin();
-            subtitleTextField.alignment = alignment;
-            subtitleBackgroundField.alignment = alignment;
-            SetMargin(_margin);*/
+            //subtitleTextField.alignment = alignment;
+            //subtitleBackgroundField.alignment = alignment;
         }
 
         private string ToRGBHex(Color color)

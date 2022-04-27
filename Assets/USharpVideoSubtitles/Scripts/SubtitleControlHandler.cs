@@ -190,10 +190,10 @@ namespace UdonSharp.Video.Subtitles
         [SerializeField]
         private Text verticalMarginValue;
         
-        //[SerializeField]
-        //private Slider horizontalMarginSlider;
-        //[SerializeField]
-        //private Text horizontalMarginValue;
+        [SerializeField]
+        private Slider horizontalMarginSlider;
+        [SerializeField]
+        private Text horizontalMarginValue;
 
         [SerializeField]
         private Toggle alignmentToggle;
@@ -963,7 +963,7 @@ namespace UdonSharp.Video.Subtitles
                             if (tmpInt >= 0 && updateOverlay)
                                 overlayHandler.SetVerticalMargin(tmpInt);
                             break;
-                        /*case "hm": // Horizontal Margin
+                        case "hm": // Horizontal Margin
                             tmpInt = SafelyParseInt(tmp[1]);
 
                             if (horizontalMarginSlider)
@@ -971,7 +971,7 @@ namespace UdonSharp.Video.Subtitles
 
                             if (tmpInt >= 0 && updateOverlay)
                                 overlayHandler.SetHorizontalMargin(tmpInt);
-                            break;*/
+                            break;
                         case "pa": // Alignment
                             tmpInt = SafelyParseInt(tmp[1]);
 
@@ -1053,7 +1053,7 @@ namespace UdonSharp.Video.Subtitles
                  + "/bo:" + RoundFloat(backgroundColor.a, 2)
                  + "/bc:" + RoundFloat(backgroundColor.r, 3) + ";" + RoundFloat(backgroundColor.g, 3) + ";" + RoundFloat(backgroundColor.b, 3)
                  + "/vm:" + overlayHandler.GetVerticalMargin()
-                 //+ "/hm:" + overlayHandler.GetHorizontalMargin()
+                 + "/hm:" + overlayHandler.GetHorizontalMargin()
                  + "/pa:" + overlayHandler.GetAlignment()
                 ;
 
@@ -1267,14 +1267,14 @@ namespace UdonSharp.Video.Subtitles
             verticalMarginValue.text = value.ToString();
         }
 
-        /*public void OnHorizontalMarginSlider()
+        public void OnHorizontalMarginSlider()
         {
             if (!horizontalMarginSlider)
                 return;
 
             int value = (int)horizontalMarginSlider.value;
 
-            if (overlayHandler) overlayHandler.SetVerticalMargin(value);
+            if (overlayHandler) overlayHandler.SetHorizontalMargin(value);
 
             SetHorizontalMarginValue(value);
             AfterValueChanged();
@@ -1286,7 +1286,7 @@ namespace UdonSharp.Video.Subtitles
                 return;
 
             horizontalMarginValue.text = value.ToString();
-        }*/
+        }
 
         public void OnAlignmentToggle()
         {

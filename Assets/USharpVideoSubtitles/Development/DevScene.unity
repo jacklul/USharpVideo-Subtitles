@@ -2339,6 +2339,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1555380923311263607, guid: 07a8344aed11c464d9ca30fde8ee3351,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1555380923311263607, guid: 07a8344aed11c464d9ca30fde8ee3351,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1555380923480330440, guid: 07a8344aed11c464d9ca30fde8ee3351,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1555380924063275727, guid: 07a8344aed11c464d9ca30fde8ee3351,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1555380924737070344, guid: 07a8344aed11c464d9ca30fde8ee3351,
         type: 3}
       propertyPath: m_Name
@@ -2397,6 +2417,26 @@ PrefabInstance:
     - target: {fileID: 1555380924737070346, guid: 07a8344aed11c464d9ca30fde8ee3351,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1555380925097518065, guid: 07a8344aed11c464d9ca30fde8ee3351,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1555380925097518065, guid: 07a8344aed11c464d9ca30fde8ee3351,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1555380925097518065, guid: 07a8344aed11c464d9ca30fde8ee3351,
+        type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1555380925193391771, guid: 07a8344aed11c464d9ca30fde8ee3351,
+        type: 3}
+      propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7817971935130809596, guid: 07a8344aed11c464d9ca30fde8ee3351,
