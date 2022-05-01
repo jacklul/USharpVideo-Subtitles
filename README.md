@@ -1,9 +1,10 @@
 # Subtitles support for USharpVideo
 
-This prefab adds support for SRT subtitles to [USharpVideo](https://github.com/MerlinVR/USharpVideo).  
-_It was build mainly for USharpVideo but will work with any other video player supported by VRChat (Unity and AVPro)._
+**This prefab adds support for SRT subtitles to [USharpVideo](https://github.com/MerlinVR/USharpVideo).**  
+It was build mainly for USharpVideo but will work with any other video player supported by VRChat (Unity and AVPro).
 
-To check this out in-game visit [this test world](https://vrchat.com/home/world/wrld_dc50af39-1f65-4c47-a0d5-d1729d5c683f).
+To check this out in-game visit [this test world](https://vrchat.com/home/world/wrld_dc50af39-1f65-4c47-a0d5-d1729d5c683f).  
+Please include **subtitles** tag in your world when using this prefab so that people can find worlds with subtitles support more easily.
 
 _[This code](https://gist.github.com/hai-vr/b340f9a46952640f81efe7f02da6bdf6) by [Haï~](https://twitter.com/vr_hai) was a great help while creating this._
 
