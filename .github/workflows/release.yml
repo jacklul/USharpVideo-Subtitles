@@ -25,6 +25,7 @@ jobs:
         echo "Assets/${{ env.ASSETS_FOLDER }}.meta" > metaList
         find "Assets/${{ env.ASSETS_FOLDER }}/" -name \*.meta >> metaList
         echo $GITHUB_REF_NAME > "Assets/${{ env.ASSETS_FOLDER }}/version.txt"
+        sed -i -e "s/(development version)/$GITHUB_REF_NAME/g" "Assets/${{ env.ASSETS_FOLDER }}/Subtitles.prefab"
 
     - uses: pCYSl5EDgo/create-unitypackage@v1
       with:
