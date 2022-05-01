@@ -4,6 +4,7 @@
  * https://github.com/jacklul/USharpVideo-Subtitles
  */
 
+using System;
 using TMPro;
 using UdonSharp;
 using UnityEngine;
@@ -37,6 +38,14 @@ namespace UdonSharp.Video.Subtitles
         public float settingsPopupScale = 0f;
         [Tooltip("How much transparent should the popup window be")]
         public float settingsPopupAlpha = 0.85f;
+
+        [Header("Alpha applying rules")]
+        [SerializeField, Tooltip("Should we ignore image components with no sprite assigned?")]
+        private bool alphaIgnoreEmptySprites = true;
+        [SerializeField, Tooltip("Image components with these sprites will not have their alpha changed")]
+        private Sprite[] alphaIgnoredSprites = new Sprite[0];
+        [SerializeField, Tooltip("GameObjects with these names will not have their alpha changed")]
+        private string[] alphaIgnoredNames = new string[0];
 
         [Header("Presets")]
         [SerializeField]
@@ -744,7 +753,7 @@ namespace UdonSharp.Video.Subtitles
                 return;
 
             RectTransform rectTransform = settingsMenu.GetComponent<RectTransform>();
-            Graphic[] graphicComponents = settingsMenu.GetComponentsInChildren<Graphic>();
+            Image[] imageComponents = settingsMenu.GetComponentsInChildren<Image>();
 
             if (_originalSettingsMenuPosition == Vector3.zero)
                 _originalSettingsMenuPosition = settingsMenu.transform.localPosition;
@@ -793,19 +802,11 @@ namespace UdonSharp.Video.Subtitles
                 // Corrects the position to the center of the screen (because pivot is not in the center)
                 if (rectTransform) rectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x, rectTransform.anchoredPosition.y - (rectTransform.rect.height * scale / 2));
 
-                if (settingsPopupAlpha < 1 && graphicComponents.Length > 0)
-                {
-                    foreach (Graphic graphic in graphicComponents)
-                    {
-                        if (graphic.name == "Handle") // Looks bad with transparency
-                            continue;
-
-                        graphic.color = new Color(graphic.color.r, graphic.color.g, graphic.color.b, settingsPopupAlpha);
-                    }
-                }
-
                 if (settingsPopupButtonBackground) settingsPopupButtonBackground.color = buttonActivatedColor;
                 if (settingsPopupButtonIcon) settingsPopupButtonIcon.color = iconInvertedColor;
+                
+                if (settingsPopupAlpha < 1 && imageComponents.Length > 0)
+                    SetAlphaOnImageComponents(imageComponents, settingsPopupAlpha);
             }
             else
             {
@@ -820,14 +821,31 @@ namespace UdonSharp.Video.Subtitles
                 
                 if (rectTransform) rectTransform.anchoredPosition = _originalSettingsAnchoredPosition;
 
-                if (settingsPopupAlpha < 1 && graphicComponents.Length > 0)
-                {
-                    foreach (Graphic graphic in graphicComponents)
-                        graphic.color = new Color(graphic.color.r, graphic.color.g, graphic.color.b, 1f);
-                }
-
                 if (settingsPopupButtonBackground) settingsPopupButtonBackground.color = buttonBackgroundColor;
                 if (settingsPopupButtonIcon) settingsPopupButtonIcon.color = whiteGraphicColor;
+                
+                if (settingsPopupAlpha < 1 && imageComponents.Length > 0)
+                    SetAlphaOnImageComponents(imageComponents, 1f);
+            }
+        }
+
+        private void SetAlphaOnImageComponents(Image[] imageComponents, float alpha)
+        {
+            if (imageComponents.Length > 0)
+            {
+                foreach (Image image in imageComponents)
+                {
+                    if (alphaIgnoreEmptySprites && image.sprite == null)
+                        continue;
+                    
+                    if (alphaIgnoredSprites.Length > 0 && Array.IndexOf(alphaIgnoredSprites, image.sprite) > -1)
+                        continue;
+
+                    if (alphaIgnoredNames.Length > 0 && alphaIgnoredNames.Equals(image.name))
+                        continue;
+                    
+                    image.color = new Color(image.color.r, image.color.g, image.color.b, alpha);
+                }
             }
         }
 
