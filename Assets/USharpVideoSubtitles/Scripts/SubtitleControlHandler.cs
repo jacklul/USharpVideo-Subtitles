@@ -799,8 +799,9 @@ namespace UdonSharp.Video.Subtitles
 
                 settingsMenu.transform.localScale = new Vector3(scale, scale, scale);
 
-                // Corrects the position to the center of the screen (because pivot is not in the center)
-                if (rectTransform) rectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x, rectTransform.anchoredPosition.y - (rectTransform.rect.height * scale / 2));
+                // Corrects the position to the center of the screen (when pivot is at the bottom)
+                if (rectTransform && rectTransform.pivot == new Vector2(0.5f, 0f))
+                    rectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x, rectTransform.anchoredPosition.y - (rectTransform.rect.height * scale / 2));
 
                 if (settingsPopupButtonBackground) settingsPopupButtonBackground.color = buttonActivatedColor;
                 if (settingsPopupButtonIcon) settingsPopupButtonIcon.color = iconInvertedColor;
