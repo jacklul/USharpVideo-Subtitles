@@ -678,11 +678,17 @@ namespace UdonSharp.Video.Subtitles
                 switch (menus[i])
                 {
                     case "input":
+                        if (!inputMenu || !inputMenuButtonBackground || !inputMenuButtonIcon)
+                            continue;
+
                         handle = inputMenu;
                         background = inputMenuButtonBackground;
                         icon = inputMenuButtonIcon;
                         break;
                     case "settings":
+                        if (!settingsMenu || !settingsMenuButtonBackground || !settingsMenuButtonIcon)
+                            continue;
+                        
                         handle = settingsMenu;
                         background = settingsMenuButtonBackground;
                         icon = settingsMenuButtonIcon;
@@ -697,6 +703,9 @@ namespace UdonSharp.Video.Subtitles
                         }
                         break;
                     case "info":
+                        if (!infoMenu || !infoMenuButtonBackground || !infoMenuButtonIcon)
+                            continue;
+
                         handle = infoMenu;
                         background = infoMenuButtonBackground;
                         icon = infoMenuButtonIcon;
