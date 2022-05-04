@@ -78,6 +78,10 @@ namespace UdonSharp.Video.Subtitles
 
         [SerializeField]
         private InputField statusTextField;
+        [SerializeField, Tooltip("For Quest users - see issue #1 in the Github repository")]
+        private Text statusPlaceholderField;
+        [SerializeField, Tooltip("For Quest users - see issue #1 in the Github repository")]
+        private Text statusFallbackTextField;
 
         [Header("Toggles")]
 
@@ -402,8 +406,19 @@ namespace UdonSharp.Video.Subtitles
                 return;
             }
 
+            string message = text + (manager.IsLocal() ? " " + INDICATOR_LOCAL : "");
+
             if (statusTextField)
-                statusTextField.text = text + (manager.IsLocal() ? " " + INDICATOR_LOCAL : "");
+            {
+                statusTextField.text = message;
+            }
+            else if (statusFallbackTextField) // Fallback method (for Quest users)
+            {
+                if (statusPlaceholderField && statusPlaceholderField.text != "")
+                    statusPlaceholderField.text = "";
+
+                statusFallbackTextField.text = message;
+            }
         }
 
         public void SaveStatusText()
@@ -415,7 +430,9 @@ namespace UdonSharp.Video.Subtitles
         {
             if (statusTextField)
                 return statusTextField.text;
-
+            else if (statusFallbackTextField)
+                return statusFallbackTextField.text;
+            
             return "";
         }
 
