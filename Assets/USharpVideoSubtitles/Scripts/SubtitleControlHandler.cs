@@ -686,7 +686,15 @@ namespace UdonSharp.Video.Subtitles
                         handle = settingsMenu;
                         background = settingsMenuButtonBackground;
                         icon = settingsMenuButtonIcon;
-                        if (_popupActive && name != "settings") continue; // Prevents toggling off popup window by opening other menu
+                        
+                        if (name != "settings")
+                        {
+                            if (_popupActive)
+                                continue; // Prevents toggling off popup window by opening other menu
+                            
+                            if (settingsMenu.activeSelf)
+                                overlayHandler.ClearSubtitle(); // Hide subtitle placeholder when switching the menus
+                        }
                         break;
                     case "info":
                         handle = infoMenu;
