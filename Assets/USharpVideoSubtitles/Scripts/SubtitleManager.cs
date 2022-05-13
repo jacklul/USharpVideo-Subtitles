@@ -599,8 +599,13 @@ namespace UdonSharp.Video.Subtitles
 
         public override void OnPlayerJoined(VRCPlayerApi player)
         {
-            if (Networking.IsOwner(gameObject) && _data != "")
-                TransmitSubtitles();
+            if (Networking.IsOwner(gameObject))
+            {
+                if (_data != "")
+                    TransmitSubtitles();
+                else if (!IsUsingUSharpVideo()) // To make sure the lock state is correct on the joiner
+                    RequestSerialization();
+            }
         }
         
         public override void OnPlayerLeft(VRCPlayerApi player)
