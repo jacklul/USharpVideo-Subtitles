@@ -616,6 +616,8 @@ namespace UdonSharp.Video.Subtitles
                 {
                     foreach (SubtitleControlHandler handler in _registeredControlHandlers) // This will prevent the status being stuck at "synchronizing last chunk"
                     {
+                        handler.RestoreStatusText();
+                        
                         if (_data != "")
                             handler.SetStatusText(MESSAGE_LOADED);
                         else
