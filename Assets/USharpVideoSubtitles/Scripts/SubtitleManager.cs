@@ -536,8 +536,8 @@ namespace UdonSharp.Video.Subtitles
 
         private string ProcessText(string text)
         {
-            if (text.Contains("<font "))
-                text = text.Replace("<font  ", "<").Replace("<font ", "<").Replace("</font>", "</color>").Replace("=\"", "=").Replace("\">", ">");
+            if (text.Contains(" color=")) // @TODO this needs to be improved, would love regex here
+                text = "<" + text.Replace("<font", "").TrimStart(' ').Replace("</font>", "</color>").Replace("=\"", "=").Replace("\">", ">");
 
             if (text.Contains(@"{\an"))
                 text = text.Substring(text.IndexOf(@"{\an") + 6).TrimStart(' ');
