@@ -539,6 +539,12 @@ namespace UdonSharp.Video.Subtitles
             if (text.Contains("<font "))
                 text = text.Replace("<font  ", "<").Replace("<font ", "<").Replace("</font>", "</color>").Replace("=\"", "=").Replace("\">", ">");
 
+            if (text.Contains(@"{\an"))
+                text = text.Substring(text.IndexOf(@"{\an") + 6).TrimStart(' ');
+
+            if (text.Contains(@"{\a"))
+                text = text.Substring(text.IndexOf(@"{\a") + 5).TrimStart(' ');
+
             return text;
         }
 
