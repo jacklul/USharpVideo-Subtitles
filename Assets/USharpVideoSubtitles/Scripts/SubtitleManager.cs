@@ -1009,7 +1009,7 @@ namespace UdonSharp.Video.Subtitles
 
         public void RegisterCallbackReceiver(UdonSharpBehaviour callbackReceiver)
         {
-            if (!Utilities.IsValid(callbackReceiver))
+            if (!callbackReceiver)
                 return;
 
             if (_registeredCallbackReceivers == null)
@@ -1030,7 +1030,7 @@ namespace UdonSharp.Video.Subtitles
 
         public void UnregisterCallbackReceiver(UdonSharpBehaviour callbackReceiver)
         {
-            if (!Utilities.IsValid(callbackReceiver))
+            if (!callbackReceiver)
                 return;
 
             if (_registeredCallbackReceivers == null)
@@ -1062,7 +1062,7 @@ namespace UdonSharp.Video.Subtitles
         {
             foreach (UdonSharpBehaviour callbackReceiver in _registeredCallbackReceivers)
             {
-                if (Utilities.IsValid(callbackReceiver))
+                if (callbackReceiver)
                     callbackReceiver.SendCustomEvent(callbackName);
             }
         }
