@@ -121,6 +121,12 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &21108598 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 368572902303537915, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+    type: 3}
+  m_PrefabInstance: {fileID: 1044043323}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &43104013 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 368572902473309454, guid: 79b0ea249ffa6a54bb5f55191b085d00,
@@ -259,7 +265,7 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 182516341}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 565470787}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: -560078975, guid: 661092b4961be7145bfbe56e1e62337b, type: 3}
@@ -294,6 +300,30 @@ PrefabInstance:
       propertyPath: serializationData.Prefab
       value: 
       objectReference: {fileID: 151171893677508984, guid: 87d772cf1b1ec7b49839dde29eb427be,
+        type: 3}
+    - target: {fileID: 2458704920517279275, guid: 87d772cf1b1ec7b49839dde29eb427be,
+        type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 2458704920517279275, guid: 87d772cf1b1ec7b49839dde29eb427be,
+        type: 3}
+    - target: {fileID: 2526371802697749800, guid: 87d772cf1b1ec7b49839dde29eb427be,
+        type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 2526371802697749800, guid: 87d772cf1b1ec7b49839dde29eb427be,
+        type: 3}
+    - target: {fileID: 3584478122434415953, guid: 87d772cf1b1ec7b49839dde29eb427be,
+        type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 3584478122434415953, guid: 87d772cf1b1ec7b49839dde29eb427be,
+        type: 3}
+    - target: {fileID: 5740386766444213194, guid: 87d772cf1b1ec7b49839dde29eb427be,
+        type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 5740386766444213194, guid: 87d772cf1b1ec7b49839dde29eb427be,
         type: 3}
     - target: {fileID: 6421412927230641042, guid: 87d772cf1b1ec7b49839dde29eb427be,
         type: 3}
@@ -333,11 +363,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 566cc2bee6923dc419df8b6b71a7268a,
         type: 2}
-    - target: {fileID: 6421412928178292072, guid: 87d772cf1b1ec7b49839dde29eb427be,
-        type: 3}
-      propertyPath: _syncMethod
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 6421412928178292072, guid: 87d772cf1b1ec7b49839dde29eb427be,
         type: 3}
       propertyPath: serializedProgramAsset
@@ -463,6 +488,24 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 8604909757722143276, guid: 87d772cf1b1ec7b49839dde29eb427be,
+        type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 8604909757722143276, guid: 87d772cf1b1ec7b49839dde29eb427be,
+        type: 3}
+    - target: {fileID: 8616888568825735076, guid: 87d772cf1b1ec7b49839dde29eb427be,
+        type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 8616888568825735076, guid: 87d772cf1b1ec7b49839dde29eb427be,
+        type: 3}
+    - target: {fileID: 9176998757276209385, guid: 87d772cf1b1ec7b49839dde29eb427be,
+        type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 9176998757276209385, guid: 87d772cf1b1ec7b49839dde29eb427be,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 87d772cf1b1ec7b49839dde29eb427be, type: 3}
 --- !u!114 &238172481 stripped
@@ -471,7 +514,7 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 238172480}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1647437372}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 45115577ef41a5b4ca741ed302693907, type: 3}
@@ -483,7 +526,7 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 238172480}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1647437372}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a387f0336d7ee344baf6e00b581a5365, type: 3}
@@ -549,6 +592,12 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 515586741}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &385603887 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8235914778588559562, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+    type: 3}
+  m_PrefabInstance: {fileID: 515586741}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &408376753 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3586176773095825848, guid: 79b0ea249ffa6a54bb5f55191b085d00,
@@ -579,6 +628,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &477298076 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 368572902012170217, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+    type: 3}
+  m_PrefabInstance: {fileID: 515586741}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &503033370 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1773562938, guid: 79b0ea249ffa6a54bb5f55191b085d00,
@@ -591,6 +646,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &512369044 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1555380924063275727, guid: 07a8344aed11c464d9ca30fde8ee3351,
+    type: 3}
+  m_PrefabInstance: {fileID: 7817971935179713291}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &515586741
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -598,9 +659,28 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2051625489}
     m_Modifications:
+    - target: {fileID: -6100024651344801679, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
+      propertyPath: baseVideoPlayer
+      value: 
+      objectReference: {fileID: 182516342}
+    - target: {fileID: -6100024651344801679, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: -6100024651344801679, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
     - target: {fileID: 320573885, guid: 79b0ea249ffa6a54bb5f55191b085d00, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 351551577, guid: 79b0ea249ffa6a54bb5f55191b085d00, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 586363086, guid: 79b0ea249ffa6a54bb5f55191b085d00, type: 3}
+      propertyPath: m_RootOrder
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 591792870, guid: 79b0ea249ffa6a54bb5f55191b085d00, type: 3}
       propertyPath: m_AnchorMax.y
@@ -631,6 +711,11 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1442731301, guid: 79b0ea249ffa6a54bb5f55191b085d00, type: 3}
+      propertyPath: serializedProgramAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: d6065daf20df8e6419c4098ebb96533d,
+        type: 2}
+    - target: {fileID: 1442731301, guid: 79b0ea249ffa6a54bb5f55191b085d00, type: 3}
       propertyPath: serializedPublicVariablesBytesString
       value: Ai8AAAAAATIAAABWAFIAQwAuAFUAZABvAG4ALgBDAG8AbQBtAG8AbgAuAFUAZABvAG4AVgBhAHIAaQBhAGIAbABlAFQAYQBiAGwAZQAsACAAVgBSAEMALgBVAGQAbwBuAC4AQwBvAG0AbQBvAG4AAAAAAAYBAAAAAAAAACcBBAAAAHQAeQBwAGUAAWgAAABTAHkAcwB0AGUAbQAuAEMAbwBsAGwAZQBjAHQAaQBvAG4AcwAuAEcAZQBuAGUAcgBpAGMALgBMAGkAcwB0AGAAMQBbAFsAVgBSAEMALgBVAGQAbwBuAC4AQwBvAG0AbQBvAG4ALgBJAG4AdABlAHIAZgBhAGMAZQBzAC4ASQBVAGQAbwBuAFYAYQByAGkAYQBiAGwAZQAsACAAVgBSAEMALgBVAGQAbwBuAC4AQwBvAG0AbQBvAG4AXQBdACwAIABtAHMAYwBvAHIAbABpAGIAAQEJAAAAVgBhAHIAaQBhAGIAbABlAHMALwEAAAABaAAAAFMAeQBzAHQAZQBtAC4AQwBvAGwAbABlAGMAdABpAG8AbgBzAC4ARwBlAG4AZQByAGkAYwAuAEwAaQBzAHQAYAAxAFsAWwBWAFIAQwAuAFUAZABvAG4ALgBDAG8AbQBtAG8AbgAuAEkAbgB0AGUAcgBmAGEAYwBlAHMALgBJAFUAZABvAG4AVgBhAHIAaQBhAGIAbABlACwAIABWAFIAQwAuAFUAZABvAG4ALgBDAG8AbQBtAG8AbgBdAF0ALAAgAG0AcwBjAG8AcgBsAGkAYgABAAAABgIAAAAAAAAAAi8CAAAAAUsAAABWAFIAQwAuAFUAZABvAG4ALgBDAG8AbQBtAG8AbgAuAFUAZABvAG4AVgBhAHIAaQBhAGIAbABlAGAAMQBbAFsAUwB5AHMAdABlAG0ALgBCAG8AbwBsAGUAYQBuACwAIABtAHMAYwBvAHIAbABpAGIAXQBdACwAIABWAFIAQwAuAFUAZABvAG4ALgBDAG8AbQBtAG8AbgACAAAABgIAAAAAAAAAJwEEAAAAdAB5AHAAZQABFwAAAFMAeQBzAHQAZQBtAC4AUwB0AHIAaQBuAGcALAAgAG0AcwBjAG8AcgBsAGkAYgAnAQoAAABTAHkAbQBiAG8AbABOAGEAbQBlAAErAAAAXwBfAF8AVQBkAG8AbgBTAGgAYQByAHAAQgBlAGgAYQB2AGkAbwB1AHIASABhAHMARABvAG4AZQBTAGMAZQBuAGUAVQBwAGcAcgBhAGQAZQBfAF8AXwAnAQQAAAB0AHkAcABlAAEYAAAAUwB5AHMAdABlAG0ALgBCAG8AbwBsAGUAYQBuACwAIABtAHMAYwBvAHIAbABpAGIAKwEFAAAAVgBhAGwAdQBlAAEHBQIvAwAAAAFJAAAAVgBSAEMALgBVAGQAbwBuAC4AQwBvAG0AbQBvAG4ALgBVAGQAbwBuAFYAYQByAGkAYQBiAGwAZQBgADEAWwBbAFMAeQBzAHQAZQBtAC4ASQBuAHQAMwAyACwAIABtAHMAYwBvAHIAbABpAGIAXQBdACwAIABWAFIAQwAuAFUAZABvAG4ALgBDAG8AbQBtAG8AbgADAAAABgIAAAAAAAAAJwEEAAAAdAB5AHAAZQABFwAAAFMAeQBzAHQAZQBtAC4AUwB0AHIAaQBuAGcALAAgAG0AcwBjAG8AcgBsAGkAYgAnAQoAAABTAHkAbQBiAG8AbABOAGEAbQBlAAEfAAAAXwBfAF8AVQBkAG8AbgBTAGgAYQByAHAAQgBlAGgAYQB2AGkAbwB1AHIAVgBlAHIAcwBpAG8AbgBfAF8AXwAnAQQAAAB0AHkAcABlAAEWAAAAUwB5AHMAdABlAG0ALgBJAG4AdAAzADIALAAgAG0AcwBjAG8AcgBsAGkAYgAXAQUAAABWAGEAbAB1AGUAAgAAAAcFBwUHBQ==
       objectReference: {fileID: 0}
@@ -657,6 +742,12 @@ PrefabInstance:
       propertyPath: m_AnchorMin.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 278060869384376391, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 278060869384376391, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
     - target: {fileID: 362369114798799505, guid: 79b0ea249ffa6a54bb5f55191b085d00,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -692,6 +783,12 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 368572902012170221, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
+      propertyPath: serializedProgramAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: ca684002f43333747805424ac0e7ee67,
+        type: 2}
     - target: {fileID: 368572902012170221, guid: 79b0ea249ffa6a54bb5f55191b085d00,
         type: 3}
       propertyPath: serializedPublicVariablesBytesString
@@ -959,6 +1056,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 368572902303537914, guid: 79b0ea249ffa6a54bb5f55191b085d00,
         type: 3}
+      propertyPath: serializedProgramAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 6445806ddceba7640891828efa177d20,
+        type: 2}
+    - target: {fileID: 368572902303537914, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
       propertyPath: serializedPublicVariablesBytesString
       value: Ai8AAAAAATIAAABWAFIAQwAuAFUAZABvAG4ALgBDAG8AbQBtAG8AbgAuAFUAZABvAG4AVgBhAHIAaQBhAGIAbABlAFQAYQBiAGwAZQAsACAAVgBSAEMALgBVAGQAbwBuAC4AQwBvAG0AbQBvAG4AAAAAAAYBAAAAAAAAACcBBAAAAHQAeQBwAGUAAWgAAABTAHkAcwB0AGUAbQAuAEMAbwBsAGwAZQBjAHQAaQBvAG4AcwAuAEcAZQBuAGUAcgBpAGMALgBMAGkAcwB0AGAAMQBbAFsAVgBSAEMALgBVAGQAbwBuAC4AQwBvAG0AbQBvAG4ALgBJAG4AdABlAHIAZgBhAGMAZQBzAC4ASQBVAGQAbwBuAFYAYQByAGkAYQBiAGwAZQAsACAAVgBSAEMALgBVAGQAbwBuAC4AQwBvAG0AbQBvAG4AXQBdACwAIABtAHMAYwBvAHIAbABpAGIAAQEJAAAAVgBhAHIAaQBhAGIAbABlAHMALwEAAAABaAAAAFMAeQBzAHQAZQBtAC4AQwBvAGwAbABlAGMAdABpAG8AbgBzAC4ARwBlAG4AZQByAGkAYwAuAEwAaQBzAHQAYAAxAFsAWwBWAFIAQwAuAFUAZABvAG4ALgBDAG8AbQBtAG8AbgAuAEkAbgB0AGUAcgBmAGEAYwBlAHMALgBJAFUAZABvAG4AVgBhAHIAaQBhAGIAbABlACwAIABWAFIAQwAuAFUAZABvAG4ALgBDAG8AbQBtAG8AbgBdAF0ALAAgAG0AcwBjAG8AcgBsAGkAYgABAAAABgIAAAAAAAAAAi8CAAAAAUsAAABWAFIAQwAuAFUAZABvAG4ALgBDAG8AbQBtAG8AbgAuAFUAZABvAG4AVgBhAHIAaQBhAGIAbABlAGAAMQBbAFsAUwB5AHMAdABlAG0ALgBCAG8AbwBsAGUAYQBuACwAIABtAHMAYwBvAHIAbABpAGIAXQBdACwAIABWAFIAQwAuAFUAZABvAG4ALgBDAG8AbQBtAG8AbgACAAAABgIAAAAAAAAAJwEEAAAAdAB5AHAAZQABFwAAAFMAeQBzAHQAZQBtAC4AUwB0AHIAaQBuAGcALAAgAG0AcwBjAG8AcgBsAGkAYgAnAQoAAABTAHkAbQBiAG8AbABOAGEAbQBlAAErAAAAXwBfAF8AVQBkAG8AbgBTAGgAYQByAHAAQgBlAGgAYQB2AGkAbwB1AHIASABhAHMARABvAG4AZQBTAGMAZQBuAGUAVQBwAGcAcgBhAGQAZQBfAF8AXwAnAQQAAAB0AHkAcABlAAEYAAAAUwB5AHMAdABlAG0ALgBCAG8AbwBsAGUAYQBuACwAIABtAHMAYwBvAHIAbABpAGIAKwEFAAAAVgBhAGwAdQBlAAEHBQIvAwAAAAFJAAAAVgBSAEMALgBVAGQAbwBuAC4AQwBvAG0AbQBvAG4ALgBVAGQAbwBuAFYAYQByAGkAYQBiAGwAZQBgADEAWwBbAFMAeQBzAHQAZQBtAC4ASQBuAHQAMwAyACwAIABtAHMAYwBvAHIAbABpAGIAXQBdACwAIABWAFIAQwAuAFUAZABvAG4ALgBDAG8AbQBtAG8AbgADAAAABgIAAAAAAAAAJwEEAAAAdAB5AHAAZQABFwAAAFMAeQBzAHQAZQBtAC4AUwB0AHIAaQBuAGcALAAgAG0AcwBjAG8AcgBsAGkAYgAnAQoAAABTAHkAbQBiAG8AbABOAGEAbQBlAAEfAAAAXwBfAF8AVQBkAG8AbgBTAGgAYQByAHAAQgBlAGgAYQB2AGkAbwB1AHIAVgBlAHIAcwBpAG8AbgBfAF8AXwAnAQQAAAB0AHkAcABlAAEWAAAAUwB5AHMAdABlAG0ALgBJAG4AdAAzADIALAAgAG0AcwBjAG8AcgBsAGkAYgAXAQUAAABWAGEAbAB1AGUAAgAAAAcFBwUHBQ==
       objectReference: {fileID: 0}
@@ -1197,17 +1300,6 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1296182820458894331, guid: 79b0ea249ffa6a54bb5f55191b085d00,
-        type: 3}
-      propertyPath: baseVideoPlayer
-      value: 
-      objectReference: {fileID: 182516342}
-    - target: {fileID: 1296182820458894331, guid: 79b0ea249ffa6a54bb5f55191b085d00,
-        type: 3}
-      propertyPath: serializationData.Prefab
-      value: 
-      objectReference: {fileID: 1296182820458894331, guid: 79b0ea249ffa6a54bb5f55191b085d00,
-        type: 3}
     - target: {fileID: 1844918759418729711, guid: 79b0ea249ffa6a54bb5f55191b085d00,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -1248,6 +1340,17 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2853267199229678515, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
+      propertyPath: baseVideoPlayer
+      value: 
+      objectReference: {fileID: 182516342}
+    - target: {fileID: 2853267199229678515, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 2853267199229678515, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
     - target: {fileID: 2885803135724924422, guid: 79b0ea249ffa6a54bb5f55191b085d00,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -1368,6 +1471,16 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4357186916436208695, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4357186917141290144, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 5599262785381200094, guid: 79b0ea249ffa6a54bb5f55191b085d00,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -1393,21 +1506,11 @@ PrefabInstance:
       propertyPath: m_AnchorMin.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5804073415203314834, guid: 79b0ea249ffa6a54bb5f55191b085d00,
-        type: 3}
-      propertyPath: videoScreen
-      value: 
-      objectReference: {fileID: 1146111124}
-    - target: {fileID: 5804073415203314834, guid: 79b0ea249ffa6a54bb5f55191b085d00,
-        type: 3}
-      propertyPath: verticalMargin
-      value: 60
-      objectReference: {fileID: 0}
-    - target: {fileID: 5804073415203314834, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+    - target: {fileID: 5788624106359276806, guid: 79b0ea249ffa6a54bb5f55191b085d00,
         type: 3}
       propertyPath: serializationData.Prefab
       value: 
-      objectReference: {fileID: 5804073415203314834, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+      objectReference: {fileID: 5788624106359276806, guid: 79b0ea249ffa6a54bb5f55191b085d00,
         type: 3}
     - target: {fileID: 6145337129558635984, guid: 79b0ea249ffa6a54bb5f55191b085d00,
         type: 3}
@@ -1475,122 +1578,47 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7298837608510659643, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+    - target: {fileID: 7043218346986085656, guid: 79b0ea249ffa6a54bb5f55191b085d00,
         type: 3}
-      propertyPath: redGraphicColor.b
-      value: 0.196
-      objectReference: {fileID: 0}
-    - target: {fileID: 7298837608510659643, guid: 79b0ea249ffa6a54bb5f55191b085d00,
-        type: 3}
-      propertyPath: redGraphicColor.g
-      value: 0.196
-      objectReference: {fileID: 0}
-    - target: {fileID: 7298837608510659643, guid: 79b0ea249ffa6a54bb5f55191b085d00,
-        type: 3}
-      propertyPath: redGraphicColor.r
-      value: 0.632
-      objectReference: {fileID: 0}
-    - target: {fileID: 7298837608510659643, guid: 79b0ea249ffa6a54bb5f55191b085d00,
-        type: 3}
-      propertyPath: iconInvertedColor.b
-      value: 0.196
-      objectReference: {fileID: 0}
-    - target: {fileID: 7298837608510659643, guid: 79b0ea249ffa6a54bb5f55191b085d00,
-        type: 3}
-      propertyPath: iconInvertedColor.g
-      value: 0.196
-      objectReference: {fileID: 0}
-    - target: {fileID: 7298837608510659643, guid: 79b0ea249ffa6a54bb5f55191b085d00,
-        type: 3}
-      propertyPath: iconInvertedColor.r
-      value: 0.196
-      objectReference: {fileID: 0}
-    - target: {fileID: 7298837608510659643, guid: 79b0ea249ffa6a54bb5f55191b085d00,
-        type: 3}
-      propertyPath: verticalMarginValue
+      propertyPath: manager
       value: 
       objectReference: {fileID: 0}
-    - target: {fileID: 7298837608510659643, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+    - target: {fileID: 7043218346986085656, guid: 79b0ea249ffa6a54bb5f55191b085d00,
         type: 3}
-      propertyPath: whiteGraphicColor.b
-      value: 0.943
-      objectReference: {fileID: 0}
-    - target: {fileID: 7298837608510659643, guid: 79b0ea249ffa6a54bb5f55191b085d00,
-        type: 3}
-      propertyPath: whiteGraphicColor.g
-      value: 0.943
-      objectReference: {fileID: 0}
-    - target: {fileID: 7298837608510659643, guid: 79b0ea249ffa6a54bb5f55191b085d00,
-        type: 3}
-      propertyPath: whiteGraphicColor.r
-      value: 0.943
-      objectReference: {fileID: 0}
-    - target: {fileID: 7298837608510659643, guid: 79b0ea249ffa6a54bb5f55191b085d00,
-        type: 3}
-      propertyPath: verticalMarginSlider
+      propertyPath: videoScreen
       value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 7298837608510659643, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+      objectReference: {fileID: 1146111124}
+    - target: {fileID: 7043218346986085656, guid: 79b0ea249ffa6a54bb5f55191b085d00,
         type: 3}
-      propertyPath: horizontalMarginValue
+      propertyPath: verticalMargin
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 7043218346986085656, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
+      propertyPath: subtitleTextField
       value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 7298837608510659643, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+      objectReference: {fileID: 515586757}
+    - target: {fileID: 7043218346986085656, guid: 79b0ea249ffa6a54bb5f55191b085d00,
         type: 3}
-      propertyPath: buttonActivatedColor.b
-      value: 0.943
-      objectReference: {fileID: 0}
-    - target: {fileID: 7298837608510659643, guid: 79b0ea249ffa6a54bb5f55191b085d00,
-        type: 3}
-      propertyPath: buttonActivatedColor.g
-      value: 0.943
-      objectReference: {fileID: 0}
-    - target: {fileID: 7298837608510659643, guid: 79b0ea249ffa6a54bb5f55191b085d00,
-        type: 3}
-      propertyPath: buttonActivatedColor.r
-      value: 0.943
-      objectReference: {fileID: 0}
-    - target: {fileID: 7298837608510659643, guid: 79b0ea249ffa6a54bb5f55191b085d00,
-        type: 3}
-      propertyPath: horizontalMarginSlider
+      propertyPath: subtitleTextFieldTop
       value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 7298837608510659643, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+      objectReference: {fileID: 515586755}
+    - target: {fileID: 7043218346986085656, guid: 79b0ea249ffa6a54bb5f55191b085d00,
         type: 3}
-      propertyPath: statusPlaceholderField
+      propertyPath: subtitleBackgroundField
       value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 7298837608510659643, guid: 79b0ea249ffa6a54bb5f55191b085d00,
-        type: 3}
-      propertyPath: buttonBackgroundColor.b
-      value: 0.216
-      objectReference: {fileID: 0}
-    - target: {fileID: 7298837608510659643, guid: 79b0ea249ffa6a54bb5f55191b085d00,
-        type: 3}
-      propertyPath: buttonBackgroundColor.g
-      value: 0.186
-      objectReference: {fileID: 0}
-    - target: {fileID: 7298837608510659643, guid: 79b0ea249ffa6a54bb5f55191b085d00,
-        type: 3}
-      propertyPath: buttonBackgroundColor.r
-      value: 0.213
-      objectReference: {fileID: 0}
-    - target: {fileID: 7298837608510659643, guid: 79b0ea249ffa6a54bb5f55191b085d00,
-        type: 3}
-      propertyPath: statusFallbackTextField
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 7298837608510659643, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+      objectReference: {fileID: 515586756}
+    - target: {fileID: 7043218346986085656, guid: 79b0ea249ffa6a54bb5f55191b085d00,
         type: 3}
       propertyPath: serializationData.Prefab
       value: 
-      objectReference: {fileID: 7298837608510659643, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+      objectReference: {fileID: 7043218346986085656, guid: 79b0ea249ffa6a54bb5f55191b085d00,
         type: 3}
-    - target: {fileID: 7298837608510659643, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+    - target: {fileID: 7043218346986085656, guid: 79b0ea249ffa6a54bb5f55191b085d00,
         type: 3}
-      propertyPath: alphaIgnoredSprites.Array.size
-      value: 0
-      objectReference: {fileID: 0}
+      propertyPath: subtitleBackgroundFieldTop
+      value: 
+      objectReference: {fileID: 515586754}
     - target: {fileID: 7809160674114244510, guid: 79b0ea249ffa6a54bb5f55191b085d00,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -1681,6 +1709,282 @@ PrefabInstance:
       propertyPath: m_AnchorMin.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9132730033375728155, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
+      propertyPath: manager
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 9132730033375728155, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
+      propertyPath: infoMenu
+      value: 
+      objectReference: {fileID: 839177822}
+    - target: {fileID: 9132730033375728155, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
+      propertyPath: inputMenu
+      value: 
+      objectReference: {fileID: 2093442969}
+    - target: {fileID: 9132730033375728155, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
+      propertyPath: inputField
+      value: 
+      objectReference: {fileID: 515586751}
+    - target: {fileID: 9132730033375728155, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
+      propertyPath: lockButton
+      value: 
+      objectReference: {fileID: 954232414}
+    - target: {fileID: 9132730033375728155, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
+      propertyPath: ownerField
+      value: 
+      objectReference: {fileID: 1130306271}
+    - target: {fileID: 9132730033375728155, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
+      propertyPath: localToggle
+      value: 
+      objectReference: {fileID: 515586750}
+    - target: {fileID: 9132730033375728155, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
+      propertyPath: lockGraphic
+      value: 
+      objectReference: {fileID: 813168363}
+    - target: {fileID: 9132730033375728155, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
+      propertyPath: reloadButton
+      value: 
+      objectReference: {fileID: 1576697789}
+    - target: {fileID: 9132730033375728155, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
+      propertyPath: settingsMenu
+      value: 
+      objectReference: {fileID: 384768861}
+    - target: {fileID: 9132730033375728155, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
+      propertyPath: fontSizeValue
+      value: 
+      objectReference: {fileID: 515586748}
+    - target: {fileID: 9132730033375728155, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
+      propertyPath: preset1Object
+      value: 
+      objectReference: {fileID: 859603856}
+    - target: {fileID: 9132730033375728155, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
+      propertyPath: preset2Object
+      value: 
+      objectReference: {fileID: 1738205692}
+    - target: {fileID: 9132730033375728155, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
+      propertyPath: preset3Object
+      value: 
+      objectReference: {fileID: 1099896157}
+    - target: {fileID: 9132730033375728155, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
+      propertyPath: preset4Object
+      value: 
+      objectReference: {fileID: 408376753}
+    - target: {fileID: 9132730033375728155, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
+      propertyPath: reloadGraphic
+      value: 
+      objectReference: {fileID: 752677684}
+    - target: {fileID: 9132730033375728155, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
+      propertyPath: alignmentValue
+      value: 
+      objectReference: {fileID: 503033370}
+    - target: {fileID: 9132730033375728155, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
+      propertyPath: fontColorValue
+      value: 
+      objectReference: {fileID: 460351238}
+    - target: {fileID: 9132730033375728155, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
+      propertyPath: fontSizeSlider
+      value: 
+      objectReference: {fileID: 515586749}
+    - target: {fileID: 9132730033375728155, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
+      propertyPath: overlayHandler
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 9132730033375728155, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
+      propertyPath: alignmentSlider
+      value: 
+      objectReference: {fileID: 1279175525}
+    - target: {fileID: 9132730033375728155, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
+      propertyPath: alignmentToggle
+      value: 
+      objectReference: {fileID: 732440932}
+    - target: {fileID: 9132730033375728155, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
+      propertyPath: statusTextField
+      value: 
+      objectReference: {fileID: 783267678}
+    - target: {fileID: 9132730033375728155, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
+      propertyPath: subtitlesToggle
+      value: 
+      objectReference: {fileID: 515586745}
+    - target: {fileID: 9132730033375728155, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
+      propertyPath: fontColorBSlider
+      value: 
+      objectReference: {fileID: 1513797802}
+    - target: {fileID: 9132730033375728155, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
+      propertyPath: fontColorGSlider
+      value: 
+      objectReference: {fileID: 192128962}
+    - target: {fileID: 9132730033375728155, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
+      propertyPath: fontColorRSlider
+      value: 
+      objectReference: {fileID: 716541308}
+    - target: {fileID: 9132730033375728155, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
+      propertyPath: inputFieldObject
+      value: 
+      objectReference: {fileID: 1368721319}
+    - target: {fileID: 9132730033375728155, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
+      propertyPath: masterLockedIcon
+      value: 
+      objectReference: {fileID: 342409260}
+    - target: {fileID: 9132730033375728155, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
+      propertyPath: outlineSizeValue
+      value: 
+      objectReference: {fileID: 449833702}
+    - target: {fileID: 9132730033375728155, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
+      propertyPath: outlineColorValue
+      value: 
+      objectReference: {fileID: 2093891748}
+    - target: {fileID: 9132730033375728155, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
+      propertyPath: outlineSizeSlider
+      value: 
+      objectReference: {fileID: 260068796}
+    - target: {fileID: 9132730033375728155, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
+      propertyPath: infoMenuButtonIcon
+      value: 
+      objectReference: {fileID: 1472491701}
+    - target: {fileID: 9132730033375728155, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
+      propertyPath: masterUnlockedIcon
+      value: 
+      objectReference: {fileID: 1108327177}
+    - target: {fileID: 9132730033375728155, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
+      propertyPath: inputMenuButtonIcon
+      value: 
+      objectReference: {fileID: 358517480}
+    - target: {fileID: 9132730033375728155, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
+      propertyPath: outlineColorBSlider
+      value: 
+      objectReference: {fileID: 1082609666}
+    - target: {fileID: 9132730033375728155, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
+      propertyPath: outlineColorGSlider
+      value: 
+      objectReference: {fileID: 1662304016}
+    - target: {fileID: 9132730033375728155, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
+      propertyPath: outlineColorRSlider
+      value: 
+      objectReference: {fileID: 1565920887}
+    - target: {fileID: 9132730033375728155, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
+      propertyPath: backgroundColorValue
+      value: 
+      objectReference: {fileID: 320953925}
+    - target: {fileID: 9132730033375728155, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
+      propertyPath: inputClearButtonIcon
+      value: 
+      objectReference: {fileID: 43104013}
+    - target: {fileID: 9132730033375728155, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
+      propertyPath: inputPlaceholderText
+      value: 
+      objectReference: {fileID: 515586752}
+    - target: {fileID: 9132730033375728155, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
+      propertyPath: backgroundColorBSlider
+      value: 
+      objectReference: {fileID: 519372576}
+    - target: {fileID: 9132730033375728155, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
+      propertyPath: backgroundColorGSlider
+      value: 
+      objectReference: {fileID: 363610279}
+    - target: {fileID: 9132730033375728155, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
+      propertyPath: backgroundColorRSlider
+      value: 
+      objectReference: {fileID: 100789297}
+    - target: {fileID: 9132730033375728155, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
+      propertyPath: backgroundOpacityValue
+      value: 
+      objectReference: {fileID: 515586746}
+    - target: {fileID: 9132730033375728155, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
+      propertyPath: settingsMenuButtonIcon
+      value: 
+      objectReference: {fileID: 1759617495}
+    - target: {fileID: 9132730033375728155, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
+      propertyPath: backgroundOpacitySlider
+      value: 
+      objectReference: {fileID: 515586747}
+    - target: {fileID: 9132730033375728155, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
+      propertyPath: settingsPopupButtonIcon
+      value: 
+      objectReference: {fileID: 2088522906}
+    - target: {fileID: 9132730033375728155, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
+      propertyPath: infoMenuButtonBackground
+      value: 
+      objectReference: {fileID: 1855134197}
+    - target: {fileID: 9132730033375728155, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 9132730033375728155, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
+    - target: {fileID: 9132730033375728155, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
+      propertyPath: inputMenuButtonBackground
+      value: 
+      objectReference: {fileID: 147036263}
+    - target: {fileID: 9132730033375728155, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
+      propertyPath: settingsImportExportField
+      value: 
+      objectReference: {fileID: 1278541375}
+    - target: {fileID: 9132730033375728155, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
+      propertyPath: inputClearButtonBackground
+      value: 
+      objectReference: {fileID: 1668036016}
+    - target: {fileID: 9132730033375728155, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
+      propertyPath: settingsMenuButtonBackground
+      value: 
+      objectReference: {fileID: 1906685699}
+    - target: {fileID: 9132730033375728155, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
+      propertyPath: settingsPopupButtonBackground
+      value: 
+      objectReference: {fileID: 1884813567}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 79b0ea249ffa6a54bb5f55191b085d00, type: 3}
 --- !u!4 &515586742 stripped
@@ -1695,7 +1999,7 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 515586741}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 385603887}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 45115577ef41a5b4ca741ed302693907, type: 3}
@@ -1707,7 +2011,7 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 515586741}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1116291962}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 45115577ef41a5b4ca741ed302693907, type: 3}
@@ -1715,26 +2019,146 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
 --- !u!114 &515586745 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5804073415203314834, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+  m_CorrespondingSourceObject: {fileID: 368572902280858849, guid: 79b0ea249ffa6a54bb5f55191b085d00,
     type: 3}
   m_PrefabInstance: {fileID: 515586741}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 47f81f936a8517945bbe9ebbe335e379, type: 3}
+  m_Script: {fileID: 11500000, guid: 9085046f02f69544eb97fd06b6048fe2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &515586746 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1296182820458894331, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+  m_CorrespondingSourceObject: {fileID: 368572903572351590, guid: 79b0ea249ffa6a54bb5f55191b085d00,
     type: 3}
   m_PrefabInstance: {fileID: 515586741}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1c72e0a559544c04bb1ae3a82be6dfeb, type: 3}
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &515586747 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 368572903784530914, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+    type: 3}
+  m_PrefabInstance: {fileID: 515586741}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &515586748 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 368572902807342046, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+    type: 3}
+  m_PrefabInstance: {fileID: 515586741}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &515586749 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 368572902934090681, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+    type: 3}
+  m_PrefabInstance: {fileID: 515586741}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &515586750 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 368572902570128392, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+    type: 3}
+  m_PrefabInstance: {fileID: 515586741}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9085046f02f69544eb97fd06b6048fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &515586751 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3847239192578489414, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+    type: 3}
+  m_PrefabInstance: {fileID: 515586741}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &515586752 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 431316209517065397, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+    type: 3}
+  m_PrefabInstance: {fileID: 515586741}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &515586754 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3379180852984439886, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+    type: 3}
+  m_PrefabInstance: {fileID: 515586741}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &515586755 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6145337129558635984, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+    type: 3}
+  m_PrefabInstance: {fileID: 515586741}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &515586756 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 70696289138815011, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+    type: 3}
+  m_PrefabInstance: {fileID: 515586741}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &515586757 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 368572903207833812, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+    type: 3}
+  m_PrefabInstance: {fileID: 515586741}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &519372576 stripped
@@ -1749,6 +2173,66 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &565470787 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1439010666864111812, guid: f2d01e7f26c5bb04f8c22c15fbf7475b,
+    type: 3}
+  m_PrefabInstance: {fileID: 182516341}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &570172957 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 278060869384376391, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+    type: 3}
+  m_PrefabInstance: {fileID: 515586741}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 385603887}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47f81f936a8517945bbe9ebbe335e379, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &570255271 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5699767620698802756, guid: 0d3d2df115d3d5147a07bd2e971a4443,
+    type: 3}
+  m_PrefabInstance: {fileID: 974713000}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &596959185 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6421412928314014380, guid: 87d772cf1b1ec7b49839dde29eb427be,
+    type: 3}
+  m_PrefabInstance: {fileID: 238172480}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &620726265 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6421412927715893479, guid: 87d772cf1b1ec7b49839dde29eb427be,
+    type: 3}
+  m_PrefabInstance: {fileID: 238172480}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &633595140 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2853267199229678515, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+    type: 3}
+  m_PrefabInstance: {fileID: 1044043323}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 21108598}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c72e0a559544c04bb1ae3a82be6dfeb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &644369520 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1555380924737070344, guid: 07a8344aed11c464d9ca30fde8ee3351,
+    type: 3}
+  m_PrefabInstance: {fileID: 7817971935179713291}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &659001447 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8235914778588559562, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+    type: 3}
+  m_PrefabInstance: {fileID: 1044043323}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -1877,6 +2361,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &769139332 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 368572902012170217, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+    type: 3}
+  m_PrefabInstance: {fileID: 1044043323}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &783267678 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6941543197474697182, guid: 79b0ea249ffa6a54bb5f55191b085d00,
@@ -2012,12 +2502,12 @@ PrefabInstance:
     - target: {fileID: 5699767619876755003, guid: 0d3d2df115d3d5147a07bd2e971a4443,
         type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5699767619954407557, guid: 0d3d2df115d3d5147a07bd2e971a4443,
         type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5699767620698802756, guid: 0d3d2df115d3d5147a07bd2e971a4443,
         type: 3}
@@ -2098,7 +2588,7 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 974713000}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 570255271}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: -1743794047, guid: 661092b4961be7145bfbe56e1e62337b, type: 3}
@@ -2111,21 +2601,12 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 368572902303537914, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+    - target: {fileID: 278060869384376391, guid: 79b0ea249ffa6a54bb5f55191b085d00,
         type: 3}
-      propertyPath: serializedPublicVariablesBytesString
-      value: Ai8AAAAAATIAAABWAFIAQwAuAFUAZABvAG4ALgBDAG8AbQBtAG8AbgAuAFUAZABvAG4AVgBhAHIAaQBhAGIAbABlAFQAYQBiAGwAZQAsACAAVgBSAEMALgBVAGQAbwBuAC4AQwBvAG0AbQBvAG4AAAAAAAYBAAAAAAAAACcBBAAAAHQAeQBwAGUAAWgAAABTAHkAcwB0AGUAbQAuAEMAbwBsAGwAZQBjAHQAaQBvAG4AcwAuAEcAZQBuAGUAcgBpAGMALgBMAGkAcwB0AGAAMQBbAFsAVgBSAEMALgBVAGQAbwBuAC4AQwBvAG0AbQBvAG4ALgBJAG4AdABlAHIAZgBhAGMAZQBzAC4ASQBVAGQAbwBuAFYAYQByAGkAYQBiAGwAZQAsACAAVgBSAEMALgBVAGQAbwBuAC4AQwBvAG0AbQBvAG4AXQBdACwAIABtAHMAYwBvAHIAbABpAGIAAQEJAAAAVgBhAHIAaQBhAGIAbABlAHMALwEAAAABaAAAAFMAeQBzAHQAZQBtAC4AQwBvAGwAbABlAGMAdABpAG8AbgBzAC4ARwBlAG4AZQByAGkAYwAuAEwAaQBzAHQAYAAxAFsAWwBWAFIAQwAuAFUAZABvAG4ALgBDAG8AbQBtAG8AbgAuAEkAbgB0AGUAcgBmAGEAYwBlAHMALgBJAFUAZABvAG4AVgBhAHIAaQBhAGIAbABlACwAIABWAFIAQwAuAFUAZABvAG4ALgBDAG8AbQBtAG8AbgBdAF0ALAAgAG0AcwBjAG8AcgBsAGkAYgABAAAABgIAAAAAAAAAAi8CAAAAAUsAAABWAFIAQwAuAFUAZABvAG4ALgBDAG8AbQBtAG8AbgAuAFUAZABvAG4AVgBhAHIAaQBhAGIAbABlAGAAMQBbAFsAUwB5AHMAdABlAG0ALgBCAG8AbwBsAGUAYQBuACwAIABtAHMAYwBvAHIAbABpAGIAXQBdACwAIABWAFIAQwAuAFUAZABvAG4ALgBDAG8AbQBtAG8AbgACAAAABgIAAAAAAAAAJwEEAAAAdAB5AHAAZQABFwAAAFMAeQBzAHQAZQBtAC4AUwB0AHIAaQBuAGcALAAgAG0AcwBjAG8AcgBsAGkAYgAnAQoAAABTAHkAbQBiAG8AbABOAGEAbQBlAAErAAAAXwBfAF8AVQBkAG8AbgBTAGgAYQByAHAAQgBlAGgAYQB2AGkAbwB1AHIASABhAHMARABvAG4AZQBTAGMAZQBuAGUAVQBwAGcAcgBhAGQAZQBfAF8AXwAnAQQAAAB0AHkAcABlAAEYAAAAUwB5AHMAdABlAG0ALgBCAG8AbwBsAGUAYQBuACwAIABtAHMAYwBvAHIAbABpAGIAKwEFAAAAVgBhAGwAdQBlAAEHBQIvAwAAAAFJAAAAVgBSAEMALgBVAGQAbwBuAC4AQwBvAG0AbQBvAG4ALgBVAGQAbwBuAFYAYQByAGkAYQBiAGwAZQBgADEAWwBbAFMAeQBzAHQAZQBtAC4ASQBuAHQAMwAyACwAIABtAHMAYwBvAHIAbABpAGIAXQBdACwAIABWAFIAQwAuAFUAZABvAG4ALgBDAG8AbQBtAG8AbgADAAAABgIAAAAAAAAAJwEEAAAAdAB5AHAAZQABFwAAAFMAeQBzAHQAZQBtAC4AUwB0AHIAaQBuAGcALAAgAG0AcwBjAG8AcgBsAGkAYgAnAQoAAABTAHkAbQBiAG8AbABOAGEAbQBlAAEfAAAAXwBfAF8AVQBkAG8AbgBTAGgAYQByAHAAQgBlAGgAYQB2AGkAbwB1AHIAVgBlAHIAcwBpAG8AbgBfAF8AXwAnAQQAAAB0AHkAcABlAAEWAAAAUwB5AHMAdABlAG0ALgBJAG4AdAAzADIALAAgAG0AcwBjAG8AcgBsAGkAYgAXAQUAAABWAGEAbAB1AGUAAgAAAAcFBwUHBQ==
-      objectReference: {fileID: 0}
-    - target: {fileID: 368572902303537914, guid: 79b0ea249ffa6a54bb5f55191b085d00,
-        type: 3}
-      propertyPath: publicVariablesUnityEngineObjects.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 368572902303537914, guid: 79b0ea249ffa6a54bb5f55191b085d00,
-        type: 3}
-      propertyPath: publicVariablesUnityEngineObjects.Array.data[0]
+      propertyPath: serializationData.Prefab
       value: 
-      objectReference: {fileID: 238172481}
+      objectReference: {fileID: 278060869384376391, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
     - target: {fileID: 368572902303537915, guid: 79b0ea249ffa6a54bb5f55191b085d00,
         type: 3}
       propertyPath: m_Name
@@ -2186,67 +2667,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1296182820458894331, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+    - target: {fileID: 2853267199229678515, guid: 79b0ea249ffa6a54bb5f55191b085d00,
         type: 3}
       propertyPath: targetVideoPlayer
       value: 
       objectReference: {fileID: 238172482}
-    - target: {fileID: 1296182820458894331, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+    - target: {fileID: 2853267199229678515, guid: 79b0ea249ffa6a54bb5f55191b085d00,
         type: 3}
       propertyPath: serializationData.Prefab
       value: 
-      objectReference: {fileID: 1296182820458894331, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+      objectReference: {fileID: 2853267199229678515, guid: 79b0ea249ffa6a54bb5f55191b085d00,
         type: 3}
-    - target: {fileID: 5804073415203314834, guid: 79b0ea249ffa6a54bb5f55191b085d00,
-        type: 3}
-      propertyPath: serializationData.Prefab
-      value: 
-      objectReference: {fileID: 5804073415203314834, guid: 79b0ea249ffa6a54bb5f55191b085d00,
-        type: 3}
-    - target: {fileID: 7298837608510659643, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+    - target: {fileID: 5788624106359276806, guid: 79b0ea249ffa6a54bb5f55191b085d00,
         type: 3}
       propertyPath: serializationData.Prefab
       value: 
-      objectReference: {fileID: 7298837608510659643, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+      objectReference: {fileID: 5788624106359276806, guid: 79b0ea249ffa6a54bb5f55191b085d00,
         type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 79b0ea249ffa6a54bb5f55191b085d00, type: 3}
---- !u!114 &1044043324 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 368572902303537914, guid: 79b0ea249ffa6a54bb5f55191b085d00,
-    type: 3}
-  m_PrefabInstance: {fileID: 1044043323}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 45115577ef41a5b4ca741ed302693907, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1044043325 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1296182820458894331, guid: 79b0ea249ffa6a54bb5f55191b085d00,
-    type: 3}
-  m_PrefabInstance: {fileID: 1044043323}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1c72e0a559544c04bb1ae3a82be6dfeb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1044043326 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7298837608510659643, guid: 79b0ea249ffa6a54bb5f55191b085d00,
-    type: 3}
-  m_PrefabInstance: {fileID: 1044043323}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3377b410bd177764d989e8d092440a28, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1082609666 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 9051104437304361472, guid: 79b0ea249ffa6a54bb5f55191b085d00,
@@ -2271,6 +2710,12 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 515586741}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1116291962 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 368572902303537915, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+    type: 3}
+  m_PrefabInstance: {fileID: 515586741}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1130306271 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1767565377553206525, guid: 79b0ea249ffa6a54bb5f55191b085d00,
@@ -2288,6 +2733,18 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 2749372315644709431, guid: f2d01e7f26c5bb04f8c22c15fbf7475b,
     type: 3}
   m_PrefabInstance: {fileID: 182516341}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1147733068 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3973345647856182094, guid: a7b438beb9333a54092bcbda3dbb9b54,
+    type: 3}
+  m_PrefabInstance: {fileID: 3973345647330268174}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1223058756 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1555380924545187972, guid: 07a8344aed11c464d9ca30fde8ee3351,
+    type: 3}
+  m_PrefabInstance: {fileID: 7817971935179713291}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1278541375 stripped
 MonoBehaviour:
@@ -2313,6 +2770,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1316544850 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6421412929076351229, guid: 87d772cf1b1ec7b49839dde29eb427be,
+    type: 3}
+  m_PrefabInstance: {fileID: 238172480}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1368721319 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5092303362726125955, guid: 79b0ea249ffa6a54bb5f55191b085d00,
@@ -2351,6 +2814,18 @@ Transform:
   m_Father: {fileID: 2051625489}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1465789651 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2853267199229678515, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+    type: 3}
+  m_PrefabInstance: {fileID: 515586741}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1116291962}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c72e0a559544c04bb1ae3a82be6dfeb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1472491701 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 368572902673460340, guid: 79b0ea249ffa6a54bb5f55191b085d00,
@@ -2411,12 +2886,24 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 1044043323}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 769139332}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 45115577ef41a5b4ca741ed302693907, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1632689900 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6421412928588461824, guid: 87d772cf1b1ec7b49839dde29eb427be,
+    type: 3}
+  m_PrefabInstance: {fileID: 238172480}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1647437372 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6421412928178292075, guid: 87d772cf1b1ec7b49839dde29eb427be,
+    type: 3}
+  m_PrefabInstance: {fileID: 238172480}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1662304016 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5209810263895007303, guid: 79b0ea249ffa6a54bb5f55191b085d00,
@@ -2500,6 +2987,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4214593080701545733, guid: 07a8344aed11c464d9ca30fde8ee3351,
     type: 3}
   m_PrefabInstance: {fileID: 7817971935179713291}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1956082556 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6421412929251080223, guid: 87d772cf1b1ec7b49839dde29eb427be,
+    type: 3}
+  m_PrefabInstance: {fileID: 238172480}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &2034059823 stripped
 GameObject:
@@ -2663,6 +3156,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2097948812 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5788624106359276806, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+    type: 3}
+  m_PrefabInstance: {fileID: 1044043323}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 769139332}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3377b410bd177764d989e8d092440a28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1055321710731962779
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2747,65 +3252,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 3973345647856182092, guid: a7b438beb9333a54092bcbda3dbb9b54,
-        type: 3}
-      propertyPath: serializedPublicVariablesBytesString
-      value: Ai8AAAAAATIAAABWAFIAQwAuAFUAZABvAG4ALgBDAG8AbQBtAG8AbgAuAFUAZABvAG4AVgBhAHIAaQBhAGIAbABlAFQAYQBiAGwAZQAsACAAVgBSAEMALgBVAGQAbwBuAC4AQwBvAG0AbQBvAG4AAAAAAAYBAAAAAAAAACcBBAAAAHQAeQBwAGUAAWgAAABTAHkAcwB0AGUAbQAuAEMAbwBsAGwAZQBjAHQAaQBvAG4AcwAuAEcAZQBuAGUAcgBpAGMALgBMAGkAcwB0AGAAMQBbAFsAVgBSAEMALgBVAGQAbwBuAC4AQwBvAG0AbQBvAG4ALgBJAG4AdABlAHIAZgBhAGMAZQBzAC4ASQBVAGQAbwBuAFYAYQByAGkAYQBiAGwAZQAsACAAVgBSAEMALgBVAGQAbwBuAC4AQwBvAG0AbQBvAG4AXQBdACwAIABtAHMAYwBvAHIAbABpAGIAAQEJAAAAVgBhAHIAaQBhAGIAbABlAHMALwEAAAABaAAAAFMAeQBzAHQAZQBtAC4AQwBvAGwAbABlAGMAdABpAG8AbgBzAC4ARwBlAG4AZQByAGkAYwAuAEwAaQBzAHQAYAAxAFsAWwBWAFIAQwAuAFUAZABvAG4ALgBDAG8AbQBtAG8AbgAuAEkAbgB0AGUAcgBmAGEAYwBlAHMALgBJAFUAZABvAG4AVgBhAHIAaQBhAGIAbABlACwAIABWAFIAQwAuAFUAZABvAG4ALgBDAG8AbQBtAG8AbgBdAF0ALAAgAG0AcwBjAG8AcgBsAGkAYgABAAAABgIAAAAAAAAAAi8CAAAAAUsAAABWAFIAQwAuAFUAZABvAG4ALgBDAG8AbQBtAG8AbgAuAFUAZABvAG4AVgBhAHIAaQBhAGIAbABlAGAAMQBbAFsAUwB5AHMAdABlAG0ALgBCAG8AbwBsAGUAYQBuACwAIABtAHMAYwBvAHIAbABpAGIAXQBdACwAIABWAFIAQwAuAFUAZABvAG4ALgBDAG8AbQBtAG8AbgACAAAABgIAAAAAAAAAJwEEAAAAdAB5AHAAZQABFwAAAFMAeQBzAHQAZQBtAC4AUwB0AHIAaQBuAGcALAAgAG0AcwBjAG8AcgBsAGkAYgAnAQoAAABTAHkAbQBiAG8AbABOAGEAbQBlAAErAAAAXwBfAF8AVQBkAG8AbgBTAGgAYQByAHAAQgBlAGgAYQB2AGkAbwB1AHIASABhAHMARABvAG4AZQBTAGMAZQBuAGUAVQBwAGcAcgBhAGQAZQBfAF8AXwAnAQQAAAB0AHkAcABlAAEYAAAAUwB5AHMAdABlAG0ALgBCAG8AbwBsAGUAYQBuACwAIABtAHMAYwBvAHIAbABpAGIAKwEFAAAAVgBhAGwAdQBlAAEHBQIvAwAAAAFJAAAAVgBSAEMALgBVAGQAbwBuAC4AQwBvAG0AbQBvAG4ALgBVAGQAbwBuAFYAYQByAGkAYQBiAGwAZQBgADEAWwBbAFMAeQBzAHQAZQBtAC4ASQBuAHQAMwAyACwAIABtAHMAYwBvAHIAbABpAGIAXQBdACwAIABWAFIAQwAuAFUAZABvAG4ALgBDAG8AbQBtAG8AbgADAAAABgIAAAAAAAAAJwEEAAAAdAB5AHAAZQABFwAAAFMAeQBzAHQAZQBtAC4AUwB0AHIAaQBuAGcALAAgAG0AcwBjAG8AcgBsAGkAYgAnAQoAAABTAHkAbQBiAG8AbABOAGEAbQBlAAEfAAAAXwBfAF8AVQBkAG8AbgBTAGgAYQByAHAAQgBlAGgAYQB2AGkAbwB1AHIAVgBlAHIAcwBpAG8AbgBfAF8AXwAnAQQAAAB0AHkAcABlAAEWAAAAUwB5AHMAdABlAG0ALgBJAG4AdAAzADIALAAgAG0AcwBjAG8AcgBsAGkAYgAXAQUAAABWAGEAbAB1AGUAAgAAAAcFBwUHBQ==
+    - target: {fileID: 42052594, guid: a7b438beb9333a54092bcbda3dbb9b54, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: TestUSharpVideoRemote
       objectReference: {fileID: 0}
-    - target: {fileID: 3973345647856182092, guid: a7b438beb9333a54092bcbda3dbb9b54,
-        type: 3}
-      propertyPath: publicVariablesUnityEngineObjects.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3973345647856182092, guid: a7b438beb9333a54092bcbda3dbb9b54,
-        type: 3}
-      propertyPath: publicVariablesUnityEngineObjects.Array.data[0]
-      value: 
-      objectReference: {fileID: 515586744}
-    - target: {fileID: 3973345647856182092, guid: a7b438beb9333a54092bcbda3dbb9b54,
-        type: 3}
-      propertyPath: publicVariablesUnityEngineObjects.Array.data[1]
-      value: 
-      objectReference: {fileID: 182516342}
-    - target: {fileID: 3973345647856182092, guid: a7b438beb9333a54092bcbda3dbb9b54,
-        type: 3}
-      propertyPath: publicVariablesUnityEngineObjects.Array.data[2]
-      value: 
-      objectReference: {fileID: 974713001}
-    - target: {fileID: 3973345647856182092, guid: a7b438beb9333a54092bcbda3dbb9b54,
-        type: 3}
-      propertyPath: publicVariablesUnityEngineObjects.Array.data[3]
-      value: 
-      objectReference: {fileID: 1044043324}
-    - target: {fileID: 3973345647856182092, guid: a7b438beb9333a54092bcbda3dbb9b54,
-        type: 3}
-      propertyPath: publicVariablesUnityEngineObjects.Array.data[4]
-      value: 
-      objectReference: {fileID: 1146111124}
-    - target: {fileID: 3973345647856182092, guid: a7b438beb9333a54092bcbda3dbb9b54,
-        type: 3}
-      propertyPath: publicVariablesUnityEngineObjects.Array.data[5]
-      value: 
-      objectReference: {fileID: 2034059823}
-    - target: {fileID: 3973345647856182092, guid: a7b438beb9333a54092bcbda3dbb9b54,
-        type: 3}
-      propertyPath: publicVariablesUnityEngineObjects.Array.data[6]
-      value: 
-      objectReference: {fileID: 515586743}
-    - target: {fileID: 3973345647856182092, guid: a7b438beb9333a54092bcbda3dbb9b54,
-        type: 3}
-      propertyPath: publicVariablesUnityEngineObjects.Array.data[7]
-      value: 
-      objectReference: {fileID: 238172481}
     - target: {fileID: 3973345647856182094, guid: a7b438beb9333a54092bcbda3dbb9b54,
         type: 3}
       propertyPath: m_Name
       value: Testing
-      objectReference: {fileID: 0}
-    - target: {fileID: 3973345647856182094, guid: a7b438beb9333a54092bcbda3dbb9b54,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3973345647856182095, guid: a7b438beb9333a54092bcbda3dbb9b54,
         type: 3}
@@ -2862,5080 +3316,51 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 9164731680415735959, guid: a7b438beb9333a54092bcbda3dbb9b54,
+    - target: {fileID: 7391485555126065685, guid: a7b438beb9333a54092bcbda3dbb9b54,
         type: 3}
       propertyPath: avProPlayer
       value: 
       objectReference: {fileID: 974713001}
-    - target: {fileID: 9164731680415735959, guid: a7b438beb9333a54092bcbda3dbb9b54,
-        type: 3}
-      propertyPath: testSubtitles
-      value: '1
-
-        00:00:39,626 --> 00:00:41,617
-
-        Is it supposed
-        to be doing that?
-
-        
-
-        2
-
-        00:00:41,706 --> 00:00:45,824
-
-        It''s
-        a coronal mass emission,
-
-        like a giant solar flare.
-
-        
-
-        3
-
-        00:00:46,266
-        --> 00:00:49,781
-
-        - But it''s safe, right?
-
-        - That''s what
-        this equipment will find out.
-
-        
-
-        4
-
-        00:00:49,866
-        --> 00:00:55,259
-
-        Apart from disrupting the magnetic field,
-
-        it
-        might cause an increase in radiation.
-
-        
-
-        5
-
-        00:00:55,346
-        --> 00:00:57,223
-
-        But it''s safe, right?
-
-        
-
-        6
-
-        00:00:57,306
-        --> 00:01:00,582
-
-        As long as we don''t
-
-        stay here too long,
-        yes, sir.
-
-        
-
-        7
-
-        00:01:00,666 --> 00:01:03,055
-
-        Anyone
-        explain that to Daniel?
-
-        
-
-        8
-
-        00:01:10,266 -->
-        00:01:12,939
-
-        I''ve encountered this script before.
-
-        
-
-        9
-
-        00:01:13,026
-        --> 00:01:18,020
-
-        It''s, uh, similar in pronunciation to
-
-        a
-        language on our planet called Latin.
-
-        
-
-        10
-
-        00:01:20,386
-        --> 00:01:24,299
-
-        As near as I can tell, the main body of
-
-        the
-        text represents a planetary history.
-
-        
-
-        11
-
-        00:01:24,386
-        --> 00:01:28,937
-
-        I agree... But isn''t it time for you
-
-        to
-        return through the Stargate?
-
-        
-
-        12
-
-        00:01:29,026
-        --> 00:01:34,225
-
-        I don''t understand the significance of
-
-        what
-        this is. A sort of control mechanism.
-
-        
-
-        13
-
-        00:01:34,866
-        --> 00:01:39,815
-
-        It''s obviously still in working order.
-
-        I
-        wonder if that''s... significant.
-
-        
-
-        14
-
-        00:01:40,786
-        --> 00:01:44,779
-
-        The storm is approaching, Dr Jackson.
-
-        The
-        radiation may be dangerous for you.
-
-        
-
-        15
-
-        00:01:44,866
-        --> 00:01:47,824
-
-        Oh, yes. Major Carter will let us
-
-        know
-        when we have to leave.
-
-        
-
-        16
-
-        00:01:47,906 -->
-        00:01:53,264
-
-        Now, this line recurs several times:
-
-        ''''Domavatus
-        vestul motabilum.''''
-
-        
-
-        17
-
-        00:01:54,466 -->
-        00:01:56,343
-
-        ''''Conqueror of time.''''
-
-        
-
-        18
-
-        00:01:56,426
-        --> 00:01:59,941
-
-        In this context, I''d say more like
-
-        ''''Master
-        of the uncertain past.''''
-
-        
-
-        19
-
-        00:02:00,026
-        --> 00:02:03,018
-
-        - You''re a skilled linguist, Dr Jackson.
-
-        -
-        Thank you.
-
-        
-
-        20
-
-        00:02:03,106 --> 00:02:06,815
-
-        I
-        had the opportunity to hear the language
-
-        spoken a year or so ago,
-        so...
-
-        
-
-        21
-
-        00:02:06,906 --> 00:02:08,897
-
-        (high-pitched
-        sound)
-
-        
-
-        22
-
-        00:02:10,146 --> 00:02:11,465
-
-        What''s
-        that?
-
-        
-
-        23
-
-        00:02:11,546 --> 00:02:15,824
-
-        The
-        geomagnetic disturbance
-
-        is reaching its peak. I have to act now.
-
-        
-
-        24
-
-        00:02:19,266
-        --> 00:02:20,745
-
-        I don''t understand.
-
-        
-
-        25
-
-        00:02:52,306
-        --> 00:02:54,342
-
-        - All set up, sir.
-
-        - Good.
-
-        
-
-        26
-
-        00:02:54,986
-        --> 00:02:56,817
-
-        Let''s hit it.
-
-        
-
-        27
-
-        00:02:56,906
-        --> 00:02:59,215
-
-        Daniel, let''s go home.
-
-        
-
-        28
-
-        00:03:04,066
-        --> 00:03:05,294
-
-        Daniel?
-
-        
-
-        29
-
-        00:03:07,466
-        --> 00:03:09,138
-
-        (electricity crackling)
-
-        
-
-        30
-
-        00:03:13,906
-        --> 00:03:17,216
-
-        - O''Neill.
-
-        - Yeah, I hear it.
-
-        
-
-        31
-
-        00:03:33,746
-        --> 00:03:36,340
-
-        Incoming wormhole.
-
-        
-
-        32
-
-        00:03:41,506
-        --> 00:03:43,144
-
-        What is that?
-
-        
-
-        33
-
-        00:03:43,786
-        --> 00:03:45,583
-
-        I have no idea, sir.
-
-        
-
-        34
-
-        00:03:50,786
-        --> 00:03:52,663
-
-        Are you doin'' this?
-
-        
-
-        35
-
-        00:03:52,906
-        --> 00:03:55,864
-
-        - Stay away!
-
-        - What the hell are you
-        doing?
-
-        
-
-        36
-
-        00:03:56,266 --> 00:03:58,257
-
-        Stay
-        back!
-
-        
-
-        37
-
-        00:04:02,946 --> 00:04:04,265
-
-        Colonel!
-
-        
-
-        38
-
-        00:04:07,106
-        --> 00:04:10,701
-
-        Anyway, I''m sorry, but that just
-
-        happens
-        to be how I feel about it.
-
-        
-
-        39
-
-        00:04:10,786
-        --> 00:04:13,175
-
-        What do you think?
-
-        
-
-        40
-
-        00:04:19,466
-        --> 00:04:21,457
-
-        What?
-
-        
-
-        41
-
-        00:04:24,146
-        --> 00:04:26,899
-
-        What do you think?
-
-        
-
-        42
-
-        00:04:29,186
-        --> 00:04:32,178
-
-        Colonel? ls something wrong?
-
-        
-
-        43
-
-        00:04:33,386
-        --> 00:04:35,581
-
-        Maybe.
-
-        
-
-        44
-
-        00:05:42,386
-        --> 00:05:44,820
-
-        Weren''t we just somewhere else?
-
-        
-
-        45
-
-        00:05:46,186
-        --> 00:05:48,142
-
-        - Where?
-
-        - Some planet.
-
-        
-
-        46
-
-        00:05:48,226
-        --> 00:05:49,215
-
-        - When?
-
-        - Just now.
-
-        
-
-        47
-
-        00:05:49,306
-        --> 00:05:50,500
-
-        - No.
-
-        - Sure?
-
-        
-
-        48
-
-        00:05:50,586
-        --> 00:05:52,656
-
-        Yeah.
-
-        
-
-        49
-
-        00:05:59,786
-        --> 00:06:01,777
-
-        Everything just changed.
-
-        
-
-        50
-
-        00:06:01,866
-        --> 00:06:05,415
-
-        Sir, we''ve been sitting in the commissary
-
-        for
-        the past half-hour.
-
-        
-
-        51
-
-        00:06:05,506 --> 00:06:08,942
-
-        -
-        Really?
-
-        - You''ve gotten the two places confused.
-
-        
-
-        52
-
-        00:06:10,906
-        --> 00:06:13,466
-
-        - We''re gonna be late for the briefing.
-
-        -
-        Briefing?
-
-        
-
-        53
-
-        00:06:15,986 --> 00:06:20,502
-
-        Are
-        you OK, or are you just trying
-
-        to avoid answering my question?
-
-        
-
-        54
-
-        00:06:22,106
-        --> 00:06:24,301
-
-        No, I''m fine.
-
-        
-
-        55
-
-        00:06:26,066
-        --> 00:06:28,261
-
-        What question?
-
-        
-
-        56
-
-        00:06:36,746
-        --> 00:06:42,503
-
-        Two weeks ago, SG-15 took these images
-
-        of
-        solar activity on P4X-639.
-
-        
-
-        57
-
-        00:06:42,586
-        --> 00:06:46,420
-
-        Analysis of the data indicates
-
-        a steady
-        increase in the intensity.
-
-        
-
-        58
-
-        00:06:46,506
-        --> 00:06:49,942
-
-        Now, if I''m right, the explosions
-
-        that
-        we''re witnessing here...
-
-        
-
-        59
-
-        00:06:50,026
-        --> 00:06:53,018
-
-        ..are just the precursor
-
-        to a greater
-        violent ejection.
-
-        
-
-        60
-
-        00:06:53,106 --> 00:06:56,985
-
-        Major
-        Carter? Have we not previously
-
-        been briefed concerning this matter?
-
-        
-
-        61
-
-        00:06:57,066
-        --> 00:06:59,580
-
-        - I was just gonna say that.
-
-        - Sir?
-
-        
-
-        62
-
-        00:07:01,066
-        --> 00:07:05,582
-
-        You wanna go to the planet and set up
-
-        some
-        kind of remote observatory.
-
-        
-
-        63
-
-        00:07:07,026
-        --> 00:07:09,062
-
-        - Yes.
-
-        - We just did that.
-
-        
-
-        64
-
-        00:07:09,306
-        --> 00:07:11,501
-
-        - No, we didn''t.
-
-        - I believe we did.
-
-        
-
-        65
-
-        00:07:11,586
-        --> 00:07:13,542
-
-        No, that''s what the briefing is about.
-
-        
-
-        66
-
-        00:07:13,626
-        --> 00:07:16,424
-
-        I remember listening to Carter prattle on...
-
-        
-
-        67
-
-        00:07:16,506
-        --> 00:07:19,623
-
-        ..about solar activity
-
-        and a... corona
-        something.
-
-        
-
-        68
-
-        00:07:19,706 --> 00:07:22,266
-
-        Coronal
-        mass emissions.
-
-        I was about to bring it up.
-
-        
-
-        69
-
-        00:07:22,346
-        --> 00:07:26,464
-
-        - There you go. How would I know that?
-
-        -
-        Maybe you read my report.
-
-        
-
-        70
-
-        00:07:27,386
-        --> 00:07:29,775
-
-        Maybe he read your report?
-
-        
-
-        71
-
-        00:07:32,706
-        --> 00:07:35,459
-
-        I''m tellin'' you guys,
-
-        we''ve done
-        this before.
-
-        
-
-        72
-
-        00:07:35,986 --> 00:07:37,977
-
-        I
-        am in agreement with O''Neill.
-
-        
-
-        73
-
-        00:07:38,066
-        --> 00:07:42,298
-
-        I am experiencing a great deal
-
-        of familiarity
-        with these events.
-
-        
-
-        74
-
-        00:07:42,386 --> 00:07:44,900
-
-        (PA)
-        Unscheduled offworld activation.
-
-        
-
-        75
-
-        00:07:53,186
-        --> 00:07:55,654
-
-        We have an unscheduled
-
-        incoming traveller,
-        sir.
-
-        
-
-        76
-
-        00:07:55,746 --> 00:07:58,783
-
-        -
-        It''s SG-12.
-
-        - (Hammond) They''re not due for days.
-
-        
-
-        77
-
-        00:07:58,866
-        --> 00:08:01,858
-
-        (technician) Receiving GDO transmission.
-
-        
-
-        78
-
-        00:08:05,106
-        --> 00:08:06,937
-
-        It''s SG-12.
-
-        
-
-        79
-
-        00:08:10,106
-        --> 00:08:13,098
-
-        - Open the iris.
-
-        - One of them will
-        be injured.
-
-        
-
-        80
-
-        00:08:26,106 --> 00:08:30,145
-
-        -
-        What do you make of all of this, Major?
-
-        - Well, sir, I''m not sure.
-
-        
-
-        81
-
-        00:08:30,226
-        --> 00:08:33,423
-
-        SG-12''s early return
-
-        was the result
-        of an accident.
-
-        
-
-        82
-
-        00:08:33,506 --> 00:08:35,656
-
-        One
-        of the team fell and broke his ankle.
-
-        
-
-        83
-
-        00:08:35,746
-        --> 00:08:39,216
-
-        How could Teal''c and Colonel O''Neill
-
-        know
-        that was going to happen?
-
-        
-
-        84
-
-        00:08:39,306
-        --> 00:08:43,345
-
-        Both of them claim to have memories
-
-        of
-        SG-1''s mission to P4X-639.
-
-        
-
-        85
-
-        00:08:43,426
-        --> 00:08:47,135
-
-        A mission that isn''t scheduled
-
-        to start
-        for six hours.
-
-        
-
-        86
-
-        00:08:55,906 --> 00:09:00,104
-
-        OK.
-        So Sam was setting up instruments,
-
-        and... where was l?
-
-        
-
-        87
-
-        00:09:00,866
-        --> 00:09:03,505
-
-        You were by the altar deal with the guy.
-
-        
-
-        88
-
-        00:09:03,986
-        --> 00:09:08,025
-
-        Right. You''re gonna need
-
-        to be a little
-        more specific.
-
-        
-
-        89
-
-        00:09:09,546 --> 00:09:10,820
-
-        Malikai.
-
-        
-
-        90
-
-        00:09:10,906
-        --> 00:09:15,024
-
-        That''s the alien archaeologist
-
-        SG-15
-        met on the first survey.
-
-        
-
-        91
-
-        00:09:15,106 -->
-        00:09:18,416
-
-        - I was looking forward to meeting him.
-
-        -
-        You did.
-
-        
-
-        92
-
-        00:09:18,506 --> 00:09:20,815
-
-        You
-        got along swell.
-
-        
-
-        93
-
-        00:09:21,946 --> 00:09:26,542
-
-        Anyway,
-        a beam shot out from the ruins
-
-        around the altar and hit the Stargate.
-
-        
-
-        94
-
-        00:09:27,906
-        --> 00:09:30,215
-
-        There was a blinding flash of light.
-
-        
-
-        95
-
-        00:09:30,306
-        --> 00:09:34,140
-
-        Then I was back in the commissary
-
-        eating
-        my Froot Loops.
-
-        
-
-        96
-
-        00:09:37,946 --> 00:09:40,540
-
-        I
-        can''t find anything wrong
-
-        with either of them.
-
-        
-
-        97
-
-        00:09:40,626
-        --> 00:09:45,177
-
-        We''ll wait for the lab results to be sure,
-
-        but
-        they appear to be in perfect health.
-
-        
-
-        98
-
-        00:09:45,266
-        --> 00:09:48,224
-
-        Except for remembering events
-
-        that haven''t
-        happened yet.
-
-        
-
-        99
-
-        00:09:48,586 --> 00:09:53,182
-
-        -
-        But why Jack and Teal''c and not us?
-
-        - I''m not takin'' any chances.
-
-        
-
-        100
-
-        00:09:53,266
-        --> 00:09:58,056
-
-        Until we figure out what''s going on,
-
-        I''m
-        postponing your mission to P4X-639.
-
-        
-
-        101
-
-        00:10:10,626
-        --> 00:10:12,821
-
-        Jack. Wait up.
-
-        
-
-        102
-
-        00:10:13,466
-        --> 00:10:18,745
-
-        Um... I was thinking about what you said
-
-        about,
-        uh, a beam coming out of the altar.
-
-        
-
-        103
-
-        00:10:18,826
-        --> 00:10:22,899
-
-        SG-15 took digital images
-
-        of the carvings
-        on the ruins.
-
-        
-
-        104
-
-        00:10:23,186 --> 00:10:25,746
-
-        I
-        was thinking there might be
-
-        some sort of clue.
-
-        
-
-        105
-
-        00:10:25,826
-        --> 00:10:29,136
-
-        Unfortunately it''s the equivalent
-
-        of
-        400 pages of alien text.
-
-        
-
-        106
-
-        00:10:29,226
-        --> 00:10:32,616
-
-        If you give me details about
-
-        the layout
-        of the ruins...
-
-        
-
-        107
-
-        00:10:34,666 --> 00:10:36,941
-
-        Gee,
-        sorry, Dr Jackson.
-
-        
-
-        108
-
-        00:10:38,066 --> 00:10:40,455
-
-        Shoulda
-        seen that comin''.
-
-        
-
-        109
-
-        00:10:51,266 --> 00:10:52,221
-
-        So...
-
-        
-
-        110
-
-        00:10:53,066
-        --> 00:10:54,215
-
-        So?
-
-        
-
-        111
-
-        00:10:55,746
-        --> 00:10:58,385
-
-        Don''t you know what I''m gonna say?
-
-        
-
-        112
-
-        00:10:58,466
-        --> 00:11:02,744
-
-        Actually, by this time
-
-        we were on the
-        planet.
-
-        
-
-        113
-
-        00:11:02,826 --> 00:11:04,737
-
-        It''s
-        all different now.
-
-        
-
-        114
-
-        00:11:04,826 --> 00:11:05,815
-
-        Oh.
-
-        
-
-        115
-
-        00:11:05,906
-        --> 00:11:11,026
-
-        Well, I was thinking about what you said
-
-        about
-        a beam hitting the Stargate.
-
-        
-
-        116
-
-        00:11:11,106
-        --> 00:11:13,336
-
-        - What about it?
-
-        - After the flash,...
-
-        
-
-        117
-
-        00:11:13,426
-        --> 00:11:17,544
-
-        ..you found yourself back here, reliving
-
-        the
-        moments leading up to the mission.
-
-        
-
-        118
-
-        00:11:18,506
-        --> 00:11:21,384
-
-        Maybe you''re not
-
-        remembering future
-        events.
-
-        
-
-        119
-
-        00:11:21,466 --> 00:11:25,425
-
-        -
-        Maybe you were sent back in time.
-
-        - For what? Six hours?
-
-        
-
-        120
-
-        00:11:25,506
-        --> 00:11:30,580
-
-        Well, it wouldn''t be the first time.
-
-        The
-        Stargate did send us back to 1969.
-
-        
-
-        121
-
-        00:11:31,506
-        --> 00:11:33,497
-
-        Good year.
-
-        
-
-        122
-
-        00:11:33,586
-        --> 00:11:39,218
-
-        So could this beam be a means
-
-        to access
-        the gate''s subspace field...
-
-        
-
-        123
-
-        00:11:39,306
-        --> 00:11:43,697
-
-        ..in order to create some kind of
-
-        time
-        inversion outside of subspace?
-
-        
-
-        124
-
-        00:11:48,666
-        --> 00:11:51,260
-
-        I knew you were gonna say that.
-
-        
-
-        125
-
-        00:11:51,986
-        --> 00:11:54,341
-
-        I guess I''m just thinkin'' out loud.
-
-        
-
-        126
-
-        00:11:54,426
-        --> 00:11:57,020
-
-        I''m gonna go run a few simulations.
-
-        
-
-        127
-
-        00:11:58,826
-        --> 00:12:01,340
-
-        You run... Simulate.
-
-        
-
-        128
-
-        00:12:03,826
-        --> 00:12:06,818
-
-        Let me know how it turns out.
-
-        Keep me
-        posted.
-
-        
-
-        129
-
-        00:12:10,066 --> 00:12:12,216
-
-        Keep
-        me apprised.
-
-        
-
-        130
-
-        00:12:18,226 --> 00:12:22,777
-
-        The
-        lab results confirm Dr Fraiser''s
-
-        assessment. You''re both in perfect
-        health.
-
-        
-
-        131
-
-        00:12:24,946 --> 00:12:28,825
-
-        -
-        Any more of these premonitions?
-
-        - Not for some time.
-
-        
-
-        132
-
-        00:12:28,906
-        --> 00:12:31,420
-
-        Can we go back to work, General, please?
-
-        
-
-        133
-
-        00:12:31,506
-        --> 00:12:33,861
-
-        I have no objection, as long as...
-
-        
-
-        134
-
-        00:12:33,946
-        --> 00:12:36,460
-
-        (PA) Unscheduled offworld activation.
-
-        
-
-        135
-
-        00:12:38,906
-        --> 00:12:40,897
-
-        D''oh!
-
-        
-
-        136
-
-        00:12:51,346
-        --> 00:12:53,337
-
-        What is that?
-
-        
-
-        137
-
-        00:12:53,426
-        --> 00:12:56,702
-
-        I''m not sure, sir.
-
-        I''ve never seen
-        anything like it.
-
-        
-
-        138
-
-        00:12:56,786 --> 00:12:58,777
-
-        We
-        have.
-
-        
-
-        139
-
-        00:13:00,066 --> 00:13:03,661
-
-        Anyway,
-        I''m sorry, but that just
-
-        happens to be how I feel about it.
-
-        
-
-        140
-
-        00:13:03,746
-        --> 00:13:06,135
-
-        What do you think?
-
-        
-
-        141
-
-        00:13:11,786
-        --> 00:13:14,380
-
-        Colonel? ls something wrong?
-
-        
-
-        142
-
-        00:13:15,346
-        --> 00:13:17,496
-
-        Oh, yeah.
-
-        
-
-        143
-
-        00:13:17,586
-        --> 00:13:19,577
-
-        Somethin''.
-
-        
-
-        144
-
-        00:13:22,866
-        --> 00:13:25,664
-
-        - Two weeks ago, SG-15...
-
-        - We''ve done
-        this.
-
-        
-
-        145
-
-        00:13:28,626 --> 00:13:31,186
-
-        We
-        do this every day.
-
-        
-
-        146
-
-        00:13:31,266 --> 00:13:34,781
-
-        Not
-        briefings in general, Daniel.
-
-        I''m talking about this briefing.
-
-        
-
-        147
-
-        00:13:34,866
-        --> 00:13:37,699
-
-        I''m talking about this day.
-
-        
-
-        148
-
-        00:13:41,626
-        --> 00:13:47,064
-
-        Colonel O''Neill is correct. Events do
-
-        appear
-        to be repeating themselves.
-
-        
-
-        149
-
-        00:13:47,266
-        --> 00:13:50,781
-
-        - Since when?
-
-        - Since we went to P4X-639.
-
-        
-
-        150
-
-        00:13:51,026
-        --> 00:13:53,017
-
-        We haven''t been to P4X-639.
-
-        
-
-        151
-
-        00:13:53,106
-        --> 00:13:56,894
-
-        Yes, we have. ''''No, we haven''t.''''
-
-        That''s
-        what you were gonna say.
-
-        
-
-        152
-
-        00:13:56,986
-        --> 00:14:01,377
-
-        - Of course that''s what I was gonna say.
-
-        -
-        OK, bad example.
-
-        
-
-        153
-
-        00:14:01,466 --> 00:14:05,539
-
-        -
-        I''m not quite sure what to make of this.
-
-        - If we''ve had this
-        meeting before, sir...
-
-        
-
-        154
-
-        00:14:05,626 -->
-        00:14:10,256
-
-        Why are Teal''c and I the only ones who
-
-        remember
-        it? You said that last time.
-
-        
-
-        155
-
-        00:14:10,346
-        --> 00:14:14,180
-
-        Well, I''ll venture a guess it has
-
-        something
-        to do with that planet.
-
-        
-
-        156
-
-        00:14:15,746 -->
-        00:14:19,534
-
-        And you''ll all believe me when
-
-        SG-12 comes
-        through that gate in...
-
-        
-
-        157
-
-        00:14:19,626 -->
-        00:14:22,265
-
-        ..four, three, two, one...
-
-        
-
-        158
-
-        00:14:31,786
-        --> 00:14:34,220
-
-        SG-12 isn''t due back for three days.
-
-        
-
-        159
-
-        00:14:34,986
-        --> 00:14:38,217
-
-        - (PA) Unscheduled offworld activation.
-
-        -
-        So close.
-
-        
-
-        160
-
-        00:14:51,626 --> 00:14:56,336
-
-        -
-        You''re not gonna find anything.
-
-        - Why don''t we wait for the lab
-        results?
-
-        
-
-        161
-
-        00:14:56,426 --> 00:14:59,498
-
-        -
-        The results will be negative.
-
-        - Humour me.
-
-        
-
-        162
-
-        00:15:01,226
-        --> 00:15:06,346
-
-        General... I know you''re thinking of
-
-        postponing
-        the mission. There''s no point.
-
-        
-
-        163
-
-        00:15:06,426
-        --> 00:15:09,020
-
-        You tried it last time. It didn''t work.
-
-        
-
-        164
-
-        00:15:19,826
-        --> 00:15:22,021
-
-        Jack. Wait up.
-
-        
-
-        165
-
-        00:15:22,426
-        --> 00:15:27,864
-
-        Um... I was thinking about what you said
-
-        about
-        a beam coming from the altar.
-
-        
-
-        166
-
-        00:15:28,026
-        --> 00:15:30,256
-
-        400 pages of alien text.
-
-        
-
-        167
-
-        00:15:32,826
-        --> 00:15:37,263
-
-        Right... SG-15 took digital images
-
-        of
-        the carvings on the ruins.
-
-        
-
-        168
-
-        00:15:39,426
-        --> 00:15:41,257
-
-        - Looks familiar.
-
-        - It should.
-
-        
-
-        169
-
-        00:15:41,346
-        --> 00:15:43,576
-
-        It''s something that
-
-        you spoke for a
-        few days.
-
-        
-
-        170
-
-        00:15:43,666 --> 00:15:47,056
-
-        It''s
-        a variation of the writings
-
-        used by the Ancients.
-
-        
-
-        171
-
-        00:15:47,146
-        --> 00:15:51,219
-
-        If you''re lookin'' for help translating it,
-
-        you''re
-        barkin'' up the wrong genius.
-
-        
-
-        172
-
-        00:15:51,306
-        --> 00:15:56,300
-
-        No, I realise the Asgards returned you to
-
-        normal,
-        which is fortunate, l... suppose.
-
-        
-
-        173
-
-        00:15:56,586
-        --> 00:16:00,864
-
-        But if you give me details about
-
-        the
-        layout of the ruins it might be...
-
-        
-
-        174
-
-        00:16:02,066
-        --> 00:16:04,341
-
-        Gee, sorry, Dr Jackson.
-
-        
-
-        175
-
-        00:16:04,546
-        --> 00:16:06,138
-
-        Oops.
-
-        
-
-        176
-
-        00:16:11,466
-        --> 00:16:12,785
-
-        Come in.
-
-        
-
-        177
-
-        00:16:14,986
-        --> 00:16:18,342
-
-        - Any word from Fraiser?
-
-        - Still waiting
-        for the lab results.
-
-        
-
-        178
-
-        00:16:18,426 -->
-        00:16:20,735
-
-        If we delay any longer it will be too late.
-
-        
-
-        179
-
-        00:16:22,466
-        --> 00:16:26,175
-
-        - Too late for what?
-
-        - To stop this
-        day from happening again.
-
-        
-
-        180
-
-        00:16:26,266
-        --> 00:16:29,144
-
-        You realise this is
-
-        a little difficult
-        for me to accept.
-
-        
-
-        181
-
-        00:16:29,266 --> 00:16:31,905
-
-        Hey,
-        if it was just me, I''d agree.
-
-        
-
-        182
-
-        00:16:31,986
-        --> 00:16:36,264
-
-        But what about Teal''c?
-
-        Come on! ls
-        this the face of a crazy man?
-
-        
-
-        183
-
-        00:16:42,146
-        --> 00:16:44,819
-
-        - Bad example.
-
-        - What do you want?
-
-        
-
-        184
-
-        00:16:45,266
-        --> 00:16:47,655
-
-        We wanna go back to 639.
-
-        
-
-        185
-
-        00:17:02,666
-        --> 00:17:06,375
-
-        A geomagnetic storm is building up.
-
-        We
-        shouldn''t stay long.
-
-        
-
-        186
-
-        00:17:06,466 -->
-        00:17:08,775
-
-        That''s the machine right there.
-
-        
-
-        187
-
-        00:17:10,306
-        --> 00:17:14,379
-
-        - I wonder how it works.
-
-        - Subspace
-        fields and time inversions.
-
-        
-
-        188
-
-        00:17:15,306
-        --> 00:17:16,944
-
-        That''s what you said.
-
-        
-
-        189
-
-        00:17:21,826
-        --> 00:17:24,579
-
-        - Hello.
-
-        - Whoa. Easy, guys.
-
-        
-
-        190
-
-        00:17:24,666
-        --> 00:17:27,624
-
-        That''s the guy.
-
-        He''s the one who started
-        all this.
-
-        
-
-        191
-
-        00:17:28,066 --> 00:17:30,739
-
-        -
-        I don''t understand.
-
-        - Whatever you did, undo it.
-
-        
-
-        192
-
-        00:17:30,826
-        --> 00:17:33,898
-
-        - I did nothing.
-
-        - I don''t think he
-        knows what you mean.
-
-        
-
-        193
-
-        00:17:34,066 -->
-        00:17:36,660
-
-        - Perhaps he has no memory, O''Neill.
-
-        -
-        He remembers.
-
-        
-
-        194
-
-        00:17:36,746 --> 00:17:38,782
-
-        He''s
-        the one who pushed those buttons.
-
-        
-
-        195
-
-        00:17:38,866
-        --> 00:17:42,336
-
-        Please. I''m, uh, an archaeologist...
-
-        
-
-        196
-
-        00:17:43,106
-        --> 00:17:46,416
-
-        I''ve been trying to translate
-
-        these
-        alien symbols.
-
-        
-
-        197
-
-        00:17:46,506 --> 00:17:49,384
-
-        -
-        I told the others who came before you.
-
-        - SG-15?
-
-        
-
-        198
-
-        00:17:49,906
-        --> 00:17:52,625
-
-        Yes... But they didn''t
-
-        point weapons
-        at me.
-
-        
-
-        199
-
-        00:17:54,506 --> 00:17:56,736
-
-        I
-        can show you my notes...
-
-        
-
-        200
-
-        00:17:57,346
-        --> 00:18:01,055
-
-        I''ve been making periodic visits
-
-        to
-        this planet for quite some time now.
-
-        
-
-        201
-
-        00:18:01,146
-        --> 00:18:03,740
-
-        My research is almost complete.
-
-        
-
-        202
-
-        00:18:08,066
-        --> 00:18:11,138
-
-        What kind of archaeologist
-
-        carries a
-        weapon?
-
-        
-
-        203
-
-        00:18:11,586 --> 00:18:12,814
-
-        Uh...
-
-        
-
-        204
-
-        00:18:12,906
-        --> 00:18:14,419
-
-        I do.
-
-        
-
-        205
-
-        00:18:15,746
-        --> 00:18:17,941
-
-        Bad example.
-
-        
-
-        206
-
-        00:18:29,866
-        --> 00:18:33,779
-
-        - What''s this?
-
-        - If you must know...
-        it''s my wife.
-
-        
-
-        207
-
-        00:18:33,866 --> 00:18:36,061
-
-        (high-pitched
-        sound)
-
-        
-
-        208
-
-        00:18:46,026 --> 00:18:49,462
-
-        -
-        What''d you do?
-
-        - Nothing. It engaged on its own.
-
-        
-
-        209
-
-        00:18:49,746
-        --> 00:18:51,338
-
-        - Turn it off.
-
-        - How?
-
-        
-
-        210
-
-        00:18:51,426
-        --> 00:18:54,941
-
-        It''s drawing energy from
-
-        the ionisation
-        in the atmosphere.
-
-        
-
-        211
-
-        00:18:55,026 --> 00:18:57,335
-
-        There''s
-        nothing Major Carter can do.
-
-        
-
-        212
-
-        00:18:57,426
-        --> 00:19:00,020
-
-        Excuse me? How''d you know her name?
-
-        
-
-        213
-
-        00:19:03,106
-        --> 00:19:06,815
-
-        - You told me.
-
-        - No, I didn''t. Not
-        this time around.
-
-        
-
-        214
-
-        00:19:08,826 --> 00:19:11,818
-
-        It
-        doesn''t matter. You''re too late.
-
-        
-
-        215
-
-        00:19:13,626
-        --> 00:19:17,301
-
-        - How do you shut this thing off?
-
-        -
-        Even if I knew, I wouldn''t tell you.
-
-        
-
-        216
-
-        00:19:17,386
-        --> 00:19:19,820
-
-        Sir, it''s building up some kind of charge.
-
-        
-
-        217
-
-        00:19:19,946
-        --> 00:19:23,177
-
-        Daniel, you can read this stuff.
-
-        Get
-        up here and shut it off.
-
-        
-
-        218
-
-        00:19:23,266
-        --> 00:19:27,623
-
-        What? Are you kidding me?
-
-        I wouldn''t
-        even know where to begin. I...
-
-        
-
-        219
-
-        00:19:27,706
-        --> 00:19:32,905
-
-        It would take years of training. I don''t
-
-        know
-        the material, I don''t have enough...
-
-        
-
-        220
-
-        00:19:33,546
-        --> 00:19:37,175
-
-        Anyway, I''m sorry, but that just
-
-        happens
-        to be how I feel about it.
-
-        
-
-        221
-
-        00:19:37,266
-        --> 00:19:39,655
-
-        What do you think?
-
-        
-
-        222
-
-        00:19:44,746
-        --> 00:19:47,021
-
-        It''s just a question.
-
-        
-
-        223
-
-        00:19:55,146
-        --> 00:19:59,617
-
-        All right. Here''s the deal. We''re all
-
-        stuck
-        in a time loop of some kind.
-
-        
-
-        224
-
-        00:20:00,106
-        --> 00:20:03,621
-
-        However, Teal''c and I seem to be
-
-        the
-        only ones who realise it.
-
-        
-
-        225
-
-        00:20:03,706
-        --> 00:20:06,095
-
-        Now, there''s this alien device on 639.
-
-        
-
-        226
-
-        00:20:06,186
-        --> 00:20:10,498
-
-        It shoots a beam at the Stargate,
-
-        which
-        at... subspace something... what?
-
-        
-
-        227
-
-        00:20:10,586
-        --> 00:20:14,022
-
-        Accesses the subspace field
-
-        the Stargate
-        is capable of generating.
-
-        
-
-        228
-
-        00:20:14,106
-        --> 00:20:19,305
-
-        - It is powered by ionisation...
-
-        - In
-        the atmosphere, which is caused by...
-
-        
-
-        229
-
-        00:20:19,386
-        --> 00:20:21,661
-
-        I know this one.
-
-        
-
-        230
-
-        00:20:22,946
-        --> 00:20:25,699
-
-        - Magnets.
-
-        - The geomagnetic storm.
-
-        
-
-        231
-
-        00:20:27,306
-        --> 00:20:31,982
-
-        Close. Anyway, I don''t know why
-
-        none
-        of you remember any of this.
-
-        
-
-        232
-
-        00:20:32,306
-        --> 00:20:37,141
-
-        But I do know for a fact there''s no point
-
-        havin''
-        ol'' Doc Fraiser examine us again.
-
-        
-
-        233
-
-        00:20:49,506
-        --> 00:20:54,899
-
-        I ask you, what could possibly be
-
-        in
-        my eye that would explain this?
-
-        
-
-        234
-
-        00:21:03,066
-        --> 00:21:07,059
-
-        - What do you make of all this, Major?
-
-        -
-        When was the last time Colonel O''Neill...
-
-        
-
-        235
-
-        00:21:07,146
-        --> 00:21:10,661
-
-        ..used terms like ''''subspace field''''
-
-        and
-        ''''geomagnetic storm''''?
-
-        
-
-        236
-
-        00:21:10,746
-        --> 00:21:14,182
-
-        - Good point.
-
-        - And he actually used
-        them correctly,...
-
-        
-
-        237
-
-        00:21:14,266 --> 00:21:16,257
-
-        ..for
-        the most part.
-
-        
-
-        238
-
-        00:21:16,346 --> 00:21:19,736
-
-        -
-        You believe him.
-
-        - I''m considering the possibility, sir.
-
-        
-
-        239
-
-        00:21:19,826
-        --> 00:21:23,455
-
-        The more I think about it, if he''s right,
-
-        the
-        ramifications are huge.
-
-        
-
-        240
-
-        00:21:23,546 -->
-        00:21:27,744
-
-        The next time time loops, we''ll forget
-
-        this
-        conversation even happened.
-
-        
-
-        241
-
-        00:21:33,506
-        --> 00:21:37,294
-
-        - You''re better off in here.
-
-        - I was
-        just comin'' to look for you.
-
-        
-
-        242
-
-        00:21:37,986
-        --> 00:21:40,580
-
-        Um, I''ve translated
-
-        a section of the
-        west wall.
-
-        
-
-        243
-
-        00:21:40,666 --> 00:21:44,705
-
-        -
-        It''s some sort of planetary history.
-
-        - Daniel, that''s very nice.
-
-        
-
-        244
-
-        00:21:44,786
-        --> 00:21:47,823
-
-        - But focus on the altar.
-
-        - Why?
-
-        
-
-        245
-
-        00:21:47,906
-        --> 00:21:50,864
-
-        Malikai initiated the time loop
-
-        by manipulating
-        symbols.
-
-        
-
-        246
-
-        00:21:50,946 --> 00:21:53,540
-
-        Figure
-        out those,
-
-        you figure out how to stop this.
-
-        
-
-        247
-
-        00:21:53,626
-        --> 00:21:57,141
-
-        Just recognising symbols on a keyboard
-
-        doesn''t
-        run a computer.
-
-        
-
-        248
-
-        00:21:57,226 --> 00:22:01,538
-
-        If
-        I can put the device in a proper context,
-
-        I can figure out what
-        it''s supposed to do.
-
-        
-
-        249
-
-        00:22:01,626 -->
-        00:22:04,663
-
-        We know what it does!
-
-        It''s a time-loop
-        machine.
-
-        
-
-        250
-
-        00:22:04,746 --> 00:22:07,977
-
-        Uh...
-        Who would build a device
-
-        that loops time every ten hours?
-
-        
-
-        251
-
-        00:22:08,066
-        --> 00:22:11,945
-
-        - Who knows? But that''s what it does.
-
-        -
-        Yes, but maybe it''s not supposed to.
-
-        
-
-        252
-
-        00:22:12,026
-        --> 00:22:14,665
-
-        For all we know, this is
-
-        an accidental
-        by-product.
-
-        
-
-        253
-
-        00:22:14,746 --> 00:22:16,941
-
-        (phone
-        rings)
-
-        
-
-        254
-
-        00:22:19,146 --> 00:22:21,137
-
-        Hello?
-
-        
-
-        255
-
-        00:22:22,626
-        --> 00:22:24,935
-
-        OK, we''re on our way.
-
-        
-
-        256
-
-        00:22:25,026
-        --> 00:22:27,415
-
-        Sam has something.
-
-        
-
-        257
-
-        00:22:32,466
-        --> 00:22:34,457
-
-        According to Colonel O''Neill,...
-
-        
-
-        258
-
-        00:22:34,546
-        --> 00:22:38,744
-
-        ..he and Teal''c witnessed a beam
-
-        striking
-        the Stargate on P4X-639.
-
-        
-
-        259
-
-        00:22:38,826
-        --> 00:22:41,340
-
-        Then the gate became
-
-        energised somehow.
-
-        
-
-        260
-
-        00:22:41,426
-        --> 00:22:46,546
-
-        Now, in the second loop, they witnessed
-
-        a
-        similar effect in our own gate room.
-
-        
-
-        261
-
-        00:22:46,906
-        --> 00:22:48,817
-
-        Sounds about right.
-
-        
-
-        262
-
-        00:22:48,906
-        --> 00:22:51,466
-
-        If this is the influence
-
-        of alien technology,...
-
-        
-
-        263
-
-        00:22:51,546
-        --> 00:22:55,175
-
-        ..the effect is being translated
-
-        to
-        Earth through the Stargate,...
-
-        
-
-        264
-
-        00:22:55,266
-        --> 00:22:57,382
-
-        ..in which case the solution is simple.
-
-        
-
-        265
-
-        00:22:57,466
-        --> 00:22:59,138
-
-        - We dial out.
-
-        - Exactly.
-
-        
-
-        266
-
-        00:22:59,226
-        --> 00:23:01,581
-
-        Before this loop
-
-        is supposed to begin
-        again,...
-
-        
-
-        267
-
-        00:23:01,666 --> 00:23:05,295
-
-        ..we
-        establish an outgoing wormhole
-
-        to, say, the Tollan home world.
-
-        
-
-        268
-
-        00:23:05,666
-        --> 00:23:10,535
-
-        Then anyone or anything trying to dial in
-
-        from
-        P4X-639 will get a busy signal.
-
-        
-
-        269
-
-        00:23:13,946
-        --> 00:23:15,937
-
-        Let''s do it.
-
-        
-
-        270
-
-        00:23:20,106
-        --> 00:23:22,574
-
-        Chevron five, locked.
-
-        
-
-        271
-
-        00:23:25,826
-        --> 00:23:28,420
-
-        Chevron six, locked.
-
-        
-
-        272
-
-        00:23:38,306
-        --> 00:23:40,456
-
-        - Chevron seven will not engage.
-
-        - What?
-
-        
-
-        273
-
-        00:23:40,546
-        --> 00:23:43,060
-
-        It won''t lock.
-
-        I can''t establish a
-        connection.
-
-        
-
-        274
-
-        00:23:43,146 --> 00:23:45,614
-
-        I''m
-        running a diagnostic.
-
-        
-
-        275
-
-        00:23:50,306 -->
-        00:23:52,376
-
-        - Incoming wormhole.
-
-        - Close the iris.
-
-        
-
-        276
-
-        00:23:58,146
-        --> 00:23:59,738
-
-        Oh, crap.
-
-        
-
-        277
-
-        00:23:59,826
-        --> 00:24:04,695
-
-        There is nothing wrong on our end.
-
-        We
-        should have been able to dial out.
-
-        
-
-        278
-
-        00:24:14,426
-        --> 00:24:17,384
-
-        I''m sorry, but that just
-
-        happens to
-        be how I feel about it.
-
-        
-
-        279
-
-        00:24:17,466 -->
-        00:24:19,855
-
-        What do you think?
-
-        
-
-        280
-
-        00:24:21,266
-        --> 00:24:23,541
-
-        Ask me tomorrow.
-
-        
-
-        281
-
-        00:24:35,346
-        --> 00:24:38,179
-
-        Recognising symbols on a keyboard
-
-        won''t
-        run a computer.
-
-        
-
-        282
-
-        00:24:38,266 --> 00:24:40,302
-
-        We''ve
-        been over this!
-
-        
-
-        283
-
-        00:24:41,466 --> 00:24:44,856
-
-        I''m
-        tellin'' you,
-
-        the only way to stop this loop...
-
-        
-
-        284
-
-        00:24:46,026
-        --> 00:24:48,540
-
-        ..is to figure out how to run that stuff!
-
-        
-
-        285
-
-        00:24:50,586
-        --> 00:24:54,101
-
-        If we really have had this conversation,
-
-        I
-        probably pointed out...
-
-        
-
-        286
-
-        00:24:54,186 -->
-        00:24:57,144
-
-        ..there''s no way I can translate this
-
-        in
-        less than a day.
-
-        
-
-        287
-
-        00:24:57,226 --> 00:25:01,265
-
-        Oh,
-        I''m so ahead of you.
-
-        I put the whole thing on tape last time.
-
-        
-
-        288
-
-        00:25:01,346
-        --> 00:25:03,382
-
-        So you don''t have to start from scratch.
-
-        
-
-        289
-
-        00:25:11,586
-        --> 00:25:13,656
-
-        If what you say is true,...
-
-        
-
-        290
-
-        00:25:13,746
-        --> 00:25:18,866
-
-        ..when the loop started again your
-
-        recording
-        wouldn''t have happened... yet.
-
-        
-
-        291
-
-        00:25:21,226
-        --> 00:25:24,616
-
-        - Right.
-
-        - Did I not say that?
-
-        
-
-        292
-
-        00:25:24,706
-        --> 00:25:27,061
-
-        Careful! Be careful.
-
-        
-
-        293
-
-        00:25:28,666
-        --> 00:25:32,136
-
-        What about notes? lndelible ink?
-
-        
-
-        294
-
-        00:25:36,546
-        --> 00:25:39,618
-
-        If you are the only ones
-
-        with memories
-        of previous loops,...
-
-        
-
-        295
-
-        00:25:39,706 -->
-        00:25:43,699
-
-        ..you''re gonna have to help me
-
-        by learning
-        and remembering.
-
-        
-
-        296
-
-        00:25:47,706 --> 00:25:49,776
-
-        Fine.
-
-        
-
-        297
-
-        00:25:49,866
-        --> 00:25:52,255
-
-        How hard can it be?
-
-        
-
-        298
-
-        00:26:00,026
-        --> 00:26:04,816
-
-        According to Colonel O''Neill, we tried
-
-        to
-        block the connection to P4X-639...
-
-        
-
-        299
-
-        00:26:04,906
-        --> 00:26:06,897
-
-        ..but were unable to dial out.
-
-        
-
-        300
-
-        00:26:06,986
-        --> 00:26:12,538
-
-        I think that the Earth has become out of
-
-        sync
-        with the rest of the gate system,...
-
-        
-
-        301
-
-        00:26:12,626
-        --> 00:26:15,379
-
-        ..making it impossible for us
-
-        to establish
-        contact.
-
-        
-
-        302
-
-        00:26:15,666 --> 00:26:17,782
-
-        What
-        about SG-12?
-
-        They managed to gate in.
-
-        
-
-        303
-
-        00:26:17,866
-        --> 00:26:21,336
-
-        I realise that. So we ran
-
-        a sequence
-        of random diallings,...
-
-        
-
-        304
-
-        00:26:21,426 -->
-        00:26:23,986
-
-        ..and this is what we found.
-
-        
-
-        305
-
-        00:26:24,066
-        --> 00:26:27,058
-
-        These worlds we were able
-
-        to contact,
-        including Alaris,...
-
-        
-
-        306
-
-        00:26:27,146 -->
-        00:26:29,216
-
-        ..where SG-12 was doing its survey.
-
-        
-
-        307
-
-        00:26:29,306
-        --> 00:26:32,935
-
-        But the centre of this group is P4X-639.
-
-        
-
-        308
-
-        00:26:33,026
-        --> 00:26:37,622
-
-        I believe the alien device is establishing
-
-        simultaneous
-        connection to these gates,...
-
-        
-
-        309
-
-        00:26:37,706
-        --> 00:26:40,459
-
-        ..creating a kind of... subspace bubble.
-
-        
-
-        310
-
-        00:26:40,546
-        --> 00:26:44,255
-
-        And everything within the bubble
-
-        is
-        cut off from the normal flow of time.
-
-        
-
-        311
-
-        00:26:44,346
-        --> 00:26:46,416
-
-        What are the implications of this?
-
-        
-
-        312
-
-        00:26:46,506
-        --> 00:26:50,818
-
-        We could relive the same day thousands
-
-        of
-        times, and we''d never know it.
-
-        
-
-        313
-
-        00:26:51,786
-        --> 00:26:54,300
-
-        - What can we do?
-
-        - Unfortunately, not
-        much.
-
-        
-
-        314
-
-        00:26:54,546 --> 00:26:58,698
-
-        The
-        next time the loop starts we won''t
-
-        even remember we had this conversation.
-
-        
-
-        315
-
-        00:26:58,786
-        --> 00:27:01,425
-
-        It''s up to Teal''c and Colonel O''Neill.
-
-        
-
-        316
-
-        00:27:03,826
-        --> 00:27:05,817
-
-        ''''Poteramus.''''
-
-        
-
-        317
-
-        00:27:05,906
-        --> 00:27:08,579
-
-        ''''Poteras... potarat.''''
-
-        
-
-        318
-
-        00:27:09,826
-        --> 00:27:13,614
-
-        ''''Crem... eras... cret... cremus.''''
-
-        
-
-        319
-
-        00:27:20,826
-        --> 00:27:23,499
-
-        This is a bad idea.
-
-        
-
-        320
-
-        00:27:23,906
-        --> 00:27:26,101
-
-        It would appear we have no choice.
-
-        
-
-        321
-
-        00:27:26,666
-        --> 00:27:28,861
-
-        (alarm)
-
-        
-
-        322
-
-        00:27:30,906
-        --> 00:27:33,784
-
-        (PA) Unscheduled offworld activation.
-
-        
-
-        323
-
-        00:27:33,866
-        --> 00:27:36,539
-
-        You know the worst part about this?
-
-        
-
-        324
-
-        00:27:37,106
-        --> 00:27:40,576
-
-        Every time we loop,
-
-        Daniel asks me a
-        question, and...
-
-        
-
-        325
-
-        00:27:41,586 --> 00:27:43,861
-
-        ..l
-        wasn''t listening the first time.
-
-        
-
-        326
-
-        00:27:43,946
-        --> 00:27:46,938
-
-        You are not the only one who
-
-        must endure
-        some discomfort.
-
-        
-
-        327
-
-        00:27:48,106 --> 00:27:50,859
-
-        Sorry,
-        sir. I didn''t realise you were there.
-
-        
-
-        328
-
-        00:27:52,026
-        --> 00:27:54,620
-
-        - You have said that on many occasions.
-
-        -
-        I...
-
-        
-
-        329
-
-        00:27:54,706 --> 00:27:57,698
-
-        Perhaps
-        next time
-
-        I will not be so forgiving.
-
-        
-
-        330
-
-        00:28:00,266
-        --> 00:28:03,622
-
-        Section 23 ends with
-
-        a reference to
-        ''''perennial adventus''''.
-
-        
-
-        331
-
-        00:28:05,266
-        --> 00:28:09,179
-
-        - We''ve been over this.
-
-        - It means
-        ''''the approaching disaster''''.
-
-        
-
-        332
-
-        00:28:12,706
-        --> 00:28:15,857
-
-        ''''Of the machine itself,
-
-        with recurring
-        use...
-
-        
-
-        333
-
-        00:28:15,946 --> 00:28:20,178
-
-        ..the
-        machine... surrenders
-
-        to the rigours of time.''''
-
-        
-
-        334
-
-        00:28:20,626
-        --> 00:28:22,981
-
-        That is incorrect, Daniel Jackson.
-
-        
-
-        335
-
-        00:28:24,546
-        --> 00:28:28,824
-
-        The word ''''abicierum'''' means
-
-        ''''to
-        give up'''', not ''''surrender''''.
-
-        
-
-        336
-
-        00:28:30,546
-        --> 00:28:35,540
-
-        OK, this section of the text seems to deal
-
-        primarily
-        with their arrival on P4X-639.
-
-        
-
-        337
-
-        00:28:35,906
-        --> 00:28:40,377
-
-        OK, this section of the text seems to deal
-
-        primarily
-        with their arrival on P4X-639.
-
-        
-
-        338
-
-        00:28:40,466
-        --> 00:28:44,618
-
-        Now this word here, ''''deductavum'''',
-
-        is
-        a variation of ''''deductum''''.
-
-        
-
-        339
-
-        00:28:45,066
-        --> 00:28:49,457
-
-        OK, this section of the text seems to deal
-
-        primarily
-        with their arrival on P4X-639.
-
-        
-
-        340
-
-        00:28:49,826
-        --> 00:28:54,183
-
-        This appears to be a reference to
-
-        the
-        gradual degeneration of the machine.
-
-        
-
-        341
-
-        00:28:54,706
-        --> 00:28:57,095
-
-        ..foundation of a colony.
-
-        
-
-        342
-
-        00:29:02,386
-        --> 00:29:05,856
-
-        - Guys? This is important.
-
-        - (PA) Unscheduled
-        offworld activation.
-
-        
-
-        343
-
-        00:29:09,866 -->
-        00:29:14,656
-
-        O''Neill... Should we not be assisting
-
-        Daniel
-        Jackson with the translation?
-
-        
-
-        344
-
-        00:29:15,506
-        --> 00:29:17,781
-
-        I''m taking this loop off.
-
-        
-
-        345
-
-        00:29:23,986
-        --> 00:29:26,546
-
-        I''m tellin'' you, Teal''c.
-
-        
-
-        346
-
-        00:29:26,626
-        --> 00:29:29,743
-
-        If we don''t find a way out of this soon,
-
-        I''m
-        gonna lose it.
-
-        
-
-        347
-
-        00:29:31,946 --> 00:29:35,256
-
-        Lose
-        it. It means ''''go crazy''''.
-
-        
-
-        348
-
-        00:29:36,626
-        --> 00:29:39,299
-
-        Nuts. Insane.
-
-        
-
-        349
-
-        00:29:39,386
-        --> 00:29:42,935
-
-        Bonzo. No longer in possession
-
-        of one''s
-        faculties.
-
-        
-
-        350
-
-        00:29:43,026 --> 00:29:45,586
-
-        Three
-        fries short of a Happy Meal.
-
-        
-
-        351
-
-        00:29:45,666
-        --> 00:29:47,019
-
-        Wacko!
-
-        
-
-        352
-
-        00:29:57,666
-        --> 00:29:59,657
-
-        Teal''c.
-
-        
-
-        353
-
-        00:30:00,986
-        --> 00:30:04,422
-
-        - Thank you, O''Neill.
-
-        - No, no. Thank
-        you, Teal''c.
-
-        
-
-        354
-
-        00:30:08,826 --> 00:30:11,021
-
-        Oh,
-        God!
-
-        
-
-        355
-
-        00:30:12,946 --> 00:30:16,939
-
-        Exactly
-        how many of these loops
-
-        have you... have we been through?
-
-        
-
-        356
-
-        00:30:18,266
-        --> 00:30:20,336
-
-        I''ve lost track.
-
-        
-
-        357
-
-        00:30:20,946
-        --> 00:30:24,461
-
-        - That must be frustrating.
-
-        - Uh...
-        Yeah.
-
-        
-
-        358
-
-        00:30:24,786 --> 00:30:27,698
-
-        On
-        the other hand,
-
-        it is kind of an opportunity.
-
-        
-
-        359
-
-        00:30:28,506
-        --> 00:30:30,576
-
-        - How''s that?
-
-        - Well, think about it.
-
-        
-
-        360
-
-        00:30:30,666
-        --> 00:30:36,024
-
-        If you know in advance that everything
-
-        is
-        going to go back to the way it was,...
-
-        
-
-        361
-
-        00:30:36,106
-        --> 00:30:38,574
-
-        ..you could do anything
-
-        for as long
-        as you want...
-
-        
-
-        362
-
-        00:30:38,666 --> 00:30:42,261
-
-        ..without
-        having to
-
-        worry about consequences.
-
-        
-
-        363
-
-        00:30:52,746
-        --> 00:30:55,101
-
-        Excuse me.
-
-        
-
-        364
-
-        00:31:09,946
-        --> 00:31:12,938
-
-        - (alarm blaring)
-
-        - (bicycle bell ringing)
-
-        
-
-        365
-
-        00:31:14,346
-        --> 00:31:18,021
-
-        - Vern, how''s the wife?
-
-        - Fine... sir.
-
-        
-
-        366
-
-        00:31:21,306
-        --> 00:31:23,297
-
-        Oh, yeah!
-
-        
-
-        367
-
-        00:31:23,986
-        --> 00:31:26,181
-
-        That''ll play.
-
-        
-
-        368
-
-        00:31:27,546
-        --> 00:31:30,014
-
-        How far is Alaris, anyway?
-
-        
-
-        369
-
-        00:31:30,106
-        --> 00:31:32,176
-
-        Several billion miles, O''Neill.
-
-        
-
-        370
-
-        00:31:32,266
-        --> 00:31:34,461
-
-        That''s gotta be a record.
-
-        
-
-        371
-
-        00:31:52,106
-        --> 00:31:54,939
-
-        (Hammond) Colonel O''Neill,
-
-        what the
-        hell are you doing?
-
-        
-
-        372
-
-        00:31:55,026 --> 00:31:57,665
-
-        In
-        the middle of my backswing?!
-
-        
-
-        373
-
-        00:31:58,546
-        --> 00:32:00,935
-
-        Sorry, sir. I didn''t realise...
-
-        
-
-        374
-
-        00:32:06,266
-        --> 00:32:08,575
-
-        Excuse me, George.
-
-        
-
-        375
-
-        00:32:08,666
-        --> 00:32:10,861
-
-        Colonel, what are you
-
-        doing out of uniform?
-
-        
-
-        376
-
-        00:32:10,946
-        --> 00:32:14,734
-
-        - Handing you my resignation.
-
-        - Resigning?
-        What for?
-
-        
-
-        377
-
-        00:32:14,826 --> 00:32:17,215
-
-        So
-        I can do... this.
-
-        
-
-        378
-
-        00:32:25,226 --> 00:32:27,581
-
-        What
-        are you smiling at?
-
-        
-
-        379
-
-        00:32:29,226 --> 00:32:31,421
-
-        Nothin''.
-
-        
-
-        380
-
-        00:32:40,346
-        --> 00:32:45,022
-
-        - What have you got for us, Dr Jackson?
-
-        -
-        Uh, with the help of Teal''c and Jack,...
-
-        
-
-        381
-
-        00:32:45,426
-        --> 00:32:47,986
-
-        ..l''ve managed
-
-        to complete the translation.
-
-        
-
-        382
-
-        00:32:48,066
-        --> 00:32:52,662
-
-        As I originally suspected, P4X-639
-
-        was
-        once a colony of the Ancients.
-
-        
-
-        383
-
-        00:32:52,746
-        --> 00:32:57,137
-
-        They thrived there until they were
-
-        struck
-        with some sort of cataclysm,...
-
-        
-
-        384
-
-        00:32:57,226
-        --> 00:32:59,456
-
-        ..perhaps a disease.
-
-        
-
-        385
-
-        00:32:59,746
-        --> 00:33:03,819
-
-        In any case, facing certain destruction,
-
-        they
-        built the time machine.
-
-        
-
-        386
-
-        00:33:03,906 -->
-        00:33:07,137
-
-        To go back and change their history
-
-        to avoid
-        their fate.
-
-        
-
-        387
-
-        00:33:07,346 --> 00:33:09,257
-
-        Right.
-        But it didn''t work.
-
-        
-
-        388
-
-        00:33:09,346 -->
-        00:33:12,656
-
-        Instead of sending a team of scientists
-
-        back
-        to the key moment,...
-
-        
-
-        389
-
-        00:33:12,746 -->
-        00:33:17,456
-
-        ..the device caused a continuous loop,
-
-        like
-        the one we''ve been experiencing.
-
-        
-
-        390
-
-        00:33:17,546
-        --> 00:33:22,336
-
-        They experienced it hundreds of times
-
-        trying
-        to get the machine to work, but...
-
-        
-
-        391
-
-        00:33:23,306
-        --> 00:33:26,855
-
-        They gave up. They shut it down
-
-        and
-        let the end come.
-
-        
-
-        392
-
-        00:33:27,706 --> 00:33:29,981
-
-        So
-        the loop can be broken.
-
-        
-
-        393
-
-        00:33:30,066 -->
-        00:33:32,819
-
-        Uh, there''s a section of text on the altar...
-
-        
-
-        394
-
-        00:33:32,906
-        --> 00:33:36,421
-
-        ..that deals with the geomagnetic storms
-
-        that
-        power the device.
-
-        
-
-        395
-
-        00:33:36,506 --> 00:33:39,976
-
-        They
-        recur every 50 or so years,
-
-        which is why, incidentally, the...
-
-        
-
-        396
-
-        00:33:40,066
-        --> 00:33:41,545
-
-        Yes, sir.
-
-        
-
-        397
-
-        00:33:42,866
-        --> 00:33:45,096
-
-        The loop can be broken.
-
-        
-
-        398
-
-        00:33:45,466
-        --> 00:33:48,060
-
-        I was getting to that.
-
-        
-
-        399
-
-        00:33:48,146
-        --> 00:33:52,776
-
-        When we activate the symbols in the right
-
-        sequence,
-        I think we can shut it down.
-
-        
-
-        400
-
-        00:33:53,306
-        --> 00:33:56,742
-
-        Colonel, have your team geared up
-
-        and
-        ready to embark in 30 minutes.
-
-        
-
-        401
-
-        00:33:56,826
-        --> 00:33:58,578
-
-        Yes, sir.
-
-        
-
-        402
-
-        00:34:06,066
-        --> 00:34:10,218
-
-        A geomagnetic storm is building up.
-
-        We
-        shouldn''t stay long.
-
-        
-
-        403
-
-        00:34:10,306 -->
-        00:34:11,739
-
-        Lucky guess.
-
-        
-
-        404
-
-        00:34:15,586
-        --> 00:34:18,783
-
-        - Malikai?
-
-        - I don''t see anyone, sir.
-
-        
-
-        405
-
-        00:34:20,106
-        --> 00:34:23,621
-
-        He''s around here somewhere.
-
-        He knows
-        we''re onto him.
-
-        
-
-        406
-
-        00:34:33,786 --> 00:34:35,777
-
-        Teal''c?
-
-        
-
-        407
-
-        00:34:40,626
-        --> 00:34:43,743
-
-        I''m sorry, but you''ve come
-
-        to break
-        the time loop.
-
-        
-
-        408
-
-        00:34:43,826 --> 00:34:46,977
-
-        And
-        I''m afraid I can''t let you do that.
-
-        
-
-        409
-
-        00:34:56,746
-        --> 00:34:59,214
-
-        Get away from that thing.
-
-        
-
-        410
-
-        00:35:10,906
-        --> 00:35:13,864
-
-        Sir, it looks like a variation
-
-        of a
-        Goa''uld force shield.
-
-        
-
-        411
-
-        00:35:13,946 -->
-        00:35:18,098
-
-        It is, Major. I had to trade several
-
-        rare
-        artefacts for the field generator,...
-
-        
-
-        412
-
-        00:35:18,186
-        --> 00:35:20,336
-
-        ..but it was well worth it.
-
-        
-
-        413
-
-        00:35:21,106
-        --> 00:35:26,180
-
-        Malikai? We have to reset those controls
-
-        or
-        the loop''s gonna start all over again.
-
-        
-
-        414
-
-        00:35:26,266
-        --> 00:35:29,736
-
-        I''m counting on it. I need more time.
-
-        
-
-        415
-
-        00:35:30,346
-        --> 00:35:34,134
-
-        Once I''ve deciphered the symbols,
-
-        I
-        will be able to master the time device.
-
-        
-
-        416
-
-        00:35:34,346
-        --> 00:35:36,735
-
-        Why? So you can be
-
-        king of Groundhog
-        Day?
-
-        
-
-        417
-
-        00:35:36,826 --> 00:35:40,296
-
-        Do
-        you think I would do this
-
-        for personal power?
-
-        
-
-        418
-
-        00:35:40,386
-        --> 00:35:42,581
-
-        She...
-
-        
-
-        419
-
-        00:35:44,786
-        --> 00:35:47,937
-
-        - You wouldn''t understand.
-
-        - What happened?
-
-        
-
-        420
-
-        00:35:53,466
-        --> 00:35:58,984
-
-        She died. 12 years ago. When I found
-
-        this
-        place and discovered its purpose,...
-
-        
-
-        421
-
-        00:35:59,066
-        --> 00:36:02,775
-
-        ..l dedicated myself
-
-        to unlocking its
-        mysteries.
-
-        
-
-        422
-
-        00:36:02,866 --> 00:36:05,255
-
-        (Carter)
-        So you could
-
-        go back and save her.
-
-        
-
-        423
-
-        00:36:05,346
-        --> 00:36:09,578
-
-        No, that would be quite impossible. She
-
-        died
-        from a congenital heart weakness.
-
-        
-
-        424
-
-        00:36:09,906
-        --> 00:36:13,342
-
-        Not even the ability to travel time
-
-        could
-        change that.
-
-        
-
-        425
-
-        00:36:13,426 --> 00:36:15,986
-
-        Then
-        why are you doing this?
-
-        
-
-        426
-
-        00:36:16,426 -->
-        00:36:18,894
-
-        To be with her once more.
-
-        
-
-        427
-
-        00:36:20,466
-        --> 00:36:23,458
-
-        Malikai, the device doesn''t work.
-
-        
-
-        428
-
-        00:36:24,266
-        --> 00:36:27,224
-
-        - It never did.
-
-        - It never did?
-
-        
-
-        429
-
-        00:36:28,946
-        --> 00:36:32,655
-
-        - You''re living proof.
-
-        - We translated
-        the text on the ruins.
-
-        
-
-        430
-
-        00:36:32,746 -->
-        00:36:36,295
-
-        The Ancients who built this place
-
-        never
-        got it to work.
-
-        
-
-        431
-
-        00:36:36,386 --> 00:36:40,584
-
-        They
-        tried over and over again,
-
-        just like you, but in the end they gave
-        up.
-
-        
-
-        432
-
-        00:36:40,666 --> 00:36:44,864
-
-        Why
-        do you think this place is deserted?
-
-        They couldn''t save themselves.
-
-        
-
-        433
-
-        00:36:45,506
-        --> 00:36:49,624
-
-        You''re wrong. There must be some other
-
-        explanation.
-        I know I can make this work.
-
-        
-
-        434
-
-        00:36:49,706
-        --> 00:36:54,382
-
-        You can''t! They proved it can''t be done.
-
-        You''re
-        just gonna go on like this for ever.
-
-        
-
-        435
-
-        00:36:54,466
-        --> 00:36:57,742
-
-        - You''ll be trapped.
-
-        - Along with billions
-        of innocent others.
-
-        
-
-        436
-
-        00:36:58,466 --> 00:37:02,095
-
-        This
-        device activates
-
-        14 Stargates simultaneously.
-
-        
-
-        437
-
-        00:37:02,186
-        --> 00:37:05,701
-
-        That''s 14 worlds reliving
-
-        the same
-        day over and over.
-
-        
-
-        438
-
-        00:37:08,266 --> 00:37:12,100
-
-        I,
-        uh... I didn''t realise.
-
-        
-
-        439
-
-        00:37:12,186
-        --> 00:37:14,177
-
-        (high-pitched sound)
-
-        
-
-        440
-
-        00:37:15,266
-        --> 00:37:20,784
-
-        But once I am able to input the correct
-
-        time
-        coordinates, the loop will be broken.
-
-        
-
-        441
-
-        00:37:20,866
-        --> 00:37:24,302
-
-        The people who made that machine
-
-        made
-        the Stargates,...
-
-        
-
-        442
-
-        00:37:24,386 --> 00:37:26,900
-
-        ..and
-        they couldn''t get
-
-        the damn thing to work.
-
-        
-
-        443
-
-        00:37:26,986
-        --> 00:37:30,581
-
-        And even if you could,
-
-        just for the
-        sake of argument,...
-
-        
-
-        444
-
-        00:37:31,506 -->
-        00:37:34,498
-
-        ..you can''t change what happened to her.
-
-        
-
-        445
-
-        00:37:34,586
-        --> 00:37:37,737
-
-        I can... touch her face again.
-
-        
-
-        446
-
-        00:37:38,706
-        --> 00:37:41,778
-
-        Talk with her. Hear her laugh.
-
-        
-
-        447
-
-        00:37:41,866
-        --> 00:37:43,777
-
-        - Like you remember?
-
-        - Yes.
-
-        
-
-        448
-
-        00:37:43,866
-        --> 00:37:46,141
-
-        Then what''ll happen?
-
-        
-
-        449
-
-        00:37:47,146
-        --> 00:37:49,535
-
-        - She''ll die.
-
-        - And then what?
-
-        
-
-        450
-
-        00:37:50,306
-        --> 00:37:52,183
-
-        You start over?
-
-        
-
-        451
-
-        00:37:57,826
-        --> 00:38:00,181
-
-        Listen to me.
-
-        
-
-        452
-
-        00:38:00,666
-        --> 00:38:02,941
-
-        - I know what it''s like.
-
-        - You can''t!
-
-        
-
-        453
-
-        00:38:03,106
-        --> 00:38:06,018
-
-        I lost my son! I know!
-
-        
-
-        454
-
-        00:38:11,466
-        --> 00:38:13,855
-
-        And as much as l...
-
-        
-
-        455
-
-        00:38:16,426
-        --> 00:38:19,020
-
-        I could never live that over again.
-
-        
-
-        456
-
-        00:38:22,946
-        --> 00:38:24,777
-
-        Could you?
-
-        
-
-        457
-
-        00:38:34,706
-        --> 00:38:36,025
-
-        No.
-
-        
-
-        458
-
-        00:38:39,266
-        --> 00:38:41,655
-
-        Let her go.
-
-        
-
-        459
-
-        00:39:53,026
-        --> 00:39:56,985
-
-        Well, we''re still here, Colonel.
-
-        I
-        assume you were successful.
-
-        
-
-        460
-
-        00:39:57,106
-        --> 00:39:59,700
-
-        Well, General, you know what they say.
-
-        
-
-        461
-
-        00:39:59,786
-        --> 00:40:02,061
-
-        If at first you don''t succeed,...
-
-        
-
-        462
-
-        00:40:02,666
-        --> 00:40:05,658
-
-        ..try, try, try...
-
-        
-
-        463
-
-        00:40:05,746
-        --> 00:40:08,135
-
-        ..try, try... try again.
-
-        
-
-        464
-
-        00:40:16,986
-        --> 00:40:20,023
-
-        I don''t think I''ve ever seen
-
-        anyone
-        enjoy oatmeal so much.
-
-        
-
-        465
-
-        00:40:20,106 -->
-        00:40:25,226
-
-        When you''ve eaten Froot Loops for who
-
-        knows
-        how long... a little variety helps.
-
-        
-
-        466
-
-        00:40:25,306
-        --> 00:40:30,744
-
-        We heard from the Tok''ra. They''ve been
-
-        trying
-        to contact us for over three months.
-
-        
-
-        467
-
-        00:40:31,426
-        --> 00:40:32,336
-
-        Really?
-
-        
-
-        468
-
-        00:40:32,426
-        --> 00:40:34,656
-
-        Who knows when they realised
-
-        we were
-        cut off.
-
-        
-
-        469
-
-        00:40:34,746 --> 00:40:37,419
-
-        I
-        mean, there''s no telling
-
-        how much time passed.
-
-        
-
-        470
-
-        00:40:37,506
-        --> 00:40:42,022
-
-        Let me ask you something.
-
-        In all the
-        time you were, um, looping,...
-
-        
-
-        471
-
-        00:40:42,106
-        --> 00:40:45,576
-
-        ..were you ever tempted
-
-        to, um, do something
-        crazy?
-
-        
-
-        472
-
-        00:40:46,026 --> 00:40:51,419
-
-        I
-        mean, uh... You could do anything
-
-        without worrying about consequences.
-
-        
-
-        473
-
-        00:40:54,946
-        --> 00:40:57,460
-
-        You know, it''s funny.
-
-        You''ve asked
-        me that before.
-
-        
-
-        474
-
-        00:40:58,226 --> 00:41:00,217
-
-        And?
-
-        
-
-        475
-
-        00:41:57,666
-        --> 00:41:59,736
-
-        Visiontext Subtitles: Paul Murray
-
-        
-
-'
-      objectReference: {fileID: 0}
-    - target: {fileID: 9164731680415735959, guid: a7b438beb9333a54092bcbda3dbb9b54,
-        type: 3}
-      propertyPath: testVideo.url
-      value: https://files.catbox.moe/136yn6.mp4
-      objectReference: {fileID: 0}
-    - target: {fileID: 9164731680415735959, guid: a7b438beb9333a54092bcbda3dbb9b54,
+    - target: {fileID: 7391485555126065685, guid: a7b438beb9333a54092bcbda3dbb9b54,
         type: 3}
       propertyPath: overlayHandler
       value: 
-      objectReference: {fileID: 515586745}
-    - target: {fileID: 9164731680415735959, guid: a7b438beb9333a54092bcbda3dbb9b54,
+      objectReference: {fileID: 570172957}
+    - target: {fileID: 7391485555126065685, guid: a7b438beb9333a54092bcbda3dbb9b54,
         type: 3}
       propertyPath: unityVideoPlayer
       value: 
       objectReference: {fileID: 182516342}
-    - target: {fileID: 9164731680415735959, guid: a7b438beb9333a54092bcbda3dbb9b54,
+    - target: {fileID: 7391485555126065685, guid: a7b438beb9333a54092bcbda3dbb9b54,
         type: 3}
       propertyPath: screenAVProPlayer
       value: 
       objectReference: {fileID: 2034059823}
-    - target: {fileID: 9164731680415735959, guid: a7b438beb9333a54092bcbda3dbb9b54,
+    - target: {fileID: 7391485555126065685, guid: a7b438beb9333a54092bcbda3dbb9b54,
         type: 3}
       propertyPath: screenUnityPlayer
       value: 
       objectReference: {fileID: 1146111124}
-    - target: {fileID: 9164731680415735959, guid: a7b438beb9333a54092bcbda3dbb9b54,
+    - target: {fileID: 7391485555126065685, guid: a7b438beb9333a54092bcbda3dbb9b54,
         type: 3}
       propertyPath: subtitlesManager1
       value: 
-      objectReference: {fileID: 1044043325}
-    - target: {fileID: 9164731680415735959, guid: a7b438beb9333a54092bcbda3dbb9b54,
+      objectReference: {fileID: 633595140}
+    - target: {fileID: 7391485555126065685, guid: a7b438beb9333a54092bcbda3dbb9b54,
         type: 3}
       propertyPath: subtitlesManager2
       value: 
-      objectReference: {fileID: 515586746}
-    - target: {fileID: 9164731680415735959, guid: a7b438beb9333a54092bcbda3dbb9b54,
+      objectReference: {fileID: 1465789651}
+    - target: {fileID: 7391485555126065685, guid: a7b438beb9333a54092bcbda3dbb9b54,
         type: 3}
       propertyPath: uSharpVideoPlayer
       value: 
       objectReference: {fileID: 238172482}
-    - target: {fileID: 9164731680415735959, guid: a7b438beb9333a54092bcbda3dbb9b54,
+    - target: {fileID: 7391485555126065685, guid: a7b438beb9333a54092bcbda3dbb9b54,
         type: 3}
       propertyPath: serializationData.Prefab
       value: 
-      objectReference: {fileID: 9164731680415735959, guid: a7b438beb9333a54092bcbda3dbb9b54,
+      objectReference: {fileID: 7391485555126065685, guid: a7b438beb9333a54092bcbda3dbb9b54,
         type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a7b438beb9333a54092bcbda3dbb9b54, type: 3}
@@ -8032,7 +3457,47 @@ MonoBehaviour:
   RenderReflectionBounces: 0
   RenderReflectionIntensity: 0
   RenderSkybox: {fileID: 0}
-  NetworkIDs: []
+  NetworkIDs:
+  - gameObject: {fileID: 570255271}
+    ID: 10
+  - gameObject: {fileID: 565470787}
+    ID: 11
+  - gameObject: {fileID: 1116291962}
+    ID: 12
+  - gameObject: {fileID: 385603887}
+    ID: 13
+  - gameObject: {fileID: 477298076}
+    ID: 14
+  - gameObject: {fileID: 644369520}
+    ID: 15
+  - gameObject: {fileID: 512369044}
+    ID: 16
+  - gameObject: {fileID: 1223058756}
+    ID: 17
+  - gameObject: {fileID: 21108598}
+    ID: 18
+  - gameObject: {fileID: 659001447}
+    ID: 19
+  - gameObject: {fileID: 769139332}
+    ID: 20
+  - gameObject: {fileID: 1147733068}
+    ID: 21
+  - gameObject: {fileID: 1647437372}
+    ID: 22
+  - gameObject: {fileID: 596959185}
+    ID: 23
+  - gameObject: {fileID: 1956082556}
+    ID: 24
+  - gameObject: {fileID: 1632689900}
+    ID: 25
+  - gameObject: {fileID: 620726265}
+    ID: 26
+  - gameObject: {fileID: 1316544850}
+    ID: 27
+  - gameObject: {fileID: 1547728457}
+    ID: 28
+  - gameObject: {fileID: 1094421957010841707}
+    ID: 29
   portraitCameraPositionOffset: {x: 0, y: 0, z: 0}
   portraitCameraRotationOffset: {x: 0, y: 1, z: 0, w: -0.00000004371139}
 --- !u!1001 &7817971935179713291
@@ -8042,6 +3507,12 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1546517373187354171, guid: 07a8344aed11c464d9ca30fde8ee3351,
+        type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 1546517373187354171, guid: 07a8344aed11c464d9ca30fde8ee3351,
+        type: 3}
     - target: {fileID: 1555380923311263607, guid: 07a8344aed11c464d9ca30fde8ee3351,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -8062,6 +3533,18 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1555380924063275732, guid: 07a8344aed11c464d9ca30fde8ee3351,
+        type: 3}
+      propertyPath: serializedProgramAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 1e53c70f0b6a9d94785fd4977d0393ae,
+        type: 2}
+    - target: {fileID: 1555380924545187974, guid: 07a8344aed11c464d9ca30fde8ee3351,
+        type: 3}
+      propertyPath: serializedProgramAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 566cc2bee6923dc419df8b6b71a7268a,
+        type: 2}
     - target: {fileID: 1555380924737070344, guid: 07a8344aed11c464d9ca30fde8ee3351,
         type: 3}
       propertyPath: m_Name
@@ -8156,25 +3639,46 @@ PrefabInstance:
         type: 3}
       propertyPath: subtitleControlHandler
       value: 
-      objectReference: {fileID: 1044043326}
+      objectReference: {fileID: 2097948812}
     - target: {fileID: 5166741581669073756, guid: 07a8344aed11c464d9ca30fde8ee3351,
         type: 3}
       propertyPath: serializationData.Prefab
       value: 
       objectReference: {fileID: 5166741581669073756, guid: 07a8344aed11c464d9ca30fde8ee3351,
         type: 3}
-    - target: {fileID: 6518308257066389412, guid: 07a8344aed11c464d9ca30fde8ee3351,
+    - target: {fileID: 5926165642557482854, guid: 07a8344aed11c464d9ca30fde8ee3351,
+        type: 3}
+      propertyPath: videoScreen
+      value: 
+      objectReference: {fileID: 1547728457}
+    - target: {fileID: 5926165642557482854, guid: 07a8344aed11c464d9ca30fde8ee3351,
+        type: 3}
+      propertyPath: targetVideoPlayer
+      value: 
+      objectReference: {fileID: 238172482}
+    - target: {fileID: 5926165642557482854, guid: 07a8344aed11c464d9ca30fde8ee3351,
+        type: 3}
+      propertyPath: subtitleControlHandler
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5926165642557482854, guid: 07a8344aed11c464d9ca30fde8ee3351,
         type: 3}
       propertyPath: serializationData.Prefab
       value: 
-      objectReference: {fileID: 6518308257066389412, guid: 07a8344aed11c464d9ca30fde8ee3351,
+      objectReference: {fileID: 5926165642557482854, guid: 07a8344aed11c464d9ca30fde8ee3351,
         type: 3}
-    - target: {fileID: 6826094011435743806, guid: 07a8344aed11c464d9ca30fde8ee3351,
+    - target: {fileID: 6237315034802344218, guid: 07a8344aed11c464d9ca30fde8ee3351,
         type: 3}
       propertyPath: serializationData.Prefab
       value: 
-      objectReference: {fileID: 6826094011435743806, guid: 07a8344aed11c464d9ca30fde8ee3351,
+      objectReference: {fileID: 6237315034802344218, guid: 07a8344aed11c464d9ca30fde8ee3351,
         type: 3}
+    - target: {fileID: 7817971935130809596, guid: 07a8344aed11c464d9ca30fde8ee3351,
+        type: 3}
+      propertyPath: serializedProgramAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 20e0fadff25b409428864e2f1cc53629,
+        type: 2}
     - target: {fileID: 7817971935130809596, guid: 07a8344aed11c464d9ca30fde8ee3351,
         type: 3}
       propertyPath: serializedPublicVariablesBytesString
@@ -8218,7 +3722,7 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 7817971935179713291}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 512369044}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 45115577ef41a5b4ca741ed302693907, type: 3}

@@ -216,22 +216,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1296182820458894331, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+    - target: {fileID: 2853267199229678515, guid: 79b0ea249ffa6a54bb5f55191b085d00,
         type: 3}
       propertyPath: targetVideoPlayer
       value: 
       objectReference: {fileID: 844468987}
-    - target: {fileID: 1296182820458894331, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+    - target: {fileID: 2853267199229678515, guid: 79b0ea249ffa6a54bb5f55191b085d00,
         type: 3}
       propertyPath: serializationData.Prefab
       value: 
-      objectReference: {fileID: 1296182820458894331, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+      objectReference: {fileID: 2853267199229678515, guid: 79b0ea249ffa6a54bb5f55191b085d00,
         type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 79b0ea249ffa6a54bb5f55191b085d00, type: 3}
 --- !u!114 &264980895 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7298837608510659643, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+  m_CorrespondingSourceObject: {fileID: 5788624106359276806, guid: 79b0ea249ffa6a54bb5f55191b085d00,
     type: 3}
   m_PrefabInstance: {fileID: 264980894}
   m_PrefabAsset: {fileID: 0}
@@ -243,7 +243,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
 --- !u!114 &264980896 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1296182820458894331, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+  m_CorrespondingSourceObject: {fileID: 2853267199229678515, guid: 79b0ea249ffa6a54bb5f55191b085d00,
     type: 3}
   m_PrefabInstance: {fileID: 264980894}
   m_PrefabAsset: {fileID: 0}
@@ -320,21 +320,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5166741581669073756, guid: 07a8344aed11c464d9ca30fde8ee3351,
+    - target: {fileID: 5926165642557482854, guid: 07a8344aed11c464d9ca30fde8ee3351,
         type: 3}
       propertyPath: targetVideoPlayer
       value: 
       objectReference: {fileID: 844468987}
-    - target: {fileID: 5166741581669073756, guid: 07a8344aed11c464d9ca30fde8ee3351,
+    - target: {fileID: 5926165642557482854, guid: 07a8344aed11c464d9ca30fde8ee3351,
         type: 3}
       propertyPath: subtitleControlHandler
       value: 
       objectReference: {fileID: 264980895}
-    - target: {fileID: 5166741581669073756, guid: 07a8344aed11c464d9ca30fde8ee3351,
+    - target: {fileID: 5926165642557482854, guid: 07a8344aed11c464d9ca30fde8ee3351,
         type: 3}
       propertyPath: serializationData.Prefab
       value: 
-      objectReference: {fileID: 5166741581669073756, guid: 07a8344aed11c464d9ca30fde8ee3351,
+      objectReference: {fileID: 5926165642557482854, guid: 07a8344aed11c464d9ca30fde8ee3351,
         type: 3}
     - target: {fileID: 7817971935130809596, guid: 07a8344aed11c464d9ca30fde8ee3351,
         type: 3}
@@ -987,6 +987,8 @@ MonoBehaviour:
   screenAVProPlayer: {fileID: 0}
   testVideo:
     url: https://www.dailymotion.com/video/x5vhp99
+  testRemoteSubtitles:
+    url: 
   testSubtitles: '1
 
     00:00:39,626 --> 00:00:41,617
@@ -6475,6 +6477,8 @@ MonoBehaviour:
   screenAVProPlayer: {fileID: 0}
   testVideo:
     url: https://files.catbox.moe/136yn6.mp4
+  testRemoteSubtitles:
+    url: 
   testSubtitles: '1
 
     00:00:39,626 --> 00:00:41,617

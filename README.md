@@ -27,7 +27,7 @@ _Contact me if you want your world to be added to this list._
 _I suggest adding "**subtitles**" to your world's tags when using this prefab so that people can find worlds with subtitle support more easily._
 
 1. Install [UdonSharp](https://github.com/vrchat-community/UdonSharp) first
-2. Import [USharpVideo](https://github.com/MerlinVR/USharpVideo/releases/latest)  (even if you're not planning on using it)
+2. Import [USharpVideo](https://github.com/MerlinVR/USharpVideo/releases/latest)  (required even if you're not planning on using it)
 3. Import [latest release](https://github.com/jacklul/USharpVideo-Subtitles/releases/latest) unitypackage
 4. Drag the `Subtitles` prefab into your scene
     - _when using **USharpVideo** you can also drag `Subtitles` prefab into `USharpVideo` in your scene and reset transform values_
@@ -53,6 +53,13 @@ Check whenever subtitles are currently loaded
 
 ### SubtitleManager.ProcessInput(string): void
 Loads subtitles from the text string globally or locally (depending on `IsLocal()` value)
+
+- When using **USharpVideo** - only the player who can control the video player can do this
+- For other video players - if `IsLocked()` is `true` then only the Master can do this
+- To check whenever player is able to execute this - use `SubtitleManager.CanControlSubtitles()`
+
+### SubtitleManager.ProcessURLInput(VRCUrl): void
+Loads subtitles from the URL globally or locally (depending on `IsLocal()` value)
 
 - When using **USharpVideo** - only the player who can control the video player can do this
 - For other video players - if `IsLocked()` is `true` then only the Master can do this

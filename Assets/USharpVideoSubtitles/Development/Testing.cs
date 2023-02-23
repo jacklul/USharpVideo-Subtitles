@@ -28,6 +28,7 @@ namespace UdonSharp.Video.Subtitles.Test
         public GameObject screenAVProPlayer;
 
         public VRCUrl testVideo;
+        public VRCUrl testRemoteSubtitles;
         [TextArea] public string testSubtitles;
 
         public void TestUSharpVideo()
@@ -40,6 +41,18 @@ namespace UdonSharp.Video.Subtitles.Test
             uSharpVideoPlayer.PlayVideo(testVideo);
 
             subtitlesManager1.ProcessInput(testSubtitles);
+        }
+
+        public void TestUSharpVideoRemote()
+        {
+            if (!subtitlesManager1 || !subtitlesManager1) return;
+
+            Debug.Log("TestUSharpVideo with remote subtitles");
+
+            uSharpVideoPlayer.gameObject.SetActive(true);
+            uSharpVideoPlayer.PlayVideo(testVideo);
+
+            subtitlesManager1.ProcessURLInput(testRemoteSubtitles);
         }
 
         public void TestUnityVideoPlayer()

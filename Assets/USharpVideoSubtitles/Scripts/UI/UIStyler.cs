@@ -126,7 +126,7 @@ namespace UdonSharp.Video.Subtitles.UI
                 }
             }
 
-            foreach (SubtitleControlHandler controlHandler in this.GetUdonSharpComponentsInChildren<SubtitleControlHandler>(true))
+            foreach (SubtitleControlHandler controlHandler in this.GetComponentsInChildren<SubtitleControlHandler>(true))
             {
                 Undo.RecordObject(controlHandler, "Apply UI Style");
 
@@ -135,8 +135,6 @@ namespace UdonSharp.Video.Subtitles.UI
                 controlHandler.buttonBackgroundColor = GetColor(lookup[UIStyleMarkup.StyleClass.ButtonBackground]);
                 controlHandler.buttonActivatedColor = GetColor(lookup[UIStyleMarkup.StyleClass.HighlightedButton]);
                 controlHandler.iconInvertedColor = GetColor(lookup[UIStyleMarkup.StyleClass.InvertedIcon]);
-
-                controlHandler.ApplyProxyModifications();
 
                 if (PrefabUtility.IsPartOfPrefabInstance(controlHandler.gameObject))
                     PrefabUtility.RecordPrefabInstancePropertyModifications(UdonSharpEditorUtility.GetBackingUdonBehaviour(controlHandler));

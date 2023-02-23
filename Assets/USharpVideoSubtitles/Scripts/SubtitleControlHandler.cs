@@ -10,6 +10,7 @@ using UdonSharp;
 using UnityEngine;
 using UnityEngine.UI;
 using VRC.SDKBase;
+using VRC.SDK3.Components;
 
 namespace UdonSharp.Video.Subtitles
 {
@@ -17,6 +18,7 @@ namespace UdonSharp.Video.Subtitles
     public class SubtitleControlHandler : UdonSharpBehaviour
     {
         private const string MESSAGE_PASTE = "Paste SRT subtitles...";
+        private const string MESSAGE_LOAD_URL = "Paste URL to SRT subtitles...";
         private const string MESSAGE_WAIT_SYNC = "Wait for synchronization to finish";
         private const string MESSAGE_ONLY_MASTER_CAN_ADD = "Only master {0} can add subtitles";
         private const string MESSAGE_ONLY_OWNER_CAN_SYNC = "Only {0} can synchronize subtitles";
@@ -71,6 +73,10 @@ namespace UdonSharp.Video.Subtitles
         private Text inputField; // To be replaced with TMP_InputField once supported by Udon
         [SerializeField]
         private Text inputPlaceholderText;
+        [SerializeField]
+        private VRCUrlInputField urlInputField;
+        [SerializeField]
+        private Text urlInputPlaceholderText;
         [SerializeField]
         private GameObject inputFieldObject; // We clone this object to hide the pasted text after input, this behaviour will be gone once Udon supports TMP_InputField
 
@@ -369,7 +375,7 @@ namespace UdonSharp.Video.Subtitles
         private void CloneInputField() // This is the current workaround to be able to clear the text field after pasting
         {
             inputFieldObject.SetActive(false);
-            _currentInputFieldObject = VRCInstantiate(inputFieldObject);
+            _currentInputFieldObject = Instantiate(inputFieldObject);
             
             _currentInputFieldObject.transform.SetParent(inputFieldObject.transform.parent.transform);
             _currentInputFieldObject.transform.localPosition = inputFieldObject.transform.localPosition;
@@ -515,7 +521,10 @@ namespace UdonSharp.Video.Subtitles
                 if (inputClearButtonIcon) inputClearButtonIcon.color = whiteGraphicColor;
 
                 //if (inputField) inputField.readOnly = false;
+                if (urlInputField) urlInputField.readOnly = false;
+
                 if (inputPlaceholderText) inputPlaceholderText.text = MESSAGE_PASTE + " " + INDICATOR_LOCAL;
+                if (urlInputPlaceholderText) urlInputPlaceholderText.text = MESSAGE_LOAD_URL + " " + INDICATOR_LOCAL;
 
                 return;
             }
@@ -533,7 +542,10 @@ namespace UdonSharp.Video.Subtitles
                     if (inputClearButtonIcon) inputClearButtonIcon.color = whiteGraphicColor;
 
                     //if (inputField) inputField.readOnly = false;
+                    if (urlInputField) urlInputField.readOnly = false;
+
                     if (inputPlaceholderText) inputPlaceholderText.text = MESSAGE_PASTE;
+                    if (urlInputPlaceholderText) urlInputPlaceholderText.text = MESSAGE_LOAD_URL;
                 }
                 else
                 {
@@ -541,11 +553,15 @@ namespace UdonSharp.Video.Subtitles
                     if (inputClearButtonIcon) inputClearButtonIcon.color = redGraphicColor;
 
                     //if (inputField) inputField.readOnly = true;
+                    if (urlInputField) urlInputField.readOnly = true;
 #if !UNITY_EDITOR
-                    if (inputPlaceholderText) inputPlaceholderText.text = string.Format(
+                    string onlyMaster = string.Format(
                         @MESSAGE_ONLY_MASTER_CAN_ADD,
                         (manager.IsUsingUSharpVideo() ? manager.GetUSharpVideoOwner() : Networking.GetOwner(manager.gameObject)).displayName
                     );
+
+                    if (inputPlaceholderText) inputPlaceholderText.text = onlyMaster;
+                    if (urlInputPlaceholderText) urlInputPlaceholderText.text = onlyMaster;
 #endif
                 }
             }
@@ -559,6 +575,7 @@ namespace UdonSharp.Video.Subtitles
 
                 //if (inputField) inputField.readOnly = false;
                 if (inputPlaceholderText) inputPlaceholderText.text = MESSAGE_PASTE + " " + INDICATOR_ANYONE;
+                if (urlInputPlaceholderText) urlInputPlaceholderText.text = MESSAGE_LOAD_URL + " " + INDICATOR_ANYONE;
             }
         }
 
@@ -579,6 +596,20 @@ namespace UdonSharp.Video.Subtitles
                     Destroy(_currentInputFieldObject);
                     CloneInputField();
                 }
+            }
+        }
+
+        public void OnSubtitleUrlInput()
+        {
+            if (!urlInputField)
+                return;
+
+            VRCUrl url = urlInputField.GetUrl();
+
+            if (url != VRCUrl.Empty && url.ToString().Length > 0)
+            {
+                manager.ProcessURLInput(url);
+                urlInputField.SetUrl(VRCUrl.Empty);
             }
         }
 

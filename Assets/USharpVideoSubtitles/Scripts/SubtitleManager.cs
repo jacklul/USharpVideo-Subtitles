@@ -11,6 +11,8 @@ using UnityEngine;
 using VRC.SDKBase;
 using VRC.Udon.Common;
 using VRC.SDK3.Video.Components.Base;
+using VRC.SDK3.StringLoading;
+using VRC.Udon.Common.Interfaces;
 
 namespace UdonSharp.Video.Subtitles
 {
@@ -566,6 +568,29 @@ namespace UdonSharp.Video.Subtitles
             }
 
             ResetSubtitleTrackingState();
+        }
+
+        public void ProcessURLInput(VRCUrl url)
+        {
+            if (!_isLocal && !CanControlSubtitles())
+                return;
+
+            LogMessage("Loading text from URL: " + url);
+
+            VRCStringDownloader.LoadUrl(url, (IUdonEventReceiver)this);
+        }
+
+        public override void OnStringLoadSuccess(IVRCStringDownload result)
+        {
+            ProcessInput(result.Result);
+        }
+
+        public override void OnStringLoadError(IVRCStringDownload result)
+        {
+            LogMessage("Failed to load subtitles from URL: " + result.Error);
+
+            foreach (SubtitleControlHandler handler in _registeredControlHandlers)
+                handler.SetStickyStatusText(result.Error, 5.0f);
         }
 
         private void SetAndTransmitSubtitles(string text)
