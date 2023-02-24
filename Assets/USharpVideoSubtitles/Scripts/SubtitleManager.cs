@@ -47,7 +47,7 @@ namespace UdonSharp.Video.Subtitles
         [Tooltip("Should we automatically clear loaded subtitles when a new video starts?\nThis setting only works when using USharpVideo")]
         public bool clearOnNewVideo = false;
 
-        [SerializeField, Tooltip("When false then only the master can manage the subtitles\nThis setting does nothing when using USharpVideo as the lock state is shared with it")]
+        [SerializeField, Tooltip("When false then only the master can manage the subtitles\nThis setting does nothing when using USharpVideo as the lock state is inherited from it")]
         private bool defaultUnlocked = true;
 
         [Tooltip("Removes unsupported HTML tags as well as {\\anX} and {\\aX} tags\nDisabling this will speed up processing of huge files - you should only disable this if you're building custom integration and not allowing people to load their own subtitles")]
