@@ -6,6 +6,7 @@
  * Based on code by Haï~ (https://github.com/hai-vr) - https://gist.github.com/hai-vr/b340f9a46952640f81efe7f02da6bdf6
  */
 
+using System;
 using UdonSharp;
 using UnityEngine;
 using VRC.SDKBase;
@@ -48,6 +49,9 @@ namespace UdonSharp.Video.Subtitles
 
         [SerializeField, Tooltip("When false then only the master can manage the subtitles\nThis setting does nothing when using USharpVideo as the lock state is shared with it")]
         private bool defaultUnlocked = true;
+
+        [Tooltip("Removes unsupported HTML tags as well as {\\anX} and {\\aX} tags\nDisabling this will speed up processing of huge files - you should only disable this if you're building custom integration and not allowing people to load their own subtitles")]
+        public bool filterSubtitles = true;
 
         [UdonSynced]
         private string _syncedChunk;
@@ -474,12 +478,12 @@ namespace UdonSharp.Video.Subtitles
                 }
                 else if (parserState == 1 && line != "")
                 {
-                    _dataText[currentIndex] = ProcessText(line);
+                    _dataText[currentIndex] = filterSubtitles ? FilterSubtitle(line) : line;
                     parserState = 2;
                 }
                 else if (parserState == 2 && line != "")
                 {
-                    _dataText[currentIndex] += "\n" + ProcessText(line);
+                    _dataText[currentIndex] += "\n" + (filterSubtitles ? FilterSubtitle(line) : line);
                 }
                 else if (parserState != 0 && line == "")
                 {
@@ -536,16 +540,51 @@ namespace UdonSharp.Video.Subtitles
             return int.Parse(allParts[0]) * 3600 + int.Parse(allParts[1]) * 60 + int.Parse(secondsPart[0]) + milliseconds;
         }
 
-        private string ProcessText(string text)
+        private string FilterSubtitle(string text)
         {
-            if (text.Contains(" color=")) // @TODO this needs to be improved, would love regex here
-                text = "<" + text.Replace("<font", "").TrimStart(' ').Replace("</font>", "</color>").Replace("=\"", "=").Replace("\">", ">");
-
             if (text.Contains(@"{\an"))
                 text = text.Substring(text.IndexOf(@"{\an") + 6).TrimStart(' ');
 
             if (text.Contains(@"{\a"))
                 text = text.Substring(text.IndexOf(@"{\a") + 5).TrimStart(' ');
+
+            text = FilterHTMLTags(text);
+
+            return text;
+        }
+
+        private string FilterHTMLTags(string text)
+        {
+            char[] textArray = text.ToCharArray();
+            text = "";
+
+            char[] allowedShortTags = { 'b', 'i', 'u' };
+
+            bool inHtmlTag = false;
+            for (int i = 0; i < textArray.Length; i++)
+            {
+                if (textArray[i] == '<' && i + 2 < textArray.Length)
+                {
+                    bool isEndingTag = textArray[i + 1] == '/';
+                    bool isShortTag = isEndingTag ? textArray[i + 3] == '>' : textArray[i + 2] == '>';
+                    char shortTagValue = isShortTag ? (isEndingTag ? textArray[i + 2] : textArray[i + 1]) : ' ';
+
+                    if (!isShortTag || Array.IndexOf(allowedShortTags, shortTagValue) == -1)
+                    {
+                        inHtmlTag = true;
+                        continue;
+                    }
+                }
+                else if (inHtmlTag)
+                {
+                    if (textArray[i] == '>')
+                        inHtmlTag = false;
+
+                    continue;
+                }
+
+                text += textArray[i];
+            }
 
             return text;
         }
