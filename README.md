@@ -20,7 +20,7 @@ _Contact me if you want your world to be added to this list._
 
 ## Requirements
 - Unity 2019.4.29f1+
-- [UdonSharp](https://github.com/vrchat-community/UdonSharp) v0.20.3+
+- [UdonSharp](https://github.com/vrchat-community/UdonSharp) v1.0.0+
 - [USharpVideo](https://github.com/MerlinVR/USharpVideo) v1.0.0+
 
 ## Installation
