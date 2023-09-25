@@ -22,6 +22,7 @@ jobs:
         myToken: ${{ secrets.GITHUB_TOKEN }}
 
     - run: |
+        rm -fr "Assets/${{ env.ASSETS_FOLDER }}/Development"
         echo "Assets/${{ env.ASSETS_FOLDER }}.meta" > metaList
         find "Assets/${{ env.ASSETS_FOLDER }}/" -name \*.meta >> metaList
         echo $GITHUB_REF_NAME > "Assets/${{ env.ASSETS_FOLDER }}/version.txt"
