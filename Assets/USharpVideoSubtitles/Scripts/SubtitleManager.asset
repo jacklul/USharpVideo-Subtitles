@@ -509,12 +509,12 @@ MonoBehaviour:
       Data: 32|UnityEngine.TooltipAttribute, UnityEngine.CoreModule
     - Name: tooltip
       Entry: 1
-      Data: 'Removes unsupported HTML tags as well as {\anX} and {\aX} tags
+      Data: 'Removes "{\" tags, unsupported HTML tags and replaces "\n" with actual
+        new lines
 
-        Disabling
-        this will speed up processing of huge files - you should only disable this
-        if you''re building custom integration and not allowing people to load their
-        own subtitles'
+        Disabling this will speed up processing of huge files
+        - you should only disable this if you''re building custom integration and
+        not allowing people to load their own subtitles'
     - Name: 
       Entry: 8
       Data: 
