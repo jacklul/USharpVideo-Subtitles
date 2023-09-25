@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2022 Jack'lul <https://jacklul.github.io>
+ * Copyright (c) Jack'lul <https://jacklul.github.io>
  * Licensed under the MIT License
  * https://github.com/jacklul/USharpVideo-Subtitles
  * 
