@@ -74,6 +74,7 @@ crashlytics-build.properties
 # Include only what we need
 /[Pp]ackages/*
 !/Packages/manifest.json
+!/Packages/vpm-manifest.json
 /[Aa]ssets/*
 !/Assets/USharpVideoSubtitles/
 !/Assets/USharpVideoSubtitles.meta
