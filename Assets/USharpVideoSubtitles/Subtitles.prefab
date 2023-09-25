@@ -3338,8 +3338,10 @@ MonoBehaviour:
   baseVideoPlayer: {fileID: 0}
   chunkSize: 10000
   updateRate: 10
+  parserTimeLimit: 0.01
   clearOnNewVideo: 0
   defaultUnlocked: 1
+  filterSubtitles: 1
 --- !u!114 &368572902303537914
 MonoBehaviour:
   m_ObjectHideFlags: 0

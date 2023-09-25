@@ -26,7 +26,8 @@ namespace UdonSharp.Video.Subtitles
         private const string MESSAGE_LOADED = "Subtitles loaded";
         private const string MESSAGE_NOT_LOADED = "No subtitles loaded";
         private const string MESSAGE_CLEARED = "Subtitles cleared";
-        private const string MESSAGE_PARSING = "Parsing... (length={0})";
+        private const string MESSAGE_FETCHING = "Fetching from URL...";
+        private const string MESSAGE_PARSING = "Parsing... {0}%";
         private const string MESSAGE_FAILED = "Failed to parse subtitles";
         private const string MESSAGE_SYNCHRONIZING = "Synchronizing {0} / {1} {2}";
 
@@ -41,8 +42,11 @@ namespace UdonSharp.Video.Subtitles
         [SerializeField, Range(5000, 50000), Tooltip("Maximum size of a single data chunk when synchronizing the subtitles to others - big chunk sizes can make synchronization fail")]
         private int chunkSize = 10000;
 
-        [Range(10, 255), Tooltip("How many frames to wait before the next subtitle update - higher values decrease time accuracy of the subtitles but could increase game performance\nThe default is fine")]
+        [Range(0, 60), Tooltip("How many frames to wait before the next subtitle update - higher values decrease time accuracy of the subtitles but could increase game performance\nThe default is fine for most cases\nSetting this to zero updates every frame")]
         public int updateRate = 10;
+
+        [Range(0.0069f, 0.033f), Tooltip("Maximum processing time for the parser to take as a fraction of one second\nRecommended to keep this under 0.0166 (16.6ms) as otherwise it will reduce everyone's FPS below 60 during parsing\nSee https://fpstoms.com for more info")]
+        public float parserTimeLimit = 0.01f;
 
         [Tooltip("Should we automatically clear loaded subtitles when a new video starts?\nThis setting only works when using USharpVideo")]
         public bool clearOnNewVideo = false;
@@ -50,7 +54,7 @@ namespace UdonSharp.Video.Subtitles
         [SerializeField, Tooltip("When false then only the master can manage the subtitles\nThis setting does nothing when using USharpVideo as the lock state is inherited from it")]
         private bool defaultUnlocked = true;
 
-        [Tooltip("Removes \"{\\\" tags, unsupported HTML tags and replaces \"\\n\" with actual new lines\nDisabling this will speed up processing of huge files - you should only disable this if you're building custom integration and not allowing people to load their own subtitles")]
+        [Tooltip("Removes \"{\\\" tags and unsupported HTML tags\nDisabling this will speed up processing of huge files - you should only disable this if you're building custom integration and not allowing people to load their own subtitles")]
         public bool filterSubtitles = true;
 
         [UdonSynced]
@@ -65,6 +69,13 @@ namespace UdonSharp.Video.Subtitles
         private float[] _dataStart = new float[0];
         private float[] _dataEnd = new float[0];
         private int _dataTotal = 0;
+
+        private string[] _parserArray = new string[0];
+        private int _parserLine = 0; // Currently processed line (_parserArray index)
+        private int _parserCount = 0; // Count of subtitle groups (so far)
+        private int _parserIndex = 0; // Current subtitle group index (_dataText)
+        private int _parserTotal = 0; // Total count of subtitle groups
+        private bool _isParsing = false;
 
         [UdonSynced]
         private int _chunkCount;
@@ -147,15 +158,18 @@ namespace UdonSharp.Video.Subtitles
 
         public void Update()
         {
-            if (!_isEnabled || _dataTotal == 0)
+            if (!_isEnabled || _dataTotal == 0) // Do nothing when hidden or no data is loaded
                 return;
 
-            if (_lastUpdateFrame < updateRate)
+            if (updateRate > 0)
             {
-                _lastUpdateFrame++;
-                return;
+                if (_lastUpdateFrame < updateRate)
+                {
+                    _lastUpdateFrame++;
+                    return;
+                }
+                _lastUpdateFrame = 0;
             }
-            _lastUpdateFrame = 0;
 
             if (IsVideoPlayerPlaying()) // Don't update subtitles if the video is not playing
             {
@@ -402,26 +416,7 @@ namespace UdonSharp.Video.Subtitles
         {
             if (subtitles != "")
             {
-                foreach (SubtitleControlHandler handler in _registeredControlHandlers)
-                    handler.SetStatusText(string.Format(@MESSAGE_PARSING, subtitles.Length));
-
-                if (ParseSubtitles(subtitles))
-                {
-                    foreach (SubtitleControlHandler handler in _registeredControlHandlers)
-                    {
-                        handler.SetStatusText(MESSAGE_LOADED);
-                        if (closeInputMenu) handler.CloseInputMenu();
-                    }
-
-                    SendCallback("OnUSharpVideoSubtitlesLoad");
-                }
-                else
-                {
-                    foreach (SubtitleControlHandler handler in _registeredControlHandlers)
-                        handler.SetStatusText(MESSAGE_FAILED);
-                    
-                    SendCallback("OnUSharpVideoSubtitlesError");
-                }
+                InitializeParser(subtitles);
             }
             else
                 LogError("Requested to load empty data - this shouldn't happen");
@@ -439,24 +434,59 @@ namespace UdonSharp.Video.Subtitles
             }
         }
 
-        private bool ParseSubtitles(string text)
+        private void InitializeParser(string text)
         {
-            string[] array = text.Replace("\r\n", "\n").Split('\n');
+            _parserArray = (text + "\n").Replace("\r\n", "\n").Split('\n'); // We are adding empty line at the end to make sure the parser reaches final per-group stage
 
-            int initialSubtitleCount = FindSubtitleCount(array) + 1; // Add one in case the counter started at 0
+            int initialSubtitleCount = FindSubtitleCount(_parserArray);
 
-            if (initialSubtitleCount <= 0) // If we couldn't find the count fallback to manual calculation
-                initialSubtitleCount = array.Length / 3 + 1; // File might not have a counter and when dividing by 4 we will run out of array space
+            if (initialSubtitleCount <= 0)
+            {
+                LogError($"Could not check total subtitle count");
+
+                foreach (SubtitleControlHandler handler in _registeredControlHandlers)
+                    handler.SetStatusText(MESSAGE_FAILED);
+
+                SendCallback("OnUSharpVideoSubtitlesError");
+
+                return;
+            }
+
+            LogMessage($"Detected {initialSubtitleCount} subtitle groups");
 
             _dataText = new string[initialSubtitleCount];
             _dataStart = new float[initialSubtitleCount];
             _dataEnd = new float[initialSubtitleCount];
 
+            ResetParser();
+            _parserTotal = initialSubtitleCount;
+            _isParsing = true;
+
+            SendCustomEventDelayedFrames(nameof(_ParserWork), 0);
+        }
+
+        private void ResetParser()
+        {
+            _isParsing = false;
+            _parserLine = 0;
+            _parserCount = 0;
+            _parserIndex = 0;
+            _parserTotal = 0;
+        }
+
+        public void _ParserWork()
+        {
+            float startTime = Time.realtimeSinceStartup;
+
+            foreach (SubtitleControlHandler handler in _registeredControlHandlers)
+                handler.SetStatusText(string.Format(@MESSAGE_PARSING, (int)Math.Round((double)(100 * _parserCount) / _parserTotal)));
+
             int parserState = 0;
-            int currentIndex = 0;
-            int actualSubtitleCount = 0;
-            foreach (var line in array)
+            int parsedGroups = 0;
+            for (int i = _parserLine; i < _parserArray.Length; i++)
             {
+                string line = _parserArray[i];
+
                 if (parserState == 0 && line.Contains(" --> "))
                 {
                     int arrowPos = line.IndexOf(" --> ");
@@ -466,53 +496,106 @@ namespace UdonSharp.Video.Subtitles
                     if (endStr.Contains(" ")) // Per SRT specs there can be text coordinates after the timestamp and we can't support that
                         endStr = endStr.Split(' ')[0];
 
-                    float startSecond = ParseTimestamp(startStr);
-                    float endSecond = ParseTimestamp(endStr);
+                    if (_parserIndex > _dataText.Length - 1) // Prevent a crash when exceeding the max index
+                    {
+                        LogError($"Ran out of space in data array ({_parserIndex})");
 
-                    _dataStart[currentIndex] = startSecond;
-                    _dataEnd[currentIndex] = endSecond;
-                    _dataText[currentIndex] = "";
+                        _isParsing = false;
+                        break;
+                    }
 
-                    actualSubtitleCount += 1;
+                    _dataStart[_parserIndex] = ParseTimestamp(startStr);
+                    _dataEnd[_parserIndex] = ParseTimestamp(endStr);
+                    _dataText[_parserIndex] = "";
+
                     parserState = 1;
                 }
                 else if (parserState == 1 && line != "")
                 {
-                    _dataText[currentIndex] = HandleTextNewLine(filterSubtitles ? FilterSubtitle(line) : line);
+                    _dataText[_parserIndex] = HandleTextNewLine(filterSubtitles ? FilterSubtitle(line) : line);
                     parserState = 2;
                 }
                 else if (parserState == 2 && line != "")
                 {
-                    _dataText[currentIndex] += "\n" + HandleTextNewLine(filterSubtitles ? FilterSubtitle(line) : line);
+                    _dataText[_parserIndex] += "\n" + HandleTextNewLine(filterSubtitles ? FilterSubtitle(line) : line);
                 }
-                else if (parserState != 0 && line == "")
+                else if (parserState != 0 && (line == "" || i == _parserArray.Length - 1))
                 {
-                    currentIndex++;
+                    _parserLine = i;
+                    _parserCount++;
+                    _parserIndex++;
+
                     parserState = 0;
+                    parsedGroups++;
                 }
 
-                if (currentIndex > initialSubtitleCount - 1) // Prevent a crash when exceeding the max index
+                if (parserState == 0 && Time.realtimeSinceStartup > startTime + parserTimeLimit)
+                    break;
+
+                // This is necessary to prevent infinite loop
+                if (i >= _parserArray.Length - 1)
                 {
-                    LogError($"Ran out of space in data array ({currentIndex})");
-                    return false;
+                    _parserLine = i;
+                    break;
                 }
             }
 
-            _dataTotal = actualSubtitleCount;
+            if (_parserLine >= _parserArray.Length - 1)
+            {
+                _dataTotal = _parserCount;
+                ResetParser();
 
-            LogMessage($"Parsed {_dataTotal} subtitle groups");
+                LogMessage($"Parsed {_dataTotal} subtitle groups");
+            }
 
-            return _dataTotal > 0;
+            if (!_isParsing)
+            {
+                if ( _dataTotal > 0)
+                {
+                    foreach (SubtitleControlHandler handler in _registeredControlHandlers)
+                        handler.SetStatusText(MESSAGE_LOADED);
+
+                    SendCallback("OnUSharpVideoSubtitlesLoad");
+                }
+                else
+                {
+                    foreach (SubtitleControlHandler handler in _registeredControlHandlers)
+                        handler.SetStatusText(MESSAGE_FAILED);
+
+                    SendCallback("OnUSharpVideoSubtitlesError");
+                }
+            }
+            else
+                SendCustomEventDelayedFrames(nameof(_ParserWork), 0);
         }
 
         private int FindSubtitleCount(string[] array)
         {
+            int firstIndex = 0;
+            for (int i = 0; i < array.Length; i++)
+            {
+                if (array[i].Contains(" --> "))
+                {
+                    if (IsNumeric(array[i - 1]))
+                        firstIndex = int.Parse(array[i - 1]);
+
+                    break;
+                }
+            }
+
             for (int i = array.Length - 1; i >= 1; i--)
             {
                 if (array[i].Contains(" --> "))
                 {
                     if (IsNumeric(array[i - 1]))
-                        return int.Parse(array[i - 1]);
+                    {
+                        if (firstIndex == 0)
+                            return int.Parse(array[i - 1]) + 1;
+                        else if(firstIndex > 1)
+                            return int.Parse(array[i - 1]) - (firstIndex - 1);
+                        else
+                            return int.Parse(array[i - 1]);
+                    }
 
                     break;
                 }
@@ -624,6 +707,9 @@ namespace UdonSharp.Video.Subtitles
             LogMessage("Loading text from URL: " + url);
 
             VRCStringDownloader.LoadUrl(url, (IUdonEventReceiver)this);
+
+            foreach (SubtitleControlHandler handler in _registeredControlHandlers)
+                handler.SetStatusText(MESSAGE_FETCHING);
         }
 
         public override void OnStringLoadSuccess(IVRCStringDownload result)
