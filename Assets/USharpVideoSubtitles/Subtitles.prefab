@@ -3392,6 +3392,7 @@ MonoBehaviour:
   clearOnNewVideo: 0
   defaultUnlocked: 1
   filterSubtitles: 1
+  debugLogField: {fileID: 0}
 --- !u!114 &368572902303537914
 MonoBehaviour:
   m_ObjectHideFlags: 0

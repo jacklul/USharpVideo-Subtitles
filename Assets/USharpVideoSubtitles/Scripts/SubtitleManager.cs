@@ -9,6 +9,7 @@
 using System;
 using UdonSharp;
 using UnityEngine;
+using UnityEngine.UI;
 using VRC.SDKBase;
 using VRC.Udon.Common;
 using VRC.SDK3.Video.Components.Base;
@@ -57,6 +58,9 @@ namespace UdonSharp.Video.Subtitles
         [Tooltip("Removes \"{\\\" tags and unsupported HTML tags\nDisabling this will speed up processing of huge files - you should only disable this if you're building custom integration and not allowing people to load their own subtitles")]
         public bool filterSubtitles = true;
 
+        [SerializeField, Tooltip("Field to prepend log messages to\nUseful only in development")]
+        private Text debugLogField;
+
         [UdonSynced]
         private string _syncedChunk;
         [UdonSynced]
@@ -64,6 +68,7 @@ namespace UdonSharp.Video.Subtitles
 
         private string _data = "";
         private string _dataLocal = "";
+        private string _dataTmp = "";
 
         private string[] _dataText = new string[0];
         private float[] _dataStart = new float[0];
@@ -76,6 +81,7 @@ namespace UdonSharp.Video.Subtitles
         private int _parserIndex = 0; // Current subtitle group index (_dataText)
         private int _parserTotal = 0; // Total count of subtitle groups
         private bool _isParsing = false;
+        private bool _isParserDone = true;
 
         [UdonSynced]
         private int _chunkCount;
@@ -415,9 +421,7 @@ namespace UdonSharp.Video.Subtitles
         private void LoadSubtitles(string subtitles, bool closeInputMenu)
         {
             if (subtitles != "")
-            {
                 InitializeParser(subtitles);
-            }
             else
                 LogError("Requested to load empty data - this shouldn't happen");
         }
@@ -461,6 +465,7 @@ namespace UdonSharp.Video.Subtitles
             ResetParser();
             _parserTotal = initialSubtitleCount;
             _isParsing = true;
+            _isParserDone = false;
 
             SendCustomEventDelayedFrames(nameof(_ParserWork), 0);
         }
@@ -550,7 +555,7 @@ namespace UdonSharp.Video.Subtitles
 
             if (!_isParsing)
             {
-                if ( _dataTotal > 0)
+                if (_dataTotal > 0)
                 {
                     foreach (SubtitleControlHandler handler in _registeredControlHandlers)
                         handler.SetStatusText(MESSAGE_LOADED);
@@ -564,6 +569,8 @@ namespace UdonSharp.Video.Subtitles
 
                     SendCallback("OnUSharpVideoSubtitlesError");
                 }
+
+                _isParserDone = true;
             }
             else
                 SendCustomEventDelayedFrames(nameof(_ParserWork), 0);
@@ -688,7 +695,11 @@ namespace UdonSharp.Video.Subtitles
 
             LoadSubtitles(input, true);
 
-            if (_dataTotal > 0)
+            _dataTmp = input;
+
+            SendCustomEventDelayedFrames(nameof(_ProcessInputWaitForParser), 1);
+
+            /*if (_dataTotal > 0)
             {
                 if (!_isLocal)
                     SetAndTransmitSubtitles(input); // Synchronize to others only if the input is valid
@@ -696,7 +707,28 @@ namespace UdonSharp.Video.Subtitles
                     _dataLocal = input;
             }
 
-            ResetSubtitleTrackingState();
+            ResetSubtitleTrackingState();*/
+        }
+
+        public void _ProcessInputWaitForParser()
+        {
+            if (!_isParserDone)
+            {
+                SendCustomEventDelayedFrames(nameof(_ProcessInputWaitForParser), 5);
+                return;
+            }
+
+            if (_dataTotal > 0)
+            {
+                if (!_isLocal)
+                    SetAndTransmitSubtitles(_dataTmp); // Synchronize to others only if the input is valid
+                else
+                    _dataLocal = _dataTmp;
+
+                _dataTmp = "";
+
+                ResetSubtitleTrackingState();
+            }
         }
 
         public void ProcessURLInput(VRCUrl url)
@@ -706,14 +738,16 @@ namespace UdonSharp.Video.Subtitles
 
             LogMessage("Loading text from URL: " + url);
 
-            VRCStringDownloader.LoadUrl(url, (IUdonEventReceiver)this);
-
             foreach (SubtitleControlHandler handler in _registeredControlHandlers)
                 handler.SetStatusText(MESSAGE_FETCHING);
+
+            VRCStringDownloader.LoadUrl(url, (IUdonEventReceiver)this);
         }
 
         public override void OnStringLoadSuccess(IVRCStringDownload result)
         {
+            LogMessage("Remote string load success");
+
             ProcessInput(result.Result);
         }
 
@@ -748,16 +782,25 @@ namespace UdonSharp.Video.Subtitles
         private void LogMessage(string message)
         {
             Debug.Log(LOG_PREFIX + " " + message, this);
+
+            if (debugLogField)
+                debugLogField.text = message + "\n" + debugLogField.text;
         }
 
         private void LogWarning(string message)
         {
             Debug.LogWarning(LOG_PREFIX + " " + message, this);
+
+            if (debugLogField)
+                debugLogField.text = message + "\n" + debugLogField.text;
         }
 
         private void LogError(string message)
         {
             Debug.LogError(LOG_PREFIX + " " + message, this);
+
+            if (debugLogField)
+                debugLogField.text = message + "\n" + debugLogField.text;
         }
 
         public override void OnPlayerJoined(VRCPlayerApi player)
