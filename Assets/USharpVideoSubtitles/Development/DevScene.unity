@@ -348,6 +348,11 @@ PrefabInstance:
       propertyPath: m_AnchorMin.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6421412927428811954, guid: 87d772cf1b1ec7b49839dde29eb427be,
+        type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: VRC.Udon.UdonBehaviour, VRC.Udon
+      objectReference: {fileID: 0}
     - target: {fileID: 6421412927524094469, guid: 87d772cf1b1ec7b49839dde29eb427be,
         type: 3}
       propertyPath: serializedProgramAsset
@@ -453,6 +458,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 1e53c70f0b6a9d94785fd4977d0393ae,
         type: 2}
+    - target: {fileID: 6421412928540815177, guid: 87d772cf1b1ec7b49839dde29eb427be,
+        type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: VRC.Udon.UdonBehaviour, VRC.Udon
+      objectReference: {fileID: 0}
     - target: {fileID: 6421412928588461830, guid: 87d772cf1b1ec7b49839dde29eb427be,
         type: 3}
       propertyPath: serializedProgramAsset
@@ -3858,6 +3868,31 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1555380923311263607, guid: 07a8344aed11c464d9ca30fde8ee3351,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1555380923311263607, guid: 07a8344aed11c464d9ca30fde8ee3351,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1555380923480330440, guid: 07a8344aed11c464d9ca30fde8ee3351,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1555380924063275727, guid: 07a8344aed11c464d9ca30fde8ee3351,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1555380924063275730, guid: 07a8344aed11c464d9ca30fde8ee3351,
+        type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1555380924737070344, guid: 07a8344aed11c464d9ca30fde8ee3351,
         type: 3}
       propertyPath: m_Name
@@ -3917,6 +3952,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1555380925097518065, guid: 07a8344aed11c464d9ca30fde8ee3351,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1555380925097518065, guid: 07a8344aed11c464d9ca30fde8ee3351,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1555380925097518065, guid: 07a8344aed11c464d9ca30fde8ee3351,
+        type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1555380925193391771, guid: 07a8344aed11c464d9ca30fde8ee3351,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5166741581669073756, guid: 07a8344aed11c464d9ca30fde8ee3351,
         type: 3}

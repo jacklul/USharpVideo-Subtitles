@@ -11,7 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       ASSETS_FOLDER: USharpVideoSubtitles
-      UNITYPACKAGE: USharpVideoSubtitles_${{ github.ref_name }}.unitypackage
+      UNITYPACKAGE_MAIN: USharpVideoSubtitles_${{ github.ref_name }}.unitypackage
+      UNITYPACKAGE_ALT: USharpVideoSubtitles_${{ github.ref_name }}_NoDependency.unitypackage
     steps:
     - uses: actions/checkout@v3
 
@@ -30,18 +31,40 @@ jobs:
 
     - uses: pCYSl5EDgo/create-unitypackage@v1
       with:
-        package-path: ${{ env.UNITYPACKAGE }}
+        package-path: ${{ env.UNITYPACKAGE_MAIN }}
+        include-files: metaList
+
+    - run: |
+        sed -i '/USharpVideoPlayer targetVideoPlayer/{x;d;};x' "Assets/${{ env.ASSETS_FOLDER }}/Scripts/SubtitleManager.cs"
+        sed -i 's/USharpVideoPlayer/UdonSharpBehaviour/g' "Assets/${{ env.ASSETS_FOLDER }}/Scripts/SubtitleManager.cs"
+        sed -i 's/UdonSharp\.Video\.USharpVideoPlayer, Assembly-CSharp/UdonSharp\.UdonSharpBehaviour\[\], UdonSharp\.Runtime/g' "Assets/${{ env.ASSETS_FOLDER }}/Scripts/SubtitleManager.asset"
+        rm -fr "Assets/${{ env.ASSETS_FOLDER }}/Scripts/UI" "Assets/${{ env.ASSETS_FOLDER }}/Extras"
+        grep -r 'USharpVideoPlayer' "Assets/${{ env.ASSETS_FOLDER }}/Scripts/**" && exit 1
+        #sed -i 's/{fileID\: 11500000, guid\: 96c9fcd85688d64459ae79399f1ab62d, type\: 3}/{fileID\: 0}/' "Assets/${{ env.ASSETS_FOLDER }}/Subtitles.prefab"
+        sed -i '/96c9fcd85688d64459ae79399f1ab62d/d' "Assets/${{ env.ASSETS_FOLDER }}/Subtitles.prefab"
+        sed -i '/55106727684a20b48a170c471208dd4a/d' "Assets/${{ env.ASSETS_FOLDER }}/Subtitles.prefab"
+        grep '96c9fcd85688d64459ae79399f1ab62d' "Assets/${{ env.ASSETS_FOLDER }}/Subtitles.prefab" && exit 1
+        grep '55106727684a20b48a170c471208dd4a' "Assets/${{ env.ASSETS_FOLDER }}/Subtitles.prefab" && exit 1
+
+    - uses: pCYSl5EDgo/create-unitypackage@v1
+      with:
+        package-path: ${{ env.UNITYPACKAGE_ALT }}
         include-files: metaList
 
     - uses: softprops/action-gh-release@v1
       if: startsWith(github.ref, 'refs/tags/')
       with:
         body: ${{ steps.changelog.outputs.changelog }}
-        files: ${{ env.UNITYPACKAGE }}
+        files: |
+          ${{ env.UNITYPACKAGE_MAIN }}
+          ${{ env.UNITYPACKAGE_UNIVERSAL }}
         draft: true
 
     - uses: actions/upload-artifact@v3
       if: ${{ !startsWith(github.ref, 'refs/tags/') }}
       with:
-        name: ${{ env.UNITYPACKAGE }}
-        path: ${{ env.UNITYPACKAGE }}
+        name: ${{ env.ASSETS_FOLDER }}
+        path: |
+          ${{ env.UNITYPACKAGE_MAIN }}
+          ${{ env.UNITYPACKAGE_ALT }}
+
