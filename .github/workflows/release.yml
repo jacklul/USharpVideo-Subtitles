@@ -4,6 +4,8 @@ on:
   create:
     tags:
       - "v*.*.*"
+    branches:
+      - master
   workflow_dispatch:
 
 jobs:
