@@ -698,16 +698,6 @@ namespace UdonSharp.Video.Subtitles
             _dataTmp = input;
 
             SendCustomEventDelayedFrames(nameof(_ProcessInputWaitForParser), 1);
-
-            /*if (_dataTotal > 0)
-            {
-                if (!_isLocal)
-                    SetAndTransmitSubtitles(input); // Synchronize to others only if the input is valid
-                else
-                    _dataLocal = input;
-            }
-
-            ResetSubtitleTrackingState();*/
         }
 
         public void _ProcessInputWaitForParser()
