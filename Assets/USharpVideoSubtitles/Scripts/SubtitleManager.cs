@@ -62,34 +62,35 @@ namespace UdonSharp.Video.Subtitles
         private Text debugLogField;
 
         [UdonSynced]
-        private string _syncedChunk;
+        private string _syncedChunk; // Chunk of data currently being synced
         [UdonSynced]
-        private int _syncId;
+        private int _syncId; // Unique sync ID
 
-        private string _data = "";
-        private string _dataLocal = "";
-        private string _dataTmp = "";
+        // Usage of separated input, synchronized and local data variables allows the user to toggle between local and synced subtitles without re-pasting/re-syncing data
+        private string _dataSynced = ""; // Stores complete text data for use with synchronization, data received by the clients is concatenated to this variable then parsed
+        private string _dataLocal = ""; // Stores subtitles text data when using local mode
+        private string _dataTmp = ""; // This stores user's text input, it gets copied to _dataSynced/_dataLocal once the data is parsed and verified to be valid
 
-        private string[] _dataText = new string[0];
-        private float[] _dataStart = new float[0];
-        private float[] _dataEnd = new float[0];
-        private int _dataTotal = 0;
+        private string[] _dataText = new string[0]; // This contains subtitle text
+        private float[] _dataStart = new float[0]; // This contains subtitle start time
+        private float[] _dataEnd = new float[0]; // This contains subtitle end time
+        private int _dataTotal = 0; // Total number of subtitle groups
 
-        private string[] _parserArray = new string[0];
+        private string[] _parserArray = new string[0]; // Stores split text string (each input line is one array element)
         private int _parserLine = 0; // Currently processed line (_parserArray index)
         private int _parserCount = 0; // Count of subtitle groups (so far)
         private int _parserIndex = 0; // Current subtitle group index (_dataText)
         private int _parserTotal = 0; // Total count of subtitle groups
         private bool _isParsing = false;
-        private bool _isParserDone = true;
+        private bool _isParserDone = true; // Unfortunately we have to use one extra variable for this because of error handling in _ParserWork to prevent race condition with _ProcessInputWaitForParser
 
         [UdonSynced]
-        private int _chunkCount;
+        private int _chunkCount; // Total number of chunks to sync
         [UdonSynced]
-        private int _chunkSync;
+        private int _chunkSync; // Current chunk being synced/received
 
-        private int _localChunkSync;
-        private int _lastSyncId;
+        private int _localChunkSync; // Remember last chunk synced
+        private int _lastSyncId; // Remember last sync ID
 
         private bool _isEnabled = true;
         private bool _isLocal = false;
@@ -239,9 +240,9 @@ namespace UdonSharp.Video.Subtitles
             if (VRCPlayerApi.GetPlayerCount() == 1) // No point to even attempt to synchronize when alone in the instance
                 return;
 
-            LogMessage($"Transmitting subtitles... (length = {_data.Length})");
+            LogMessage($"Transmitting subtitles... (length = {_dataSynced.Length})");
 
-            _chunkCount = _data.Length / chunkSize + 1;
+            _chunkCount = _dataSynced.Length / chunkSize + 1;
             _chunkSync = 0;
 
             if (!_isLocal)
@@ -263,13 +264,13 @@ namespace UdonSharp.Video.Subtitles
             {
                 LogMessage($"About to send chunk {_chunkSync + 1} / {_chunkCount} ({_syncId})");
 
-                int start = Mathf.Min(_chunkSync * chunkSize, _data.Length);
-                int length = Mathf.Min(chunkSize, _data.Length - _chunkSync * chunkSize);
+                int start = Mathf.Min(_chunkSync * chunkSize, _dataSynced.Length);
+                int length = Mathf.Min(chunkSize, _dataSynced.Length - _chunkSync * chunkSize);
 
                 if (length < 0) // This can happen when master presses the lock button at the same time as someone else is starting to send the subtitles, this will also bug out UI for both players (toggling local mode cleans up the UI)
                     length = chunkSize;
 
-                _syncedChunk = _data.Substring(start, length);
+                _syncedChunk = _dataSynced.Substring(start, length);
             }
         }
 
@@ -351,12 +352,12 @@ namespace UdonSharp.Video.Subtitles
             if (_chunkSync == 0)
             {
                 _localChunkSync = 0;
-                _data = _syncedChunk;
+                _dataSynced = _syncedChunk;
             }
             else if (_localChunkSync == _chunkSync - 1)
             {
                 _localChunkSync++;
-                _data += _syncedChunk;
+                _dataSynced += _syncedChunk;
             }
             else
                 LogWarning($"Rejected chunk {_chunkSync + 1} because local chunk is {_localChunkSync}");
@@ -369,15 +370,15 @@ namespace UdonSharp.Video.Subtitles
 
                 if (!_isLocal)
                 {
-                    if (_data.Length == 0)
+                    if (_dataSynced.Length == 0)
                     {
                         ClearSubtitlesLocal();
                         return;
                     }
 
-                    LogMessage($"Applying synchronized data (length = {_data.Length})");
+                    LogMessage($"Applying synchronized data (length = {_dataSynced.Length})");
 
-                    LoadSubtitles(_data, false);
+                    LoadSubtitles(_dataSynced, false);
                     ResetSubtitleTrackingState();
                 }
             }
@@ -548,6 +549,8 @@ namespace UdonSharp.Video.Subtitles
             if (_parserLine >= _parserArray.Length - 1)
             {
                 _dataTotal = _parserCount;
+                _parserArray = new string[0];
+
                 ResetParser();
 
                 LogMessage($"Parsed {_dataTotal} subtitle groups");
@@ -713,7 +716,7 @@ namespace UdonSharp.Video.Subtitles
                 if (!_isLocal)
                     SetAndTransmitSubtitles(_dataTmp); // Synchronize to others only if the input is valid
                 else
-                    _dataLocal = _dataTmp;
+                    _dataLocal = _dataTmp; // Set the data to local variable
 
                 _dataTmp = "";
 
@@ -753,7 +756,7 @@ namespace UdonSharp.Video.Subtitles
         {
             TakeOwnership();
 
-            _data = text;
+            _dataSynced = text;
             _syncId = Networking.GetServerTimeInMilliseconds();
             _lastSyncId = _syncId;
 
@@ -797,7 +800,7 @@ namespace UdonSharp.Video.Subtitles
         {
             if (Networking.IsOwner(gameObject))
             {
-                if (_data != "")
+                if (_dataSynced != "")
                     TransmitSubtitles();
                 else if (!IsUsingUSharpVideo()) // To make sure the lock state is correct on the joiner
                     RequestSerialization();
@@ -814,7 +817,7 @@ namespace UdonSharp.Video.Subtitles
                     {
                         handler.RestoreStatusText();
                         
-                        if (_data != "")
+                        if (_dataSynced != "")
                             handler.SetStatusText(MESSAGE_LOADED);
                         else
                             handler.SetStatusText(MESSAGE_NOT_LOADED);
@@ -965,10 +968,10 @@ namespace UdonSharp.Video.Subtitles
             }
             else
             {
-                if (_data != "")
+                if (_dataSynced != "")
                 {
                     if (IsSynchronized())
-                        LoadSubtitles(_data, false);
+                        LoadSubtitles(_dataSynced, false);
                     else
                         UnsetSubtitlesLocal();
                 }
@@ -1036,7 +1039,7 @@ namespace UdonSharp.Video.Subtitles
         {
             if (!_isLocal)
             {
-                if (_data == "")
+                if (_dataSynced == "")
                     return;
 
                 if (CanSynchronizeSubtitles() && IsSynchronized()) // Owner is guranteed to have the subtitles and master should always be able to resync
@@ -1076,7 +1079,7 @@ namespace UdonSharp.Video.Subtitles
             {
                 _lastVideoURL = currentURL;
 
-                if (clearOnNewVideo && _data != "" && Networking.IsMaster)
+                if (clearOnNewVideo && _dataSynced != "" && Networking.IsMaster)
                 {
                     LogMessage("New URL detected, clearing subtitles...");
 
