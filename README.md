@@ -23,7 +23,7 @@ _Contact me if you want your world to be added to this list._
 
 ## Requirements
 
-- Unity 2019.4.29f1+
+- Unity 2022.3.6f1 ([Current VRChat Unity Version](https://creators.vrchat.com/sdk/upgrade/current-unity-version/))
 - [UdonSharp](https://github.com/vrchat-community/UdonSharp) v1.0.0+
 - [USharpVideo](https://github.com/MerlinVR/USharpVideo) v1.0.0+
 
