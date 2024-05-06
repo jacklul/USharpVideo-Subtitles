@@ -447,6 +447,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6421412928314014385, guid: 87d772cf1b1ec7b49839dde29eb427be,
+        type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6421412928314014391, guid: 87d772cf1b1ec7b49839dde29eb427be,
         type: 3}
       propertyPath: serializedProgramAsset
@@ -2765,6 +2770,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 368572903048736811, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 368572903048736983, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 368572903621541158, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 368572903896347645, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2853267199229678515, guid: 79b0ea249ffa6a54bb5f55191b085d00,
         type: 3}
