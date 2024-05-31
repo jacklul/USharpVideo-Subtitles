@@ -9,16 +9,10 @@ _The core of this prefab is based on [this code](https://gist.github.com/hai-vr/
 
 ## Features
 
+- Load subtitles from the text input or URL
 - Subtitle synchronization with everyone in the instance
 - Option to use own subtitles locally
 - Rich customization with the ability for the players to save their settings
-
-## Worlds using this prefab
-
-- [Cinema Basill UDON](https://vrchat.com/home/world/wrld_44557e26-abca-4f72-85c3-4f23b40020b2)
-- [Luminescent Ledge](https://vrchat.com/home/world/wrld_fb4edc80-6c48-43f2-9bd1-2fa9f1345621)
-
-_Contact me if you want your world to be added to this list._
 
 ## Requirements
 
