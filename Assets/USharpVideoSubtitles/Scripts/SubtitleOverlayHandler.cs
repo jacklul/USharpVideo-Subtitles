@@ -51,7 +51,7 @@ namespace UdonSharp.Video.Subtitles
         [SerializeField, Range(0, 960)]
         private int horizontalMargin = 80;
         [SerializeField, Range(0, 1), Tooltip("0 = bottom\n1 = top")]
-        private int alignment = 0; // To be replaced with "private VerticalAlignmentOptions alignment = VerticalAlignmentOptions.Bottom;" which is not exposed to Udon yet
+        private int alignment = 0; // @TODO To be replaced with "private VerticalAlignmentOptions alignment = VerticalAlignmentOptions.Bottom;" which is not exposed to Udon yet
 
         private string _lastText = "";
         private bool _showPlaceholder = false;
@@ -177,16 +177,16 @@ namespace UdonSharp.Video.Subtitles
         public int GetFontSize()
         {
             return _fontSize;
-            //return subtitlesTextField.fontSize;
+            //return subtitleTextField.fontSize;
         }
 
         public void SetFontSize(int size)
         {
             _fontSize = size;
 
-            // Not exposed to Udon yet, we'are using <size=> magic in Display() for now
-            //subtitlesTextField.fontSize = size; 
-            //subtitlesBackgroundField.fontSize = size;
+            // @TODO Not exposed to Udon yet, we'are using <size=> magic in Display() for now
+            //subtitleTextField.fontSize = size; 
+            //subtitleBackgroundField.fontSize = size;
         }
 
         public Color GetFontColor()
@@ -266,6 +266,7 @@ namespace UdonSharp.Video.Subtitles
             else
                 SetMarginInternal(new Vector4(Mathf.Abs(_textFieldRectTransform.offsetMin.x), 0, Mathf.Abs(_textFieldRectTransform.offsetMax.x), margin));
 
+            // @TODO Margin property not exposed to Udon yet
             //if (GetAlignment() == 1)
             //    SetMarginInternal(new Vector4(subtitleTextField.margin.x, margin, subtitleTextField.margin.z, 0));
             //else
@@ -310,13 +311,13 @@ namespace UdonSharp.Video.Subtitles
             //subtitleBackgroundField.margin = margin;
         }
 
-        public int GetAlignment() // Not exposed to Udon yet, to be replaced with "public VerticalAlignmentOptions GetAlignment()"
+        public int GetAlignment() // @TODO Not exposed to Udon yet, to be replaced with "public VerticalAlignmentOptions GetAlignment()"
         {
             return subtitleTextField.gameObject.activeSelf ? 0 : 1;
             //return subtitleTextField.alignment;
         }
 
-        public void SetAlignment(int value) // Not exposed to Udon yet, to be replaced with "public void SetAlignment(VerticalAlignmentOptions alignment)"
+        public void SetAlignment(int value) // @TODO Not exposed to Udon yet, to be replaced with "public void SetAlignment(VerticalAlignmentOptions alignment)"
         {
             if (!subtitleTextFieldTop || !subtitleBackgroundFieldTop)
                 return;

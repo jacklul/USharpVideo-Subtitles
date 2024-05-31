@@ -29,15 +29,15 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 3, y: 3, z: 3}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 275605062}
   m_Father: {fileID: 3973345648712240299}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 85}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: -265, y: -255}
+  m_SizeDelta: {x: 175, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &42052596
 CanvasRenderer:
@@ -62,6 +62,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -90,6 +91,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Navigation:
     m_Mode: 0
+    m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
@@ -120,6 +122,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 3973345647856182092}
+        m_TargetAssemblyTypeName: 
         m_MethodName: SendCustomEvent
         m_Mode: 5
         m_Arguments:
@@ -127,7 +130,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: TestUSharpVideo
+          m_StringArgument: TestUSharpVideoRemote
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!1 &275605061
@@ -158,9 +161,9 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 42052593}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -190,6 +193,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 0
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -238,9 +242,9 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3973345648571305774}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -270,6 +274,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 0
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -317,15 +322,15 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 3, y: 3, z: 3}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3973345649054339455}
   m_Father: {fileID: 3973345648712240299}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -85}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 265, y: -100}
+  m_SizeDelta: {x: 175, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3973345647323476004
 CanvasRenderer:
@@ -350,6 +355,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -378,6 +384,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Navigation:
     m_Mode: 0
+    m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
@@ -408,6 +415,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 3973345647856182092}
+        m_TargetAssemblyTypeName: 
         m_MethodName: SendCustomEvent
         m_Mode: 5
         m_Arguments:
@@ -443,13 +451,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3973345647856182094}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1.65, z: 9.98}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.65, y: 1.65, z: 1.65}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3973345648712240299}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7391485555126065685
 MonoBehaviour:
@@ -492,41 +501,41 @@ MonoBehaviour:
     Is it supposed to be
     doing that?
 
-    
+
 
     2
 
     00:00:41,706 --> 00:00:45,824
 
-    It''s a
-    coronal mass emission,
+    It''s a coronal
+    mass emission,
 
     like a giant solar flare.
 
-    
+
 
     3
 
-    00:00:46,266
-    --> 00:00:49,781
+    00:00:46,266 -->
+    00:00:49,781
 
     - But it''s safe, right?
 
     - That''s what this equipment
     will find out.
 
-    
+
 
     4
 
     00:00:49,866 --> 00:00:55,259
 
-    Apart
-    from disrupting the magnetic field,
+    Apart from disrupting
+    the magnetic field,
 
     it might cause an increase in radiation.
 
-    
+
 
     5
 
@@ -535,18 +544,18 @@ MonoBehaviour:
 
     But it''s safe, right?
 
-    
+
 
     6
 
-    00:00:57,306
-    --> 00:01:00,582
+    00:00:57,306 --> 00:01:00,582
 
-    As long as we don''t
+    As
+    long as we don''t
 
     stay here too long, yes, sir.
 
-    
+
 
     7
 
@@ -555,7 +564,7 @@ MonoBehaviour:
 
     Anyone explain that to Daniel?
 
-    
+
 
     8
 
@@ -564,7 +573,7 @@ MonoBehaviour:
 
     I''ve encountered this script before.
 
-    
+
 
     9
 
@@ -576,7 +585,7 @@ MonoBehaviour:
     a language
     on our planet called Latin.
 
-    
+
 
     10
 
@@ -587,7 +596,7 @@ MonoBehaviour:
 
     the text represents a planetary history.
 
-    
+
 
     11
 
@@ -596,21 +605,21 @@ MonoBehaviour:
 
     I agree... But isn''t it time for you
 
-    to return
-    through the Stargate?
+    to return through
+    the Stargate?
 
-    
+
 
     12
 
     00:01:29,026 --> 00:01:34,225
 
-    I
-    don''t understand the significance of
+    I don''t understand
+    the significance of
 
     what this is. A sort of control mechanism.
 
-    
+
 
     13
 
@@ -619,10 +628,10 @@ MonoBehaviour:
 
     It''s obviously still in working order.
 
-    I wonder
-    if that''s... significant.
+    I wonder if
+    that''s... significant.
 
-    
+
 
     14
 
@@ -633,7 +642,7 @@ MonoBehaviour:
 
     The radiation may be dangerous for you.
 
-    
+
 
     15
 
@@ -645,18 +654,18 @@ MonoBehaviour:
     know when we have
     to leave.
 
-    
+
 
     16
 
     00:01:47,906 --> 00:01:53,264
 
-    Now, this
-    line recurs several times:
+    Now, this line recurs
+    several times:
 
     ''''Domavatus vestul motabilum.''''
 
-    
+
 
     17
 
@@ -665,7 +674,7 @@ MonoBehaviour:
 
     ''''Conqueror of time.''''
 
-    
+
 
     18
 
@@ -677,18 +686,18 @@ MonoBehaviour:
     ''''Master of
     the uncertain past.''''
 
-    
+
 
     19
 
     00:02:00,026 --> 00:02:03,018
 
-    -
-    You''re a skilled linguist, Dr Jackson.
+    - You''re
+    a skilled linguist, Dr Jackson.
 
     - Thank you.
 
-    
+
 
     20
 
@@ -700,7 +709,7 @@ MonoBehaviour:
     spoken
     a year or so ago, so...
 
-    
+
 
     21
 
@@ -709,7 +718,7 @@ MonoBehaviour:
     (high-pitched
     sound)
 
-    
+
 
     22
 
@@ -717,7 +726,7 @@ MonoBehaviour:
 
     What''s that?
 
-    
+
 
     23
 
@@ -729,82 +738,81 @@ MonoBehaviour:
     is reaching its peak.
     I have to act now.
 
-    
+
 
     24
 
     00:02:19,266 --> 00:02:20,745
 
-    I
-    don''t understand.
+    I don''t
+    understand.
 
-    
+
 
     25
 
     00:02:52,306 --> 00:02:54,342
 
+    - All set up, sir.
+
     -
-    All set up, sir.
+    Good.
 
-    - Good.
 
-    
 
     26
 
     00:02:54,986 --> 00:02:56,817
 
-    Let''s
-    hit it.
+    Let''s hit it.
 
-    
+
 
     27
 
-    00:02:56,906 --> 00:02:59,215
+    00:02:56,906
+    --> 00:02:59,215
 
-    Daniel, let''s
-    go home.
+    Daniel, let''s go home.
 
-    
+
 
     28
 
-    00:03:04,066 --> 00:03:05,294
+    00:03:04,066 -->
+    00:03:05,294
 
     Daniel?
 
-    
+
 
     29
 
-    00:03:07,466
-    --> 00:03:09,138
+    00:03:07,466 --> 00:03:09,138
 
-    (electricity crackling)
+    (electricity
+    crackling)
 
-    
+
 
     30
 
-    00:03:13,906
-    --> 00:03:17,216
+    00:03:13,906 --> 00:03:17,216
 
     - O''Neill.
 
-    - Yeah, I hear it.
+    -
+    Yeah, I hear it.
 
-    
+
 
     31
 
-    00:03:33,746
-    --> 00:03:36,340
+    00:03:33,746 --> 00:03:36,340
 
     Incoming wormhole.
 
-    
+
 
     32
 
@@ -813,7 +821,7 @@ MonoBehaviour:
 
     What is that?
 
-    
+
 
     33
 
@@ -822,36 +830,36 @@ MonoBehaviour:
     I
     have no idea, sir.
 
-    
+
 
     34
 
     00:03:50,786 --> 00:03:52,663
 
-    Are
-    you doin'' this?
+    Are you
+    doin'' this?
 
-    
+
 
     35
 
     00:03:52,906 --> 00:03:55,864
 
+    - Stay away!
+
     -
-    Stay away!
+    What the hell are you doing?
 
-    - What the hell are you doing?
 
-    
 
     36
 
-    00:03:56,266
-    --> 00:03:58,257
+    00:03:56,266 --> 00:03:58,257
 
-    Stay back!
+    Stay
+    back!
 
-    
+
 
     37
 
@@ -859,7 +867,7 @@ MonoBehaviour:
 
     Colonel!
 
-    
+
 
     38
 
@@ -868,19 +876,19 @@ MonoBehaviour:
 
     Anyway, I''m sorry, but that just
 
-    happens to be
-    how I feel about it.
+    happens to be how
+    I feel about it.
 
-    
+
 
     39
 
     00:04:10,786 --> 00:04:13,175
 
-    What
-    do you think?
+    What do you
+    think?
 
-    
+
 
     40
 
@@ -888,7 +896,7 @@ MonoBehaviour:
 
     What?
 
-    
+
 
     41
 
@@ -897,67 +905,66 @@ MonoBehaviour:
 
     What do you think?
 
-    
+
 
     42
 
-    00:04:29,186
-    --> 00:04:32,178
+    00:04:29,186 --> 00:04:32,178
 
-    Colonel? ls something wrong?
+    Colonel?
+    ls something wrong?
 
-    
+
 
     43
 
-    00:04:33,386
-    --> 00:04:35,581
+    00:04:33,386 --> 00:04:35,581
 
     Maybe.
 
-    
+
 
     44
 
-    00:05:42,386 --> 00:05:44,820
+    00:05:42,386
+    --> 00:05:44,820
 
-    Weren''t
-    we just somewhere else?
+    Weren''t we just somewhere else?
 
-    
+
 
     45
 
-    00:05:46,186 --> 00:05:48,142
+    00:05:46,186
+    --> 00:05:48,142
 
-    -
-    Where?
+    - Where?
 
     - Some planet.
 
-    
+
 
     46
 
-    00:05:48,226 --> 00:05:49,215
+    00:05:48,226
+    --> 00:05:49,215
 
-    -
-    When?
+    - When?
 
     - Just now.
 
-    
+
 
     47
 
-    00:05:49,306 --> 00:05:50,500
+    00:05:49,306 -->
+    00:05:50,500
 
-    -
-    No.
+    - No.
 
     - Sure?
 
-    
+
 
     48
 
@@ -965,7 +972,7 @@ MonoBehaviour:
 
     Yeah.
 
-    
+
 
     49
 
@@ -974,19 +981,19 @@ MonoBehaviour:
 
     Everything just changed.
 
-    
+
 
     50
 
-    00:06:01,866
-    --> 00:06:05,415
+    00:06:01,866 -->
+    00:06:05,415
 
     Sir, we''ve been sitting in the commissary
 
-    for the
-    past half-hour.
+    for the past
+    half-hour.
 
-    
+
 
     51
 
@@ -997,18 +1004,18 @@ MonoBehaviour:
     -
     You''ve gotten the two places confused.
 
-    
+
 
     52
 
-    00:06:10,906 -->
-    00:06:13,466
+    00:06:10,906 --> 00:06:13,466
 
-    - We''re gonna be late for the briefing.
+    -
+    We''re gonna be late for the briefing.
 
     - Briefing?
 
-    
+
 
     53
 
@@ -1020,70 +1027,69 @@ MonoBehaviour:
     to avoid answering
     my question?
 
-    
+
 
     54
 
     00:06:22,106 --> 00:06:24,301
 
-    No, I''m
-    fine.
+    No, I''m fine.
 
-    
+
 
     55
 
-    00:06:26,066 --> 00:06:28,261
+    00:06:26,066
+    --> 00:06:28,261
 
     What question?
 
-    
+
 
     56
 
-    00:06:36,746
-    --> 00:06:42,503
+    00:06:36,746 --> 00:06:42,503
 
-    Two weeks ago, SG-15 took these images
+    Two
+    weeks ago, SG-15 took these images
 
-    of solar
-    activity on P4X-639.
+    of solar activity on P4X-639.
 
-    
+
 
     57
 
-    00:06:42,586 --> 00:06:46,420
+    00:06:42,586
+    --> 00:06:46,420
 
-    Analysis
-    of the data indicates
+    Analysis of the data indicates
 
-    a steady increase in the intensity.
+    a steady increase in
+    the intensity.
 
-    
+
 
     58
 
-    00:06:46,506
-    --> 00:06:49,942
+    00:06:46,506 --> 00:06:49,942
 
-    Now, if I''m right, the explosions
+    Now, if I''m
+    right, the explosions
 
-    that we''re witnessing
-    here...
+    that we''re witnessing here...
 
-    
+
 
     59
 
-    00:06:50,026 --> 00:06:53,018
+    00:06:50,026
+    --> 00:06:53,018
 
-    ..are just
-    the precursor
+    ..are just the precursor
 
     to a greater violent ejection.
 
-    
+
 
     60
 
@@ -1095,52 +1101,51 @@ MonoBehaviour:
     been briefed
     concerning this matter?
 
-    
+
 
     61
 
     00:06:57,066 --> 00:06:59,580
 
-    -
-    I was just gonna say that.
+    - I
+    was just gonna say that.
 
     - Sir?
 
-    
+
 
     62
 
-    00:07:01,066 -->
-    00:07:05,582
+    00:07:01,066 --> 00:07:05,582
 
-    You wanna go to the planet and set up
+    You
+    wanna go to the planet and set up
 
-    some kind of remote
-    observatory.
+    some kind of remote observatory.
 
-    
+
 
     63
 
-    00:07:07,026 --> 00:07:09,062
+    00:07:07,026
+    --> 00:07:09,062
 
     - Yes.
 
-    -
-    We just did that.
+    - We just did that.
 
-    
+
 
     64
 
-    00:07:09,306 --> 00:07:11,501
+    00:07:09,306
+    --> 00:07:11,501
 
-    -
-    No, we didn''t.
+    - No, we didn''t.
 
     - I believe we did.
 
-    
+
 
     65
 
@@ -1149,7 +1154,7 @@ MonoBehaviour:
 
     No, that''s what the briefing is about.
 
-    
+
 
     66
 
@@ -1158,7 +1163,7 @@ MonoBehaviour:
 
     I remember listening to Carter prattle on...
 
-    
+
 
     67
 
@@ -1169,7 +1174,7 @@ MonoBehaviour:
 
     and a... corona something.
 
-    
+
 
     68
 
@@ -1178,82 +1183,81 @@ MonoBehaviour:
 
     Coronal mass emissions.
 
-    I was about to bring it
-    up.
+    I was about to bring it up.
 
-    
+
 
     69
 
-    00:07:22,346 --> 00:07:26,464
+    00:07:22,346
+    --> 00:07:26,464
 
-    - There you go.
-    How would I know that?
+    - There you go. How would I know that?
 
-    - Maybe you read my report.
+    - Maybe you
+    read my report.
 
-    
+
 
     70
 
-    00:07:27,386
-    --> 00:07:29,775
+    00:07:27,386 --> 00:07:29,775
 
-    Maybe he read your report?
+    Maybe he read
+    your report?
 
-    
+
 
     71
 
-    00:07:32,706
-    --> 00:07:35,459
+    00:07:32,706 --> 00:07:35,459
 
-    I''m tellin'' you guys,
+    I''m tellin''
+    you guys,
 
     we''ve done this before.
 
-    
+
 
     72
 
-    00:07:35,986
-    --> 00:07:37,977
+    00:07:35,986 --> 00:07:37,977
 
-    I am in agreement with O''Neill.
+    I
+    am in agreement with O''Neill.
 
-    
+
 
     73
 
-    00:07:38,066
-    --> 00:07:42,298
+    00:07:38,066 --> 00:07:42,298
 
-    I am experiencing a great deal
+    I
+    am experiencing a great deal
 
-    of familiarity with
-    these events.
+    of familiarity with these events.
 
-    
+
 
     74
 
-    00:07:42,386 --> 00:07:44,900
+    00:07:42,386
+    --> 00:07:44,900
 
-    (PA)
-    Unscheduled offworld activation.
+    (PA) Unscheduled offworld activation.
 
-    
+
 
     75
 
-    00:07:53,186 --> 00:07:55,654
+    00:07:53,186
+    --> 00:07:55,654
 
-    We
-    have an unscheduled
+    We have an unscheduled
 
     incoming traveller, sir.
 
-    
+
 
     76
 
@@ -1262,61 +1266,61 @@ MonoBehaviour:
 
     - It''s SG-12.
 
-    - (Hammond) They''re not due for
-    days.
+    - (Hammond) They''re not due for days.
 
-    
+
 
     77
 
-    00:07:58,866 --> 00:08:01,858
+    00:07:58,866
+    --> 00:08:01,858
 
-    (technician)
-    Receiving GDO transmission.
+    (technician) Receiving GDO transmission.
 
-    
+
 
     78
 
-    00:08:05,106 --> 00:08:06,937
+    00:08:05,106
+    --> 00:08:06,937
 
-    It''s
-    SG-12.
+    It''s SG-12.
 
-    
+
 
     79
 
     00:08:10,106 --> 00:08:13,098
 
-    - Open the iris.
-
     -
-    One of them will be injured.
+    Open the iris.
 
-    
+    - One of them will be injured.
+
+
 
     80
 
-    00:08:26,106 --> 00:08:30,145
+    00:08:26,106
+    --> 00:08:30,145
 
-    -
-    What do you make of all of this, Major?
+    - What do you make of all of this, Major?
 
-    - Well, sir, I''m not sure.
+    - Well,
+    sir, I''m not sure.
 
-    
+
 
     81
 
-    00:08:30,226
-    --> 00:08:33,423
+    00:08:30,226 --> 00:08:33,423
 
-    SG-12''s early return
+    SG-12''s
+    early return
 
     was the result of an accident.
 
-    
+
 
     82
 
@@ -1325,7 +1329,7 @@ MonoBehaviour:
 
     One of the team fell and broke his ankle.
 
-    
+
 
     83
 
@@ -1334,21 +1338,21 @@ MonoBehaviour:
 
     How could Teal''c and Colonel O''Neill
 
-    know that
-    was going to happen?
+    know that was
+    going to happen?
 
-    
+
 
     84
 
     00:08:39,306 --> 00:08:43,345
 
-    Both
-    of them claim to have memories
+    Both of them
+    claim to have memories
 
     of SG-1''s mission to P4X-639.
 
-    
+
 
     85
 
@@ -1357,50 +1361,50 @@ MonoBehaviour:
 
     A mission that isn''t scheduled
 
-    to start for six
-    hours.
+    to start for six hours.
 
-    
+
 
     86
 
-    00:08:55,906 --> 00:09:00,104
+    00:08:55,906
+    --> 00:09:00,104
 
-    OK. So Sam was
-    setting up instruments,
+    OK. So Sam was setting up instruments,
 
-    and... where was l?
+    and... where
+    was l?
 
-    
+
 
     87
 
-    00:09:00,866
-    --> 00:09:03,505
+    00:09:00,866 --> 00:09:03,505
 
-    You were by the altar deal with the guy.
+    You were by the altar
+    deal with the guy.
 
-    
+
 
     88
 
-    00:09:03,986
-    --> 00:09:08,025
+    00:09:03,986 --> 00:09:08,025
 
-    Right. You''re gonna need
+    Right. You''re
+    gonna need
 
     to be a little more specific.
 
-    
+
 
     89
 
-    00:09:09,546
-    --> 00:09:10,820
+    00:09:09,546 -->
+    00:09:10,820
 
     Malikai.
 
-    
+
 
     90
 
@@ -1411,7 +1415,7 @@ MonoBehaviour:
 
     SG-15 met on the first survey.
 
-    
+
 
     91
 
@@ -1422,7 +1426,7 @@ MonoBehaviour:
 
     - You did.
 
-    
+
 
     92
 
@@ -1431,128 +1435,127 @@ MonoBehaviour:
 
     You got along swell.
 
-    
+
 
     93
 
-    00:09:21,946
-    --> 00:09:26,542
+    00:09:21,946 --> 00:09:26,542
 
-    Anyway, a beam shot out from the ruins
+    Anyway,
+    a beam shot out from the ruins
 
-    around the
-    altar and hit the Stargate.
+    around the altar and hit the Stargate.
 
-    
+
 
     94
 
-    00:09:27,906 --> 00:09:30,215
+    00:09:27,906
+    --> 00:09:30,215
 
-    There
-    was a blinding flash of light.
+    There was a blinding flash of light.
 
-    
+
 
     95
 
-    00:09:30,306 --> 00:09:34,140
+    00:09:30,306
+    --> 00:09:34,140
 
-    Then
-    I was back in the commissary
+    Then I was back in the commissary
 
-    eating my Froot Loops.
+    eating my Froot
+    Loops.
 
-    
+
 
     96
 
-    00:09:37,946
-    --> 00:09:40,540
+    00:09:37,946 --> 00:09:40,540
 
-    I can''t find anything wrong
+    I can''t find anything
+    wrong
 
     with either of them.
 
-    
+
 
     97
 
-    00:09:40,626
-    --> 00:09:45,177
+    00:09:40,626 --> 00:09:45,177
 
-    We''ll wait for the lab results to be sure,
+    We''ll
+    wait for the lab results to be sure,
 
-    but
-    they appear to be in perfect health.
+    but they appear to be in perfect health.
 
-    
+
 
     98
 
-    00:09:45,266 --> 00:09:48,224
+    00:09:45,266
+    --> 00:09:48,224
 
-    Except
-    for remembering events
+    Except for remembering events
 
-    that haven''t happened yet.
+    that haven''t happened
+    yet.
 
-    
+
 
     99
 
-    00:09:48,586
-    --> 00:09:53,182
+    00:09:48,586 --> 00:09:53,182
 
-    - But why Jack and Teal''c and not us?
+    - But why Jack and Teal''c
+    and not us?
 
-    - I''m not
-    takin'' any chances.
+    - I''m not takin'' any chances.
 
-    
+
 
     100
 
-    00:09:53,266 --> 00:09:58,056
+    00:09:53,266
+    --> 00:09:58,056
 
-    Until
-    we figure out what''s going on,
+    Until we figure out what''s going on,
 
-    I''m postponing your mission to P4X-639.
+    I''m postponing
+    your mission to P4X-639.
 
-    
+
 
     101
 
-    00:10:10,626
-    --> 00:10:12,821
+    00:10:10,626 --> 00:10:12,821
 
-    Jack. Wait up.
+    Jack.
+    Wait up.
 
-    
+
 
     102
 
-    00:10:13,466 -->
-    00:10:18,745
+    00:10:13,466 --> 00:10:18,745
 
-    Um... I was thinking about what you said
+    Um... I was thinking
+    about what you said
 
-    about, uh,
-    a beam coming out of the altar.
+    about, uh, a beam coming out of the altar.
 
-    
+
 
     103
 
-    00:10:18,826 --> 00:10:22,899
+    00:10:18,826
+    --> 00:10:22,899
 
-    SG-15
-    took digital images
+    SG-15 took digital images
 
     of the carvings on the ruins.
 
-    
+
 
     104
 
@@ -1563,7 +1566,7 @@ MonoBehaviour:
 
     some sort of clue.
 
-    
+
 
     105
 
@@ -1572,139 +1575,138 @@ MonoBehaviour:
 
     Unfortunately it''s the equivalent
 
-    of 400 pages
-    of alien text.
+    of 400 pages of
+    alien text.
 
-    
+
 
     106
 
     00:10:29,226 --> 00:10:32,616
 
-    If
-    you give me details about
+    If you give me
+    details about
 
     the layout of the ruins...
 
-    
+
 
     107
 
-    00:10:34,666
-    --> 00:10:36,941
+    00:10:34,666 -->
+    00:10:36,941
 
     Gee, sorry, Dr Jackson.
 
-    
+
 
     108
 
-    00:10:38,066
-    --> 00:10:40,455
+    00:10:38,066 --> 00:10:40,455
 
-    Shoulda seen that comin''.
+    Shoulda
+    seen that comin''.
 
-    
+
 
     109
 
-    00:10:51,266
-    --> 00:10:52,221
+    00:10:51,266 --> 00:10:52,221
 
     So...
 
-    
+
 
     110
 
-    00:10:53,066 --> 00:10:54,215
+    00:10:53,066
+    --> 00:10:54,215
 
     So?
 
-    
+
 
     111
 
-    00:10:55,746
-    --> 00:10:58,385
+    00:10:55,746 --> 00:10:58,385
 
-    Don''t you know what I''m gonna say?
+    Don''t
+    you know what I''m gonna say?
 
-    
+
 
     112
 
-    00:10:58,466
-    --> 00:11:02,744
+    00:10:58,466 --> 00:11:02,744
 
-    Actually, by this time
+    Actually,
+    by this time
 
     we were on the planet.
 
-    
+
 
     113
 
-    00:11:02,826
-    --> 00:11:04,737
+    00:11:02,826 --> 00:11:04,737
 
-    It''s all different now.
+    It''s
+    all different now.
 
-    
+
 
     114
 
-    00:11:04,826
-    --> 00:11:05,815
+    00:11:04,826 --> 00:11:05,815
 
     Oh.
 
-    
+
 
     115
 
-    00:11:05,906 --> 00:11:11,026
+    00:11:05,906
+    --> 00:11:11,026
 
-    Well,
-    I was thinking about what you said
+    Well, I was thinking about what you said
 
-    about a beam hitting the Stargate.
+    about a beam
+    hitting the Stargate.
 
-    
+
 
     116
 
-    00:11:11,106
-    --> 00:11:13,336
+    00:11:11,106 --> 00:11:13,336
 
-    - What about it?
+    - What
+    about it?
 
     - After the flash,...
 
-    
+
 
     117
 
-    00:11:13,426
-    --> 00:11:17,544
+    00:11:13,426 --> 00:11:17,544
 
-    ..you found yourself back here, reliving
+    ..you
+    found yourself back here, reliving
 
-    the moments
-    leading up to the mission.
+    the moments leading up to the mission.
 
-    
+
 
     118
 
-    00:11:18,506 --> 00:11:21,384
+    00:11:18,506
+    --> 00:11:21,384
 
-    Maybe
-    you''re not
+    Maybe you''re not
 
     remembering future events.
 
-    
+
 
     119
 
@@ -1713,21 +1715,21 @@ MonoBehaviour:
 
     - Maybe you were sent back in time.
 
-    - For what?
-    Six hours?
+    - For what? Six
+    hours?
 
-    
+
 
     120
 
     00:11:25,506 --> 00:11:30,580
 
-    Well, it
-    wouldn''t be the first time.
+    Well, it wouldn''t
+    be the first time.
 
     The Stargate did send us back to 1969.
 
-    
+
 
     121
 
@@ -1736,7 +1738,7 @@ MonoBehaviour:
 
     Good year.
 
-    
+
 
     122
 
@@ -1747,7 +1749,7 @@ MonoBehaviour:
 
     to access the gate''s subspace field...
 
-    
+
 
     123
 
@@ -1756,28 +1758,28 @@ MonoBehaviour:
 
     ..in order to create some kind of
 
-    time inversion
-    outside of subspace?
+    time inversion outside
+    of subspace?
 
-    
+
 
     124
 
     00:11:48,666 --> 00:11:51,260
 
-    I
-    knew you were gonna say that.
+    I knew you were
+    gonna say that.
 
-    
+
 
     125
 
     00:11:51,986 --> 00:11:54,341
 
-    I
-    guess I''m just thinkin'' out loud.
+    I guess I''m
+    just thinkin'' out loud.
 
-    
+
 
     126
 
@@ -1786,7 +1788,7 @@ MonoBehaviour:
     I''m
     gonna go run a few simulations.
 
-    
+
 
     127
 
@@ -1795,50 +1797,49 @@ MonoBehaviour:
     You
     run... Simulate.
 
-    
+
 
     128
 
     00:12:03,826 --> 00:12:06,818
 
-    Let
-    me know how it turns out.
+    Let me know
+    how it turns out.
 
     Keep me posted.
 
-    
+
 
     129
 
-    00:12:10,066
-    --> 00:12:12,216
+    00:12:10,066 --> 00:12:12,216
 
-    Keep me apprised.
+    Keep
+    me apprised.
 
-    
+
 
     130
 
-    00:12:18,226
-    --> 00:12:22,777
+    00:12:18,226 --> 00:12:22,777
 
-    The lab results confirm Dr Fraiser''s
+    The lab results
+    confirm Dr Fraiser''s
 
-    assessment.
-    You''re both in perfect health.
+    assessment. You''re both in perfect health.
 
-    
+
 
     131
 
-    00:12:24,946 --> 00:12:28,825
+    00:12:24,946
+    --> 00:12:28,825
 
-    -
-    Any more of these premonitions?
+    - Any more of these premonitions?
 
     - Not for some time.
 
-    
+
 
     132
 
@@ -1847,7 +1848,7 @@ MonoBehaviour:
 
     Can we go back to work, General, please?
 
-    
+
 
     133
 
@@ -1856,7 +1857,7 @@ MonoBehaviour:
 
     I have no objection, as long as...
 
-    
+
 
     134
 
@@ -1865,7 +1866,7 @@ MonoBehaviour:
 
     (PA) Unscheduled offworld activation.
 
-    
+
 
     135
 
@@ -1874,7 +1875,7 @@ MonoBehaviour:
 
     D''oh!
 
-    
+
 
     136
 
@@ -1883,38 +1884,38 @@ MonoBehaviour:
     What
     is that?
 
-    
+
 
     137
 
     00:12:53,426 --> 00:12:56,702
 
-    I''m not
-    sure, sir.
+    I''m not sure, sir.
 
-    I''ve never seen anything like it.
+    I''ve
+    never seen anything like it.
 
-    
+
 
     138
 
-    00:12:56,786
-    --> 00:12:58,777
+    00:12:56,786 --> 00:12:58,777
 
-    We have.
+    We
+    have.
 
-    
+
 
     139
 
     00:13:00,066 --> 00:13:03,661
 
-    Anyway,
-    I''m sorry, but that just
+    Anyway, I''m sorry,
+    but that just
 
     happens to be how I feel about it.
 
-    
+
 
     140
 
@@ -1923,44 +1924,44 @@ MonoBehaviour:
 
     What do you think?
 
-    
+
 
     141
 
-    00:13:11,786
-    --> 00:13:14,380
+    00:13:11,786 --> 00:13:14,380
 
-    Colonel? ls something wrong?
+    Colonel?
+    ls something wrong?
 
-    
+
 
     142
 
-    00:13:15,346
-    --> 00:13:17,496
+    00:13:15,346 --> 00:13:17,496
 
     Oh, yeah.
 
-    
+
 
     143
 
-    00:13:17,586 --> 00:13:19,577
+    00:13:17,586
+    --> 00:13:19,577
 
     Somethin''.
 
-    
+
 
     144
 
-    00:13:22,866
-    --> 00:13:25,664
+    00:13:22,866 --> 00:13:25,664
 
-    - Two weeks ago, SG-15...
+    -
+    Two weeks ago, SG-15...
 
     - We''ve done this.
 
-    
+
 
     145
 
@@ -1969,39 +1970,39 @@ MonoBehaviour:
 
     We do this every day.
 
-    
+
 
     146
 
-    00:13:31,266
-    --> 00:13:34,781
+    00:13:31,266 -->
+    00:13:34,781
 
     Not briefings in general, Daniel.
 
-    I''m talking about
-    this briefing.
+    I''m talking about this
+    briefing.
 
-    
+
 
     147
 
     00:13:34,866 --> 00:13:37,699
 
-    I''m
-    talking about this day.
+    I''m talking about
+    this day.
 
-    
+
 
     148
 
     00:13:41,626 --> 00:13:47,064
 
-    Colonel
-    O''Neill is correct. Events do
+    Colonel O''Neill
+    is correct. Events do
 
     appear to be repeating themselves.
 
-    
+
 
     149
 
@@ -2012,7 +2013,7 @@ MonoBehaviour:
 
     - Since we went to P4X-639.
 
-    
+
 
     150
 
@@ -2021,7 +2022,7 @@ MonoBehaviour:
 
     We haven''t been to P4X-639.
 
-    
+
 
     151
 
@@ -2033,18 +2034,18 @@ MonoBehaviour:
     That''s what
     you were gonna say.
 
-    
+
 
     152
 
     00:13:56,986 --> 00:14:01,377
 
-    -
-    Of course that''s what I was gonna say.
+    - Of course
+    that''s what I was gonna say.
 
     - OK, bad example.
 
-    
+
 
     153
 
@@ -2053,74 +2054,73 @@ MonoBehaviour:
 
     - I''m not quite sure what to make of this.
 
-    - If
-    we''ve had this meeting before, sir...
+    - If we''ve
+    had this meeting before, sir...
 
-    
+
 
     154
 
-    00:14:05,626 -->
-    00:14:10,256
+    00:14:05,626 --> 00:14:10,256
 
-    Why are Teal''c and I the only ones who
+    Why
+    are Teal''c and I the only ones who
 
-    remember it?
-    You said that last time.
+    remember it? You said that last time.
 
-    
+
 
     155
 
-    00:14:10,346 --> 00:14:14,180
+    00:14:10,346
+    --> 00:14:14,180
 
-    Well,
-    I''ll venture a guess it has
+    Well, I''ll venture a guess it has
 
-    something to do with that planet.
+    something to do
+    with that planet.
 
-    
+
 
     156
 
-    00:14:15,746
-    --> 00:14:19,534
+    00:14:15,746 --> 00:14:19,534
 
-    And you''ll all believe me when
+    And you''ll
+    all believe me when
 
-    SG-12 comes through
-    that gate in...
+    SG-12 comes through that gate in...
 
-    
+
 
     157
 
-    00:14:19,626 --> 00:14:22,265
+    00:14:19,626
+    --> 00:14:22,265
 
-    ..four,
-    three, two, one...
+    ..four, three, two, one...
 
-    
+
 
     158
 
-    00:14:31,786 --> 00:14:34,220
+    00:14:31,786
+    --> 00:14:34,220
 
-    SG-12
-    isn''t due back for three days.
+    SG-12 isn''t due back for three days.
 
-    
+
 
     159
 
-    00:14:34,986 --> 00:14:38,217
+    00:14:34,986
+    --> 00:14:38,217
 
-    -
-    (PA) Unscheduled offworld activation.
+    - (PA) Unscheduled offworld activation.
 
     - So close.
 
-    
+
 
     160
 
@@ -2129,10 +2129,10 @@ MonoBehaviour:
 
     - You''re not gonna find anything.
 
-    - Why don''t
-    we wait for the lab results?
+    - Why don''t we
+    wait for the lab results?
 
-    
+
 
     161
 
@@ -2143,7 +2143,7 @@ MonoBehaviour:
 
     - Humour me.
 
-    
+
 
     162
 
@@ -2152,10 +2152,10 @@ MonoBehaviour:
 
     General... I know you''re thinking of
 
-    postponing
-    the mission. There''s no point.
+    postponing the
+    mission. There''s no point.
 
-    
+
 
     163
 
@@ -2164,27 +2164,27 @@ MonoBehaviour:
     You
     tried it last time. It didn''t work.
 
-    
+
 
     164
 
-    00:15:19,826 -->
-    00:15:22,021
+    00:15:19,826 --> 00:15:22,021
 
-    Jack. Wait up.
+    Jack.
+    Wait up.
 
-    
+
 
     165
 
     00:15:22,426 --> 00:15:27,864
 
-    Um...
-    I was thinking about what you said
+    Um... I was thinking
+    about what you said
 
     about a beam coming from the altar.
 
-    
+
 
     166
 
@@ -2193,52 +2193,52 @@ MonoBehaviour:
 
     400 pages of alien text.
 
-    
+
 
     167
 
-    00:15:32,826
-    --> 00:15:37,263
+    00:15:32,826 -->
+    00:15:37,263
 
     Right... SG-15 took digital images
 
-    of the carvings
-    on the ruins.
+    of the carvings on
+    the ruins.
 
-    
+
 
     168
 
     00:15:39,426 --> 00:15:41,257
 
-    - Looks
-    familiar.
+    - Looks familiar.
 
-    - It should.
+    -
+    It should.
 
-    
+
 
     169
 
     00:15:41,346 --> 00:15:43,576
 
-    It''s
-    something that
+    It''s something
+    that
 
     you spoke for a few days.
 
-    
+
 
     170
 
-    00:15:43,666
-    --> 00:15:47,056
+    00:15:43,666 --> 00:15:47,056
 
-    It''s a variation of the writings
+    It''s
+    a variation of the writings
 
     used by the Ancients.
 
-    
+
 
     171
 
@@ -2250,7 +2250,7 @@ MonoBehaviour:
     you''re
     barkin'' up the wrong genius.
 
-    
+
 
     172
 
@@ -2259,59 +2259,58 @@ MonoBehaviour:
     No,
     I realise the Asgards returned you to
 
-    normal, which is fortunate, l...
-    suppose.
+    normal, which is fortunate, l... suppose.
 
-    
+
 
     173
 
-    00:15:56,586 --> 00:16:00,864
+    00:15:56,586
+    --> 00:16:00,864
 
-    But if you
-    give me details about
+    But if you give me details about
 
-    the layout of the ruins it might be...
+    the layout of the
+    ruins it might be...
 
-    
+
 
     174
 
-    00:16:02,066
-    --> 00:16:04,341
+    00:16:02,066 --> 00:16:04,341
 
-    Gee, sorry, Dr Jackson.
+    Gee,
+    sorry, Dr Jackson.
 
-    
+
 
     175
 
-    00:16:04,546
-    --> 00:16:06,138
+    00:16:04,546 --> 00:16:06,138
 
     Oops.
 
-    
+
 
     176
 
-    00:16:11,466 --> 00:16:12,785
+    00:16:11,466
+    --> 00:16:12,785
 
-    Come
-    in.
+    Come in.
 
-    
+
 
     177
 
     00:16:14,986 --> 00:16:18,342
 
-    - Any word from
-    Fraiser?
+    -
+    Any word from Fraiser?
 
     - Still waiting for the lab results.
 
-    
+
 
     178
 
@@ -2320,7 +2319,7 @@ MonoBehaviour:
 
     If we delay any longer it will be too late.
 
-    
+
 
     179
 
@@ -2332,91 +2331,90 @@ MonoBehaviour:
     - To stop this day from happening
     again.
 
-    
+
 
     180
 
     00:16:26,266 --> 00:16:29,144
 
-    You realise
-    this is
+    You realise this is
 
-    a little difficult for me to accept.
+    a
+    little difficult for me to accept.
 
-    
+
 
     181
 
-    00:16:29,266
-    --> 00:16:31,905
+    00:16:29,266 --> 00:16:31,905
 
-    Hey, if it was just me, I''d agree.
+    Hey,
+    if it was just me, I''d agree.
 
-    
+
 
     182
 
-    00:16:31,986
-    --> 00:16:36,264
+    00:16:31,986 --> 00:16:36,264
 
-    But what about Teal''c?
+    But
+    what about Teal''c?
 
-    Come on! ls this the face
-    of a crazy man?
+    Come on! ls this the face of a crazy man?
 
-    
+
 
     183
 
-    00:16:42,146 --> 00:16:44,819
+    00:16:42,146
+    --> 00:16:44,819
 
-    -
-    Bad example.
+    - Bad example.
 
     - What do you want?
 
-    
+
 
     184
 
-    00:16:45,266 -->
-    00:16:47,655
+    00:16:45,266
+    --> 00:16:47,655
 
     We wanna go back to 639.
 
-    
+
 
     185
 
-    00:17:02,666
-    --> 00:17:06,375
+    00:17:02,666 -->
+    00:17:06,375
 
     A geomagnetic storm is building up.
 
-    We shouldn''t
-    stay long.
+    We shouldn''t stay
+    long.
 
-    
+
 
     186
 
     00:17:06,466 --> 00:17:08,775
 
-    That''s
-    the machine right there.
+    That''s the machine
+    right there.
 
-    
+
 
     187
 
     00:17:10,306 --> 00:17:14,379
 
-    -
-    I wonder how it works.
+    - I wonder how
+    it works.
 
     - Subspace fields and time inversions.
 
-    
+
 
     188
 
@@ -2425,18 +2423,18 @@ MonoBehaviour:
 
     That''s what you said.
 
-    
+
 
     189
 
-    00:17:21,826
-    --> 00:17:24,579
+    00:17:21,826 -->
+    00:17:24,579
 
     - Hello.
 
     - Whoa. Easy, guys.
 
-    
+
 
     190
 
@@ -2447,7 +2445,7 @@ MonoBehaviour:
 
     He''s the one who started all this.
 
-    
+
 
     191
 
@@ -2456,61 +2454,61 @@ MonoBehaviour:
 
     - I don''t understand.
 
-    - Whatever you did, undo
-    it.
+    - Whatever you did, undo it.
 
-    
+
 
     192
 
-    00:17:30,826 --> 00:17:33,898
+    00:17:30,826
+    --> 00:17:33,898
 
     - I did nothing.
 
-    -
-    I don''t think he knows what you mean.
+    - I don''t think he knows what you
+    mean.
 
-    
+
 
     193
 
-    00:17:34,066 -->
-    00:17:36,660
+    00:17:34,066 --> 00:17:36,660
 
-    - Perhaps he has no memory, O''Neill.
+    - Perhaps he has no
+    memory, O''Neill.
 
     - He remembers.
 
-    
+
 
     194
 
-    00:17:36,746
-    --> 00:17:38,782
+    00:17:36,746 --> 00:17:38,782
 
-    He''s the one who pushed those buttons.
+    He''s
+    the one who pushed those buttons.
 
-    
+
 
     195
 
-    00:17:38,866
-    --> 00:17:42,336
+    00:17:38,866 --> 00:17:42,336
 
-    Please. I''m, uh, an archaeologist...
+    Please.
+    I''m, uh, an archaeologist...
 
-    
+
 
     196
 
-    00:17:43,106
-    --> 00:17:46,416
+    00:17:43,106 --> 00:17:46,416
 
-    I''ve been trying to translate
+    I''ve
+    been trying to translate
 
     these alien symbols.
 
-    
+
 
     197
 
@@ -2521,7 +2519,7 @@ MonoBehaviour:
 
     - SG-15?
 
-    
+
 
     198
 
@@ -2532,7 +2530,7 @@ MonoBehaviour:
 
     point weapons at me.
 
-    
+
 
     199
 
@@ -2541,7 +2539,7 @@ MonoBehaviour:
 
     I can show you my notes...
 
-    
+
 
     200
 
@@ -2550,139 +2548,138 @@ MonoBehaviour:
 
     I''ve been making periodic visits
 
-    to this planet
-    for quite some time now.
+    to this planet for
+    quite some time now.
 
-    
+
 
     201
 
     00:18:01,146 --> 00:18:03,740
 
-    My
-    research is almost complete.
+    My research
+    is almost complete.
 
-    
+
 
     202
 
     00:18:08,066 --> 00:18:11,138
 
-    What
-    kind of archaeologist
+    What kind
+    of archaeologist
 
     carries a weapon?
 
-    
+
 
     203
 
-    00:18:11,586
-    --> 00:18:12,814
+    00:18:11,586 --> 00:18:12,814
 
     Uh...
 
-    
+
 
     204
 
-    00:18:12,906 --> 00:18:14,419
+    00:18:12,906
+    --> 00:18:14,419
 
-    I
-    do.
+    I do.
 
-    
+
 
     205
 
     00:18:15,746 --> 00:18:17,941
 
-    Bad example.
+    Bad
+    example.
 
-    
+
 
     206
 
-    00:18:29,866
-    --> 00:18:33,779
+    00:18:29,866 --> 00:18:33,779
 
     - What''s this?
 
-    - If you must know... it''s my wife.
+    -
+    If you must know... it''s my wife.
 
-    
+
 
     207
 
-    00:18:33,866
-    --> 00:18:36,061
+    00:18:33,866 --> 00:18:36,061
 
-    (high-pitched sound)
+    (high-pitched
+    sound)
 
-    
+
 
     208
 
-    00:18:46,026
-    --> 00:18:49,462
+    00:18:46,026 --> 00:18:49,462
 
     - What''d you do?
 
-    - Nothing. It engaged on its own.
+    -
+    Nothing. It engaged on its own.
 
-    
+
 
     209
 
-    00:18:49,746
-    --> 00:18:51,338
+    00:18:49,746 --> 00:18:51,338
 
-    - Turn it off.
+    -
+    Turn it off.
 
     - How?
 
-    
+
 
     210
 
-    00:18:51,426
-    --> 00:18:54,941
+    00:18:51,426 --> 00:18:54,941
 
-    It''s drawing energy from
+    It''s
+    drawing energy from
 
-    the ionisation in the
-    atmosphere.
+    the ionisation in the atmosphere.
 
-    
+
 
     211
 
-    00:18:55,026 --> 00:18:57,335
+    00:18:55,026
+    --> 00:18:57,335
 
-    There''s
-    nothing Major Carter can do.
+    There''s nothing Major Carter can do.
 
-    
+
 
     212
 
-    00:18:57,426 --> 00:19:00,020
+    00:18:57,426
+    --> 00:19:00,020
 
-    Excuse
-    me? How''d you know her name?
+    Excuse me? How''d you know her name?
 
-    
+
 
     213
 
-    00:19:03,106 --> 00:19:06,815
+    00:19:03,106
+    --> 00:19:06,815
 
-    -
-    You told me.
+    - You told me.
 
     - No, I didn''t. Not this time around.
 
-    
+
 
     214
 
@@ -2691,7 +2688,7 @@ MonoBehaviour:
 
     It doesn''t matter. You''re too late.
 
-    
+
 
     215
 
@@ -2703,7 +2700,7 @@ MonoBehaviour:
     - Even if I knew,
     I wouldn''t tell you.
 
-    
+
 
     216
 
@@ -2712,71 +2709,70 @@ MonoBehaviour:
     Sir,
     it''s building up some kind of charge.
 
-    
+
 
     217
 
-    00:19:19,946 -->
-    00:19:23,177
+    00:19:19,946 --> 00:19:23,177
 
-    Daniel, you can read this stuff.
+    Daniel,
+    you can read this stuff.
 
-    Get up here and shut
-    it off.
+    Get up here and shut it off.
 
-    
+
 
     218
 
-    00:19:23,266 --> 00:19:27,623
+    00:19:23,266
+    --> 00:19:27,623
 
-    What? Are
-    you kidding me?
+    What? Are you kidding me?
 
-    I wouldn''t even know where to begin. I...
+    I wouldn''t even know where
+    to begin. I...
 
-    
+
 
     219
 
-    00:19:27,706
-    --> 00:19:32,905
+    00:19:27,706 --> 00:19:32,905
 
-    It would take years of training. I don''t
+    It would take
+    years of training. I don''t
 
-    know the
-    material, I don''t have enough...
+    know the material, I don''t have enough...
 
-    
+
 
     220
 
-    00:19:33,546 --> 00:19:37,175
+    00:19:33,546
+    --> 00:19:37,175
 
-    Anyway,
-    I''m sorry, but that just
+    Anyway, I''m sorry, but that just
 
-    happens to be how I feel about it.
+    happens to be how
+    I feel about it.
 
-    
+
 
     221
 
-    00:19:37,266
-    --> 00:19:39,655
+    00:19:37,266 --> 00:19:39,655
 
-    What do you think?
+    What do you
+    think?
 
-    
+
 
     222
 
-    00:19:44,746
-    --> 00:19:47,021
+    00:19:44,746 --> 00:19:47,021
 
     It''s just a question.
 
-    
+
 
     223
 
@@ -2785,10 +2781,10 @@ MonoBehaviour:
 
     All right. Here''s the deal. We''re all
 
-    stuck in
-    a time loop of some kind.
+    stuck in a
+    time loop of some kind.
 
-    
+
 
     224
 
@@ -2799,7 +2795,7 @@ MonoBehaviour:
 
     the only ones who realise it.
 
-    
+
 
     225
 
@@ -2808,7 +2804,7 @@ MonoBehaviour:
 
     Now, there''s this alien device on 639.
 
-    
+
 
     226
 
@@ -2820,7 +2816,7 @@ MonoBehaviour:
     which at... subspace
     something... what?
 
-    
+
 
     227
 
@@ -2831,7 +2827,7 @@ MonoBehaviour:
 
     the Stargate is capable of generating.
 
-    
+
 
     228
 
@@ -2843,16 +2839,16 @@ MonoBehaviour:
     - In the atmosphere,
     which is caused by...
 
-    
+
 
     229
 
     00:20:19,386 --> 00:20:21,661
 
-    I
-    know this one.
+    I know
+    this one.
 
-    
+
 
     230
 
@@ -2863,7 +2859,7 @@ MonoBehaviour:
     -
     The geomagnetic storm.
 
-    
+
 
     231
 
@@ -2874,7 +2870,7 @@ MonoBehaviour:
 
     none of you remember any of this.
 
-    
+
 
     232
 
@@ -2886,7 +2882,7 @@ MonoBehaviour:
     havin''
     ol'' Doc Fraiser examine us again.
 
-    
+
 
     233
 
@@ -2897,7 +2893,7 @@ MonoBehaviour:
 
     in my eye that would explain this?
 
-    
+
 
     234
 
@@ -2909,7 +2905,7 @@ MonoBehaviour:
     - When was
     the last time Colonel O''Neill...
 
-    
+
 
     235
 
@@ -2920,7 +2916,7 @@ MonoBehaviour:
 
     and ''''geomagnetic storm''''?
 
-    
+
 
     236
 
@@ -2931,7 +2927,7 @@ MonoBehaviour:
 
     - And he actually used them correctly,...
 
-    
+
 
     237
 
@@ -2940,98 +2936,98 @@ MonoBehaviour:
 
     ..for the most part.
 
-    
+
 
     238
 
-    00:21:16,346
-    --> 00:21:19,736
+    00:21:16,346 --> 00:21:19,736
 
-    - You believe him.
+    -
+    You believe him.
 
-    - I''m considering the possibility,
-    sir.
+    - I''m considering the possibility, sir.
 
-    
+
 
     239
 
-    00:21:19,826 --> 00:21:23,455
+    00:21:19,826
+    --> 00:21:23,455
 
-    The more I think
-    about it, if he''s right,
+    The more I think about it, if he''s right,
 
-    the ramifications are huge.
+    the ramifications
+    are huge.
 
-    
+
 
     240
 
-    00:21:23,546
-    --> 00:21:27,744
+    00:21:23,546 --> 00:21:27,744
 
-    The next time time loops, we''ll forget
+    The next time time
+    loops, we''ll forget
 
-    this conversation
-    even happened.
+    this conversation even happened.
 
-    
+
 
     241
 
-    00:21:33,506 --> 00:21:37,294
+    00:21:33,506
+    --> 00:21:37,294
 
-    - You''re
-    better off in here.
+    - You''re better off in here.
 
-    - I was just comin'' to look for you.
+    - I was just comin''
+    to look for you.
 
-    
+
 
     242
 
-    00:21:37,986
-    --> 00:21:40,580
+    00:21:37,986 --> 00:21:40,580
 
-    Um, I''ve translated
+    Um, I''ve
+    translated
 
     a section of the west wall.
 
-    
+
 
     243
 
-    00:21:40,666
-    --> 00:21:44,705
+    00:21:40,666 -->
+    00:21:44,705
 
     - It''s some sort of planetary history.
 
-    - Daniel,
-    that''s very nice.
+    - Daniel, that''s
+    very nice.
 
-    
+
 
     244
 
     00:21:44,786 --> 00:21:47,823
 
-    -
-    But focus on the altar.
+    - But focus on
+    the altar.
 
     - Why?
 
-    
+
 
     245
 
-    00:21:47,906 -->
-    00:21:50,864
+    00:21:47,906 --> 00:21:50,864
 
-    Malikai initiated the time loop
+    Malikai
+    initiated the time loop
 
     by manipulating symbols.
 
-    
+
 
     246
 
@@ -3042,7 +3038,7 @@ MonoBehaviour:
 
     you figure out how to stop this.
 
-    
+
 
     247
 
@@ -3051,33 +3047,32 @@ MonoBehaviour:
 
     Just recognising symbols on a keyboard
 
-    doesn''t
-    run a computer.
+    doesn''t run
+    a computer.
 
-    
+
 
     248
 
     00:21:57,226 --> 00:22:01,538
 
-    If
-    I can put the device in a proper context,
+    If I can put the
+    device in a proper context,
 
-    I can figure out what it''s supposed
-    to do.
+    I can figure out what it''s supposed to do.
 
-    
+
 
     249
 
-    00:22:01,626 --> 00:22:04,663
+    00:22:01,626
+    --> 00:22:04,663
 
-    We know what
-    it does!
+    We know what it does!
 
     It''s a time-loop machine.
 
-    
+
 
     250
 
@@ -3089,18 +3084,18 @@ MonoBehaviour:
     that loops time every
     ten hours?
 
-    
+
 
     251
 
     00:22:08,066 --> 00:22:11,945
 
-    - Who knows?
-    But that''s what it does.
+    - Who knows? But
+    that''s what it does.
 
     - Yes, but maybe it''s not supposed to.
 
-    
+
 
     252
 
@@ -3111,7 +3106,7 @@ MonoBehaviour:
 
     an accidental by-product.
 
-    
+
 
     253
 
@@ -3120,34 +3115,33 @@ MonoBehaviour:
 
     (phone rings)
 
-    
+
 
     254
 
-    00:22:19,146 -->
-    00:22:21,137
+    00:22:19,146 --> 00:22:21,137
 
     Hello?
 
-    
+
 
     255
 
-    00:22:22,626 --> 00:22:24,935
+    00:22:22,626
+    --> 00:22:24,935
 
-    OK,
-    we''re on our way.
+    OK, we''re on our way.
 
-    
+
 
     256
 
-    00:22:25,026 --> 00:22:27,415
+    00:22:25,026 -->
+    00:22:27,415
 
-    Sam
-    has something.
+    Sam has something.
 
-    
+
 
     257
 
@@ -3156,7 +3150,7 @@ MonoBehaviour:
     According
     to Colonel O''Neill,...
 
-    
+
 
     258
 
@@ -3167,7 +3161,7 @@ MonoBehaviour:
 
     striking the Stargate on P4X-639.
 
-    
+
 
     259
 
@@ -3178,7 +3172,7 @@ MonoBehaviour:
 
     energised somehow.
 
-    
+
 
     260
 
@@ -3190,7 +3184,7 @@ MonoBehaviour:
     a similar
     effect in our own gate room.
 
-    
+
 
     261
 
@@ -3199,61 +3193,60 @@ MonoBehaviour:
     Sounds
     about right.
 
-    
+
 
     262
 
     00:22:48,906 --> 00:22:51,466
 
-    If this
-    is the influence
+    If this is the
+    influence
 
     of alien technology,...
 
-    
+
 
     263
 
-    00:22:51,546
-    --> 00:22:55,175
+    00:22:51,546 --> 00:22:55,175
 
-    ..the effect is being translated
+    ..the
+    effect is being translated
 
-    to Earth through
-    the Stargate,...
+    to Earth through the Stargate,...
 
-    
+
 
     264
 
-    00:22:55,266 --> 00:22:57,382
+    00:22:55,266
+    --> 00:22:57,382
 
-    ..in
-    which case the solution is simple.
+    ..in which case the solution is simple.
 
-    
+
 
     265
 
-    00:22:57,466 --> 00:22:59,138
+    00:22:57,466
+    --> 00:22:59,138
 
-    -
-    We dial out.
+    - We dial out.
 
     - Exactly.
 
-    
+
 
     266
 
-    00:22:59,226 --> 00:23:01,581
+    00:22:59,226
+    --> 00:23:01,581
 
-    Before
-    this loop
+    Before this loop
 
     is supposed to begin again,...
 
-    
+
 
     267
 
@@ -3262,21 +3255,21 @@ MonoBehaviour:
 
     ..we establish an outgoing wormhole
 
-    to, say, the
-    Tollan home world.
+    to, say, the Tollan
+    home world.
 
-    
+
 
     268
 
     00:23:05,666 --> 00:23:10,535
 
-    Then
-    anyone or anything trying to dial in
+    Then anyone or
+    anything trying to dial in
 
     from P4X-639 will get a busy signal.
 
-    
+
 
     269
 
@@ -3285,47 +3278,47 @@ MonoBehaviour:
 
     Let''s do it.
 
-    
+
 
     270
 
-    00:23:20,106 -->
-    00:23:22,574
+    00:23:20,106 --> 00:23:22,574
 
-    Chevron five, locked.
+    Chevron
+    five, locked.
 
-    
+
 
     271
 
-    00:23:25,826
-    --> 00:23:28,420
+    00:23:25,826 --> 00:23:28,420
 
-    Chevron six, locked.
+    Chevron six,
+    locked.
 
-    
+
 
     272
 
-    00:23:38,306
-    --> 00:23:40,456
+    00:23:38,306 --> 00:23:40,456
 
-    - Chevron seven will not engage.
+    - Chevron seven will
+    not engage.
 
     - What?
 
-    
+
 
     273
 
-    00:23:40,546
-    --> 00:23:43,060
+    00:23:40,546 --> 00:23:43,060
 
-    It won''t lock.
+    It
+    won''t lock.
 
     I can''t establish a connection.
 
-    
+
 
     274
 
@@ -3334,7 +3327,7 @@ MonoBehaviour:
 
     I''m running a diagnostic.
 
-    
+
 
     275
 
@@ -3345,7 +3338,7 @@ MonoBehaviour:
 
     - Close the iris.
 
-    
+
 
     276
 
@@ -3354,7 +3347,7 @@ MonoBehaviour:
 
     Oh, crap.
 
-    
+
 
     277
 
@@ -3365,7 +3358,7 @@ MonoBehaviour:
 
     We should have been able to dial out.
 
-    
+
 
     278
 
@@ -3377,25 +3370,24 @@ MonoBehaviour:
     happens to be how I feel
     about it.
 
-    
+
 
     279
 
     00:24:17,466 --> 00:24:19,855
 
-    What do
-    you think?
+    What do you think?
 
-    
+
 
     280
 
-    00:24:21,266 --> 00:24:23,541
+    00:24:21,266
+    --> 00:24:23,541
 
-    Ask me
-    tomorrow.
+    Ask me tomorrow.
 
-    
+
 
     281
 
@@ -3406,7 +3398,7 @@ MonoBehaviour:
 
     won''t run a computer.
 
-    
+
 
     282
 
@@ -3415,18 +3407,18 @@ MonoBehaviour:
 
     We''ve been over this!
 
-    
+
 
     283
 
-    00:24:41,466
-    --> 00:24:44,856
+    00:24:41,466 -->
+    00:24:44,856
 
     I''m tellin'' you,
 
     the only way to stop this loop...
 
-    
+
 
     284
 
@@ -3435,7 +3427,7 @@ MonoBehaviour:
 
     ..is to figure out how to run that stuff!
 
-    
+
 
     285
 
@@ -3447,7 +3439,7 @@ MonoBehaviour:
     I probably
     pointed out...
 
-    
+
 
     286
 
@@ -3458,7 +3450,7 @@ MonoBehaviour:
 
     in less than a day.
 
-    
+
 
     287
 
@@ -3467,69 +3459,68 @@ MonoBehaviour:
 
     Oh, I''m so ahead of you.
 
-    I put the whole thing
-    on tape last time.
+    I put the whole thing on
+    tape last time.
 
-    
+
 
     288
 
     00:25:01,346 --> 00:25:03,382
 
-    So
-    you don''t have to start from scratch.
+    So you don''t
+    have to start from scratch.
 
-    
+
 
     289
 
-    00:25:11,586 -->
-    00:25:13,656
+    00:25:11,586 --> 00:25:13,656
 
-    If what you say is true,...
+    If
+    what you say is true,...
 
-    
+
 
     290
 
-    00:25:13,746
-    --> 00:25:18,866
+    00:25:13,746 --> 00:25:18,866
 
-    ..when the loop started again your
+    ..when
+    the loop started again your
 
-    recording wouldn''t
-    have happened... yet.
+    recording wouldn''t have happened... yet.
 
-    
+
 
     291
 
-    00:25:21,226 --> 00:25:24,616
+    00:25:21,226
+    --> 00:25:24,616
 
-    -
-    Right.
+    - Right.
 
     - Did I not say that?
 
-    
+
 
     292
 
-    00:25:24,706 --> 00:25:27,061
+    00:25:24,706
+    --> 00:25:27,061
 
-    Careful!
-    Be careful.
+    Careful! Be careful.
 
-    
+
 
     293
 
     00:25:28,666 --> 00:25:32,136
 
-    What about
-    notes? lndelible ink?
+    What
+    about notes? lndelible ink?
 
-    
+
 
     294
 
@@ -3540,7 +3531,7 @@ MonoBehaviour:
 
     with memories of previous loops,...
 
-    
+
 
     295
 
@@ -3549,70 +3540,70 @@ MonoBehaviour:
 
     ..you''re gonna have to help me
 
-    by learning and
-    remembering.
+    by learning and remembering.
 
-    
+
 
     296
 
-    00:25:47,706 --> 00:25:49,776
+    00:25:47,706
+    --> 00:25:49,776
 
     Fine.
 
-    
+
 
     297
 
-    00:25:49,866
-    --> 00:25:52,255
+    00:25:49,866 --> 00:25:52,255
 
-    How hard can it be?
+    How
+    hard can it be?
 
-    
+
 
     298
 
-    00:26:00,026
-    --> 00:26:04,816
+    00:26:00,026 --> 00:26:04,816
 
-    According to Colonel O''Neill, we tried
+    According
+    to Colonel O''Neill, we tried
 
-    to block
-    the connection to P4X-639...
+    to block the connection to P4X-639...
 
-    
+
 
     299
 
-    00:26:04,906 --> 00:26:06,897
+    00:26:04,906
+    --> 00:26:06,897
 
-    ..but
-    were unable to dial out.
+    ..but were unable to dial out.
 
-    
+
 
     300
 
-    00:26:06,986 --> 00:26:12,538
+    00:26:06,986
+    --> 00:26:12,538
 
-    I
-    think that the Earth has become out of
+    I think that the Earth has become out of
 
-    sync with the rest of the gate system,...
+    sync with
+    the rest of the gate system,...
 
-    
+
 
     301
 
-    00:26:12,626
-    --> 00:26:15,379
+    00:26:12,626 --> 00:26:15,379
 
-    ..making it impossible for us
+    ..making
+    it impossible for us
 
     to establish contact.
 
-    
+
 
     302
 
@@ -3623,7 +3614,7 @@ MonoBehaviour:
 
     They managed to gate in.
 
-    
+
 
     303
 
@@ -3634,7 +3625,7 @@ MonoBehaviour:
 
     a sequence of random diallings,...
 
-    
+
 
     304
 
@@ -3643,7 +3634,7 @@ MonoBehaviour:
 
     ..and this is what we found.
 
-    
+
 
     305
 
@@ -3652,40 +3643,39 @@ MonoBehaviour:
 
     These worlds we were able
 
-    to contact, including
-    Alaris,...
+    to contact, including Alaris,...
 
-    
+
 
     306
 
-    00:26:27,146 --> 00:26:29,216
+    00:26:27,146
+    --> 00:26:29,216
 
-    ..where
-    SG-12 was doing its survey.
+    ..where SG-12 was doing its survey.
 
-    
+
 
     307
 
-    00:26:29,306 --> 00:26:32,935
+    00:26:29,306
+    --> 00:26:32,935
 
-    But
-    the centre of this group is P4X-639.
+    But the centre of this group is P4X-639.
 
-    
+
 
     308
 
-    00:26:33,026 -->
-    00:26:37,622
+    00:26:33,026
+    --> 00:26:37,622
 
     I believe the alien device is establishing
 
     simultaneous
     connection to these gates,...
 
-    
+
 
     309
 
@@ -3694,7 +3684,7 @@ MonoBehaviour:
     ..creating
     a kind of... subspace bubble.
 
-    
+
 
     310
 
@@ -3705,7 +3695,7 @@ MonoBehaviour:
 
     is cut off from the normal flow of time.
 
-    
+
 
     311
 
@@ -3714,7 +3704,7 @@ MonoBehaviour:
 
     What are the implications of this?
 
-    
+
 
     312
 
@@ -3723,124 +3713,123 @@ MonoBehaviour:
 
     We could relive the same day thousands
 
-    of times,
-    and we''d never know it.
+    of times, and
+    we''d never know it.
 
-    
+
 
     313
 
     00:26:51,786 --> 00:26:54,300
 
-    -
-    What can we do?
+    - What
+    can we do?
 
     - Unfortunately, not much.
 
-    
+
 
     314
 
-    00:26:54,546
-    --> 00:26:58,698
+    00:26:54,546 --> 00:26:58,698
 
-    The next time the loop starts we won''t
+    The
+    next time the loop starts we won''t
 
-    even remember
-    we had this conversation.
+    even remember we had this conversation.
 
-    
+
 
     315
 
-    00:26:58,786 --> 00:27:01,425
+    00:26:58,786
+    --> 00:27:01,425
 
-    It''s
-    up to Teal''c and Colonel O''Neill.
+    It''s up to Teal''c and Colonel O''Neill.
 
-    
+
 
     316
 
-    00:27:03,826 --> 00:27:05,817
+    00:27:03,826
+    --> 00:27:05,817
 
     ''''Poteramus.''''
 
-    
+
 
     317
 
-    00:27:05,906
-    --> 00:27:08,579
+    00:27:05,906 --> 00:27:08,579
 
-    ''''Poteras... potarat.''''
+    ''''Poteras...
+    potarat.''''
 
-    
+
 
     318
 
-    00:27:09,826
-    --> 00:27:13,614
+    00:27:09,826 --> 00:27:13,614
 
-    ''''Crem... eras... cret... cremus.''''
+    ''''Crem... eras...
+    cret... cremus.''''
 
-    
+
 
     319
 
-    00:27:20,826
-    --> 00:27:23,499
+    00:27:20,826 --> 00:27:23,499
 
-    This is a bad idea.
+    This is
+    a bad idea.
 
-    
+
 
     320
 
-    00:27:23,906
-    --> 00:27:26,101
+    00:27:23,906 --> 00:27:26,101
 
-    It would appear we have no choice.
+    It would appear
+    we have no choice.
 
-    
+
 
     321
 
-    00:27:26,666
-    --> 00:27:28,861
+    00:27:26,666 --> 00:27:28,861
 
     (alarm)
 
-    
+
 
     322
 
-    00:27:30,906 --> 00:27:33,784
+    00:27:30,906
+    --> 00:27:33,784
 
-    (PA)
-    Unscheduled offworld activation.
+    (PA) Unscheduled offworld activation.
 
-    
+
 
     323
 
-    00:27:33,866 --> 00:27:36,539
+    00:27:33,866
+    --> 00:27:36,539
 
-    You
-    know the worst part about this?
+    You know the worst part about this?
 
-    
+
 
     324
 
-    00:27:37,106 --> 00:27:40,576
+    00:27:37,106
+    --> 00:27:40,576
 
-    Every
-    time we loop,
+    Every time we loop,
 
     Daniel asks me a question, and...
 
-    
+
 
     325
 
@@ -3849,7 +3838,7 @@ MonoBehaviour:
 
     ..l wasn''t listening the first time.
 
-    
+
 
     326
 
@@ -3860,7 +3849,7 @@ MonoBehaviour:
 
     must endure some discomfort.
 
-    
+
 
     327
 
@@ -3869,7 +3858,7 @@ MonoBehaviour:
 
     Sorry, sir. I didn''t realise you were there.
 
-    
+
 
     328
 
@@ -3880,7 +3869,7 @@ MonoBehaviour:
 
     - I...
 
-    
+
 
     329
 
@@ -3891,7 +3880,7 @@ MonoBehaviour:
 
     I will not be so forgiving.
 
-    
+
 
     330
 
@@ -3903,18 +3892,18 @@ MonoBehaviour:
     a reference to ''''perennial
     adventus''''.
 
-    
+
 
     331
 
     00:28:05,266 --> 00:28:09,179
 
-    - We''ve
-    been over this.
+    - We''ve been
+    over this.
 
     - It means ''''the approaching disaster''''.
 
-    
+
 
     332
 
@@ -3925,7 +3914,7 @@ MonoBehaviour:
 
     with recurring use...
 
-    
+
 
     333
 
@@ -3936,7 +3925,7 @@ MonoBehaviour:
 
     to the rigours of time.''''
 
-    
+
 
     334
 
@@ -3945,7 +3934,7 @@ MonoBehaviour:
 
     That is incorrect, Daniel Jackson.
 
-    
+
 
     335
 
@@ -3957,7 +3946,7 @@ MonoBehaviour:
     ''''to give up'''',
     not ''''surrender''''.
 
-    
+
 
     336
 
@@ -3966,56 +3955,55 @@ MonoBehaviour:
     OK,
     this section of the text seems to deal
 
-    primarily with their arrival on
-    P4X-639.
+    primarily with their arrival on P4X-639.
 
-    
+
 
     337
 
-    00:28:35,906 --> 00:28:40,377
+    00:28:35,906
+    --> 00:28:40,377
 
-    OK, this
-    section of the text seems to deal
+    OK, this section of the text seems to deal
 
-    primarily with their arrival on P4X-639.
+    primarily
+    with their arrival on P4X-639.
 
-    
+
 
     338
 
-    00:28:40,466
-    --> 00:28:44,618
+    00:28:40,466 --> 00:28:44,618
 
-    Now this word here, ''''deductavum'''',
+    Now
+    this word here, ''''deductavum'''',
 
-    is a variation
-    of ''''deductum''''.
+    is a variation of ''''deductum''''.
 
-    
+
 
     339
 
-    00:28:45,066 --> 00:28:49,457
+    00:28:45,066
+    --> 00:28:49,457
 
-    OK,
-    this section of the text seems to deal
+    OK, this section of the text seems to deal
 
-    primarily with their arrival on
-    P4X-639.
+    primarily
+    with their arrival on P4X-639.
 
-    
+
 
     340
 
     00:28:49,826 --> 00:28:54,183
 
-    This appears
-    to be a reference to
+    This
+    appears to be a reference to
 
     the gradual degeneration of the machine.
 
-    
+
 
     341
 
@@ -4024,7 +4012,7 @@ MonoBehaviour:
 
     ..foundation of a colony.
 
-    
+
 
     342
 
@@ -4036,18 +4024,18 @@ MonoBehaviour:
     - (PA) Unscheduled offworld
     activation.
 
-    
+
 
     343
 
     00:29:09,866 --> 00:29:14,656
 
-    O''Neill...
-    Should we not be assisting
+    O''Neill... Should
+    we not be assisting
 
     Daniel Jackson with the translation?
 
-    
+
 
     344
 
@@ -4056,7 +4044,7 @@ MonoBehaviour:
 
     I''m taking this loop off.
 
-    
+
 
     345
 
@@ -4065,7 +4053,7 @@ MonoBehaviour:
 
     I''m tellin'' you, Teal''c.
 
-    
+
 
     346
 
@@ -4077,36 +4065,35 @@ MonoBehaviour:
     I''m gonna
     lose it.
 
-    
+
 
     347
 
     00:29:31,946 --> 00:29:35,256
 
-    Lose it.
-    It means ''''go crazy''''.
+    Lose it. It means
+    ''''go crazy''''.
 
-    
+
 
     348
 
     00:29:36,626 --> 00:29:39,299
 
-    Nuts.
-    Insane.
+    Nuts. Insane.
 
-    
+
 
     349
 
-    00:29:39,386 --> 00:29:42,935
+    00:29:39,386
+    --> 00:29:42,935
 
-    Bonzo. No
-    longer in possession
+    Bonzo. No longer in possession
 
     of one''s faculties.
 
-    
+
 
     350
 
@@ -4115,7 +4102,7 @@ MonoBehaviour:
 
     Three fries short of a Happy Meal.
 
-    
+
 
     351
 
@@ -4124,7 +4111,7 @@ MonoBehaviour:
 
     Wacko!
 
-    
+
 
     352
 
@@ -4132,7 +4119,7 @@ MonoBehaviour:
 
     Teal''c.
 
-    
+
 
     353
 
@@ -4143,7 +4130,7 @@ MonoBehaviour:
 
     - No, no. Thank you, Teal''c.
 
-    
+
 
     354
 
@@ -4152,7 +4139,7 @@ MonoBehaviour:
 
     Oh, God!
 
-    
+
 
     355
 
@@ -4163,7 +4150,7 @@ MonoBehaviour:
 
     have you... have we been through?
 
-    
+
 
     356
 
@@ -4172,29 +4159,29 @@ MonoBehaviour:
 
     I''ve lost track.
 
-    
+
 
     357
 
-    00:30:20,946
-    --> 00:30:24,461
+    00:30:20,946 --> 00:30:24,461
 
-    - That must be frustrating.
+    -
+    That must be frustrating.
 
     - Uh... Yeah.
 
-    
+
 
     358
 
-    00:30:24,786
-    --> 00:30:27,698
+    00:30:24,786 -->
+    00:30:27,698
 
     On the other hand,
 
     it is kind of an opportunity.
 
-    
+
 
     359
 
@@ -4205,7 +4192,7 @@ MonoBehaviour:
 
     - Well, think about it.
 
-    
+
 
     360
 
@@ -4214,10 +4201,10 @@ MonoBehaviour:
 
     If you know in advance that everything
 
-    is going
-    to go back to the way it was,...
+    is going to
+    go back to the way it was,...
 
-    
+
 
     361
 
@@ -4228,7 +4215,7 @@ MonoBehaviour:
 
     for as long as you want...
 
-    
+
 
     362
 
@@ -4239,7 +4226,7 @@ MonoBehaviour:
 
     worry about consequences.
 
-    
+
 
     363
 
@@ -4248,7 +4235,7 @@ MonoBehaviour:
 
     Excuse me.
 
-    
+
 
     364
 
@@ -4259,18 +4246,18 @@ MonoBehaviour:
 
     - (bicycle bell ringing)
 
-    
+
 
     365
 
-    00:31:14,346
-    --> 00:31:18,021
+    00:31:14,346 -->
+    00:31:18,021
 
     - Vern, how''s the wife?
 
     - Fine... sir.
 
-    
+
 
     366
 
@@ -4279,7 +4266,7 @@ MonoBehaviour:
 
     Oh, yeah!
 
-    
+
 
     367
 
@@ -4288,113 +4275,112 @@ MonoBehaviour:
     That''ll
     play.
 
-    
+
 
     368
 
     00:31:27,546 --> 00:31:30,014
 
-    How far is Alaris,
-    anyway?
+    How far is Alaris, anyway?
 
-    
+
 
     369
 
-    00:31:30,106 --> 00:31:32,176
+    00:31:30,106
+    --> 00:31:32,176
 
-    Several billion
-    miles, O''Neill.
+    Several billion miles, O''Neill.
 
-    
+
 
     370
 
-    00:31:32,266 --> 00:31:34,461
+    00:31:32,266
+    --> 00:31:34,461
 
-    That''s
-    gotta be a record.
+    That''s gotta be a record.
 
-    
+
 
     371
 
-    00:31:52,106 --> 00:31:54,939
+    00:31:52,106
+    --> 00:31:54,939
 
-    (Hammond)
-    Colonel O''Neill,
+    (Hammond) Colonel O''Neill,
 
-    what the hell are you doing?
+    what the hell are you
+    doing?
 
-    
+
 
     372
 
-    00:31:55,026
-    --> 00:31:57,665
+    00:31:55,026 --> 00:31:57,665
 
-    In the middle of my backswing?!
+    In the middle of my
+    backswing?!
 
-    
+
 
     373
 
-    00:31:58,546
-    --> 00:32:00,935
+    00:31:58,546 --> 00:32:00,935
 
-    Sorry, sir. I didn''t realise...
+    Sorry, sir. I
+    didn''t realise...
 
-    
+
 
     374
 
-    00:32:06,266
-    --> 00:32:08,575
+    00:32:06,266 --> 00:32:08,575
 
-    Excuse me, George.
+    Excuse
+    me, George.
 
-    
+
 
     375
 
-    00:32:08,666
-    --> 00:32:10,861
+    00:32:08,666 --> 00:32:10,861
 
-    Colonel, what are you
+    Colonel, what
+    are you
 
     doing out of uniform?
 
-    
+
 
     376
 
-    00:32:10,946
-    --> 00:32:14,734
+    00:32:10,946 --> 00:32:14,734
 
-    - Handing you my resignation.
+    -
+    Handing you my resignation.
 
-    - Resigning? What
-    for?
+    - Resigning? What for?
 
-    
+
 
     377
 
-    00:32:14,826 --> 00:32:17,215
+    00:32:14,826
+    --> 00:32:17,215
 
-    So I can do...
-    this.
+    So I can do... this.
 
-    
+
 
     378
 
     00:32:25,226 --> 00:32:27,581
 
-    What are you
-    smiling at?
+    What
+    are you smiling at?
 
-    
+
 
     379
 
@@ -4402,7 +4388,7 @@ MonoBehaviour:
 
     Nothin''.
 
-    
+
 
     380
 
@@ -4414,7 +4400,7 @@ MonoBehaviour:
     - Uh, with
     the help of Teal''c and Jack,...
 
-    
+
 
     381
 
@@ -4425,117 +4411,116 @@ MonoBehaviour:
 
     to complete the translation.
 
-    
+
 
     382
 
-    00:32:48,066
-    --> 00:32:52,662
+    00:32:48,066 --> 00:32:52,662
 
-    As I originally suspected, P4X-639
+    As
+    I originally suspected, P4X-639
 
-    was once a colony
-    of the Ancients.
+    was once a colony of the Ancients.
 
-    
+
 
     383
 
-    00:32:52,746 --> 00:32:57,137
+    00:32:52,746
+    --> 00:32:57,137
 
-    They
-    thrived there until they were
+    They thrived there until they were
 
-    struck with some sort of cataclysm,...
+    struck with some
+    sort of cataclysm,...
 
-    
+
 
     384
 
-    00:32:57,226
-    --> 00:32:59,456
+    00:32:57,226 --> 00:32:59,456
 
-    ..perhaps a disease.
+    ..perhaps
+    a disease.
 
-    
+
 
     385
 
-    00:32:59,746
-    --> 00:33:03,819
+    00:32:59,746 --> 00:33:03,819
 
-    In any case, facing certain destruction,
+    In any case, facing
+    certain destruction,
 
-    they built
-    the time machine.
+    they built the time machine.
 
-    
+
 
     386
 
-    00:33:03,906 --> 00:33:07,137
+    00:33:03,906
+    --> 00:33:07,137
 
-    To
-    go back and change their history
+    To go back and change their history
 
-    to avoid their fate.
+    to avoid their
+    fate.
 
-    
+
 
     387
 
-    00:33:07,346
-    --> 00:33:09,257
+    00:33:07,346 --> 00:33:09,257
 
-    Right. But it didn''t work.
+    Right. But it didn''t
+    work.
 
-    
+
 
     388
 
-    00:33:09,346
-    --> 00:33:12,656
+    00:33:09,346 --> 00:33:12,656
 
-    Instead of sending a team of scientists
+    Instead of sending a
+    team of scientists
 
-    back to
-    the key moment,...
+    back to the key moment,...
 
-    
+
 
     389
 
-    00:33:12,746 --> 00:33:17,456
+    00:33:12,746
+    --> 00:33:17,456
 
-    ..the
-    device caused a continuous loop,
+    ..the device caused a continuous loop,
 
-    like the one we''ve been experiencing.
+    like the one
+    we''ve been experiencing.
 
-    
+
 
     390
 
-    00:33:17,546
-    --> 00:33:22,336
+    00:33:17,546 --> 00:33:22,336
 
-    They experienced it hundreds of times
+    They
+    experienced it hundreds of times
 
-    trying to
-    get the machine to work, but...
+    trying to get the machine to work, but...
 
-    
+
 
     391
 
-    00:33:23,306 --> 00:33:26,855
+    00:33:23,306
+    --> 00:33:26,855
 
-    They
-    gave up. They shut it down
+    They gave up. They shut it down
 
     and let the end come.
 
-    
+
 
     392
 
@@ -4544,7 +4529,7 @@ MonoBehaviour:
 
     So the loop can be broken.
 
-    
+
 
     393
 
@@ -4553,7 +4538,7 @@ MonoBehaviour:
 
     Uh, there''s a section of text on the altar...
 
-    
+
 
     394
 
@@ -4565,18 +4550,18 @@ MonoBehaviour:
     that power
     the device.
 
-    
+
 
     395
 
     00:33:36,506 --> 00:33:39,976
 
-    They recur
-    every 50 or so years,
+    They recur every
+    50 or so years,
 
     which is why, incidentally, the...
 
-    
+
 
     396
 
@@ -4585,7 +4570,7 @@ MonoBehaviour:
 
     Yes, sir.
 
-    
+
 
     397
 
@@ -4594,27 +4579,27 @@ MonoBehaviour:
     The
     loop can be broken.
 
-    
+
 
     398
 
     00:33:45,466 --> 00:33:48,060
 
-    I
-    was getting to that.
+    I was
+    getting to that.
 
-    
+
 
     399
 
     00:33:48,146 --> 00:33:52,776
 
-    When
-    we activate the symbols in the right
+    When we activate
+    the symbols in the right
 
     sequence, I think we can shut it down.
 
-    
+
 
     400
 
@@ -4626,47 +4611,46 @@ MonoBehaviour:
     and ready to embark
     in 30 minutes.
 
-    
+
 
     401
 
     00:33:56,826 --> 00:33:58,578
 
-    Yes,
-    sir.
+    Yes, sir.
 
-    
+
 
     402
 
-    00:34:06,066 --> 00:34:10,218
+    00:34:06,066
+    --> 00:34:10,218
 
-    A geomagnetic
-    storm is building up.
+    A geomagnetic storm is building up.
 
-    We shouldn''t stay long.
+    We shouldn''t
+    stay long.
 
-    
+
 
     403
 
-    00:34:10,306
-    --> 00:34:11,739
+    00:34:10,306 --> 00:34:11,739
 
     Lucky guess.
 
-    
+
 
     404
 
-    00:34:15,586 --> 00:34:18,783
+    00:34:15,586
+    --> 00:34:18,783
 
-    -
-    Malikai?
+    - Malikai?
 
     - I don''t see anyone, sir.
 
-    
+
 
     405
 
@@ -4678,7 +4662,7 @@ MonoBehaviour:
     He knows we''re onto
     him.
 
-    
+
 
     406
 
@@ -4686,7 +4670,7 @@ MonoBehaviour:
 
     Teal''c?
 
-    
+
 
     407
 
@@ -4697,7 +4681,7 @@ MonoBehaviour:
 
     to break the time loop.
 
-    
+
 
     408
 
@@ -4706,7 +4690,7 @@ MonoBehaviour:
 
     And I''m afraid I can''t let you do that.
 
-    
+
 
     409
 
@@ -4715,7 +4699,7 @@ MonoBehaviour:
 
     Get away from that thing.
 
-    
+
 
     410
 
@@ -4727,18 +4711,18 @@ MonoBehaviour:
     of a Goa''uld force
     shield.
 
-    
+
 
     411
 
     00:35:13,946 --> 00:35:18,098
 
-    It is, Major.
-    I had to trade several
+    It is, Major. I had
+    to trade several
 
     rare artefacts for the field generator,...
 
-    
+
 
     412
 
@@ -4747,7 +4731,7 @@ MonoBehaviour:
 
     ..but it was well worth it.
 
-    
+
 
     413
 
@@ -4756,10 +4740,10 @@ MonoBehaviour:
 
     Malikai? We have to reset those controls
 
-    or the
-    loop''s gonna start all over again.
+    or the loop''s
+    gonna start all over again.
 
-    
+
 
     414
 
@@ -4768,7 +4752,7 @@ MonoBehaviour:
     I''m
     counting on it. I need more time.
 
-    
+
 
     415
 
@@ -4779,7 +4763,7 @@ MonoBehaviour:
 
     I will be able to master the time device.
 
-    
+
 
     416
 
@@ -4790,7 +4774,7 @@ MonoBehaviour:
 
     king of Groundhog Day?
 
-    
+
 
     417
 
@@ -4801,7 +4785,7 @@ MonoBehaviour:
 
     for personal power?
 
-    
+
 
     418
 
@@ -4810,7 +4794,7 @@ MonoBehaviour:
 
     She...
 
-    
+
 
     419
 
@@ -4821,7 +4805,7 @@ MonoBehaviour:
 
     - What happened?
 
-    
+
 
     420
 
@@ -4830,10 +4814,10 @@ MonoBehaviour:
 
     She died. 12 years ago. When I found
 
-    this place
-    and discovered its purpose,...
+    this place and
+    discovered its purpose,...
 
-    
+
 
     421
 
@@ -4844,7 +4828,7 @@ MonoBehaviour:
 
     to unlocking its mysteries.
 
-    
+
 
     422
 
@@ -4855,7 +4839,7 @@ MonoBehaviour:
 
     go back and save her.
 
-    
+
 
     423
 
@@ -4867,7 +4851,7 @@ MonoBehaviour:
     died from
     a congenital heart weakness.
 
-    
+
 
     424
 
@@ -4878,7 +4862,7 @@ MonoBehaviour:
 
     could change that.
 
-    
+
 
     425
 
@@ -4887,7 +4871,7 @@ MonoBehaviour:
 
     Then why are you doing this?
 
-    
+
 
     426
 
@@ -4896,7 +4880,7 @@ MonoBehaviour:
 
     To be with her once more.
 
-    
+
 
     427
 
@@ -4905,7 +4889,7 @@ MonoBehaviour:
 
     Malikai, the device doesn''t work.
 
-    
+
 
     428
 
@@ -4916,7 +4900,7 @@ MonoBehaviour:
 
     - It never did?
 
-    
+
 
     429
 
@@ -4925,33 +4909,33 @@ MonoBehaviour:
 
     - You''re living proof.
 
-    - We translated the text
-    on the ruins.
+    - We translated the text on
+    the ruins.
 
-    
+
 
     430
 
     00:36:32,746 --> 00:36:36,295
 
-    The
-    Ancients who built this place
+    The Ancients who
+    built this place
 
     never got it to work.
 
-    
+
 
     431
 
-    00:36:36,386
-    --> 00:36:40,584
+    00:36:36,386 -->
+    00:36:40,584
 
     They tried over and over again,
 
-    just like you, but
-    in the end they gave up.
+    just like you, but in
+    the end they gave up.
 
-    
+
 
     432
 
@@ -4962,7 +4946,7 @@ MonoBehaviour:
 
     They couldn''t save themselves.
 
-    
+
 
     433
 
@@ -4974,7 +4958,7 @@ MonoBehaviour:
     explanation.
     I know I can make this work.
 
-    
+
 
     434
 
@@ -4986,29 +4970,29 @@ MonoBehaviour:
     You''re just gonna go on like this
     for ever.
 
-    
+
 
     435
 
     00:36:54,466 --> 00:36:57,742
 
-    - You''ll
-    be trapped.
+    - You''ll be trapped.
 
-    - Along with billions of innocent others.
+    -
+    Along with billions of innocent others.
 
-    
+
 
     436
 
-    00:36:58,466
-    --> 00:37:02,095
+    00:36:58,466 --> 00:37:02,095
 
-    This device activates
+    This
+    device activates
 
     14 Stargates simultaneously.
 
-    
+
 
     437
 
@@ -5017,39 +5001,38 @@ MonoBehaviour:
 
     That''s 14 worlds reliving
 
-    the same day over and
-    over.
+    the same day over and over.
 
-    
+
 
     438
 
-    00:37:08,266 --> 00:37:12,100
+    00:37:08,266
+    --> 00:37:12,100
 
-    I, uh... I didn''t
-    realise.
+    I, uh... I didn''t realise.
 
-    
+
 
     439
 
-    00:37:12,186 --> 00:37:14,177
+    00:37:12,186
+    --> 00:37:14,177
 
-    (high-pitched
-    sound)
+    (high-pitched sound)
 
-    
+
 
     440
 
     00:37:15,266 --> 00:37:20,784
 
-    But once I
-    am able to input the correct
+    But
+    once I am able to input the correct
 
     time coordinates, the loop will be broken.
 
-    
+
 
     441
 
@@ -5060,7 +5043,7 @@ MonoBehaviour:
 
     made the Stargates,...
 
-    
+
 
     442
 
@@ -5071,7 +5054,7 @@ MonoBehaviour:
 
     the damn thing to work.
 
-    
+
 
     443
 
@@ -5082,7 +5065,7 @@ MonoBehaviour:
 
     just for the sake of argument,...
 
-    
+
 
     444
 
@@ -5091,7 +5074,7 @@ MonoBehaviour:
 
     ..you can''t change what happened to her.
 
-    
+
 
     445
 
@@ -5100,7 +5083,7 @@ MonoBehaviour:
 
     I can... touch her face again.
 
-    
+
 
     446
 
@@ -5109,7 +5092,7 @@ MonoBehaviour:
 
     Talk with her. Hear her laugh.
 
-    
+
 
     447
 
@@ -5120,7 +5103,7 @@ MonoBehaviour:
 
     - Yes.
 
-    
+
 
     448
 
@@ -5129,18 +5112,18 @@ MonoBehaviour:
 
     Then what''ll happen?
 
-    
+
 
     449
 
-    00:37:47,146
-    --> 00:37:49,535
+    00:37:47,146 -->
+    00:37:49,535
 
     - She''ll die.
 
     - And then what?
 
-    
+
 
     450
 
@@ -5149,63 +5132,63 @@ MonoBehaviour:
 
     You start over?
 
-    
+
 
     451
 
-    00:37:57,826 -->
-    00:38:00,181
+    00:37:57,826 --> 00:38:00,181
 
-    Listen to me.
+    Listen
+    to me.
 
-    
+
 
     452
 
     00:38:00,666 --> 00:38:02,941
 
-    -
-    I know what it''s like.
+    - I know what it''s
+    like.
 
     - You can''t!
 
-    
+
 
     453
 
-    00:38:03,106
-    --> 00:38:06,018
+    00:38:03,106 --> 00:38:06,018
 
-    I lost my son! I know!
+    I
+    lost my son! I know!
 
-    
+
 
     454
 
-    00:38:11,466
-    --> 00:38:13,855
+    00:38:11,466 --> 00:38:13,855
 
-    And as much as l...
+    And as
+    much as l...
 
-    
+
 
     455
 
-    00:38:16,426
-    --> 00:38:19,020
+    00:38:16,426 --> 00:38:19,020
 
-    I could never live that over again.
+    I could never
+    live that over again.
 
-    
+
 
     456
 
-    00:38:22,946
-    --> 00:38:24,777
+    00:38:22,946 --> 00:38:24,777
 
-    Could you?
+    Could
+    you?
 
-    
+
 
     457
 
@@ -5213,7 +5196,7 @@ MonoBehaviour:
 
     No.
 
-    
+
 
     458
 
@@ -5222,7 +5205,7 @@ MonoBehaviour:
 
     Let her go.
 
-    
+
 
     459
 
@@ -5233,7 +5216,7 @@ MonoBehaviour:
 
     I assume you were successful.
 
-    
+
 
     460
 
@@ -5242,7 +5225,7 @@ MonoBehaviour:
 
     Well, General, you know what they say.
 
-    
+
 
     461
 
@@ -5251,7 +5234,7 @@ MonoBehaviour:
 
     If at first you don''t succeed,...
 
-    
+
 
     462
 
@@ -5260,71 +5243,70 @@ MonoBehaviour:
 
     ..try, try, try...
 
-    
+
 
     463
 
-    00:40:05,746
-    --> 00:40:08,135
+    00:40:05,746 --> 00:40:08,135
 
-    ..try, try... try again.
+    ..try,
+    try... try again.
 
-    
+
 
     464
 
-    00:40:16,986
-    --> 00:40:20,023
+    00:40:16,986 --> 00:40:20,023
 
-    I don''t think I''ve ever seen
+    I don''t
+    think I''ve ever seen
 
-    anyone enjoy oatmeal
-    so much.
+    anyone enjoy oatmeal so much.
 
-    
+
 
     465
 
-    00:40:20,106 --> 00:40:25,226
+    00:40:20,106
+    --> 00:40:25,226
 
-    When you''ve
-    eaten Froot Loops for who
+    When you''ve eaten Froot Loops for who
 
-    knows how long... a little variety helps.
+    knows how long...
+    a little variety helps.
 
-    
+
 
     466
 
-    00:40:25,306
-    --> 00:40:30,744
+    00:40:25,306 --> 00:40:30,744
 
-    We heard from the Tok''ra. They''ve been
+    We
+    heard from the Tok''ra. They''ve been
 
-    trying
-    to contact us for over three months.
+    trying to contact us for over three
+    months.
 
-    
+
 
     467
 
-    00:40:31,426 -->
-    00:40:32,336
+    00:40:31,426 --> 00:40:32,336
 
     Really?
 
-    
+
 
     468
 
-    00:40:32,426 --> 00:40:34,656
+    00:40:32,426
+    --> 00:40:34,656
 
-    Who
-    knows when they realised
+    Who knows when they realised
 
     we were cut off.
 
-    
+
 
     469
 
@@ -5335,7 +5317,7 @@ MonoBehaviour:
 
     how much time passed.
 
-    
+
 
     470
 
@@ -5347,57 +5329,56 @@ MonoBehaviour:
     In all the time you were,
     um, looping,...
 
-    
+
 
     471
 
     00:40:42,106 --> 00:40:45,576
 
-    ..were
-    you ever tempted
+    ..were you
+    ever tempted
 
     to, um, do something crazy?
 
-    
+
 
     472
 
-    00:40:46,026
-    --> 00:40:51,419
+    00:40:46,026 -->
+    00:40:51,419
 
     I mean, uh... You could do anything
 
-    without worrying
-    about consequences.
+    without worrying about
+    consequences.
 
-    
+
 
     473
 
     00:40:54,946 --> 00:40:57,460
 
-    You
-    know, it''s funny.
+    You know, it''s
+    funny.
 
     You''ve asked me that before.
 
-    
+
 
     474
 
-    00:40:58,226
-    --> 00:41:00,217
+    00:40:58,226 --> 00:41:00,217
 
     And?
 
-    
+
 
     475
 
-    00:41:57,666 --> 00:41:59,736
+    00:41:57,666
+    --> 00:41:59,736
 
-    Visiontext
-    Subtitles: Paul Murray
+    Visiontext Subtitles: Paul Murray
 
 '
 --- !u!114 &3973345647856182092
@@ -5454,9 +5435,9 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3973345648624884956}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -5486,6 +5467,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 0
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -5533,15 +5515,15 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 3, y: 3, z: 3}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3973345647225023802}
   m_Father: {fileID: 3973345648712240299}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -100}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchoredPosition: {x: -265, y: -100}
+  m_SizeDelta: {x: 175, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3973345648571305770
 CanvasRenderer:
@@ -5566,6 +5548,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -5594,6 +5577,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Navigation:
     m_Mode: 0
+    m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
@@ -5624,6 +5608,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 3973345647856182092}
+        m_TargetAssemblyTypeName: 
         m_MethodName: SendCustomEvent
         m_Mode: 5
         m_Arguments:
@@ -5663,15 +5648,15 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 3, y: 3, z: 3}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3973345648411295755}
   m_Father: {fileID: 3973345648712240299}
-  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0}
-  m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 100}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 265, y: -255}
+  m_SizeDelta: {x: 175, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3973345648624884955
 CanvasRenderer:
@@ -5696,6 +5681,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -5724,6 +5710,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Navigation:
     m_Mode: 0
+    m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
@@ -5754,6 +5741,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 3973345647856182092}
+        m_TargetAssemblyTypeName: 
         m_MethodName: SendCustomEvent
         m_Mode: 5
         m_Arguments:
@@ -5795,18 +5783,18 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.0017362807, y: 0.0017362799, z: 0.0017362807}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3973345648571305774}
   - {fileID: 42052593}
   - {fileID: 3973345647323476009}
   - {fileID: 3973345648624884956}
   m_Father: {fileID: 3973345647856182095}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 680, y: 700}
+  m_SizeDelta: {x: 1080, y: 360}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &3973345648712240292
 Canvas:
@@ -5825,7 +5813,9 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 0
+  m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
@@ -5851,6 +5841,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 5
+  m_PresetInfoIsWorld: 1
 --- !u!114 &3973345648712240294
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5880,6 +5871,7 @@ MonoBehaviour:
   m_Script: {fileID: -1533785930, guid: 661092b4961be7145bfbe56e1e62337b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AllowFocusView: 1
 --- !u!65 &3973345648712240296
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5888,9 +5880,17 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3973345648712240298}
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
   m_IsTrigger: 1
+  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 188.62, z: 0}
 --- !u!1 &3973345649054339454
@@ -5921,9 +5921,9 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3973345647323476009}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -5953,6 +5953,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 0
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:

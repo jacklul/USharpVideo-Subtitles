@@ -99,6 +99,11 @@ namespace UdonSharp.Video.Subtitles
         private GameObject inputMenu;
 
         [SerializeField]
+        private Graphic inputLoadButtonBackground;
+        [SerializeField]
+        private Graphic inputLoadButtonIcon;
+
+        [SerializeField]
         private Graphic inputMenuButtonBackground;
         [SerializeField]
         private Graphic inputMenuButtonIcon;
@@ -440,7 +445,6 @@ namespace UdonSharp.Video.Subtitles
 
         public void UpdateOwner()
         {
-#if !UNITY_EDITOR
             if (ownerField)
             {
                 if (manager.IsLocal())
@@ -448,11 +452,10 @@ namespace UdonSharp.Video.Subtitles
                 else
                     ownerField.text = Networking.GetOwner(manager.gameObject).displayName;
             }
-#endif
 
             if (reloadButton)
             {
-                if (manager.CanSynchronizeSubtitles() || manager.IsLocal())
+                if (manager.CanSynchronizeSubtitles() || manager.IsLocal() || manager.IsSyncedURL())
                 {
                     if (reloadGraphic) reloadGraphic.color = whiteGraphicColor;
                 }
@@ -471,6 +474,7 @@ namespace UdonSharp.Video.Subtitles
 
                 if (lockGraphic) lockGraphic.color = whiteGraphicColor;
                 if (inputClearButtonIcon) inputClearButtonIcon.color = whiteGraphicColor;
+                if (inputLoadButtonIcon) inputLoadButtonIcon.color = whiteGraphicColor;
 
                 if (inputField) inputField.readOnly = false;
                 if (urlInputField) urlInputField.readOnly = false;
@@ -492,6 +496,7 @@ namespace UdonSharp.Video.Subtitles
                 {
                     if (lockGraphic) lockGraphic.color = whiteGraphicColor;
                     if (inputClearButtonIcon) inputClearButtonIcon.color = whiteGraphicColor;
+                    if (inputLoadButtonIcon) inputLoadButtonIcon.color = whiteGraphicColor;
 
                     if (inputField) inputField.readOnly = false;
                     if (urlInputField) urlInputField.readOnly = false;
@@ -503,10 +508,11 @@ namespace UdonSharp.Video.Subtitles
                 {
                     if (lockGraphic) lockGraphic.color = redGraphicColor;
                     if (inputClearButtonIcon) inputClearButtonIcon.color = redGraphicColor;
+                    if (inputLoadButtonIcon) inputLoadButtonIcon.color = redGraphicColor;
 
                     if (inputField) inputField.readOnly = true;
                     if (urlInputField) urlInputField.readOnly = true;
-#if !UNITY_EDITOR
+
                     string onlyMaster = string.Format(
                         @MESSAGE_ONLY_MASTER_CAN_ADD,
                         (manager.IsUsingUSharpVideo() ? manager.GetUSharpVideoOwner() : Networking.GetOwner(manager.gameObject)).displayName
@@ -514,7 +520,6 @@ namespace UdonSharp.Video.Subtitles
 
                     if (inputPlaceholderText) inputPlaceholderText.text = onlyMaster;
                     if (urlInputPlaceholderText) urlInputPlaceholderText.text = onlyMaster;
-#endif
                 }
             }
             else
@@ -524,13 +529,26 @@ namespace UdonSharp.Video.Subtitles
 
                 if (lockGraphic) lockGraphic.color = whiteGraphicColor;
                 if (inputClearButtonIcon) inputClearButtonIcon.color = whiteGraphicColor;
+                if (inputLoadButtonIcon) inputLoadButtonIcon.color = whiteGraphicColor;
 
                 if (inputField) inputField.readOnly = false;
-                if (urlInputField) urlInputField.readOnly = true;
+                if (urlInputField) urlInputField.readOnly = false;
 
                 if (inputPlaceholderText) inputPlaceholderText.text = MESSAGE_PASTE + " " + INDICATOR_ANYONE;
                 if (urlInputPlaceholderText) urlInputPlaceholderText.text = MESSAGE_LOAD_URL + " " + INDICATOR_ANYONE;
             }
+        }
+
+        public void LoadInput()
+        {
+            if (inputField && inputField.text.Length > 0) {
+                OnSubtitleInput();
+            } else if (urlInputField && urlInputField.GetUrl().ToString().Length > 0) {
+                OnSubtitleUrlInput();
+            }
+
+            inputField.text = string.Empty;
+            urlInputField.SetUrl(VRCUrl.Empty);
         }
 
         public void OnSubtitleInput()
@@ -729,6 +747,12 @@ namespace UdonSharp.Video.Subtitles
                         return;
                     }
                 }
+                else if (manager.IsSyncedURL())
+                {
+                    AnimateReloadButton();
+                    manager.ReloadSyncedURL();
+                    return;
+                }
                 else
                 {
                     SetStickyStatusText(string.Format(MESSAGE_ONLY_OWNER_CAN_SYNC, Networking.GetOwner(manager.gameObject).displayName), 3.0f);
@@ -736,6 +760,12 @@ namespace UdonSharp.Video.Subtitles
                 }
             }
 
+            AnimateReloadButton();
+            manager.SynchronizeSubtitles();
+        }
+
+        private void AnimateReloadButton()
+        {
             if (reloadButton)
             {
                 Animator animator = reloadButton.GetComponent<Animator>();
@@ -743,8 +773,6 @@ namespace UdonSharp.Video.Subtitles
                 if (animator)
                     animator.SetTrigger("Rotate");
             }
-
-            manager.SynchronizeSubtitles();
         }
 
         public void OnLockButton()
@@ -1026,7 +1054,7 @@ namespace UdonSharp.Video.Subtitles
                             if (alignmentToggle)
                                 alignmentToggle.isOn = tmpInt == 1;
 
-                            // Not exposed to Udon yet (VerticalAlignmentOptions)
+                            // @TODO Not exposed to Udon yet (VerticalAlignmentOptions)
                             /*if (tmpInt == 1)
                                 overlayHandler.SetAlignment(VerticalAlignmentOptions.Top);
                             else
