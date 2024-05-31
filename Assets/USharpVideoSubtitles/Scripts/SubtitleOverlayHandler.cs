@@ -52,7 +52,7 @@ namespace UdonSharp.Video.Subtitles
         private int horizontalMargin = 80;
         [SerializeField, Range(0, 1), Tooltip("0 = bottom\n1 = top")]
         private int alignment = 0; // To be replaced with "private VerticalAlignmentOptions alignment = VerticalAlignmentOptions.Bottom;" which is not exposed to Udon yet
-        
+
         private string _lastText = "";
         private bool _showPlaceholder = false;
 
@@ -296,7 +296,7 @@ namespace UdonSharp.Video.Subtitles
 
             _backgroundFieldRectTransform.offsetMin = new Vector2(margin.x, margin.w);
             _backgroundFieldRectTransform.offsetMax = new Vector2(-margin.z, -margin.y);
-            
+
             if (_textFieldRectTransformTop && _backgroundFieldRectTransformTop)
             {
                 _textFieldRectTransformTop.offsetMin = new Vector2(margin.x, margin.w);
@@ -305,7 +305,7 @@ namespace UdonSharp.Video.Subtitles
                 _backgroundFieldRectTransformTop.offsetMin = new Vector2(margin.x, margin.w);
                 _backgroundFieldRectTransformTop.offsetMax = new Vector2(-margin.z, -margin.y);
             }
-            
+
             //subtitleTextField.margin = margin;
             //subtitleBackgroundField.margin = margin;
         }
@@ -320,7 +320,7 @@ namespace UdonSharp.Video.Subtitles
         {
             if (!subtitleTextFieldTop || !subtitleBackgroundFieldTop)
                 return;
-            
+
             int currentMargin = GetVerticalMargin();
 
             if (value == 0)

@@ -98,7 +98,7 @@ namespace UdonSharp.Video.Subtitles
         [UdonSynced]
         private bool _isLocked = true; // Does nothing when USharpVideo is used
         private bool _lastLocked;
-        
+
         private VideoPlayerManager _videoManager;
         private SubtitleOverlayHandler _overlayHandler;
         private SubtitleControlHandler[] _registeredControlHandlers;
@@ -129,11 +129,11 @@ namespace UdonSharp.Video.Subtitles
 
             if (_registeredCallbackReceivers == null)
                 _registeredCallbackReceivers = new UdonSharpBehaviour[0];
-            
+
             if (targetVideoPlayer)
             {
                 _videoManager = targetVideoPlayer.GetVideoManager();
-                
+
                 if (Networking.IsOwner(gameObject))
                     SendCustomEventDelayedFrames(nameof(OnUSharpVideoLockChange), 1); // The event will be initially triggered only for non-master players, this fixes the issue with wrong lock state on master player
             }
@@ -142,7 +142,7 @@ namespace UdonSharp.Video.Subtitles
                 if (Networking.IsOwner(gameObject))
                 {
                     _isLocked = !defaultUnlocked;
-                    
+
                     SendCustomEventDelayedFrames(nameof(_QueueSerialize), 1); // Send lock state to everyone as initial state
 
                     foreach (SubtitleControlHandler handler in _registeredControlHandlers)
@@ -151,7 +151,7 @@ namespace UdonSharp.Video.Subtitles
 
                 _lastLocked = _isLocked;
             }
-            
+
             _previousOwner = Networking.GetOwner(gameObject);
             _currentOwner = _previousOwner;
 
@@ -184,10 +184,10 @@ namespace UdonSharp.Video.Subtitles
 
                 if (time == _lastVideoTime)
                     return;
-                
+
                 if (time < _lastVideoTime)
                     ResetSubtitleTrackingState();
-                
+
                 _lastVideoTime = time;
                 string text = "";
 
@@ -388,7 +388,7 @@ namespace UdonSharp.Video.Subtitles
         {
             return _chunkSync == _chunkCount && IsSameSyncId();
         }
-        
+
         public bool IsSameSyncId()
         {
             return _lastSyncId == _syncId;
@@ -407,7 +407,7 @@ namespace UdonSharp.Video.Subtitles
 
             foreach (SubtitleControlHandler handler in _registeredControlHandlers)
                 handler.SetStatusText(MESSAGE_CLEARED);
-            
+
             SendCallback("OnUSharpVideoSubtitlesClear");
         }
 
@@ -806,7 +806,7 @@ namespace UdonSharp.Video.Subtitles
                     RequestSerialization();
             }
         }
-        
+
         public override void OnPlayerLeft(VRCPlayerApi player)
         {
             if (Networking.IsOwner(gameObject) && player == _previousOwner && !IsSynchronized() && IsSameSyncId()) // Player who left was running the synchronization, resume it as we have all the data
@@ -816,16 +816,16 @@ namespace UdonSharp.Video.Subtitles
                     foreach (SubtitleControlHandler handler in _registeredControlHandlers) // This will prevent the status being stuck at "synchronizing last chunk"
                     {
                         handler.RestoreStatusText();
-                        
+
                         if (_dataSynced != "")
                             handler.SetStatusText(MESSAGE_LOADED);
                         else
                             handler.SetStatusText(MESSAGE_NOT_LOADED);
-                            
+
                         handler.SaveStatusText();
                     }
                 }
-                    
+
                 RequestSerialization();
             }
         }
@@ -852,7 +852,7 @@ namespace UdonSharp.Video.Subtitles
                     handler.UpdateLockState();
                 }
             }
-            
+
             SendCallback("OnUSharpVideoSubtitlesOwnershipChange");
         }
 
@@ -901,7 +901,7 @@ namespace UdonSharp.Video.Subtitles
 
             foreach (SubtitleControlHandler handler in _registeredControlHandlers)
                 handler.UpdateLockState();
-            
+
             SendCallback("OnUSharpVideoSubtitlesLockChange");
         }
 
@@ -912,7 +912,7 @@ namespace UdonSharp.Video.Subtitles
 
             return !_isLocked || IsPrivilegedUser(Networking.LocalPlayer);
         }
-        
+
         public bool IsPrivilegedUser(VRCPlayerApi player)
         {
             if (targetVideoPlayer)
@@ -1067,7 +1067,7 @@ namespace UdonSharp.Video.Subtitles
 
                 handler.UpdateSettingsValues();
             }
-            
+
             SendCallback("OnUSharpVideoSubtitlesSettingsUpdate");
         }
 
@@ -1105,13 +1105,13 @@ namespace UdonSharp.Video.Subtitles
         public void _MigrateToUSharpVideoOwner()
         {
             VRCPlayerApi videoPlayerOwner = Networking.GetOwner(targetVideoPlayer.gameObject);
-            
+
             if (targetVideoPlayer.IsLocked() && Networking.LocalPlayer == videoPlayerOwner && Networking.GetOwner(gameObject) != videoPlayerOwner)
             {
                 if (IsSynchronized())
                 {
                     LogMessage("Taking ownership because USharpVideo is now locked...");
-                    
+
                     TakeOwnership();
                 }
                 else
@@ -1122,7 +1122,7 @@ namespace UdonSharp.Video.Subtitles
                 }
             }
         }
-        
+
         public void OnUSharpVideoOwnershipChange()
         {
             if (targetVideoPlayer.IsLocked()) // Only to update the master in the input field's placeholder

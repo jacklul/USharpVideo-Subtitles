@@ -164,7 +164,7 @@ namespace UdonSharp.Video.Subtitles
         private Slider fontSizeSlider;
         [SerializeField]
         private Text fontSizeValue;
-        
+
         [SerializeField]
         private Slider fontColorRSlider;
         [SerializeField]
@@ -206,7 +206,7 @@ namespace UdonSharp.Video.Subtitles
         private Slider verticalMarginSlider;
         [SerializeField]
         private Text verticalMarginValue;
-        
+
         [SerializeField]
         private Slider horizontalMarginSlider;
         [SerializeField]
@@ -300,7 +300,7 @@ namespace UdonSharp.Video.Subtitles
         {
             manager.UnregisterControlHandler(this);
         }
-        
+
         private void UpdatePresetPreview(GameObject previewGameObject, string settings)
         {
             string[] array = settings.Split('/');
@@ -376,7 +376,7 @@ namespace UdonSharp.Video.Subtitles
         {
             inputFieldObject.SetActive(false);
             _currentInputFieldObject = Instantiate(inputFieldObject);
-            
+
             _currentInputFieldObject.transform.SetParent(inputFieldObject.transform.parent.transform);
             _currentInputFieldObject.transform.localPosition = inputFieldObject.transform.localPosition;
             _currentInputFieldObject.transform.localRotation = inputFieldObject.transform.localRotation;
@@ -439,7 +439,7 @@ namespace UdonSharp.Video.Subtitles
                 return statusTextField.text;
             else if (statusFallbackTextField)
                 return statusFallbackTextField.text;
-            
+
             return "";
         }
 
@@ -455,14 +455,14 @@ namespace UdonSharp.Video.Subtitles
         {
             if (_lastStatus != "")
                 return;
-            
+
             string last = GetStatusText();
             SetStatusText(text);
             _lastStatus = last;
 
             SendCustomEventDelayedSeconds(nameof(_AfterStickyStatusText), seconds);
         }
-        
+
         public void _AfterStickyStatusText()
         {
             if (_lastStatus != "")
@@ -478,7 +478,7 @@ namespace UdonSharp.Video.Subtitles
         {
             return false;
         }
-        
+
         // Master has changed and we have to update reload button state
         public override void OnOwnershipTransferred(VRCPlayerApi player)
         {
@@ -625,12 +625,12 @@ namespace UdonSharp.Video.Subtitles
 
             manager.SetEnabled(subtitlesToggle.isOn);
         }
-        
+
         public void SetToggleButtonState(bool state)
         {
             if (!subtitlesToggle)
                 return;
-            
+
             subtitlesToggle.isOn = state;
         }
 
@@ -720,16 +720,16 @@ namespace UdonSharp.Video.Subtitles
                     case "settings":
                         if (!settingsMenu || !settingsMenuButtonBackground || !settingsMenuButtonIcon)
                             continue;
-                        
+
                         handle = settingsMenu;
                         background = settingsMenuButtonBackground;
                         icon = settingsMenuButtonIcon;
-                        
+
                         if (name != "settings")
                         {
                             if (_popupActive)
                                 continue; // Prevents toggling off popup window by opening other menu
-                            
+
                             if (settingsMenu.activeSelf)
                                 overlayHandler.ClearSubtitle(); // Hide subtitle placeholder when switching the menus
                         }
@@ -795,7 +795,7 @@ namespace UdonSharp.Video.Subtitles
                 if (animator)
                     animator.SetTrigger("Rotate");
             }
-            
+
             manager.SynchronizeSubtitles();
         }
 
@@ -847,7 +847,7 @@ namespace UdonSharp.Video.Subtitles
                         scale = 0.8f;
 
                     Transform transparentCanvas = transform.Find("TransparentCanvas2");
-                    
+
                     if (transparentCanvas)
                         settingsMenu.transform.SetParent(transparentCanvas);
                     else
@@ -871,7 +871,7 @@ namespace UdonSharp.Video.Subtitles
 
                 if (settingsPopupButtonBackground) settingsPopupButtonBackground.color = buttonActivatedColor;
                 if (settingsPopupButtonIcon) settingsPopupButtonIcon.color = iconInvertedColor;
-                
+
                 if (settingsPopupAlpha < 1 && imageComponents.Length > 0)
                     SetAlphaOnImageComponents(imageComponents, settingsPopupAlpha);
             }
@@ -885,12 +885,12 @@ namespace UdonSharp.Video.Subtitles
                 settingsMenu.transform.localPosition = _originalSettingsMenuPosition;
                 settingsMenu.transform.localRotation = _originalSettingsMenuRotation;
                 settingsMenu.transform.localScale = _originalSettingsMenuScale;
-                
+
                 if (rectTransform) rectTransform.anchoredPosition = _originalSettingsAnchoredPosition;
 
                 if (settingsPopupButtonBackground) settingsPopupButtonBackground.color = buttonBackgroundColor;
                 if (settingsPopupButtonIcon) settingsPopupButtonIcon.color = whiteGraphicColor;
-                
+
                 if (settingsPopupAlpha < 1 && imageComponents.Length > 0)
                     SetAlphaOnImageComponents(imageComponents, 1f);
             }
@@ -904,13 +904,13 @@ namespace UdonSharp.Video.Subtitles
                 {
                     if (alphaIgnoreEmptySprites && image.sprite == null)
                         continue;
-                    
+
                     if (alphaIgnoredSprites.Length > 0 && Array.IndexOf(alphaIgnoredSprites, image.sprite) > -1)
                         continue;
 
                     if (alphaIgnoredNames.Length > 0 && alphaIgnoredNames.Equals(image.name))
                         continue;
-                    
+
                     image.color = new Color(image.color.r, image.color.g, image.color.b, alpha);
                 }
             }
@@ -1109,7 +1109,7 @@ namespace UdonSharp.Video.Subtitles
 
             if (tmp.Length > 1)
                 return SafelyParseInt(tmp[0]) + (SafelyParseInt(tmp[1]) / Mathf.Pow(10, tmp[1].Length)); // This lets us parse string floats with both comma and dot no matter if running in Unity or in VRC
-            
+
             float n;
             if (float.TryParse(tmp[0], out n))
                 return float.Parse(tmp[0]);
