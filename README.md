@@ -4,7 +4,6 @@ This prefab adds support for SRT subtitles to [USharpVideo](https://github.com/M
 To check this out in-game visit [this test world](https://vrchat.com/home/world/wrld_dc50af39-1f65-4c47-a0d5-d1729d5c683f) or [world from this list](#worlds-using-this-prefab).  
 
 _The core of this prefab is based on [this code](https://gist.github.com/hai-vr/b340f9a46952640f81efe7f02da6bdf6) by [Haï~](https://twitter.com/vr_hai)._  
-_Currently, there are minor issues for the Quest users - [see here](https://github.com/jacklul/USharpVideo-Subtitles/issues/1)._  
 
 <a href="https://i.imgur.com/IZUFwbV.png"><img src="https://i.imgur.com/IZUFwbV.png" height="300"></a>
 

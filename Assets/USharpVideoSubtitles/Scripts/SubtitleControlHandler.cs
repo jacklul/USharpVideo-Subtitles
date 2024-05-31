@@ -69,25 +69,21 @@ namespace UdonSharp.Video.Subtitles
 
         [Header("Input field")]
 
-        [SerializeField]
-        private Text inputField; // To be replaced with TMP_InputField once supported by Udon
+        //[SerializeField]
+        public TMP_InputField inputField; // To be replaced with TMP_InputField once supported by Udon
         [SerializeField]
         private Text inputPlaceholderText;
         [SerializeField]
         private VRCUrlInputField urlInputField;
         [SerializeField]
         private Text urlInputPlaceholderText;
-        [SerializeField]
-        private GameObject inputFieldObject; // We clone this object to hide the pasted text after input, this behaviour will be gone once Udon supports TMP_InputField
 
         [Header("Status field")]
 
         [SerializeField]
         private InputField statusTextField;
-        [SerializeField, Tooltip("For Quest users - see issue #1 in the Github repository")]
+        [SerializeField]
         private Text statusPlaceholderField;
-        [SerializeField, Tooltip("For Quest users - see issue #1 in the Github repository")]
-        private Text statusFallbackTextField;
 
         [Header("Toggles")]
 
@@ -234,7 +230,6 @@ namespace UdonSharp.Video.Subtitles
         private Quaternion _originalSettingsMenuRotation;
         private Vector3 _originalSettingsMenuScale;
         private Vector2 _originalSettingsAnchoredPosition;
-        private GameObject _currentInputFieldObject;
 
         private string _savedStatus = "";
         private string _lastStatus = "";
@@ -258,9 +253,6 @@ namespace UdonSharp.Video.Subtitles
 
         private void Start()
         {
-            if (inputFieldObject)
-                CloneInputField();
-
             if (!settingsPopupEnabled) settingsPopupButtonBackground.gameObject.SetActive(false);
 
             if (preset1Object)
@@ -372,38 +364,6 @@ namespace UdonSharp.Video.Subtitles
             }
         }
 
-        private void CloneInputField() // This is the current workaround to be able to clear the text field after pasting
-        {
-            inputFieldObject.SetActive(false);
-            _currentInputFieldObject = Instantiate(inputFieldObject);
-
-            _currentInputFieldObject.transform.SetParent(inputFieldObject.transform.parent.transform);
-            _currentInputFieldObject.transform.localPosition = inputFieldObject.transform.localPosition;
-            _currentInputFieldObject.transform.localRotation = inputFieldObject.transform.localRotation;
-            _currentInputFieldObject.transform.localScale = inputFieldObject.transform.localScale;
-            _currentInputFieldObject.SetActive(true);
-
-            if (_currentInputFieldObject.transform.childCount > 0)
-            {
-                Transform placeholder = _currentInputFieldObject.transform.GetChild(0).transform.Find("Placeholder");
-                Transform proxy = _currentInputFieldObject.transform.Find("InputProxy");
-
-                if (placeholder && proxy)
-                {
-                    inputPlaceholderText = placeholder.GetComponent<Text>();
-                    inputField = proxy.GetComponent<Text>();
-                    UpdateLockState();
-                    return;
-                }
-            }
-
-            // Someone modified the field's layout so we abort
-            inputFieldObject.SetActive(true);
-            inputFieldObject = null;
-            Destroy(_currentInputFieldObject);
-            _currentInputFieldObject = null;
-        }
-
         public void SetStatusText(string text)
         {
             if (_lastStatus != "")
@@ -417,13 +377,7 @@ namespace UdonSharp.Video.Subtitles
             if (statusTextField)
             {
                 statusTextField.text = message;
-            }
-            else if (statusFallbackTextField) // Fallback method (for Quest users)
-            {
-                if (statusPlaceholderField && statusPlaceholderField.text != "")
-                    statusPlaceholderField.text = "";
-
-                statusFallbackTextField.text = message;
+                statusPlaceholderField.text = "";
             }
         }
 
@@ -437,8 +391,6 @@ namespace UdonSharp.Video.Subtitles
         {
             if (statusTextField)
                 return statusTextField.text;
-            else if (statusFallbackTextField)
-                return statusFallbackTextField.text;
 
             return "";
         }
@@ -520,7 +472,7 @@ namespace UdonSharp.Video.Subtitles
                 if (lockGraphic) lockGraphic.color = whiteGraphicColor;
                 if (inputClearButtonIcon) inputClearButtonIcon.color = whiteGraphicColor;
 
-                //if (inputField) inputField.readOnly = false;
+                if (inputField) inputField.readOnly = false;
                 if (urlInputField) urlInputField.readOnly = false;
 
                 if (inputPlaceholderText) inputPlaceholderText.text = MESSAGE_PASTE + " " + INDICATOR_LOCAL;
@@ -541,7 +493,7 @@ namespace UdonSharp.Video.Subtitles
                     if (lockGraphic) lockGraphic.color = whiteGraphicColor;
                     if (inputClearButtonIcon) inputClearButtonIcon.color = whiteGraphicColor;
 
-                    //if (inputField) inputField.readOnly = false;
+                    if (inputField) inputField.readOnly = false;
                     if (urlInputField) urlInputField.readOnly = false;
 
                     if (inputPlaceholderText) inputPlaceholderText.text = MESSAGE_PASTE;
@@ -552,7 +504,7 @@ namespace UdonSharp.Video.Subtitles
                     if (lockGraphic) lockGraphic.color = redGraphicColor;
                     if (inputClearButtonIcon) inputClearButtonIcon.color = redGraphicColor;
 
-                    //if (inputField) inputField.readOnly = true;
+                    if (inputField) inputField.readOnly = true;
                     if (urlInputField) urlInputField.readOnly = true;
 #if !UNITY_EDITOR
                     string onlyMaster = string.Format(
@@ -573,7 +525,9 @@ namespace UdonSharp.Video.Subtitles
                 if (lockGraphic) lockGraphic.color = whiteGraphicColor;
                 if (inputClearButtonIcon) inputClearButtonIcon.color = whiteGraphicColor;
 
-                //if (inputField) inputField.readOnly = false;
+                if (inputField) inputField.readOnly = false;
+                if (urlInputField) urlInputField.readOnly = true;
+
                 if (inputPlaceholderText) inputPlaceholderText.text = MESSAGE_PASTE + " " + INDICATOR_ANYONE;
                 if (urlInputPlaceholderText) urlInputPlaceholderText.text = MESSAGE_LOAD_URL + " " + INDICATOR_ANYONE;
             }
@@ -589,13 +543,7 @@ namespace UdonSharp.Video.Subtitles
             if (text.Length > 0)
             {
                 manager.ProcessInput(text);
-                inputField.text = "";
-
-                if (inputFieldObject) // This leads us to workaround in CloneInputField(), to be removed once Udon supports TMP fields
-                {
-                    Destroy(_currentInputFieldObject);
-                    CloneInputField();
-                }
+                inputField.text = string.Empty;
             }
         }
 

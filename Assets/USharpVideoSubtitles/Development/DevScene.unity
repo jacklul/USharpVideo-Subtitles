@@ -1818,7 +1818,7 @@ PrefabInstance:
         type: 3}
       propertyPath: inputField
       value: 
-      objectReference: {fileID: 515586751}
+      objectReference: {fileID: 0}
     - target: {fileID: 9132730033375728155, guid: 79b0ea249ffa6a54bb5f55191b085d00,
         type: 3}
       propertyPath: lockButton
@@ -2180,18 +2180,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9085046f02f69544eb97fd06b6048fe2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &515586751 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3847239192578489414, guid: 79b0ea249ffa6a54bb5f55191b085d00,
-    type: 3}
-  m_PrefabInstance: {fileID: 515586741}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &515586752 stripped
@@ -2770,26 +2758,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 368572903048736811, guid: 79b0ea249ffa6a54bb5f55191b085d00,
-        type: 3}
-      propertyPath: m_PresetInfoIsWorld
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 368572903048736983, guid: 79b0ea249ffa6a54bb5f55191b085d00,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 368572903621541158, guid: 79b0ea249ffa6a54bb5f55191b085d00,
-        type: 3}
-      propertyPath: m_PresetInfoIsWorld
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 368572903896347645, guid: 79b0ea249ffa6a54bb5f55191b085d00,
-        type: 3}
-      propertyPath: m_PresetInfoIsWorld
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2853267199229678515, guid: 79b0ea249ffa6a54bb5f55191b085d00,
         type: 3}
@@ -3835,46 +3803,67 @@ MonoBehaviour:
   NetworkIDs:
   - gameObject: {fileID: 570255271}
     ID: 10
+    SerializedTypeNames: []
   - gameObject: {fileID: 565470787}
     ID: 11
+    SerializedTypeNames: []
   - gameObject: {fileID: 1116291962}
     ID: 12
+    SerializedTypeNames: []
   - gameObject: {fileID: 385603887}
     ID: 13
+    SerializedTypeNames: []
   - gameObject: {fileID: 477298076}
     ID: 14
+    SerializedTypeNames: []
   - gameObject: {fileID: 644369520}
     ID: 15
+    SerializedTypeNames: []
   - gameObject: {fileID: 512369044}
     ID: 16
+    SerializedTypeNames: []
   - gameObject: {fileID: 1223058756}
     ID: 17
+    SerializedTypeNames: []
   - gameObject: {fileID: 21108598}
     ID: 18
+    SerializedTypeNames: []
   - gameObject: {fileID: 659001447}
     ID: 19
+    SerializedTypeNames: []
   - gameObject: {fileID: 769139332}
     ID: 20
+    SerializedTypeNames: []
   - gameObject: {fileID: 1147733068}
     ID: 21
+    SerializedTypeNames: []
   - gameObject: {fileID: 1647437372}
     ID: 22
+    SerializedTypeNames: []
   - gameObject: {fileID: 596959185}
     ID: 23
+    SerializedTypeNames: []
   - gameObject: {fileID: 1956082556}
     ID: 24
+    SerializedTypeNames: []
   - gameObject: {fileID: 1632689900}
     ID: 25
+    SerializedTypeNames: []
   - gameObject: {fileID: 620726265}
     ID: 26
+    SerializedTypeNames: []
   - gameObject: {fileID: 1316544850}
     ID: 27
+    SerializedTypeNames: []
   - gameObject: {fileID: 1547728457}
     ID: 28
+    SerializedTypeNames: []
   - gameObject: {fileID: 1094421957010841707}
     ID: 29
+    SerializedTypeNames: []
   portraitCameraPositionOffset: {x: 0, y: 0, z: 0}
   portraitCameraRotationOffset: {x: 0, y: 1, z: 0, w: -0.00000004371139}
+  NavigationAreas: []
 --- !u!1001 &7817971935179713291
 PrefabInstance:
   m_ObjectHideFlags: 0
