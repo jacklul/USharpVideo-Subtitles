@@ -808,7 +808,7 @@ namespace UdonSharp.Video.Subtitles
 
         public override void OnStringLoadSuccess(IVRCStringDownload result)
         {
-            LogMessage($"Remote string load success ({BytesToKilobytes(BitConverter.ToInt32(result.ResultBytes, 0))} kilobytes)");
+            LogMessage($"Remote string load success ({BitConverter.ToInt32(result.ResultBytes, 0)} bytes)");
 
             if (result.Url == _URLTmp) // User entered URL - to be synchronized
                 ProcessInput(result.Result);
@@ -1362,12 +1362,6 @@ namespace UdonSharp.Video.Subtitles
                 if (callbackReceiver)
                     callbackReceiver.SendCustomEvent(callbackName);
             }
-        }
-
-        private double BytesToKilobytes(long bytes)
-        {
-            const double bytesPerKilobyte = 1024.0;
-            return bytes / bytesPerKilobyte;
         }
     }
 }
