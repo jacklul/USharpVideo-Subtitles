@@ -44,6 +44,14 @@ _The core of this prefab is based on [this code](https://gist.github.com/hai-vr/
 6. Add a reference in the `Subtitles/Overlay` object (**Video Screen** field) to the video player's screen object, the overlay will copy the position and rotation of the screen on start
     - if this doesn't work on your world then you will have to manually adjust `Subtitles/Overlay` object's position and rotation to match the video screen object (while keeping the mentioned earlier field empty)
 
+## Upgrading
+
+1. Delete the prefab from your scene
+
+2. Import new package
+
+3. Re-do [Installation](#installation) steps 3. 5. and 6. 
+
 ## Quick API reference
 
 Methods that you might be interested in using when integrating this prefab with other stuff in your world.
