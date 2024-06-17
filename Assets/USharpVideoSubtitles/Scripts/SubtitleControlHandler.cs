@@ -69,8 +69,8 @@ namespace UdonSharp.Video.Subtitles
 
         [Header("Input field")]
 
-        //[SerializeField]
-        public TMP_InputField inputField; // To be replaced with TMP_InputField once supported by Udon
+        [SerializeField]
+        private TMP_InputField inputField; // To be replaced with TMP_InputField once supported by Udon
         [SerializeField]
         private Text inputPlaceholderText;
         [SerializeField]
