@@ -696,8 +696,10 @@ namespace UdonSharp.Video.Subtitles
                             if (_popupActive)
                                 continue; // Prevents toggling off popup window by opening other menu
 
-                            if (settingsMenu.activeSelf)
+                            if (settingsMenu.activeSelf) {
+                                overlayHandler.SetPlaceholder(false);
                                 overlayHandler.ClearSubtitle(); // Hide subtitle placeholder when switching the menus
+                            }
                         }
                         break;
                     case "info":
