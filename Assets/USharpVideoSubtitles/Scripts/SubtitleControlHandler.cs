@@ -11,6 +11,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using VRC.SDKBase;
 using VRC.SDK3.Components;
+using VRC.SDK3.Persistence;
 
 namespace UdonSharp.Video.Subtitles
 {
@@ -40,6 +41,10 @@ namespace UdonSharp.Video.Subtitles
         public float settingsPopupScale = 0f;
         [Tooltip("How much transparent should the popup window be")]
         public float settingsPopupAlpha = 0.85f;
+        [SerializeField, Tooltip("The key used to store the user's settings in PlayerData key-value database\nEmpty disables this feature")]
+        private string settingsPersistenceKey = "UsharpVideoSubtitles_Settings";
+        [SerializeField, Tooltip("How many seconds to wait before saving the settings to PlayerData after they have been changed")]
+        private float settingsPersistenceDelay = 5f;
 
         [Header("Alpha applying rules")]
         [SerializeField, Tooltip("Should we ignore image components with no sprite assigned?")]
@@ -239,6 +244,9 @@ namespace UdonSharp.Video.Subtitles
         private string _savedStatus = "";
         private string _lastStatus = "";
 
+        private bool _persistentDataRestored = false;
+        private bool _persistentDataSaved = true;
+
         private bool _synchronizeSettings = true;
         private string _currentSettingsExport = "";
         private bool _popupActive = false;
@@ -291,6 +299,28 @@ namespace UdonSharp.Video.Subtitles
                 else
                     preset4Object.SetActive(false);
             }
+        }
+
+        public override void OnPlayerRestored(VRCPlayerApi player)
+        {
+            if (_persistentDataRestored || player != Networking.LocalPlayer)
+                return;
+
+            if (settingsPersistenceKey.Length > 0) {
+                bool success = PlayerData.TryGetString(player, settingsPersistenceKey, out string userSettings);
+
+                if (success) {
+                    if (userSettings.Length > 0 && _currentSettingsExport != userSettings) {
+                        Debug.Log("Restoring subtitle settings from PlayerData: " + userSettings);
+
+                        ImportSettingsFromString(userSettings);
+                    }
+                } else {
+                    Debug.Log("Failed to fetch subtitle settings from PlayerData");
+                }
+            }
+
+            _persistentDataRestored = true;
         }
 
         private void OnDisable()
@@ -936,6 +966,9 @@ namespace UdonSharp.Video.Subtitles
                 }
             }
 
+            if (settings.Length == 0)
+                return;
+
             string[] array = settings.Split('/');
 
             int tmpInt;
@@ -1136,6 +1169,18 @@ namespace UdonSharp.Video.Subtitles
                 ;
 
             if (settingsImportExportField) settingsImportExportField.text = _currentSettingsExport;
+
+            if (_persistentDataRestored && _persistentDataSaved && settingsPersistenceKey.Length > 0) {
+                _persistentDataSaved = false;
+                SendCustomEventDelayedSeconds(nameof(_SavePersistentData), settingsPersistenceDelay);
+            }
+        }
+
+        public void _SavePersistentData()
+        {
+            Debug.Log("Saving subtitle settings to PlayerData: " + _currentSettingsExport);
+            PlayerData.SetString(settingsPersistenceKey, _currentSettingsExport);
+            _persistentDataSaved = true;
         }
 
         private void AfterValueChanged()

@@ -13,12 +13,13 @@ _The core of this prefab is based on [this code](https://gist.github.com/hai-vr/
 - Subtitle synchronization with everyone in the instance
 - Option to use own subtitles locally
 - Rich customization with the ability to save the settings
-- Integration with USharpVideo
+- Integration with [USharpVideo](https://github.com/MerlinVR/USharpVideo)
+- [Persistence](https://creators.vrchat.com/worlds/udon/persistence/) support
 
 ## Requirements
 
 - [Unity 2022.3.22f1](https://unity.com/releases/editor/whats-new/2022.3.22)+ (see VRChat's [Current Unity Version](https://creators.vrchat.com/sdk/upgrade/current-unity-version/) page)
-- [VRChat SDK 3.6.1](https://creators.vrchat.com/releases/release-3-6-1/)+
+- [VRChat SDK 3.7.4](https://creators.vrchat.com/releases/release-3-7-4/)+
 - [USharpVideo v1.0.0](https://github.com/MerlinVR/USharpVideo/releases/latest)+
 - Project created using [Creator Companion](https://vcc.docs.vrchat.com/)
 
