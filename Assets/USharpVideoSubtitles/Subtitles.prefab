@@ -2181,8 +2181,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 368572902012170216}
-  - component: {fileID: 8723279727618994108}
   - component: {fileID: 5788624106359276806}
+  - component: {fileID: 8723279727618994108}
   - component: {fileID: 368572902012170221}
   - component: {fileID: 368572902012170222}
   - component: {fileID: 368572902012170223}
@@ -2225,19 +2225,6 @@ RectTransform:
   m_AnchoredPosition: {x: 3.69, y: -2.794}
   m_SizeDelta: {x: 1028.898, y: 385.87}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &8723279727618994108
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 368572902012170217}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 96c9fcd85688d64459ae79399f1ab62d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  uiStyle: {fileID: 11400000, guid: 55106727684a20b48a170c471208dd4a, type: 2}
 --- !u!114 &5788624106359276806
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2265,6 +2252,8 @@ MonoBehaviour:
   settingsPopupEnabled: 1
   settingsPopupScale: 0
   settingsPopupAlpha: 0.85
+  settingsPersistenceKey: UsharpVideoSubtitles_Settings
+  settingsPersistenceDelay: 5
   alphaIgnoreEmptySprites: 1
   alphaIgnoredSprites:
   - {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
@@ -2339,6 +2328,19 @@ MonoBehaviour:
   buttonBackgroundColor: {r: 0.21318094, g: 0.18627624, b: 0.21698111, a: 1}
   buttonActivatedColor: {r: 0.9433962, g: 0.9433962, b: 0.9433962, a: 1}
   iconInvertedColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+--- !u!114 &8723279727618994108
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 368572902012170217}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96c9fcd85688d64459ae79399f1ab62d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  uiStyle: {fileID: 11400000, guid: 55106727684a20b48a170c471208dd4a, type: 2}
 --- !u!114 &368572902012170221
 MonoBehaviour:
   m_ObjectHideFlags: 0

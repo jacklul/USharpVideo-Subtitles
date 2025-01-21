@@ -135,6 +135,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 278060869384376391, guid: 79b0ea249ffa6a54bb5f55191b085d00,
         type: 3}
+      propertyPath: videoScreen
+      value: 
+      objectReference: {fileID: 844468990}
+    - target: {fileID: 278060869384376391, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
       propertyPath: serializationData.Prefab
       value: 
       objectReference: {fileID: 278060869384376391, guid: 79b0ea249ffa6a54bb5f55191b085d00,
