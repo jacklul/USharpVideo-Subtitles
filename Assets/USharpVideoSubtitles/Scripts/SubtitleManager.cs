@@ -706,8 +706,14 @@ namespace UdonSharp.Video.Subtitles
                 else if (!inTag && textArray[i] == '<' && i + 1 < textArray.Length)
                 {
                     bool isEndingTag = textArray[i + 1] == '/';
-                    bool isShortTag = isEndingTag ? textArray[i + 3] == '>' : textArray[i + 2] == '>';
-                    char shortTagValue = isShortTag ? (isEndingTag ? textArray[i + 2] : textArray[i + 1]) : ' ';
+                    bool isShortTag = false;
+                    char shortTagValue = '\0';
+
+                    if (i + 3 < textArray.Length)
+                        isShortTag = isEndingTag ? textArray[i + 3] == '>' : textArray[i + 2] == '>';
+
+                    if (i + 2 < textArray.Length)
+                        shortTagValue = isShortTag ? (isEndingTag ? textArray[i + 2] : textArray[i + 1]) : ' ';
 
                     if (!isShortTag || Array.IndexOf(allowedShortHTMLTags, shortTagValue) == -1)
                     {
