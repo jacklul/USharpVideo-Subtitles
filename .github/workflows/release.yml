@@ -19,7 +19,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - uses: metcalfc/changelog-generator@v3.0.0
+    - uses: metcalfc/changelog-generator@v4
       id: changelog
       if: startsWith(github.ref, 'refs/tags/')
       with:
@@ -46,14 +46,21 @@ jobs:
         package-path: ${{ env.UNITYPACKAGE }}
         include-files: metaList
 
-    - uses: softprops/action-gh-release@v1
+    - uses: softprops/action-gh-release@v2
       if: startsWith(github.ref, 'refs/tags/')
       with:
         body: ${{ steps.changelog.outputs.changelog }}
         files: ${{ env.UNITYPACKAGE }}
         draft: true
 
-    - uses: actions/upload-artifact@v3
+    - name: Output changelog
+      if: ${{ !startsWith(github.ref, 'refs/tags/') }}
+      run: |
+        cat << "EOF"
+        ${{ steps.changelog.outputs.changelog }}
+        EOF
+
+    - uses: actions/upload-artifact@v4
       if: ${{ !startsWith(github.ref, 'refs/tags/') }}
       with:
         name: ${{ env.UNITYPACKAGE }}
