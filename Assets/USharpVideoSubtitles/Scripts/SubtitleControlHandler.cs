@@ -225,6 +225,11 @@ namespace UdonSharp.Video.Subtitles
         [SerializeField]
         private Text alignmentValue;
 
+        [SerializeField]
+        private Slider timeOffsetSlider;
+        [SerializeField]
+        private InputField timeOffsetValue;
+
         [Header("Style Colors")]
         public Color redGraphicColor = new Color(0.632f, 0.196f, 0.196f);
         public Color whiteGraphicColor = new Color(0.943f, 0.943f, 0.943f);
@@ -262,6 +267,7 @@ namespace UdonSharp.Video.Subtitles
             UpdateOwner();
             UpdateLockState();
             SendCustomEventDelayedFrames(nameof(UpdateSettingsValues), 1);
+            SendCustomEventDelayedFrames(nameof(InitTimeOffsetControl), 1);
         }
 
         private void Start()
@@ -1431,6 +1437,68 @@ namespace UdonSharp.Video.Subtitles
 
             if (alignmentSlider) alignmentSlider.value = value;
             alignmentValue.text = value == 0 ? ALIGNMENT_BOTTOM : ALIGNMENT_TOP;
+        }
+
+        public void InitTimeOffsetControl()
+        {
+            float offset = manager.GetTimeOffset();
+
+            if (timeOffsetValue)
+                timeOffsetValue.text = RoundFloat(offset, 2).ToString();
+
+            if (timeOffsetSlider)
+                timeOffsetSlider.value = offset;
+        }
+
+        public void OnTimeOffsetSlider()
+        {
+            if (!timeOffsetSlider)
+                return;
+
+            float value = RoundFloat((float)timeOffsetSlider.value, 2);
+
+            if (timeOffsetValue)
+            {
+                if (SafelyParseFloat(timeOffsetValue.text) == value)
+                    return;
+
+                timeOffsetValue.text = value.ToString();
+            }
+
+            manager.SetTimeOffset(value);
+        }
+
+        public void OnTimeOffsetInput()
+        {
+            if (!timeOffsetValue)
+                return;
+
+            string text = timeOffsetValue.text.Trim();
+            float value = SafelyParseFloat(text);
+
+            if (timeOffsetSlider)
+            {
+                if (timeOffsetSlider.value == value)
+                    return;
+
+                timeOffsetSlider.value = value;
+
+                // Set the text back if the value is outside of the slider range,
+                // as the event will set the field value to the slider min/max value
+                if (value < timeOffsetSlider.minValue || value > timeOffsetSlider.maxValue)
+                    timeOffsetValue.text = text;
+            }
+
+            manager.SetTimeOffset(value);
+        }
+
+        public void OnTimeOffsetReset()
+        {
+            // No need to update both at the same time, event will handle it
+            if (timeOffsetSlider)
+                timeOffsetSlider.value = 0.0f;
+            else if (timeOffsetValue)
+                timeOffsetValue.text = "0";
         }
 
         public void SetPreset1()

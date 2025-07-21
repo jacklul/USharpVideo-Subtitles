@@ -100,6 +100,7 @@ namespace UdonSharp.Video.Subtitles
 
         private bool _isEnabled = true; // Are subtitles shown?
         private bool _isLocal = false; // Is local mode enabled?
+        private float _timeOffset = 0.0f; // Video time offset
 
         [UdonSynced]
         private bool _isLocked = true; // Does nothing when USharpVideo is used
@@ -230,13 +231,22 @@ namespace UdonSharp.Video.Subtitles
 
         private float GetVideoTime()
         {
+            float time = 0.0f;
+
             if (_videoManager)
-                return _videoManager.GetTime();
+                time =_videoManager.GetTime();
+            else if (baseVideoPlayer)
+                time = baseVideoPlayer.GetTime();
 
-            if (baseVideoPlayer)
-                return baseVideoPlayer.GetTime();
+            if (_timeOffset != 0.0f)
+            {
+                time += _timeOffset;
 
-            return 0.0f;
+                if (time < 0.0f)
+                    time = 0.0f;
+            }
+
+            return time;
         }
 
         private void TransmitSubtitles()
@@ -1095,6 +1105,20 @@ namespace UdonSharp.Video.Subtitles
                 handler.UpdateLockState();
 
             SendCallback("OnUSharpVideoSubtitlesModeChange");
+        }
+
+        public float GetTimeOffset()
+        {
+            return _timeOffset;
+        }
+
+        public void SetTimeOffset(float offset)
+        {
+            _timeOffset = -offset;
+
+            //LogMessage($"Time offset set to {_timeOffset}");
+
+            SendCallback("OnUSharpVideoSubtitlesTimeOffsetChange");
         }
 
         public bool HasSubtitles()
