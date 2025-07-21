@@ -1109,7 +1109,7 @@ namespace UdonSharp.Video.Subtitles
         {
             int n;
             if (int.TryParse(number, out n))
-                return int.Parse(number);
+                return n;
 
             return 0;
         }
@@ -1123,7 +1123,7 @@ namespace UdonSharp.Video.Subtitles
 
             float n;
             if (float.TryParse(tmp[0], out n))
-                return float.Parse(tmp[0]);
+                return n;
 
             return 0f;
         }
