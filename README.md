@@ -68,6 +68,8 @@ Methods that you might be interested in using when integrating this prefab with 
 - [SubtitleManager.SetEnabled(bool): void](#subtitlemanagersetenabledbool-void)
 - [SubtitleManager.IsLocal(): bool](#subtitlemanagerislocal-bool)
 - [SubtitleManager.SetLocal(bool): void](#subtitlemanagersetlocalbool-void)
+- [SubtitleManager.GetTimeOffset(): float](#subtitlemanagergettimeoffset-float)
+- [SubtitleManager.SetTimeOffset(float): void](#subtitlemanagersettimeoffsetfloat-void)
 - [SubtitleManager.IsSyncedURL(): bool](#subtitlemanagerissyncedurl-bool)
 - [SubtitleManager.ReloadSyncedURL(): bool](#subtitlemanagerreloadsyncedurl-bool)
 - [SubtitleManager.SynchronizeSubtitles(): void](#subtitlemanagersynchronizesubtitles-void)
@@ -142,6 +144,14 @@ Whenever the player is using local subtitles
 ### SubtitleManager.SetLocal(bool): void
 
 Switch between using global and local subtitles
+
+### SubtitleManager.GetTimeOffset(): float
+
+Get current time offset value
+
+### SubtitleManager.SetTimeOffset(float): void
+
+Set time offset value
 
 ### SubtitleManager.IsSyncedURL(): bool
 
