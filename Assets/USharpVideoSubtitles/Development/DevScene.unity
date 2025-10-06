@@ -492,7 +492,7 @@ PrefabInstance:
         type: 3}
       propertyPath: serializedProgramAsset
       value: 
-      objectReference: {fileID: 11400000, guid: 1e53c70f0b6a9d94785fd4977d0393ae,
+      objectReference: {fileID: 11400000, guid: e4a45080602f8a1488567e3d95d9d027,
         type: 2}
     - target: {fileID: 6421412928588461830, guid: 87d772cf1b1ec7b49839dde29eb427be,
         type: 3}
@@ -2753,6 +2753,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 278060869384376391, guid: 79b0ea249ffa6a54bb5f55191b085d00,
         type: 3}
+      propertyPath: videoScreen
+      value: 
+      objectReference: {fileID: 1547728457}
+    - target: {fileID: 278060869384376391, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
       propertyPath: serializationData.Prefab
       value: 
       objectReference: {fileID: 278060869384376391, guid: 79b0ea249ffa6a54bb5f55191b085d00,
@@ -3462,7 +3467,7 @@ Transform:
   m_GameObject: {fileID: 1094421957010841707}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.1, z: 0}
+  m_LocalPosition: {x: -3, y: 0.1, z: 5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3807,20 +3812,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1555380924255997738, guid: 07a8344aed11c464d9ca30fde8ee3351,
-        type: 3}
-      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: VRC.Udon.UdonBehaviour, VRC.Udon
-      objectReference: {fileID: 0}
     - target: {fileID: 1555380924737070344, guid: 07a8344aed11c464d9ca30fde8ee3351,
         type: 3}
       propertyPath: m_Name
       value: OnScreenUI
-      objectReference: {fileID: 0}
-    - target: {fileID: 1555380924737070346, guid: 07a8344aed11c464d9ca30fde8ee3351,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1555380924737070346, guid: 07a8344aed11c464d9ca30fde8ee3351,
         type: 3}
@@ -3871,11 +3866,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1555380925016767697, guid: 07a8344aed11c464d9ca30fde8ee3351,
-        type: 3}
-      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: VRC.Udon.UdonBehaviour, VRC.Udon
       objectReference: {fileID: 0}
     - target: {fileID: 5166741581669073756, guid: 07a8344aed11c464d9ca30fde8ee3351,
         type: 3}

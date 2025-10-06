@@ -8,13 +8,21 @@ using UdonSharp;
 using UnityEngine;
 using UdonSharp.Video.Subtitles;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 namespace UdonSharp.Video.UI
 {
     [UdonBehaviourSyncMode(BehaviourSyncMode.NoVariableSync)]
     public class OnScreenUIController : UdonSharpBehaviour
     {
+#if USHARPVIDEO_FOUND
         [SerializeField]
         private USharpVideoPlayer targetVideoPlayer;
+#else
+        private Component targetVideoPlayer;
+#endif
 
         [SerializeField]
         private SubtitleControlHandler subtitleControlHandler;
@@ -24,8 +32,12 @@ namespace UdonSharp.Video.UI
 
         [Header("Do not touch")]
 
+#if USHARPVIDEO_FOUND
         [SerializeField]
         private VideoControlHandler videoControlHandler;
+#else
+        private Component videoControlHandler;
+#endif
 
         [SerializeField]
         private GameObject panel;
@@ -38,8 +50,10 @@ namespace UdonSharp.Video.UI
 
         private void Start()
         {
+#if USHARPVIDEO_FOUND
             if (targetVideoPlayer && videoControlHandler && !videoControlHandler.targetVideoPlayer)
                 videoControlHandler.targetVideoPlayer = targetVideoPlayer;
+#endif
 
             if (videoScreen)
             {
@@ -87,4 +101,15 @@ namespace UdonSharp.Video.UI
                 subtitleControlHandler.ToggleSettingsPopup();
         }
     }
+
+#if UNITY_EDITOR && !USHARPVIDEO_FOUND
+    [CustomEditor(typeof(OnScreenUIController))]
+    public class OnScreenUIControllerEditor : Editor
+    {
+        public override void OnInspectorGUI()
+        {
+            EditorGUILayout.HelpBox("USharpVideo not found in the project. Please install USharpVideo to use this extra prefab.", MessageType.Error);
+        }
+    }
+#endif
 }

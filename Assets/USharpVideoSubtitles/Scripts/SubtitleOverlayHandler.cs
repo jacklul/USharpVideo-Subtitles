@@ -5,7 +5,6 @@
  */
 
 using TMPro;
-using UdonSharp;
 using UnityEngine;
 
 namespace UdonSharp.Video.Subtitles

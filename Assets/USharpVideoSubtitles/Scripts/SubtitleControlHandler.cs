@@ -6,7 +6,6 @@
 
 using System;
 using TMPro;
-using UdonSharp;
 using UnityEngine;
 using UnityEngine.UI;
 using VRC.SDKBase;
@@ -262,7 +261,12 @@ namespace UdonSharp.Video.Subtitles
 
             if (subtitlesToggle) subtitlesToggle.isOn = manager.IsEnabled();
             if (localToggle) localToggle.isOn = manager.IsLocal();
+
+#if USHARPVIDEO_FOUND
             if (lockButton) lockButton.SetActive(!manager.IsUsingUSharpVideo());
+#else
+            if (lockButton) lockButton.SetActive(true);
+#endif
 
             UpdateOwner();
             UpdateLockState();
@@ -506,7 +510,11 @@ namespace UdonSharp.Video.Subtitles
         {
             if (manager.IsLocal())
             {
+#if USHARPVIDEO_FOUND
                 if (lockButton && !manager.IsUsingUSharpVideo()) lockButton.SetActive(false);
+#else
+                if (lockButton) lockButton.SetActive(false);
+#endif
 
                 if (lockGraphic) lockGraphic.color = whiteGraphicColor;
                 if (inputClearButtonIcon) inputClearButtonIcon.color = whiteGraphicColor;
@@ -521,7 +529,11 @@ namespace UdonSharp.Video.Subtitles
                 return;
             }
 
+#if USHARPVIDEO_FOUND
             if (lockButton && !manager.IsUsingUSharpVideo()) lockButton.SetActive(true);
+#else
+            if (lockButton) lockButton.SetActive(true);
+#endif
 
             if (manager.IsLocked())
             {
@@ -549,10 +561,13 @@ namespace UdonSharp.Video.Subtitles
                     if (inputField) inputField.readOnly = true;
                     if (urlInputField) urlInputField.readOnly = true;
 
-                    string onlyMaster = string.Format(
-                        @MESSAGE_ONLY_MASTER_CAN_ADD,
-                        (manager.IsUsingUSharpVideo() ? manager.GetUSharpVideoOwner() : Networking.GetOwner(manager.gameObject)).displayName
-                    );
+#if USHARPVIDEO_FOUND
+                    string owner = (manager.IsUsingUSharpVideo() ? manager.GetUSharpVideoOwner() : Networking.GetOwner(manager.gameObject)).displayName;
+#else
+                    string owner = Networking.GetOwner(manager.gameObject).displayName;
+#endif
+
+                    string onlyMaster = string.Format(@MESSAGE_ONLY_MASTER_CAN_ADD, owner);
 
                     if (inputPlaceholderText) inputPlaceholderText.text = onlyMaster;
                     if (urlInputPlaceholderText) urlInputPlaceholderText.text = onlyMaster;

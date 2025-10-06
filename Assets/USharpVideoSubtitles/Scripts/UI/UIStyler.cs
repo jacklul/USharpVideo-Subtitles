@@ -1,19 +1,18 @@
-﻿// This is a modified copy of UIStyler from USharpVideo package
-// This allows us to use the same styling presets
+﻿// This is a modified copy of UIStyler script from USharpVideo package.
+// This allows the usage of the same styling system.
 
-using UnityEngine;
-using System.Reflection;
-using System.IO;
 using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
+using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
 using VRC.SDK3.Components;
-using TMPro;
 
 #if UNITY_EDITOR
-using UnityEditor;
 using UdonSharpEditor;
+using UnityEditor;
 #endif
-using UdonSharp.Video.UI;
 
 namespace UdonSharp.Video.Subtitles.UI
 {
@@ -22,6 +21,10 @@ namespace UdonSharp.Video.Subtitles.UI
     {
 #pragma warning disable CS0649
         public UIStyle uiStyle;
+
+#if USHARPVIDEO_FOUND
+        public UdonSharp.Video.UI.UIStyle importUiStyle;
+#endif
 #pragma warning restore CS0649
 
         private void Reset()
@@ -154,22 +157,73 @@ namespace UdonSharp.Video.Subtitles.UI
     internal class UIStylerEditor : Editor
     {
         SerializedProperty colorStyleProperty;
+#if USHARPVIDEO_FOUND
+        SerializedProperty importColorStyleProperty;
+#endif
 
         private void OnEnable()
         {
             colorStyleProperty = serializedObject.FindProperty(nameof(UIStyler.uiStyle));
+#if USHARPVIDEO_FOUND
+            importColorStyleProperty = serializedObject.FindProperty(nameof(UIStyler.importUiStyle));
+#endif
         }
 
         public override void OnInspectorGUI()
         {
             EditorGUI.BeginChangeCheck();
             EditorGUILayout.PropertyField(colorStyleProperty);
+#if USHARPVIDEO_FOUND
+            EditorGUILayout.PropertyField(importColorStyleProperty);
+#endif
 
             serializedObject.ApplyModifiedProperties();
 
             if (EditorGUI.EndChangeCheck())
                 (target as UIStyler).ApplyStyle();
 
+#if USHARPVIDEO_FOUND
+            if (importColorStyleProperty.objectReferenceValue is UdonSharp.Video.UI.UIStyle styleImport)
+            {
+                if (GUILayout.Button("Import Style from USharpVideo"))
+                {
+                    string baseName = styleImport.name;
+                    if (baseName.EndsWith(".asset"))
+                        baseName = baseName.Substring(0, baseName.Length - 6);
+
+                    string saveLocation = EditorUtility.SaveFilePanelInProject("Style save location", "Imported " + baseName, "asset", "Choose a save location for the imported style");
+
+                    if (!string.IsNullOrEmpty(saveLocation))
+                    {
+                        var newStyle = ScriptableObject.CreateInstance<UIStyle>();
+
+                        newStyle.name = Path.GetFileNameWithoutExtension(saveLocation); // I'm not sure if the name gets updated when someone changes the name manually so this may need to be revisited
+
+                        foreach (FieldInfo field in typeof(UIStyle).GetFields(BindingFlags.Public | BindingFlags.Instance))
+                        {
+                            FieldInfo importField = typeof(UdonSharp.Video.UI.UIStyle).GetField(field.Name, BindingFlags.Public | BindingFlags.Instance);
+
+                            if (importField != null && importField.FieldType == field.FieldType)
+                            {
+                                field.SetValue(newStyle, importField.GetValue(styleImport));
+                            }
+                        }
+
+                        AssetDatabase.CreateAsset(newStyle, saveLocation);
+                        AssetDatabase.SaveAssets();
+
+                        serializedObject.FindProperty(nameof(UIStyler.uiStyle)).objectReferenceValue = newStyle;
+                        serializedObject.FindProperty(nameof(UIStyler.importUiStyle)).objectReferenceValue = null;
+                        serializedObject.ApplyModifiedProperties();
+
+                        if (EditorGUI.EndChangeCheck())
+                            (target as UIStyler).ApplyStyle();
+                    }
+                }
+
+                EditorGUILayout.Space();
+            } else
+#endif
             if (colorStyleProperty.objectReferenceValue is UIStyle style)
             {
                 //EditorGUILayout.Space();

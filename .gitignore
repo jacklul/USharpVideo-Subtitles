@@ -73,7 +73,9 @@ crashlytics-build.properties
 
 # Include only what we need
 /[Pp]ackages/*
+!/Packages/com.vrchat.core.bootstrap/
 !/Packages/manifest.json
+!/Packages/packages-lock.json
 !/Packages/vpm-manifest.json
 /[Aa]ssets/*
 !/Assets/USharpVideoSubtitles/

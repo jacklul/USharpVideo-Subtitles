@@ -1,0 +1,3 @@
+https://www.streamlinehq.com/icons/bootstrap-icons
+Size = 864 px
+Padding = 80 px

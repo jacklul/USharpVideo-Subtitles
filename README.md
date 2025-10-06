@@ -21,38 +21,30 @@ _The core of this prefab is based on [this code](https://gist.github.com/hai-vr/
 
 - [Unity 2022.3.22f1](https://unity.com/releases/editor/whats-new/2022.3.22)+ (see VRChat's [Current Unity Version](https://creators.vrchat.com/sdk/upgrade/current-unity-version/) page)
 - [VRChat SDK 3.7.4](https://creators.vrchat.com/releases/release-3-7-4/)+
-- [USharpVideo v1.0.0](https://github.com/MerlinVR/USharpVideo/releases/latest)+
-- Project created using [Creator Companion](https://vcc.docs.vrchat.com/)
 
 ## Installation
 
-> [!TIP]
-> I suggest adding "**subtitles**" to your world's tags when using this prefab so that people can find worlds with subtitle support more easily.
+If you are using [USharpVideo](https://github.com/MerlinVR/USharpVideo/releases/latest), it is assumed that it has already been imported.
 
-1. Import [USharpVideo](https://github.com/MerlinVR/USharpVideo/releases/latest)
-    - **This is required even if you're not planning on using it**
+1. Import [latest release](https://github.com/jacklul/USharpVideo-Subtitles/releases/latest) UnityPackage
 
-2. Import [latest release](https://github.com/jacklul/USharpVideo-Subtitles/releases/latest) unitypackage
+2. Add the prefab to your scene using `Component -> Udon Sharp -> Video -> Subtitles -> Add prefab to scene` menu item
 
-3. Drag the `Subtitles` prefab into your scene
-    - _when using **USharpVideo** you can also drag `Subtitles` prefab into `USharpVideo` in your scene and reset `Subtitles` object's transform values_
+3. If a window asking you to import **TextMeshPro Essentials** appears - just do it
+    - _TextMeshPro examples and extras are not needed!_
 
-4. When a window asking you to import **TextMeshPro Essentials** appears - just do it
+4. Unpack the `Subtitles` prefab by right clicking on it in your scene and selecting **Prefab -> Unpack Prefab**
 
 5. Add a reference in the `Subtitles` object (**SubtitleManager** script) to:
     - when using **USharpVideo** (**Target Video Player** field) - **USharpVideoPlayer** from the `USharpVideo` object
     - in any other case (**Base Video Player** field) - **VRCUnityVideoPlayer** or **VRCAVProVideoPlayer** that have to be somewhere in your scene - depends on which one you're using ([you can change this dynamically](#subtitlemanagersetvideoplayerbasevrcvideoplayer-void))
 
-6. Add a reference in the `Subtitles/Overlay` object (**Video Screen** field) to the video player's screen object, the overlay will copy the position and rotation of the screen on start
-    - if this doesn't work on your world then you will have to manually adjust `Subtitles/Overlay` object's position and rotation to match the video screen object (while keeping the mentioned earlier field empty)
+6. Add a reference in the `Subtitles/Overlay` object (**Video Screen** field) to the video player's screen object
+    - Overlay script will copy the position and rotation of the screen on start but if this doesn't work on your world then you will have to manually adjust `Subtitles/Overlay` object's position and rotation to match the video screen object (while keeping the mentioned earlier field empty)
 
 ## Upgrading
 
-1. Delete the prefab from your scene
-
-2. Import new package
-
-3. Re-do [Installation](#installation) steps 3. 5. and 6. 
+Delete the `Subtitles` object from your scene and re-do the [installation steps](#installation).  
 
 ## Quick API reference
 

@@ -7,13 +7,12 @@
  */
 
 using System;
-using UdonSharp;
 using UnityEngine;
 using UnityEngine.UI;
 using VRC.SDKBase;
-using VRC.Udon.Common;
-using VRC.SDK3.Video.Components.Base;
 using VRC.SDK3.StringLoading;
+using VRC.SDK3.Video.Components.Base;
+using VRC.Udon.Common;
 using VRC.Udon.Common.Interfaces;
 
 namespace UdonSharp.Video.Subtitles
@@ -32,8 +31,10 @@ namespace UdonSharp.Video.Subtitles
         private const string MESSAGE_FAILED = "Failed to parse subtitles";
         private const string MESSAGE_SYNCHRONIZING = "Synchronizing {0} / {1} {2}";
 
+#if USHARPVIDEO_FOUND
         [SerializeField]
         private USharpVideoPlayer targetVideoPlayer;
+#endif
 
         [SerializeField]
         private BaseVRCVideoPlayer baseVideoPlayer;
@@ -106,7 +107,9 @@ namespace UdonSharp.Video.Subtitles
         private bool _isLocked = true; // Does nothing when USharpVideo is used
         private bool _lastLocked; // Remember last lock status
 
+#if USHARPVIDEO_FOUND
         private VideoPlayerManager _videoManager;
+#endif
         private SubtitleOverlayHandler _overlayHandler;
         private SubtitleControlHandler[] _registeredControlHandlers;
         private UdonSharpBehaviour[] _registeredCallbackReceivers;
@@ -118,18 +121,25 @@ namespace UdonSharp.Video.Subtitles
         private VRCPlayerApi _currentOwner;
         private VRCPlayerApi _previousOwner;
 
+#if USHARPVIDEO_FOUND
         private void OnEnable()
         {
             if (targetVideoPlayer) targetVideoPlayer.RegisterCallbackReceiver(this);
         }
+#endif
 
         private void Start()
         {
+#if USHARPVIDEO_FOUND
             if (!targetVideoPlayer && !baseVideoPlayer)
                 LogWarning("No video player reference assigned!");
 
             if (targetVideoPlayer && baseVideoPlayer)
                 LogWarning("You cannot reference USharpVideo and Unity or AVPro Video Player at the same time - USharpVideo takes precedence!");
+#else
+            if (!baseVideoPlayer)
+                LogWarning("No video player reference assigned!");
+#endif
 
             if (_registeredControlHandlers == null)
                 _registeredControlHandlers = new SubtitleControlHandler[0];
@@ -137,6 +147,7 @@ namespace UdonSharp.Video.Subtitles
             if (_registeredCallbackReceivers == null)
                 _registeredCallbackReceivers = new UdonSharpBehaviour[0];
 
+#if USHARPVIDEO_FOUND
             if (targetVideoPlayer)
             {
                 _videoManager = targetVideoPlayer.GetVideoManager();
@@ -146,6 +157,7 @@ namespace UdonSharp.Video.Subtitles
             }
             else
             {
+#endif
                 if (Networking.IsOwner(gameObject))
                 {
                     _isLocked = !defaultUnlocked;
@@ -157,7 +169,9 @@ namespace UdonSharp.Video.Subtitles
                 }
 
                 _lastLocked = _isLocked;
+#if USHARPVIDEO_FOUND
             }
+#endif
 
             _previousOwner = Networking.GetOwner(gameObject);
             _currentOwner = _previousOwner;
@@ -166,10 +180,12 @@ namespace UdonSharp.Video.Subtitles
             LogMessage("Initialized");
         }
 
+#if USHARPVIDEO_FOUND
         private void OnDisable()
         {
             if (targetVideoPlayer) targetVideoPlayer.UnregisterCallbackReceiver(this);
         }
+#endif
 
         public void Update()
         {
@@ -220,8 +236,10 @@ namespace UdonSharp.Video.Subtitles
 
         private bool IsVideoPlayerPlaying()
         {
+#if USHARPVIDEO_FOUND
             if (_videoManager)
                 return _videoManager.IsPlaying();
+#endif
 
             if (baseVideoPlayer)
                 return baseVideoPlayer.IsPlaying;
@@ -233,9 +251,12 @@ namespace UdonSharp.Video.Subtitles
         {
             float time = 0.0f;
 
+#if USHARPVIDEO_FOUND
             if (_videoManager)
-                time =_videoManager.GetTime();
-            else if (baseVideoPlayer)
+                time = _videoManager.GetTime();
+            else
+#endif
+            if (baseVideoPlayer)
                 time = baseVideoPlayer.GetTime();
 
             if (_timeOffset != 0.0f)
@@ -354,7 +375,11 @@ namespace UdonSharp.Video.Subtitles
             if (Networking.IsOwner(gameObject))
                 return;
 
+#if USHARPVIDEO_FOUND
             if (!targetVideoPlayer && _lastLocked != _isLocked)
+#else
+            if (_lastLocked != _isLocked)
+#endif
             {
                 _lastLocked = _isLocked;
 
@@ -905,10 +930,16 @@ namespace UdonSharp.Video.Subtitles
             {
                 if (_dataSynced != "")
                     TransmitSubtitles();
+#if USHARPVIDEO_FOUND
                 else if (!IsUsingUSharpVideo()) // To make sure the lock state is correct on the joiner
+#else
+                else
+#endif
                     RequestSerialization();
 
+#if USHARPVIDEO_FOUND
                 if (_dataSynced != "" || !IsUsingUSharpVideo())
+#endif
                     LogMessage($"Player joined ({player.displayName}) - request serialization");
             }
         }
@@ -938,14 +969,16 @@ namespace UdonSharp.Video.Subtitles
             }
         }
 
-        // Similary to how it is in USharpVideo - uncomment this to prevent people from taking ownership when they shouldn't be able to
-        //public override bool OnOwnershipRequest(VRCPlayerApi requestingPlayer, VRCPlayerApi requestedOwner)
-        //{
-        //    if (targetVideoPlayer)
-        //        return !targetVideoPlayer.IsLocked() || targetVideoPlayer.IsPrivilegedUser(requestedOwner);
-        //    
-        //    return !_isLocked || IsPrivilegedUser(requestedOwner);
-        //}
+// Similary to how it is in USharpVideo - uncomment this to prevent people from taking ownership when they shouldn't be able to
+//        public override bool OnOwnershipRequest(VRCPlayerApi requestingPlayer, VRCPlayerApi requestedOwner)
+//        {
+//#if USHARPVIDEO_FOUND
+//            if (targetVideoPlayer)
+//                return !targetVideoPlayer.IsLocked() || targetVideoPlayer.IsPrivilegedUser(requestedOwner);
+//#endif
+//            
+//            return !_isLocked || IsPrivilegedUser(requestedOwner);
+//        }
 
         public override void OnOwnershipTransferred(VRCPlayerApi player)
         {
@@ -966,6 +999,7 @@ namespace UdonSharp.Video.Subtitles
             LogMessage($"Ownership changed ({player.displayName})");
         }
 
+#if USHARPVIDEO_FOUND
         public bool IsUsingUSharpVideo()
         {
             return targetVideoPlayer != null;
@@ -978,11 +1012,14 @@ namespace UdonSharp.Video.Subtitles
 
             return null; // Should never happen
         }
+#endif
 
         public bool IsLocked()
         {
+#if USHARPVIDEO_FOUND
             if (targetVideoPlayer)
                 return targetVideoPlayer.IsLocked();
+#endif
 
             return _isLocked;
         }
@@ -992,11 +1029,13 @@ namespace UdonSharp.Video.Subtitles
             if (!IsPrivilegedUser(Networking.LocalPlayer))
                 return;
 
+#if USHARPVIDEO_FOUND
             if (targetVideoPlayer)
             {
                 LogError("Method SetLocked cannot be used while using USharpVideo");
                 return;
             }
+#endif
 
             if (!IsSynchronized() && !Networking.IsOwner(gameObject)) // Prevent locking when someone else is redistributing the subtitles as this would break the sync for everyone
                 return;
@@ -1017,16 +1056,20 @@ namespace UdonSharp.Video.Subtitles
 
         public bool CanControlSubtitles()
         {
+#if USHARPVIDEO_FOUND
             if (targetVideoPlayer)
                 return targetVideoPlayer.CanControlVideoPlayer();
+#endif
 
             return !_isLocked || IsPrivilegedUser(Networking.LocalPlayer);
         }
 
         public bool IsPrivilegedUser(VRCPlayerApi player)
         {
+#if USHARPVIDEO_FOUND
             if (targetVideoPlayer)
                 return targetVideoPlayer.IsPrivilegedUser(player);
+#endif
 
             return player.isMaster;
         }
@@ -1128,16 +1171,16 @@ namespace UdonSharp.Video.Subtitles
 
         public void SetVideoPlayer(BaseVRCVideoPlayer videoPlayer)
         {
-            if (!targetVideoPlayer)
-            {
-                baseVideoPlayer = videoPlayer;
-
-                ResetSubtitleTrackingState();
-
-                SendCallback("OnUSharpVideoSubtitlesVideoPlayerChange");
-            }
-            else
+#if USHARPVIDEO_FOUND
+            if (targetVideoPlayer) {
                 LogWarning("Method SetVideoPlayer cannot be used with USharpVideo");
+                return;
+            }
+#endif
+
+            baseVideoPlayer = videoPlayer;
+            ResetSubtitleTrackingState();
+            SendCallback("OnUSharpVideoSubtitlesVideoPlayerChange");
         }
 
         public void ClearSubtitles()
@@ -1205,6 +1248,7 @@ namespace UdonSharp.Video.Subtitles
             SendCallback("OnUSharpVideoSubtitlesSettingsUpdate");
         }
 
+#if USHARPVIDEO_FOUND
         public void OnUSharpVideoPlay()
         {
             VRCUrl currentURL = targetVideoPlayer.GetCurrentURL();
@@ -1265,6 +1309,7 @@ namespace UdonSharp.Video.Subtitles
                     handler.UpdateLockState();
             }
         }
+#endif
 
         public void RegisterOverlayHandler(SubtitleOverlayHandler handler)
         {
