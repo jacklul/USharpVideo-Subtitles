@@ -63,13 +63,6 @@ jobs:
           ${{ env.UNITYPACKAGE }}
         draft: true
 
-    - name: Output changelog
-      run: |
-        cat << "EOF"
-        ${{ steps.changelog.outputs.changelog }}
-        EOF
-      if: ${{ !startsWith(github.ref, 'refs/tags/') }}
-
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       if: ${{ !startsWith(github.ref, 'refs/tags/') }}
