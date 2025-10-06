@@ -13,54 +13,65 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
+
     env:
       ASSETS_FOLDER: USharpVideoSubtitles
       UNITYPACKAGE: USharpVideoSubtitles_${{ github.ref_name }}.unitypackage
+
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout repository
+      uses: actions/checkout@v3
 
-    - uses: metcalfc/changelog-generator@v4
-      id: changelog
-      if: startsWith(github.ref, 'refs/tags/')
-      with:
-        myToken: ${{ secrets.GITHUB_TOKEN }}
-
-    - run: |
-        rm -fr "Assets/${{ env.ASSETS_FOLDER }}/Development"
-        echo "Assets/${{ env.ASSETS_FOLDER }}.meta" > metaList
-        find "Assets/${{ env.ASSETS_FOLDER }}/" -name \*.meta >> metaList
-
-    - run: |
+    - name: Inject version number (tag)
+      run: |
         echo "$GITHUB_REF_NAME" > "Assets/${{ env.ASSETS_FOLDER }}/version.txt"
         sed -i -e "s/(dev version)/$GITHUB_REF_NAME/g" "Assets/${{ env.ASSETS_FOLDER }}/Subtitles.prefab"
       if: startsWith(github.ref, 'refs/tags/')
 
-    - run: |
+    - name: Inject version number (head)
+      run: |
         VERSION=$GITHUB_REF_NAME-$(git rev-parse --short "$GITHUB_SHA")
         echo "$VERSION" > "Assets/${{ env.ASSETS_FOLDER }}/version.txt"
         sed -i -e "s/(dev version)/$VERSION/g" "Assets/${{ env.ASSETS_FOLDER }}/Subtitles.prefab"
       if: startsWith(github.ref, 'refs/heads/')
 
-    - uses: pCYSl5EDgo/create-unitypackage@v1
+    - name: Do not include Development folder
+      run: |
+        rm -fr "Assets/${{ env.ASSETS_FOLDER }}/Development" "Assets/${{ env.ASSETS_FOLDER }}/Development.meta"
+        echo "Assets/${{ env.ASSETS_FOLDER }}.meta" > metaList
+        find "Assets/${{ env.ASSETS_FOLDER }}/" -name \*.meta >> metaList
+
+    - name: Create UnityPackage
+      uses: pCYSl5EDgo/create-unitypackage@v1
       with:
         package-path: ${{ env.UNITYPACKAGE }}
         include-files: metaList
 
-    - uses: softprops/action-gh-release@v2
+    - name: Generate changelog
+      uses: metcalfc/changelog-generator@v4
+      id: changelog
+      if: startsWith(github.ref, 'refs/tags/')
+      with:
+        myToken: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Create release
+      uses: softprops/action-gh-release@v2
       if: startsWith(github.ref, 'refs/tags/')
       with:
         body: ${{ steps.changelog.outputs.changelog }}
-        files: ${{ env.UNITYPACKAGE }}
+        files: |
+          ${{ env.UNITYPACKAGE }}
         draft: true
 
     - name: Output changelog
-      if: ${{ !startsWith(github.ref, 'refs/tags/') }}
       run: |
         cat << "EOF"
         ${{ steps.changelog.outputs.changelog }}
         EOF
+      if: ${{ !startsWith(github.ref, 'refs/tags/') }}
 
-    - uses: actions/upload-artifact@v4
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
       if: ${{ !startsWith(github.ref, 'refs/tags/') }}
       with:
         name: ${{ env.UNITYPACKAGE }}
