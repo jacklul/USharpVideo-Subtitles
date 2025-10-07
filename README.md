@@ -15,6 +15,7 @@ _The core of this prefab is based on [this code](https://gist.github.com/hai-vr/
 - Rich customization with the ability to save the settings
 - Integration with [USharpVideo](https://github.com/MerlinVR/USharpVideo)
 - [Persistence](https://creators.vrchat.com/worlds/udon/persistence/) support
+- Simple time offset control
 
 ## Requirements
 
