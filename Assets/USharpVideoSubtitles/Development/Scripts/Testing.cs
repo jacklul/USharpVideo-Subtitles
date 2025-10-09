@@ -1,11 +1,4 @@
-﻿/*
- * Copyright (c) Jack'lul <https://jacklul.github.io>
- * Licensed under the MIT License
- * https://github.com/jacklul/USharpVideo-Subtitles
- */
-
-using UdonSharp;
-using UnityEngine;
+﻿using UnityEngine;
 using VRC.SDK3.Video.Components;
 using VRC.SDK3.Video.Components.AVPro;
 using VRC.SDKBase;
@@ -15,9 +8,11 @@ namespace UdonSharp.Video.Subtitles.Test
     [UdonBehaviourSyncMode(BehaviourSyncMode.NoVariableSync)]
     public class Testing : UdonSharpBehaviour
     {
+#if USHARPVIDEO_FOUND
         [Header("USharpVideo")]
         public USharpVideoPlayer uSharpVideoPlayer;
         public SubtitleManager subtitlesManager1;
+#endif
 
         [Header("Base players")]
         public VRCUnityVideoPlayer unityVideoPlayer;
@@ -31,6 +26,7 @@ namespace UdonSharp.Video.Subtitles.Test
         public VRCUrl testRemoteSubtitles;
         [TextArea] public string testSubtitles;
 
+#if USHARPVIDEO_FOUND
         public void TestUSharpVideo()
         {
             if (!subtitlesManager1 || !subtitlesManager1) return;
@@ -54,6 +50,7 @@ namespace UdonSharp.Video.Subtitles.Test
 
             subtitlesManager1.ProcessURLInput(testRemoteSubtitles);
         }
+#endif
 
         public void TestUnityVideoPlayer()
         {

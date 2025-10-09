@@ -1589,7 +1589,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uiStyle: {fileID: 0}
-  importUiStyle: {fileID: 0}
 --- !u!223 &1555380924063275733
 Canvas:
   m_ObjectHideFlags: 0

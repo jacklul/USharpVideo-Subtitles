@@ -4,15 +4,13 @@
  * https://github.com/jacklul/USharpVideo-Subtitles
  */
 
-using UdonSharp;
 using UnityEngine;
-using UdonSharp.Video.Subtitles;
 
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
-namespace UdonSharp.Video.UI
+namespace UdonSharp.Video.Subtitles.Extras
 {
     [UdonBehaviourSyncMode(BehaviourSyncMode.NoVariableSync)]
     public class OnScreenUIController : UdonSharpBehaviour
@@ -20,8 +18,6 @@ namespace UdonSharp.Video.UI
 #if USHARPVIDEO_FOUND
         [SerializeField]
         private USharpVideoPlayer targetVideoPlayer;
-#else
-        private Component targetVideoPlayer;
 #endif
 
         [SerializeField]
@@ -35,8 +31,6 @@ namespace UdonSharp.Video.UI
 #if USHARPVIDEO_FOUND
         [SerializeField]
         private VideoControlHandler videoControlHandler;
-#else
-        private Component videoControlHandler;
 #endif
 
         [SerializeField]
@@ -108,7 +102,7 @@ namespace UdonSharp.Video.UI
     {
         public override void OnInspectorGUI()
         {
-            EditorGUILayout.HelpBox("USharpVideo not found in the project. Please install USharpVideo to use this extra prefab.", MessageType.Error);
+            EditorGUILayout.HelpBox("USharpVideo not found in the project. Please install USharpVideo to use this prefab.", MessageType.Error);
         }
     }
 #endif

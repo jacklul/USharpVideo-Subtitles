@@ -92,7 +92,7 @@ GameObject:
   - component: {fileID: 3980146809973010258}
   - component: {fileID: 8151385040519948289}
   m_Layer: 5
-  m_Name: Log Messages
+  m_Name: Log
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

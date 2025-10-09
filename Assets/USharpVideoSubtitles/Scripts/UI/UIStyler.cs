@@ -1,5 +1,4 @@
 ﻿// This is a modified copy of UIStyler script from USharpVideo package.
-// This allows the usage of the same styling system.
 
 using System.Collections.Generic;
 using System.IO;
@@ -21,10 +20,6 @@ namespace UdonSharp.Video.Subtitles.UI
     {
 #pragma warning disable CS0649
         public UIStyle uiStyle;
-
-#if USHARPVIDEO_FOUND
-        public UdonSharp.Video.UI.UIStyle importUiStyle;
-#endif
 #pragma warning restore CS0649
 
         private void Reset()
@@ -157,79 +152,30 @@ namespace UdonSharp.Video.Subtitles.UI
     internal class UIStylerEditor : Editor
     {
         SerializedProperty colorStyleProperty;
-#if USHARPVIDEO_FOUND
-        SerializedProperty importColorStyleProperty;
-#endif
 
         private void OnEnable()
         {
             colorStyleProperty = serializedObject.FindProperty(nameof(UIStyler.uiStyle));
-#if USHARPVIDEO_FOUND
-            importColorStyleProperty = serializedObject.FindProperty(nameof(UIStyler.importUiStyle));
-#endif
         }
 
         public override void OnInspectorGUI()
         {
             EditorGUI.BeginChangeCheck();
             EditorGUILayout.PropertyField(colorStyleProperty);
-#if USHARPVIDEO_FOUND
-            EditorGUILayout.PropertyField(importColorStyleProperty);
-#endif
 
             serializedObject.ApplyModifiedProperties();
 
             if (EditorGUI.EndChangeCheck())
                 (target as UIStyler).ApplyStyle();
 
-#if USHARPVIDEO_FOUND
-            if (importColorStyleProperty.objectReferenceValue is UdonSharp.Video.UI.UIStyle styleImport)
-            {
-                if (GUILayout.Button("Import Style from USharpVideo"))
-                {
-                    string baseName = styleImport.name;
-                    if (baseName.EndsWith(".asset"))
-                        baseName = baseName.Substring(0, baseName.Length - 6);
-
-                    string saveLocation = EditorUtility.SaveFilePanelInProject("Style save location", "Imported " + baseName, "asset", "Choose a save location for the imported style");
-
-                    if (!string.IsNullOrEmpty(saveLocation))
-                    {
-                        var newStyle = ScriptableObject.CreateInstance<UIStyle>();
-
-                        newStyle.name = Path.GetFileNameWithoutExtension(saveLocation); // I'm not sure if the name gets updated when someone changes the name manually so this may need to be revisited
-
-                        foreach (FieldInfo field in typeof(UIStyle).GetFields(BindingFlags.Public | BindingFlags.Instance))
-                        {
-                            FieldInfo importField = typeof(UdonSharp.Video.UI.UIStyle).GetField(field.Name, BindingFlags.Public | BindingFlags.Instance);
-
-                            if (importField != null && importField.FieldType == field.FieldType)
-                            {
-                                field.SetValue(newStyle, importField.GetValue(styleImport));
-                            }
-                        }
-
-                        AssetDatabase.CreateAsset(newStyle, saveLocation);
-                        AssetDatabase.SaveAssets();
-
-                        serializedObject.FindProperty(nameof(UIStyler.uiStyle)).objectReferenceValue = newStyle;
-                        serializedObject.FindProperty(nameof(UIStyler.importUiStyle)).objectReferenceValue = null;
-                        serializedObject.ApplyModifiedProperties();
-
-                        if (EditorGUI.EndChangeCheck())
-                            (target as UIStyler).ApplyStyle();
-                    }
-                }
-
-                EditorGUILayout.Space();
-            } else
-#endif
             if (colorStyleProperty.objectReferenceValue is UIStyle style)
             {
-                //EditorGUILayout.Space();
+                EditorGUILayout.Space();
 
-                //if (GUILayout.Button("Apply Style"))
-                //    (target as UIStyler).ApplyStyle();
+                if (GUILayout.Button("Apply Style"))
+                    (target as UIStyler).ApplyStyle();
+
+                ExtraButtons();
 
                 EditorGUILayout.Space();
                 EditorGUILayout.LabelField(ObjectNames.NicifyVariableName(style.name), EditorStyles.boldLabel);
@@ -272,7 +218,80 @@ namespace UdonSharp.Video.Subtitles.UI
                         serializedObject.ApplyModifiedProperties();
                     }
                 }
+
+                ExtraButtons();
             }
+        }
+
+        private void ExtraButtons()
+        {
+            if (GUILayout.Button("Restore Default Style"))
+            {
+                string defaultStyleGuid = "e84826a7ca484d1081c0bcd5e08fbd20"; // GUID of the default UIStyle asset in this package
+                var defaultStyle = AssetDatabase.LoadAssetAtPath<UIStyle>(AssetDatabase.GUIDToAssetPath(defaultStyleGuid));
+
+                if (defaultStyle != null)
+                {
+                    serializedObject.FindProperty(nameof(UIStyler.uiStyle)).objectReferenceValue = defaultStyle;
+                    serializedObject.ApplyModifiedProperties();
+
+                    if (EditorGUI.EndChangeCheck())
+                        (target as UIStyler).ApplyStyle();
+                }
+                else
+                {
+                    EditorUtility.DisplayDialog("Error", "Failed to locate default style asset!", "OK");
+                }
+            }
+
+#if USHARPVIDEO_FOUND
+            EditorGUILayout.Space();
+
+            if (GUILayout.Button("Import Style from USharpVideo"))
+            {
+                string sourceAsset = EditorUtility.OpenFilePanel("Select USharpVideo style asset", "Assets/USharpVideo/Styles", "asset");
+                string sourceStyleGuid = "447ea4bbd35f6a541adc230420ec00c2"; // GUID of the UIStyle asset in USharpVideo package
+                string targetStyleGuid = "1ad324839c64425c9b5a7a55e308f714"; // GUID of the UIStyle asset in this package
+
+                if (!string.IsNullOrEmpty(sourceAsset))
+                {
+                    string fileContents = File.ReadAllText(sourceAsset);
+
+                    if (fileContents.Contains(sourceStyleGuid))
+                    {
+                        string targetAsset = EditorUtility.SaveFilePanelInProject("Style save location", Path.GetFileName(sourceAsset), "asset", "Choose a save location for the imported style");
+
+                        if (!string.IsNullOrEmpty(targetAsset))
+                        {
+                            File.Copy(sourceAsset, targetAsset, true);
+                            fileContents = File.ReadAllText(targetAsset);
+                            fileContents = fileContents.Replace(sourceStyleGuid, targetStyleGuid);
+                            File.WriteAllText(targetAsset, fileContents);
+                            AssetDatabase.ImportAsset(targetAsset, ImportAssetOptions.ForceUpdate);
+
+                            var newStyle = AssetDatabase.LoadAssetAtPath<UIStyle>(targetAsset);
+
+                            if (newStyle != null)
+                            {
+                                serializedObject.FindProperty(nameof(UIStyler.uiStyle)).objectReferenceValue = newStyle;
+                                serializedObject.ApplyModifiedProperties();
+
+                                if (EditorGUI.EndChangeCheck())
+                                    (target as UIStyler).ApplyStyle();
+                            }
+                            else
+                            {
+                                EditorUtility.DisplayDialog("Error", "Failed to import style.\nAre you sure the selected asset is valid?", "OK");
+                            }
+                        }
+                    }
+                    else
+                    {
+                        EditorUtility.DisplayDialog("Error", "Selected file is not a valid USharpVideo style asset.", "OK");
+                    }
+                }
+            }
+#endif
         }
     }
 #endif

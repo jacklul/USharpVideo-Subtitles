@@ -5,36 +5,49 @@ on:
     tags:
       - "v*.*.*"
     branches:
-      - master
-      - develop
+      - "**"
   workflow_dispatch:
 
 env:
   PACKAGE_NAME: USharpVideoSubtitles
 
 jobs:
-  release:
+  build:
     runs-on: ubuntu-latest
 
-    permissions:
-      contents: write
+    outputs:
+      version: ${{ steps.variables.outputs.version }}
+      unitypackage_file: ${{ steps.variables.outputs.unitypackage_file }}
 
     steps:
-      - name: Checkout repository
+      - name: Checkout local repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # full history needed for 'git describe' below
 
-      - name: Inject version number
+      - name: Remove Development folder
+        run: rm -fr "Assets/${{ env.PACKAGE_NAME }}/Development" "Assets/${{ env.PACKAGE_NAME }}/Development.meta"
+
+      - name: Set needed variables
+        id: variables
         run: |
           if [[ "$GITHUB_REF" =~ ^refs/tags/.* ]]; then
-              version="$(echo "$GITHUB_REF_NAME" | sed 's/^v//')"
+              version="$GITHUB_REF_NAME"
           else
-              version="${GITHUB_REF_NAME}-$(git rev-parse --short "$GITHUB_SHA")"
+              version="$(git describe --tags --always)"
           fi
-          echo "$version" > "Assets/${{ env.PACKAGE_NAME }}/version.txt"
-          sed -i -e "s/(dev version)/$version/g" "Assets/${{ env.PACKAGE_NAME }}/Subtitles.prefab"
+          echo "version=$(echo "$version" | sed 's/^v//')" >> $GITHUB_OUTPUT
+          echo "unitypackage_file=${{ env.PACKAGE_NAME }}-${version}.unitypackage" >> $GITHUB_OUTPUT
+          cat "$GITHUB_OUTPUT"
 
-      - name: Do not include Development folder
-        run: rm -fr "Assets/${{ env.PACKAGE_NAME }}/Development" "Assets/${{ env.PACKAGE_NAME }}/Development.meta"
+      - name: Insert version string to files
+        run: |
+          placeholder="0.0.0-dev"
+          version="${{ steps.variables.outputs.version }}"
+          grep -rl "$placeholder" "Assets/${{ env.PACKAGE_NAME }}/" | while IFS= read -r file; do
+              echo "$file"
+              sed "s|$placeholder|$version|g" -i "$file"
+          done
 
       - name: Generate list of meta files
         run: |
@@ -44,27 +57,49 @@ jobs:
       - name: Create UnityPackage
         uses: pCYSl5EDgo/create-unitypackage@v1
         with:
-          package-path: ${{ env.PACKAGE_NAME }}_${{ github.ref_name }}.unitypackage
+          package-path: ${{ steps.variables.outputs.unitypackage_file }}
           include-files: metaList
 
       - name: Generate changelog
         uses: metcalfc/changelog-generator@v4
         id: changelog
-        if: startsWith(github.ref, 'refs/tags/')
         with:
           myToken: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Prepare files for upload
+        run: |
+          cat << "EOF" > changelog.md
+          ${{ steps.changelog.outputs.changelog }}
+          EOF
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build
+          path: |
+            ${{ steps.variables.outputs.unitypackage_file }}
+            changelog.md
+
+  release:
+    runs-on: ubuntu-latest
+    needs: [build]
+    if: startsWith(github.ref, 'refs/tags/')
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: build
 
       - name: Create release
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          body: ${{ steps.changelog.outputs.changelog }}
           files: |
-            ${{ env.PACKAGE_NAME }}_${{ github.ref_name }}.unitypackage
+            ${{ needs.build.outputs.unitypackage_file }}
+          body_path: changelog.md
+          generate_release_notes: true
           draft: true
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        if: ${{ !startsWith(github.ref, 'refs/tags/') }}
-        with:
-          path: ${{ env.PACKAGE_NAME }}_${{ github.ref_name }}.unitypackage

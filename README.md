@@ -14,8 +14,9 @@ _The core of this prefab is based on [this code](https://gist.github.com/hai-vr/
 - Option to use own subtitles locally
 - Rich customization with the ability to save the settings
 - Integration with [USharpVideo](https://github.com/MerlinVR/USharpVideo)
+- [API methods](API.md) for integrating with your world
 - [Persistence](https://creators.vrchat.com/worlds/udon/persistence/) support
-- Simple time offset control
+- Simple time offset control for out of sync subtitles
 
 ## Requirements
 
@@ -24,165 +25,30 @@ _The core of this prefab is based on [this code](https://gist.github.com/hai-vr/
 
 ## Installation
 
-If you are using [USharpVideo](https://github.com/MerlinVR/USharpVideo/releases/latest), it is assumed that it has already been imported.
+If you intend to use this with [USharpVideo](https://github.com/MerlinVR/USharpVideo/releases/latest), it is assumed that it has already been imported.
 
-1. Import [latest release](https://github.com/jacklul/USharpVideo-Subtitles/releases/latest) UnityPackage
+1. Import [latest UnityPackage](https://github.com/jacklul/USharpVideo-Subtitles/releases/latest)
 
 2. Add the prefab to your scene using `Component -> Udon Sharp -> Video -> Subtitles -> Add prefab to scene` menu item
+    - Or manually drag `/Assets/USharpVideoSubtitles/Subtitles.prefab` to your scene
 
 3. If a window asking you to import **TextMeshPro Essentials** appears - just do it
-    - _TextMeshPro examples and extras are not needed!_
+    - TextMeshPro examples and extras are not needed!
 
 4. Unpack the `Subtitles` prefab by right clicking on it in your scene and selecting **Prefab -> Unpack Prefab**
+    - Technically this is not required if you don't intend to modify the prefab, you may consider creating a prefab variant instead of unpacking it
 
 5. Add a reference in the `Subtitles` object (**SubtitleManager** script) to:
-    - when using **USharpVideo** (**Target Video Player** field) - **USharpVideoPlayer** from the `USharpVideo` object
-    - in any other case (**Base Video Player** field) - **VRCUnityVideoPlayer** or **VRCAVProVideoPlayer** that have to be somewhere in your scene - depends on which one you're using ([you can change this dynamically](#subtitlemanagersetvideoplayerbasevrcvideoplayer-void))
+    - when using **USharpVideo** (**Target Video Player** field) - **USharpVideoPlayer** script from the `USharpVideo` object
+    - in any other case (**Base Video Player** field) - **VRCUnityVideoPlayer** or **VRCAVProVideoPlayer** component that has to be somewhere in your scene - depends on which one you're using ([you can change this dynamically](API.md#subtitlemanagersetvideoplayerbasevrcvideoplayer-void))
 
 6. Add a reference in the `Subtitles/Overlay` object (**Video Screen** field) to the video player's screen object
-    - Overlay script will copy the position and rotation of the screen on start but if this doesn't work on your world then you will have to manually adjust `Subtitles/Overlay` object's position and rotation to match the video screen object (while keeping the mentioned earlier field empty)
+    - Script will copy the position and rotation of the screen on start but if this doesn't work on your world then you will have to manually adjust `Subtitles/Overlay` object's position and rotation to match the video screen object (make sure **Video Screen** field is empty in this case)
 
 ## Upgrading
 
 Delete the `Subtitles` object from your scene and re-do the [installation steps](#installation).  
 
-## Quick API reference
+## API reference
 
-Methods that you might be interested in using when integrating this prefab with other stuff in your world.
-
-- [SubtitleManager.SetVideoPlayer(BaseVRCVideoPlayer): void](#subtitlemanagersetvideoplayerbasevrcvideoplayer-void)
-- [SubtitleManager.HasSubtitles(): bool](#subtitlemanagerhassubtitles-bool)
-- [SubtitleManager.ProcessInput(string): void](#subtitlemanagerprocessinputstring-void)
-- [SubtitleManager.ProcessURLInput(VRCUrl): void](#subtitlemanagerprocessurlinputvrcurl-void)
-- [SubtitleManager.ClearSubtitles(): void](#subtitlemanagerclearsubtitles-void)
-- [SubtitleManager.IsLocked(): bool](#subtitlemanagerislocked-bool)
-- [SubtitleManager.SetLocked(bool): void](#subtitlemanagersetlockedbool-void)
-- [SubtitleManager.IsEnabled(): bool](#subtitlemanagerisenabled-bool)
-- [SubtitleManager.SetEnabled(bool): void](#subtitlemanagersetenabledbool-void)
-- [SubtitleManager.IsLocal(): bool](#subtitlemanagerislocal-bool)
-- [SubtitleManager.SetLocal(bool): void](#subtitlemanagersetlocalbool-void)
-- [SubtitleManager.GetTimeOffset(): float](#subtitlemanagergettimeoffset-float)
-- [SubtitleManager.SetTimeOffset(float): void](#subtitlemanagersettimeoffsetfloat-void)
-- [SubtitleManager.IsSyncedURL(): bool](#subtitlemanagerissyncedurl-bool)
-- [SubtitleManager.ReloadSyncedURL(): bool](#subtitlemanagerreloadsyncedurl-bool)
-- [SubtitleManager.SynchronizeSubtitles(): void](#subtitlemanagersynchronizesubtitles-void)
-- [SubtitleOverlayHandler.GetCanvasTransform(): Transform](#subtitleoverlayhandlergetcanvastransform-transform)
-- [SubtitleOverlayHandler.MoveOverlay(GameObject): void](#subtitleoverlayhandlermoveoverlaygameobject-void)
-- [SubtitleControlHandler.IsSettingsPopupActive(): bool](#subtitlecontrolhandlerissettingspopupactive-bool)
-- [SubtitleControlHandler.ToggleSettingsPopup(): void](#subtitlecontrolhandlertogglesettingspopup-void)
-- [SubtitleControlHandler.ImportSettingsFromString(string): void](#subtitlecontrolhandlerimportsettingsfromstringstring-void)
-
-### SubtitleManager.SetVideoPlayer(BaseVRCVideoPlayer): void
-
-Use this to change the video player reference that the subtitles are synced with
-
-- Does nothing when using **USharpVideo**
-
-### SubtitleManager.HasSubtitles(): bool
-
-Check whenever subtitles are currently loaded
-
-- It will return `true` if subtitles are loaded for the current mode (`IsLocal()`)
-
-### SubtitleManager.ProcessInput(string): void
-
-Loads subtitles from the text string globally or locally (depending on `IsLocal()` value)
-
-- When using **USharpVideo** - only the player who can control the video player can do this
-- For other video players - if `IsLocked()` is `true` then only the Master can do this
-- To check whenever player is able to execute this - use `SubtitleManager.CanControlSubtitles()`
-
-### SubtitleManager.ProcessURLInput(VRCUrl): void
-
-Loads subtitles from the URL globally or locally (depending on `IsLocal()` value)
-
-- When using **USharpVideo** - only the player who can control the video player can do this
-- For other video players - if `IsLocked()` is `true` then only the Master can do this
-- To check whenever player is able to execute this - use `SubtitleManager.CanControlSubtitles()`
-
-### SubtitleManager.ClearSubtitles(): void
-
-Clears the subtitles globally or locally (depending on `IsLocal()` value)
-
-- When using **USharpVideo** - only the player who can control the video player can do this
-- For other video players - if `IsLocked()` is `true` then only the Master can do this
-- To check whenever player is able to execute this - use `SubtitleManager.CanControlSubtitles()`
-
-### SubtitleManager.IsLocked(): bool
-
-Whenever the access is locked to Master only
-
-- When using **USharpVideo** it shares the same state with it
-
-### SubtitleManager.SetLocked(bool): void
-
-Change lock state, must be executed by the Master
-
-- Does nothing when used with **USharpVideo** as it shares the same state with it
-- This can fail if the synchronization is ongoing - check if `SubtitleManager.IsSynchronized()` is `true` before running it
-- To check whenever player is able to execute this - use `SubtitleManager.IsPrivilegedUser(VRCPlayerApi)`
-
-### SubtitleManager.IsEnabled(): bool
-
-Whenever the subtitles are enabled for the the player
-
-### SubtitleManager.SetEnabled(bool): void
-
-Enable or disable the subtitles for the the player
-
-### SubtitleManager.IsLocal(): bool
-
-Whenever the player is using local subtitles
-
-### SubtitleManager.SetLocal(bool): void
-
-Switch between using global and local subtitles
-
-### SubtitleManager.GetTimeOffset(): float
-
-Get current time offset value
-
-### SubtitleManager.SetTimeOffset(float): void
-
-Set time offset value
-
-### SubtitleManager.IsSyncedURL(): bool
-
-Check if URL was synced or not, make sure to also check if `SubtitleManager.IsSynchronized()` is `true`
-
-- If this is false and `SubtitleManager.IsSynchronized()` is `true` then subtitles from pasted text are used
-
-### SubtitleManager.ReloadSyncedURL(): bool
-
-Reload data from synced URL, can be used to retry failed requests
-
-- This is done locally, anyone can call this
-
-### SubtitleManager.SynchronizeSubtitles(): void
-
-Re-synchronizes the subtitles globally, only the person who loaded them can do this (or the master if the synchronization is finished) - this can change when that person leaves the instance or lock state changes - check the `SubtitleManager.gameObject` owner in this case
-
-- This can fail if the synchronization is ongoing - check if `SubtitleManager.IsSynchronized()` is `true` before running it
-- To check whenever player is able to execute this - use `SubtitleManager.CanSynchronizeSubtitles()`
-
-### SubtitleOverlayHandler.GetCanvasTransform(): Transform
-
-Use this method to get transform values of the overlay's `Canvas` in case you want to display something on the same screen
-
-### SubtitleOverlayHandler.MoveOverlay(GameObject): void
-
-Moves the overlay to the given object's transform values
-
-- Make sure that the settings popup is not visible at this time as it will stay in the old position until it is re-opened
-
-### SubtitleControlHandler.IsSettingsPopupActive(): bool
-
-Check if settings popup is currently open
-
-### SubtitleControlHandler.ToggleSettingsPopup(): void
-
-Toggle settings popup, use this to show and hide the popup using separate button
-
-### SubtitleControlHandler.ImportSettingsFromString(string): void
-
-Import settings from the given string (the same string which is displayed in the settings window), the format is pretty easy to figure out
+[See here](API.md).
