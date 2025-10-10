@@ -15868,10 +15868,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'SubRip (srt) format is fully supported, you might be able to import WebVTT
-    (vtt) subtitles as well but its text formatting is not handled in any way and
-    you will most likely see weird looking text.
-
+  m_text: 'SubRip (SRT) format is fully supported.
+    You may also be able to import WebVTT (VTT) subtitles,
+    but text formatting is not handled, and you will likely see
+    unusual or malformed text.
 
     <b>Make sure the subtitles
     are in UTF-8 format!</b>

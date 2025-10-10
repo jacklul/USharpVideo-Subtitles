@@ -74,7 +74,7 @@ namespace UdonSharp.Video.Subtitles
         [Header("Input field")]
 
         [SerializeField]
-        private TMP_InputField inputField; // To be replaced with TMP_InputField once supported by Udon
+        private TMP_InputField inputField;
         [SerializeField]
         private Text inputPlaceholderText;
         [SerializeField]
@@ -366,7 +366,7 @@ namespace UdonSharp.Video.Subtitles
                                     tmpSplitValue = tmp[1].Split(';');
 
                                     if (tmpSplitValue.Length == 3)
-                                        tmpColor = new Color(SafelyParseFloat(tmpSplitValue[0]), SafelyParseFloat(tmpSplitValue[1]), SafelyParseFloat(tmpSplitValue[2]));
+                                        tmpColor = new Color(Common.SafelyParseFloat(tmpSplitValue[0]), Common.SafelyParseFloat(tmpSplitValue[1]), Common.SafelyParseFloat(tmpSplitValue[2]));
                                     else
                                         tmpColor = overlayHandler.GetFontColor();
 
@@ -385,7 +385,7 @@ namespace UdonSharp.Video.Subtitles
                                     tmpColor = overlayHandler.GetBackgroundColor();
 
                                     if (tmpSplitValue.Length == 3)
-                                        tmpColor = new Color(SafelyParseFloat(tmpSplitValue[0]), SafelyParseFloat(tmpSplitValue[1]), SafelyParseFloat(tmpSplitValue[2]), tmpImage.color.a);
+                                        tmpColor = new Color(Common.SafelyParseFloat(tmpSplitValue[0]), Common.SafelyParseFloat(tmpSplitValue[1]), Common.SafelyParseFloat(tmpSplitValue[2]), tmpImage.color.a);
 
                                     tmpImage.color = tmpColor;
                                 }
@@ -398,7 +398,7 @@ namespace UdonSharp.Video.Subtitles
                                 tmpImage = tmpTransform.GetComponent<Image>();
                                 if (tmpImage)
                                 {
-                                    tmpFloat = SafelyParseFloat(tmp[1]);
+                                    tmpFloat = Common.SafelyParseFloat(tmp[1]);
                                     tmpColor = new Color(tmpImage.color.r, tmpImage.color.g, tmpImage.color.b, tmpFloat);
                                     tmpImage.color = tmpColor;
                                 }
@@ -1006,7 +1006,7 @@ namespace UdonSharp.Video.Subtitles
                     switch (tmp[0])
                     {
                         case "fs": // Font size
-                            tmpFloat = SafelyParseFloat(tmp[1]);
+                            tmpFloat = Common.SafelyParseFloat(tmp[1]);
 
                             if (fontSizeSlider)
                                 fontSizeSlider.value = tmpFloat;
@@ -1015,7 +1015,7 @@ namespace UdonSharp.Video.Subtitles
                                 overlayHandler.SetFontSize((int)tmpFloat);
                             break;
                         case "os": // Outline size
-                            tmpFloat = SafelyParseFloat(tmp[1]);
+                            tmpFloat = Common.SafelyParseFloat(tmp[1]);
 
                             if (outlineSizeSlider)
                                 outlineSizeSlider.value = tmpFloat;
@@ -1024,7 +1024,7 @@ namespace UdonSharp.Video.Subtitles
                                 overlayHandler.SetOutlineSize(tmpFloat);
                             break;
                         case "bo": // Background opacity
-                            tmpFloat = SafelyParseFloat(tmp[1]);
+                            tmpFloat = Common.SafelyParseFloat(tmp[1]);
 
                             if (backgroundOpacitySlider)
                                 backgroundOpacitySlider.value = tmpFloat;
@@ -1039,7 +1039,7 @@ namespace UdonSharp.Video.Subtitles
                             tmpSplitValue = tmp[1].Split(';');
 
                             if (tmpSplitValue.Length == 3)
-                                tmpColor = new Color(SafelyParseFloat(tmpSplitValue[0]), SafelyParseFloat(tmpSplitValue[1]), SafelyParseFloat(tmpSplitValue[2]));
+                                tmpColor = new Color(Common.SafelyParseFloat(tmpSplitValue[0]), Common.SafelyParseFloat(tmpSplitValue[1]), Common.SafelyParseFloat(tmpSplitValue[2]));
                             else
                                 tmpColor = overlayHandler.GetFontColor();
 
@@ -1056,7 +1056,7 @@ namespace UdonSharp.Video.Subtitles
                             tmpSplitValue = tmp[1].Split(';');
 
                             if (tmpSplitValue.Length == 3)
-                                tmpColor = new Color(SafelyParseFloat(tmpSplitValue[0]), SafelyParseFloat(tmpSplitValue[1]), SafelyParseFloat(tmpSplitValue[2]), 1f);
+                                tmpColor = new Color(Common.SafelyParseFloat(tmpSplitValue[0]), Common.SafelyParseFloat(tmpSplitValue[1]), Common.SafelyParseFloat(tmpSplitValue[2]), 1f);
                             else
                                 tmpColor = overlayHandler.GetOutlineColor();
 
@@ -1075,7 +1075,7 @@ namespace UdonSharp.Video.Subtitles
                             tmpColor = overlayHandler.GetBackgroundColor();
 
                             if (tmpSplitValue.Length == 3)
-                                tmpColor = new Color(SafelyParseFloat(tmpSplitValue[0]), SafelyParseFloat(tmpSplitValue[1]), SafelyParseFloat(tmpSplitValue[2]), tmpColor.a);
+                                tmpColor = new Color(Common.SafelyParseFloat(tmpSplitValue[0]), Common.SafelyParseFloat(tmpSplitValue[1]), Common.SafelyParseFloat(tmpSplitValue[2]), tmpColor.a);
 
                             if (backgroundColorRSlider && backgroundColorGSlider && backgroundColorBSlider)
                             {
@@ -1087,7 +1087,7 @@ namespace UdonSharp.Video.Subtitles
                             if (updateOverlay) overlayHandler.SetBackgroundColor(tmpColor);
                             break;
                         case "vm": // Vertical Margin
-                            tmpInt = SafelyParseInt(tmp[1]);
+                            tmpInt = Common.SafelyParseInt(tmp[1]);
 
                             if (verticalMarginSlider)
                                 verticalMarginSlider.value = tmpInt;
@@ -1096,7 +1096,7 @@ namespace UdonSharp.Video.Subtitles
                                 overlayHandler.SetVerticalMargin(tmpInt);
                             break;
                         case "hm": // Horizontal Margin
-                            tmpInt = SafelyParseInt(tmp[1]);
+                            tmpInt = Common.SafelyParseInt(tmp[1]);
 
                             if (horizontalMarginSlider)
                                 horizontalMarginSlider.value = tmpInt;
@@ -1105,7 +1105,7 @@ namespace UdonSharp.Video.Subtitles
                                 overlayHandler.SetHorizontalMargin(tmpInt);
                             break;
                         case "pa": // Alignment
-                            tmpInt = SafelyParseInt(tmp[1]);
+                            tmpInt = Common.SafelyParseInt(tmp[1]);
 
                             if (alignmentToggle)
                                 alignmentToggle.isOn = tmpInt == 1;
@@ -1124,38 +1124,6 @@ namespace UdonSharp.Video.Subtitles
 
             if (updateOverlay && overlayHandler)
                 overlayHandler.RefreshSubtitle();
-        }
-
-        private int SafelyParseInt(string number)
-        {
-            int n;
-            if (int.TryParse(number, out n))
-                return n;
-
-            return 0;
-        }
-
-        private float SafelyParseFloat(string number)
-        {
-            string[] tmp = number.Replace('.', ',').Split(',');
-
-            if (tmp.Length > 1)
-                return SafelyParseInt(tmp[0]) + (SafelyParseInt(tmp[1]) / Mathf.Pow(10, tmp[1].Length)); // This lets us parse string floats with both comma and dot no matter if running in Unity or in VRC
-
-            float n;
-            if (float.TryParse(tmp[0], out n))
-                return n;
-
-            return 0f;
-        }
-
-        private float RoundFloat(float value, int decimals)
-        {
-            if (decimals == 0)
-                return Mathf.Round(value);
-
-            float n = Mathf.Pow(10, decimals);
-            return Mathf.Round(value * n) / n;
         }
 
         public void UpdateSettingsValues()
@@ -1179,11 +1147,11 @@ namespace UdonSharp.Video.Subtitles
             Color backgroundColor = overlayHandler.GetBackgroundColor();
 
             _currentSettingsExport = "fs:" + overlayHandler.GetFontSize()
-                 + "/fc:" + RoundFloat(fontColor.r, 3) + ";" + RoundFloat(fontColor.g, 3) + ";" + RoundFloat(fontColor.b, 3)
-                 + "/os:" + RoundFloat(overlayHandler.GetOutlineSize(), 2)
-                 + "/oc:" + RoundFloat(outlineColor.r, 3) + ";" + RoundFloat(outlineColor.g, 3) + ";" + RoundFloat(outlineColor.b, 3)
-                 + "/bo:" + RoundFloat(backgroundColor.a, 2)
-                 + "/bc:" + RoundFloat(backgroundColor.r, 3) + ";" + RoundFloat(backgroundColor.g, 3) + ";" + RoundFloat(backgroundColor.b, 3)
+                 + "/fc:" + Common.RoundFloat(fontColor.r, 3) + ";" + Common.RoundFloat(fontColor.g, 3) + ";" + Common.RoundFloat(fontColor.b, 3)
+                 + "/os:" + Common.RoundFloat(overlayHandler.GetOutlineSize(), 2)
+                 + "/oc:" + Common.RoundFloat(outlineColor.r, 3) + ";" + Common.RoundFloat(outlineColor.g, 3) + ";" + Common.RoundFloat(outlineColor.b, 3)
+                 + "/bo:" + Common.RoundFloat(backgroundColor.a, 2)
+                 + "/bc:" + Common.RoundFloat(backgroundColor.r, 3) + ";" + Common.RoundFloat(backgroundColor.g, 3) + ";" + Common.RoundFloat(backgroundColor.b, 3)
                  + "/vm:" + overlayHandler.GetVerticalMargin()
                  + "/hm:" + overlayHandler.GetHorizontalMargin()
                  + "/pa:" + overlayHandler.GetAlignment()
@@ -1311,7 +1279,7 @@ namespace UdonSharp.Video.Subtitles
             if (!fontSizeValue)
                 return;
 
-            outlineSizeValue.text = (RoundFloat(value, 2) * 100).ToString() + "%";
+            outlineSizeValue.text = (Common.RoundFloat(value, 2) * 100).ToString() + "%";
         }
 
         public void OnOutlineColorChange()
@@ -1387,7 +1355,7 @@ namespace UdonSharp.Video.Subtitles
             if (!backgroundOpacityValue)
                 return;
 
-            backgroundOpacityValue.text = (RoundFloat(value, 2) * 100).ToString() + "%";
+            backgroundOpacityValue.text = (Common.RoundFloat(value, 2) * 100).ToString() + "%";
         }
 
         public void OnVerticalMarginSlider()
@@ -1459,7 +1427,7 @@ namespace UdonSharp.Video.Subtitles
             float offset = manager.GetTimeOffset();
 
             if (timeOffsetValue)
-                timeOffsetValue.text = RoundFloat(offset, 2).ToString();
+                timeOffsetValue.text = Common.RoundFloat(offset, 2).ToString();
 
             if (timeOffsetSlider)
                 timeOffsetSlider.value = offset;
@@ -1470,11 +1438,11 @@ namespace UdonSharp.Video.Subtitles
             if (!timeOffsetSlider)
                 return;
 
-            float value = RoundFloat((float)timeOffsetSlider.value, 2);
+            float value = Common.RoundFloat((float)timeOffsetSlider.value, 2);
 
             if (timeOffsetValue)
             {
-                if (SafelyParseFloat(timeOffsetValue.text) == value)
+                if (Common.SafelyParseFloat(timeOffsetValue.text) == value)
                     return;
 
                 timeOffsetValue.text = value.ToString();
@@ -1489,7 +1457,7 @@ namespace UdonSharp.Video.Subtitles
                 return;
 
             string text = timeOffsetValue.text.Trim();
-            float value = SafelyParseFloat(text);
+            float value = Common.SafelyParseFloat(text);
 
             if (timeOffsetSlider)
             {

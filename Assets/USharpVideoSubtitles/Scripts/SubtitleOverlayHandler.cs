@@ -243,7 +243,7 @@ namespace UdonSharp.Video.Subtitles
             subtitleBackgroundField.color = color;
             if (subtitleBackgroundFieldTop) subtitleBackgroundFieldTop.color = color;
 
-            _backgroundColorHex = ToRGBHex(color);
+            _backgroundColorHex = Common.ToRGBHex(color);
         }
 
         public int GetVerticalMargin()
@@ -344,17 +344,6 @@ namespace UdonSharp.Video.Subtitles
 
             //subtitleTextField.alignment = alignment;
             //subtitleBackgroundField.alignment = alignment;
-        }
-
-        private string ToRGBHex(Color color)
-        {
-            return string.Format("#{0:X2}{1:X2}{2:X2}", ToByte(color.r), ToByte(color.g), ToByte(color.b));
-        }
-
-        private byte ToByte(float number)
-        {
-            number = Mathf.Clamp01(number);
-            return (byte)(number * 255);
         }
     }
 }
