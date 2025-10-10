@@ -1,6 +1,6 @@
-# Subtitles support for USharpVideo
+# Subtitles support for USharpVideo (and others)
 
-This prefab adds support for SRT subtitles to [USharpVideo](https://github.com/MerlinVR/USharpVideo) - it will also work with base video players supported by VRChat (Unity and AVPro).  
+This prefab adds support for SRT subtitles to [USharpVideo](https://github.com/MerlinVR/USharpVideo) or any other video player that is based on Unity or AVPro video components.  
 To check this out in-game visit [this test world](https://vrchat.com/home/world/wrld_dc50af39-1f65-4c47-a0d5-d1729d5c683f).  
 
 _The core of this prefab is based on [this code](https://gist.github.com/hai-vr/b340f9a46952640f81efe7f02da6bdf6) by [Haï~](https://twitter.com/vr_hai)._  
@@ -10,7 +10,7 @@ _The core of this prefab is based on [this code](https://gist.github.com/hai-vr/
 ## Features
 
 - Load subtitles from the pasted text or URL
-- Subtitle synchronization with everyone in the instance
+- Synchronization with everyone in the instance
 - Option to use own subtitles locally
 - Rich customization with the ability to save the settings
 - Integration with [USharpVideo](https://github.com/MerlinVR/USharpVideo)
@@ -25,12 +25,12 @@ _The core of this prefab is based on [this code](https://gist.github.com/hai-vr/
 
 ## Installation
 
-If you intend to use this with [USharpVideo](https://github.com/MerlinVR/USharpVideo/releases/latest), it is assumed that it has already been imported.
+If you intend to use this with [USharpVideo](https://github.com/MerlinVR/USharpVideo/releases/latest) (or fork of it), it is assumed that it has already been imported.
 
-1. Import [latest UnityPackage](https://github.com/jacklul/USharpVideo-Subtitles/releases/latest)
+1. Import [latest Unity Package](https://github.com/jacklul/USharpVideo-Subtitles/releases/latest)
 
-2. Add the prefab to your scene using `Component -> Udon Sharp -> Video -> Subtitles -> Add prefab to scene` menu item
-    - Or manually drag `/Assets/USharpVideoSubtitles/Subtitles.prefab` to your scene
+2. Add the prefab to your scene using `Tools -> USharpVideoSubtitles -> Add prefab to scene` menu item
+    - Or manually drag `/Assets/USharpVideoSubtitles/Prefabs/Subtitles.prefab` to your scene
 
 3. If a window asking you to import **TextMeshPro Essentials** appears - just do it
     - TextMeshPro examples and extras are not needed!
