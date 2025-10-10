@@ -794,7 +794,7 @@ namespace UdonSharp.Video.Subtitles
                 return;
             }
 
-            LogMessage($"Loaded URL input ({url})");
+            LogMessage($"Loaded URL input: {url}");
 
             _URLTmp = url;
 
