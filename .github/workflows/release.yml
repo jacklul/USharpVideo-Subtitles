@@ -25,9 +25,6 @@ jobs:
         with:
           fetch-depth: 0 # full history needed for 'git describe' below
 
-      - name: Remove Development folder
-        run: rm -fr "Assets/${{ env.PACKAGE_NAME }}/Development" "Assets/${{ env.PACKAGE_NAME }}/Development.meta"
-
       - name: Set needed variables
         id: variables
         run: |

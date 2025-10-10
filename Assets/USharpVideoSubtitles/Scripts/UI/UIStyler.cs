@@ -209,7 +209,7 @@ namespace UdonSharp.Video.Subtitles.UI
                     {
                         var newStyle = ScriptableObject.CreateInstance<UIStyle>();
 
-                        newStyle.name = Path.GetFileNameWithoutExtension(saveLocation); // I'm not sure if the name gets updated when someone changes the name manually so this may need to be revisited
+                        newStyle.name = Path.GetFileNameWithoutExtension(saveLocation);
 
                         AssetDatabase.CreateAsset(newStyle, saveLocation);
                         AssetDatabase.SaveAssets();
@@ -227,7 +227,7 @@ namespace UdonSharp.Video.Subtitles.UI
         {
             if (GUILayout.Button("Restore Default Style"))
             {
-                string defaultStyleGuid = "e84826a7ca484d1081c0bcd5e08fbd20"; // GUID of the default UIStyle asset in this package
+                string defaultStyleGuid = "e84826a7ca484d1081c0bcd5e08fbd20"; // GUID of the default style asset in this package
                 var defaultStyle = AssetDatabase.LoadAssetAtPath<UIStyle>(AssetDatabase.GUIDToAssetPath(defaultStyleGuid));
 
                 if (defaultStyle != null)
@@ -250,8 +250,8 @@ namespace UdonSharp.Video.Subtitles.UI
             if (GUILayout.Button("Import Style from USharpVideo"))
             {
                 string sourceAsset = EditorUtility.OpenFilePanel("Select USharpVideo style asset", "Assets/USharpVideo/Styles", "asset");
-                string sourceStyleGuid = "447ea4bbd35f6a541adc230420ec00c2"; // GUID of the UIStyle asset in USharpVideo package
-                string targetStyleGuid = "1ad324839c64425c9b5a7a55e308f714"; // GUID of the UIStyle asset in this package
+                string sourceStyleGuid = "447ea4bbd35f6a541adc230420ec00c2"; // GUID of UIStyle.cs in USharpVideo package
+                string targetStyleGuid = "1ad324839c64425c9b5a7a55e308f714"; // GUID of UIStyle.cs in this package
 
                 if (!string.IsNullOrEmpty(sourceAsset))
                 {

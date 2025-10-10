@@ -5,7 +5,7 @@ public class AddPrefabToSceneMenu
 {
     private const string PREFAB_GUID = "79b0ea249ffa6a54bb5f55191b085d00";
 
-    [MenuItem("Component/Udon Sharp/Video/Subtitles/Add prefab to scene")]
+    [MenuItem("Tools/USharpVideoSubtitles/Add prefab to scene")]
     private static void AddPrefabToScene()
     {
         string prefabPath = AssetDatabase.GUIDToAssetPath(PREFAB_GUID);
@@ -36,7 +36,7 @@ public class AddPrefabToSceneMenu
         Undo.RegisterCreatedObjectUndo(instance, "Add Subtitles prefab to scene");
     }
 
-    [MenuItem("Component/Udon Sharp/Video/Subtitles/Add prefab to scene", true)]
+    [MenuItem("Tools/USharpVideoSubtitles/Add prefab to scene", true)]
     private static bool ValidateAddPrefabToScene()
     {
         return UnityEditor.SceneManagement.EditorSceneManager.GetActiveScene().IsValid();

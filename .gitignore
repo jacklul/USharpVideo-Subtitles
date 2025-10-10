@@ -82,6 +82,8 @@ crashlytics-build.properties
 /[Pp]ackages/*
 
 # Include only what we need
+!/Assets/Dev/
+!/Assets/Dev.meta
 !/Assets/USharpVideoSubtitles/
 !/Assets/USharpVideoSubtitles.meta
 !/Packages/com.vrchat.core.bootstrap/

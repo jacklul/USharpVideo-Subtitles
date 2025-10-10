@@ -23,10 +23,8 @@ namespace UdonSharp.Video.Subtitles.Extras
         [SerializeField]
         private SubtitleControlHandler subtitleControlHandler;
 
-        [SerializeField, Tooltip("Optional")]
+        [SerializeField]
         private GameObject videoScreen;
-
-        [Header("Do not touch")]
 
 #if USHARPVIDEO_FOUND
         [SerializeField]
@@ -102,7 +100,7 @@ namespace UdonSharp.Video.Subtitles.Extras
     {
         public override void OnInspectorGUI()
         {
-            EditorGUILayout.HelpBox("USharpVideo not found in the project. Please install USharpVideo to use this prefab.", MessageType.Error);
+            EditorGUILayout.HelpBox("USharpVideo not found in the project.\nPlease install USharpVideo to use this prefab.", MessageType.Error);
         }
     }
 #endif

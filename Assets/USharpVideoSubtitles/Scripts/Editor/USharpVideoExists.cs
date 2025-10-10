@@ -4,40 +4,40 @@ using UnityEditor;
 using UnityEngine;
 
 [InitializeOnLoad]
-public class USharpVideoPlayerExists
+public class USharpVideoExists
 {
     private const string SYMBOL = "USHARPVIDEO_FOUND";
 
     // Scripts that are referenced in our code
-    private static readonly string[] ScriptGuidsToFind = new[]
+    private static readonly string[] scriptGuidsToFind = new[]
     {
-        "a387f0336d7ee344baf6e00b581a5365", // USharpVideo/Scripts/USharpVideoPlayer.cs
-        "61a08afb94ef7364d8358a64333fb431", // USharpVideo/Scripts/VideoPlayerManager.cs
-        "447ea4bbd35f6a541adc230420ec00c2", // USharpVideo/Scripts/UI/UIStyle.cs
+        "a387f0336d7ee344baf6e00b581a5365", // Assets/USharpVideo/Scripts/USharpVideoPlayer.cs
+        "61a08afb94ef7364d8358a64333fb431", // Assets/USharpVideo/Scripts/VideoPlayerManager.cs
+        "447ea4bbd35f6a541adc230420ec00c2", // Assets/USharpVideo/Scripts/UI/UIStyle.cs
     };
 
     // Scripts that rely on the defined symbol
-    private static readonly string[] ScriptGuidsToRecompile = new[]
+    private static readonly string[] scriptGuidsToRecompile = new[]
     {
-        "1c72e0a559544c04bb1ae3a82be6dfeb", // USharpVideoSubtitles/Scripts/SubtitleManager.cs
-        "3377b410bd177764d989e8d092440a28", // USharpVideoSubtitles/Scripts/SubtitleControlHandler.cs
-        "47f81f936a8517945bbe9ebbe335e379", // USharpVideoSubtitles/Scripts/SubtitleOverlayHandler.cs
-        "96c9fcd85688d64459ae79399f1ab62d", // USharpVideoSubtitles/Scripts/UI/UIStyler.cs
+        "1c72e0a559544c04bb1ae3a82be6dfeb", // Assets/USharpVideoSubtitles/Scripts/SubtitleManager.cs
+        "3377b410bd177764d989e8d092440a28", // Assets/USharpVideoSubtitles/Scripts/SubtitleControlHandler.cs
+        "47f81f936a8517945bbe9ebbe335e379", // Assets/USharpVideoSubtitles/Scripts/SubtitleOverlayHandler.cs
+        "96c9fcd85688d64459ae79399f1ab62d", // Assets/USharpVideoSubtitles/Scripts/UI/UIStyler.cs
     };
 
-    static USharpVideoPlayerExists()
+    static USharpVideoExists()
     {
-        CheckAndUpdateDefine();
+        CheckThenAddOrRemoveSymbol();
     }
 
-    private static void CheckAndUpdateDefine()
+    private static void CheckThenAddOrRemoveSymbol()
     {
         BuildTargetGroup group = EditorUserBuildSettings.selectedBuildTargetGroup;
         string defines = PlayerSettings.GetScriptingDefineSymbolsForGroup(group);
         bool scriptsFound = true;
         bool symbolExists = defines.Contains(SYMBOL);
 
-        foreach (string guid in ScriptGuidsToFind)
+        foreach (string guid in scriptGuidsToFind)
         {
             string assetPath = AssetDatabase.GUIDToAssetPath(guid);
 
@@ -68,6 +68,7 @@ public class USharpVideoPlayerExists
                 defines = defines.Substring(0, defines.Length - 1);
 
             PlayerSettings.SetScriptingDefineSymbolsForGroup(group, defines);
+
             Debug.LogWarning($"Removed {SYMBOL} from scripting define symbols for {group}.");
             ForceRecompileScripts();
         }
@@ -75,7 +76,7 @@ public class USharpVideoPlayerExists
 
     private static void ForceRecompileScripts()
     {
-        foreach (string guid in ScriptGuidsToRecompile)
+        foreach (string guid in scriptGuidsToRecompile)
         {
             string assetPath = AssetDatabase.GUIDToAssetPath(guid);
 
@@ -95,7 +96,7 @@ public class USharpVideoPlayerExists
             {
                 if (asset.EndsWith(".cs"))
                 {
-                    CheckAndUpdateDefine();
+                    CheckThenAddOrRemoveSymbol();
                     break;
                 }
             }
