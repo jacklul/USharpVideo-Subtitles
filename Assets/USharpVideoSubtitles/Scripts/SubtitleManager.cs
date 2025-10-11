@@ -6,10 +6,12 @@
  * Based on code by Haï~ (https://github.com/hai-vr) - https://gist.github.com/hai-vr/b340f9a46952640f81efe7f02da6bdf6
  */
 
+using JetBrains.Annotations;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
 using VRC.SDKBase;
+using VRC.SDK3.Data;
 using VRC.SDK3.StringLoading;
 using VRC.SDK3.Video.Components.Base;
 using VRC.Udon.Common;
@@ -17,53 +19,56 @@ using VRC.Udon.Common.Interfaces;
 
 namespace UdonSharp.Video.Subtitles
 {
+    [DefaultExecutionOrder(5)]
     [UdonBehaviourSyncMode(BehaviourSyncMode.Manual)]
+    [AddComponentMenu("Udon Sharp/Video/Subtitles/Subtitle Manager")]
     public class SubtitleManager : UdonSharpBehaviour
     {
         private const char ARROW_UP = '▲'; // ▲ ⇪ ↑
         private const char ARROW_DOWN = '▼'; // ▼ ⇩ ↓
-        private const string LOG_PREFIX = "[<color=#7ecad6>USharpVideo-Subtitles</color>]";
-        private const string MESSAGE_LOADED = "Subtitles loaded";
-        private const string MESSAGE_NOT_LOADED = "No subtitles loaded";
-        private const string MESSAGE_CLEARED = "Subtitles cleared";
-        private const string MESSAGE_FETCHING = "Fetching from URL...";
-        private const string MESSAGE_PARSING = "Parsing... {0}%";
-        private const string MESSAGE_FAILED = "Failed to parse subtitles";
-        private const string MESSAGE_SYNCHRONIZING = "Synchronizing {0} / {1} {2}";
+        private const string LOG_PREFIX = "[<color=#7ecad6>USharpVideoSubtitles</color>]";
+
+        #region Config
 
 #if USHARPVIDEO_FOUND
-        [SerializeField]
-        private USharpVideoPlayer targetVideoPlayer;
+        [SerializeField, Tooltip("Takes priority over Base VRC Video Player if both are assigned")]
+        private USharpVideoPlayer uSharpVideoPlayer;
 #endif
 
         [SerializeField]
-        private BaseVRCVideoPlayer baseVideoPlayer;
+        private BaseVRCVideoPlayer baseVRCVideoPlayer;
 
         [Header("Settings")]
 
-        [SerializeField, Range(5000, 50000), Tooltip("Maximum size of a single data chunk when synchronizing the subtitles to others - big chunk sizes can make synchronization fail")]
+        [SerializeField, Range(5000, 50000), Tooltip("Maximum size of a single data chunk when synchronizing the subtitles to others - big chunk sizes can make synchronization fail\nValues above 10000 were not tested")]
         private int chunkSize = 10000;
 
-        [Range(0, 60), Tooltip("How many frames to wait before the next subtitle update - higher values decrease time accuracy of the subtitles but could increase game performance\nThe default is fine for most cases\nSetting this to zero updates every frame")]
+        [Range(0, 60), PublicAPI, Tooltip("How many frames to wait before the next subtitle update - higher values decrease time accuracy of the subtitles but could increase game performance\nThe default is fine for most cases\nSetting this to zero updates every frame")]
         public int updateRate = 10;
 
-        [Range(0.0069f, 0.033f), Tooltip("Maximum processing time for the parser to take as a fraction of one second\nRecommended to keep this under 0.0166 (16.6ms) as otherwise it will reduce everyone's FPS below 60 during parsing\nSee https://fpstoms.com for more info")]
-        public float parserTimeLimit = 0.01f;
+        [Range(4.16f, 33.3f), PublicAPI, Tooltip("Approximate maximum processing time for the parser to take in miliseconds\nRecommended to keep this under 16.6 as otherwise it will reduce everyone's FPS below 60 during parsing\nSee https://fpstoms.com for more info")]
+        public float parserTimeLimit = 11.1f;
 
         [SerializeField, Tooltip("When false then only the master can manage the subtitles by default\nThis setting does nothing when using USharpVideo as the lock state is inherited from it")]
         private bool defaultUnlocked = true;
 
-        [Tooltip("Removes unsupported tags from subtitle text\nDisabling this will speed up processing of huge files - you should only disable this if you serve pre-filtered subtitles")]
+        [PublicAPI, Tooltip("Removes unsupported tags from subtitle text\nDisabling this will speed up processing of huge files\nYou should only disable this if you're going to serve pre-filtered subtitles")]
         public bool filterSubtitles = true;
 
-        [Tooltip("Sync entered URL to everyone for each to individually fetch the data themselves\nWhen disabled the URL is fetched by the person who entered it and then the text is synchronized to everyone\nYou should keep it on for better networking performance")]
+        [PublicAPI, Tooltip("Sync entered URL to everyone for them to individually fetch the data themselves\nWhen disabled the URL is fetched by the person who entered it and then the text is synchronized to everyone\nYou should keep it on for better VRC networking performance")]
         public bool syncOnlyUrl = true;
+
+        [Range(0, 3), PublicAPI, Tooltip("Logging verbosity\n0 = none, 1 = errors, 2 = warnings, 3 = info")]
+        public int logLevel = 2; // 0 = none, 1 = errors, 2 = warnings, 3 = info
 
 #if USHARPVIDEO_FOUND
         [Header("USharpVideo Integration Settings")]
 
-        [Tooltip("Clear loaded subtitles when a new video starts?")]
+        [PublicAPI, Tooltip("Clear loaded subtitles when a new video starts?")]
         public bool clearOnNewVideo = false;
+
+        [PublicAPI, Tooltip("Allow the instance creator to always control the subtitles regardless of if they are the master or not?")]
+        public bool allowInstanceCreatorControl = true;
 
         [SerializeField, Tooltip("Force owner of this object to be whoever owns the video player when owner changes?")]
         private bool setToVideoPlayerOwner = false;
@@ -71,8 +76,17 @@ namespace UdonSharp.Video.Subtitles
 
         [Header("Other")]
 
-        [SerializeField, Tooltip("Field to prepend log messages to\nUseful only in development")]
+        [SerializeField, Tooltip("URL to load subtitles from on start")]
+        private VRCUrl subtitlesURL;
+
+        [SerializeField, Tooltip("JSON file containing translations for the hardcoded status messages\nSee LoadDefaultTranslation() function for all string keys")]
+        private TextAsset translationFile;
+
+        [SerializeField, Tooltip("Field to prepend debug log messages to")]
         private Text debugLogField;
+
+        #endregion
+        #region Variables
 
         // Sync
         [UdonSynced]
@@ -114,6 +128,10 @@ namespace UdonSharp.Video.Subtitles
         private bool _isLocal = false; // Is local mode enabled?
         private float _timeOffset = 0.0f; // Video time offset
 
+        // Translations
+        private DataDictionary defaultTranslation;
+        private DataDictionary translation;
+
         // References
 #if USHARPVIDEO_FOUND
         private VideoPlayerManager _videoManager;
@@ -132,23 +150,23 @@ namespace UdonSharp.Video.Subtitles
         private VRCPlayerApi _currentOwner;
         private VRCPlayerApi _previousOwner;
 
+        #endregion
+        #region Initialization
+
 #if USHARPVIDEO_FOUND
         private void OnEnable()
         {
-            if (targetVideoPlayer) targetVideoPlayer.RegisterCallbackReceiver(this);
+            if (uSharpVideoPlayer) uSharpVideoPlayer.RegisterCallbackReceiver(this);
         }
 #endif
 
         private void Start()
         {
 #if USHARPVIDEO_FOUND
-            if (!targetVideoPlayer && !baseVideoPlayer)
+            if (!uSharpVideoPlayer && !baseVRCVideoPlayer)
                 LogWarning("No video player reference assigned!");
-
-            if (targetVideoPlayer && baseVideoPlayer)
-                LogWarning("You cannot reference USharpVideo and Unity or AVPro Video Player at the same time - USharpVideo takes precedence!");
 #else
-            if (!baseVideoPlayer)
+            if (!baseVRCVideoPlayer)
                 LogWarning("No video player reference assigned!");
 #endif
 
@@ -158,10 +176,15 @@ namespace UdonSharp.Video.Subtitles
             if (_registeredCallbackReceivers == null)
                 _registeredCallbackReceivers = new UdonSharpBehaviour[0];
 
+            LoadDefaultTranslation();
+
+            if (translationFile)
+                LoadTranslationFile();
+
 #if USHARPVIDEO_FOUND
-            if (targetVideoPlayer)
+            if (uSharpVideoPlayer)
             {
-                _videoManager = targetVideoPlayer.GetVideoManager();
+                _videoManager = uSharpVideoPlayer.GetVideoManager();
 
                 if (Networking.IsOwner(gameObject))
                     SendCustomEventDelayedFrames(nameof(OnUSharpVideoLockChange), 1); // The event will be initially triggered only for non-master players, this fixes the issue with wrong lock state on master player
@@ -189,14 +212,246 @@ namespace UdonSharp.Video.Subtitles
 
             ResetSubtitleTrackingState();
             LogMessage("Initialized");
+
+            if (subtitlesURL.ToString() != "" && Networking.IsMaster) // subtitlesURL != VRCUrl.Empty doesn't seem to work here?
+            {
+                LogMessage("Will load initial subtitles");
+                SendCustomEventDelayedSeconds(nameof(_LoadSubtitlesOnStart), 1f);
+            }
         }
 
 #if USHARPVIDEO_FOUND
         private void OnDisable()
         {
-            if (targetVideoPlayer) targetVideoPlayer.UnregisterCallbackReceiver(this);
+            if (uSharpVideoPlayer) uSharpVideoPlayer.UnregisterCallbackReceiver(this);
         }
 #endif
+
+        public void _LoadSubtitlesOnStart()
+        {
+            if (subtitlesURL.ToString() != "") // subtitlesURL != VRCUrl.Empty doesn't seem to work here?
+            {
+                LogMessage($"Loading subtitles from configured URL: {subtitlesURL}");
+                FetchFromURL(subtitlesURL);
+            }
+        }
+
+        public void RegisterOverlayHandler(SubtitleOverlayHandler handler)
+        {
+            if (_overlayHandler == null)
+            {
+                _overlayHandler = handler;
+                _overlayHandler.ClearSubtitle();
+            }
+            else
+                LogError("SubtitleOverlayHandler is already registered, only one can be active at the same time");
+        }
+
+        public void UnregisterOverlayHandler(SubtitleOverlayHandler handler)
+        {
+            if (handler == _overlayHandler)
+                _overlayHandler = null;
+            else
+                LogError("This method must be called by the currently registered SubtitleOverlayHandler");
+        }
+
+        public void RegisterControlHandler(SubtitleControlHandler newControlHandler)
+        {
+            if (_registeredControlHandlers == null)
+                _registeredControlHandlers = new SubtitleControlHandler[0];
+
+            foreach (SubtitleControlHandler controlHandler in _registeredControlHandlers)
+            {
+                if (newControlHandler == controlHandler)
+                    return;
+            }
+
+            SubtitleControlHandler[] newControlHandlers = new SubtitleControlHandler[_registeredControlHandlers.Length + 1];
+            _registeredControlHandlers.CopyTo(newControlHandlers, 0);
+            _registeredControlHandlers = newControlHandlers;
+
+            _registeredControlHandlers[_registeredControlHandlers.Length - 1] = newControlHandler;
+
+            newControlHandler.SetToggleButtonState(_isEnabled);
+            newControlHandler.SetLocalToggleButtonState(_isLocal);
+            newControlHandler.SetStatusText(_dataCount > 0 ? GetTranslation("LOADED") : GetTranslation("NOT_LOADED"));
+        }
+
+        public void UnregisterControlHandler(SubtitleControlHandler controlHandler)
+        {
+            if (_registeredControlHandlers == null)
+                _registeredControlHandlers = new SubtitleControlHandler[0];
+
+            int controlHandlerCount = _registeredControlHandlers.Length;
+            for (int i = 0; i < controlHandlerCount; ++i)
+            {
+                SubtitleControlHandler handler = _registeredControlHandlers[i];
+
+                if (controlHandler == handler)
+                {
+                    SubtitleControlHandler[] newControlHandlers = new SubtitleControlHandler[controlHandlerCount - 1];
+
+                    for (int j = 0; j < i; ++j)
+                        newControlHandlers[j] = _registeredControlHandlers[j];
+
+                    for (int j = i + 1; j < controlHandlerCount; ++j)
+                        newControlHandlers[j - 1] = _registeredControlHandlers[j];
+
+                    _registeredControlHandlers = newControlHandlers;
+
+                    return;
+                }
+            }
+        }
+
+        #endregion
+        #region Translation
+
+        private void LoadDefaultTranslation()
+        {
+            defaultTranslation = new DataDictionary();
+            defaultTranslation.SetValue("LOADED", "Subtitles loaded");
+            defaultTranslation.SetValue("NOT_LOADED", "No subtitles loaded");
+            defaultTranslation.SetValue("CLEARED", "Subtitles cleared");
+            defaultTranslation.SetValue("FETCHING", "Fetching from URL...");
+            defaultTranslation.SetValue("FETCH_FAILED", "Failed to fetch from URL");
+            defaultTranslation.SetValue("PARSING", "Parsing... {0}%");
+            defaultTranslation.SetValue("PARSE_FAILED", "Failed to parse subtitles");
+            defaultTranslation.SetValue("SYNCHRONIZING", "Synchronizing {0} / {1} {2}");
+            defaultTranslation.SetValue("PLACEHOLDER_PASTE", "Paste SRT subtitles...");
+            defaultTranslation.SetValue("PLACEHOLDER_URL", "Paste URL to SRT subtitles...");
+            defaultTranslation.SetValue("WAIT_FOR_SYNC", "Wait for synchronization to finish");
+            defaultTranslation.SetValue("ONLY_MASTER_CAN_ADD", "Only master {0} can add subtitles");
+            defaultTranslation.SetValue("ONLY_OWNER_CAN_SYNC", "Only {0} can synchronize subtitles");
+            defaultTranslation.SetValue("INDICATOR_LOCAL", "(local)");
+            defaultTranslation.SetValue("INDICATOR_ANYONE", "(anyone)");
+            defaultTranslation.SetValue("ALIGNMENT_BOTTOM", "Bottom");
+            defaultTranslation.SetValue("ALIGNMENT_TOP", "Top");
+        }
+
+        [PublicAPI]
+        public void LoadTranslationFile(TextAsset file = null)
+        {
+            if (file != null)
+                translationFile = file;
+
+            translation = null;
+
+            if (translationFile != null)
+            {
+                if (VRCJson.TryDeserializeFromJson(translationFile.text, out DataToken result))
+                {
+                    if (result.TokenType == TokenType.DataDictionary)
+                    {
+                        translation = result.DataDictionary;
+                        LogMessage("Translation loaded");
+                    }
+                    else
+                        LogError("Translation file is not a valid dictionary object");
+                }
+                else
+                    LogError("Failed to parse translation file");
+            } else
+                LogMessage("Translation file unset, using built-in messages");
+        }
+
+        public string GetTranslation(string key, params object[] args)
+        {
+            DataToken value = new DataToken();
+
+            if (translation != null && translation.Count > 0 && translation.ContainsKey(key))
+                translation.TryGetValue(key, out value);
+
+            if (value.IsNull && defaultTranslation.ContainsKey(key))
+                defaultTranslation.TryGetValue(key, out value);
+
+            if (value.TokenType == TokenType.String)
+                return args.Length > 0 ? string.Format(value.ToString(), args) : value.ToString();
+
+            LogError($"Translation key '{key}' not found");
+            return key;
+        }
+
+        #endregion
+        #region Helpers
+
+        public void LogMessage(string message)
+        {
+            if (debugLogField)
+                debugLogField.text = message + "\n" + debugLogField.text;
+
+            if (logLevel >= 3)
+                Debug.Log(LOG_PREFIX + " " + message, this);
+        }
+
+        public void LogWarning(string message)
+        {
+            if (debugLogField)
+                debugLogField.text = message + "\n" + debugLogField.text;
+
+            if (logLevel >= 2)
+                Debug.LogWarning(LOG_PREFIX + " " + message, this);
+        }
+
+        public void LogError(string message)
+        {
+            if (debugLogField)
+                debugLogField.text = message + "\n" + debugLogField.text;
+
+            if (logLevel >= 1)
+                Debug.LogError(LOG_PREFIX + " " + message, this);
+        }
+
+        [PublicAPI]
+        public bool IsPrivilegedUser(VRCPlayerApi player)
+        {
+#if USHARPVIDEO_FOUND
+            if (uSharpVideoPlayer)
+                return uSharpVideoPlayer.IsPrivilegedUser(player);
+#endif
+
+            return player.isMaster || (allowInstanceCreatorControl && player.isInstanceOwner);
+        }
+
+        [PublicAPI]
+        public bool CanControlSubtitles()
+        {
+#if USHARPVIDEO_FOUND
+            if (uSharpVideoPlayer)
+                return uSharpVideoPlayer.CanControlVideoPlayer();
+#endif
+
+            return !_isLocked || IsPrivilegedUser(Networking.LocalPlayer);
+        }
+
+        private void TakeOwnership()
+        {
+            if (Networking.IsOwner(gameObject))
+                return;
+
+            if (CanControlSubtitles()) {
+                LogMessage("Taking ownership");
+
+                Networking.SetOwner(Networking.LocalPlayer, gameObject);
+            }
+        }
+
+        // Used by SubtitleControlHandler to notify all other handlers about settings change
+        public void SynchronizeSettings(SubtitleControlHandler callingHandler)
+        {
+            foreach (SubtitleControlHandler handler in _registeredControlHandlers)
+            {
+                if (handler == callingHandler)
+                    continue;
+
+                handler.UpdateSettingsValues();
+            }
+
+            SendCallback("OnUSharpVideoSubtitlesSettingsUpdate");
+        }
+
+        #endregion
+        #region Subtitles handling
 
         public void Update()
         {
@@ -210,6 +465,7 @@ namespace UdonSharp.Video.Subtitles
                     _lastUpdateFrame++;
                     return;
                 }
+
                 _lastUpdateFrame = 0;
             }
 
@@ -226,7 +482,7 @@ namespace UdonSharp.Video.Subtitles
                 _lastVideoTime = time;
                 string text = "";
 
-                for (int i = _currentDataIndex; i < _dataText.Length; i++)
+                for (int i = _currentDataIndex; i < _dataCount; i++)
                 {
                     if (time >= _dataTime[i].x && time <= _dataTime[i].y) // Subtitle display time matches current time
                     {
@@ -252,8 +508,8 @@ namespace UdonSharp.Video.Subtitles
                 return _videoManager.IsPlaying();
 #endif
 
-            if (baseVideoPlayer)
-                return baseVideoPlayer.IsPlaying;
+            if (baseVRCVideoPlayer)
+                return baseVRCVideoPlayer.IsPlaying;
 
             return false;
         }
@@ -267,8 +523,8 @@ namespace UdonSharp.Video.Subtitles
                 time = _videoManager.GetTime();
             else
 #endif
-            if (baseVideoPlayer)
-                time = baseVideoPlayer.GetTime();
+            if (baseVRCVideoPlayer)
+                time = baseVRCVideoPlayer.GetTime();
 
             if (_timeOffset != 0.0f)
             {
@@ -279,6 +535,74 @@ namespace UdonSharp.Video.Subtitles
             }
 
             return time;
+        }
+
+        private void LoadSubtitles(string subtitles, bool closeInputMenu)
+        {
+            if (subtitles != "")
+                InitializeParser(subtitles);
+            else
+                LogError("Requested to load empty data - this shouldn't happen");
+
+            if (closeInputMenu)
+                foreach (SubtitleControlHandler handler in _registeredControlHandlers)
+                    handler.CloseInputMenu();
+        }
+
+        private void ResetSubtitleTrackingState()
+        {
+            _currentDataIndex = 0;
+            _lastVideoTime = 0;
+
+            if (_overlayHandler)
+            {
+                _overlayHandler.ClearSubtitle();
+                _overlayHandler.SetPlaceholder(false);
+            }
+        }
+
+        private void ClearSubtitlesLocal()
+        {
+            if (_dataCount > 0) LogMessage("Clearing subtitles locally");
+
+            _dataText = new string[0];
+            _dataTime = new Vector2[0];
+            _dataCount = 0;
+
+            ResetSubtitleTrackingState();
+
+            foreach (SubtitleControlHandler handler in _registeredControlHandlers)
+                handler.SetStatusText(GetTranslation("CLEARED"));
+
+            SendCallback("OnUSharpVideoSubtitlesClear");
+        }
+
+        private void UnsetSubtitlesLocal()
+        {
+            ClearSubtitlesLocal();
+
+            foreach (SubtitleControlHandler handler in _registeredControlHandlers)
+                handler.SetStatusText(GetTranslation("NOT_LOADED"));
+        }
+
+        #endregion
+        #region Synchronization
+
+        private void SetAndTransmitSubtitles(string text)
+        {
+            TakeOwnership();
+
+            _dataSynced = text; // Must be set no matter what for the local toggle to work correctly
+
+            if (syncOnlyUrl && _URLTmp != VRCUrl.Empty && text != "") // Make sure to also handle clear button by checking for empty text
+                _URLSync = _URLTmp;
+            else
+                _URLSync = VRCUrl.Empty;
+
+            _syncId = Networking.GetServerTimeInMilliseconds();
+            _lastSyncId = _syncId;
+
+            TransmitSubtitles();
         }
 
         private void TransmitSubtitles()
@@ -309,7 +633,7 @@ namespace UdonSharp.Video.Subtitles
                 foreach (SubtitleControlHandler handler in _registeredControlHandlers)
                 {
                     handler.SaveStatusText();
-                    handler.SetStatusText(string.Format(@MESSAGE_SYNCHRONIZING, 0, _chunkCount, ARROW_UP));
+                    handler.SetStatusText(GetTranslation("SYNCHRONIZING", 0, _chunkCount, ARROW_UP));
                 }
             }
 
@@ -340,12 +664,20 @@ namespace UdonSharp.Video.Subtitles
 
         public override void OnPostSerialization(SerializationResult result)
         {
+            if (!result.success)
+            {
+                LogError("Failed to serialize data, retrying in 1 second...");
+
+                SendCustomEventDelayedSeconds(nameof(TransmitSubtitles), 1f);
+                return;
+            }
+
             if (_chunkSync < _chunkCount)
             {
                 if (!_isLocal)
                 {
                     foreach (SubtitleControlHandler handler in _registeredControlHandlers)
-                        handler.SetStatusText(string.Format(@MESSAGE_SYNCHRONIZING, _chunkSync + 1, _chunkCount, ARROW_UP));
+                        handler.SetStatusText(GetTranslation("SYNCHRONIZING", _chunkSync + 1, _chunkCount, ARROW_UP));
                 }
 
                 LogMessage($"Sent chunk {_chunkSync + 1} / {_chunkCount} ({_syncId})");
@@ -387,7 +719,7 @@ namespace UdonSharp.Video.Subtitles
                 return;
 
 #if USHARPVIDEO_FOUND
-            if (!targetVideoPlayer && _lastLocked != _isLocked)
+            if (!uSharpVideoPlayer && _lastLocked != _isLocked)
 #else
             if (_lastLocked != _isLocked)
 #endif
@@ -412,7 +744,7 @@ namespace UdonSharp.Video.Subtitles
             if (!_isLocal)
             {
                 foreach (SubtitleControlHandler handler in _registeredControlHandlers)
-                    handler.SetStatusText(string.Format(@MESSAGE_SYNCHRONIZING, _chunkSync + 1, _chunkCount, ARROW_DOWN));
+                    handler.SetStatusText(GetTranslation("SYNCHRONIZING", _chunkSync + 1, _chunkCount, ARROW_DOWN));
             }
 
             LogMessage($"Received chunk {_chunkSync + 1} / {_chunkCount} ({_syncId})");
@@ -468,81 +800,38 @@ namespace UdonSharp.Video.Subtitles
             }
         }
 
+        [PublicAPI]
         public bool IsSynchronized()
         {
             return _chunkSync == _chunkCount && IsSameSyncId();
         }
 
-        public bool IsSameSyncId()
+        private bool IsSameSyncId()
         {
             return _lastSyncId == _syncId;
         }
 
+        [PublicAPI]
         public bool IsSyncedURL()
         {
             return _URLSync.ToString().Length > 0;
         }
 
-        private void ClearSubtitlesLocal()
-        {
-            if (_dataText.Length > 0) LogMessage("Clearing subtitles locally");
-
-            _dataText = new string[0];
-            _dataTime = new Vector2[0];
-            _dataCount = 0;
-
-            ResetSubtitleTrackingState();
-
-            foreach (SubtitleControlHandler handler in _registeredControlHandlers)
-                handler.SetStatusText(MESSAGE_CLEARED);
-
-            SendCallback("OnUSharpVideoSubtitlesClear");
-        }
-
-        private void UnsetSubtitlesLocal()
-        {
-            ClearSubtitlesLocal();
-
-            foreach (SubtitleControlHandler handler in _registeredControlHandlers)
-                handler.SetStatusText(MESSAGE_NOT_LOADED);
-        }
-
-        private void LoadSubtitles(string subtitles, bool closeInputMenu)
-        {
-            if (subtitles != "")
-                InitializeParser(subtitles);
-            else
-                LogError("Requested to load empty data - this shouldn't happen");
-
-            if (closeInputMenu)
-                foreach (SubtitleControlHandler handler in _registeredControlHandlers)
-                    handler.CloseInputMenu();
-        }
-
-        private void ResetSubtitleTrackingState()
-        {
-            _currentDataIndex = 0;
-            _lastVideoTime = 0;
-
-            if (_overlayHandler)
-            {
-                _overlayHandler.ClearSubtitle();
-                _overlayHandler.SetPlaceholder(false);
-            }
-        }
+        #endregion
+        #region Parser
 
         private void InitializeParser(string text)
         {
             ResetParser();
 
-            int len = text.Split(new string[] {" --> "}, StringSplitOptions.None).Length - 1;
+            int len = text.Split(new string[] { " --> " }, StringSplitOptions.None).Length - 1;
 
             if (len <= 0)
             {
-                LogError($"Could not check total subtitle count");
+                LogWarning($"Could not check total subtitle count");
 
                 foreach (SubtitleControlHandler handler in _registeredControlHandlers)
-                    handler.SetStatusText(MESSAGE_FAILED);
+                    handler.SetStatusText(GetTranslation("PARSE_FAILED"));
 
                 SendCallback("OnUSharpVideoSubtitlesError");
 
@@ -572,9 +861,10 @@ namespace UdonSharp.Video.Subtitles
         public void _ParserWork()
         {
             float startTime = Time.realtimeSinceStartup;
+            float timeLimit = parserTimeLimit / 1000.0f; // Convert from ms to seconds (float)
 
             foreach (SubtitleControlHandler handler in _registeredControlHandlers)
-                handler.SetStatusText(string.Format(@MESSAGE_PARSING, (int)Math.Round((double)(100 * _parserIndex) / _dataText.Length)));
+                handler.SetStatusText(GetTranslation("PARSING", (int)Math.Round((double)(100 * _parserIndex) / _dataText.Length)));
 
             int parserState = 0;
             for (int i = _parserLine; i < _parserArray.Length; i++)
@@ -603,12 +893,12 @@ namespace UdonSharp.Video.Subtitles
                 }
                 else if (parserState == 1 && line != "")
                 {
-                    _dataText[_parserIndex] = HandleTextNewLine(filterSubtitles ? FilterSubtitle(line) : line);
+                    _dataText[_parserIndex] = ProcessSubtitleText(line);
                     parserState = 2;
                 }
                 else if (parserState == 2 && line != "")
                 {
-                    _dataText[_parserIndex] += "\n" + HandleTextNewLine(filterSubtitles ? FilterSubtitle(line) : line);
+                    _dataText[_parserIndex] += "\n" + ProcessSubtitleText(line);
                 }
                 else if (parserState != 0 && (line == "" || i == _parserArray.Length - 1))
                 {
@@ -617,7 +907,7 @@ namespace UdonSharp.Video.Subtitles
                     parserState = 0;
                 }
 
-                if (parserState == 0 && Time.realtimeSinceStartup > startTime + parserTimeLimit)
+                if (parserState == 0 && Time.realtimeSinceStartup > startTime + timeLimit)
                     break;
 
                 // This is necessary to prevent infinite loop
@@ -643,14 +933,14 @@ namespace UdonSharp.Video.Subtitles
                     _dataCount = _dataText.Length;
 
                     foreach (SubtitleControlHandler handler in _registeredControlHandlers)
-                        handler.SetStatusText(MESSAGE_LOADED);
+                        handler.SetStatusText(GetTranslation("LOADED"));
 
                     SendCallback("OnUSharpVideoSubtitlesLoad");
                 }
                 else
                 {
                     foreach (SubtitleControlHandler handler in _registeredControlHandlers)
-                        handler.SetStatusText(MESSAGE_FAILED);
+                        handler.SetStatusText(GetTranslation("PARSE_FAILED"));
 
                     SendCallback("OnUSharpVideoSubtitlesError");
                 }
@@ -674,73 +964,76 @@ namespace UdonSharp.Video.Subtitles
             return int.Parse(allParts[0]) * 3600 + int.Parse(allParts[1]) * 60 + int.Parse(secondsPart[0]) + milliseconds;
         }
 
-        private string FilterSubtitle(string text) // This function removes unsupported HTML tags, VTT cues and other unwanted characters
-        {
-            char[] allowedShortHTMLTags = { 'b', 'i', 'u' };
-            // Technically we could support font and color tags here... but support for this would have to be implemented into SubtitleOverlayHandler
-
-            // Replace {} with <> for allowed tags
-            foreach (char tag in allowedShortHTMLTags)
-                text = text.Replace("{" + tag + "}", "<" + tag + ">").Replace("{/" + tag + "}", "</" + tag + ">");
-
-            char[] textArray = text.ToCharArray();
-            text = "";
-
-            bool inHtmlTag = false;
-            bool inVTTCue = false;
-            for (int i = 0; i < textArray.Length; i++)
-            {
-                if (!inHtmlTag && textArray[i] == '{' && i + 1 < textArray.Length && textArray[i + 1] == '\\') // Start of VTT cue
-                {
-                    inVTTCue = true;
-                    continue;
-                }
-                else if (!inHtmlTag && inVTTCue) // Skip contents until end of VTT cue
-                {
-                    if (textArray[i] == '}')
-                        inVTTCue = false;
-
-                    continue;
-                }
-                else if (!inVTTCue && textArray[i] == '<' && i + 1 < textArray.Length) // Start of HTML tag
-                {
-                    bool isEndingTag = textArray[i + 1] == '/';
-                    bool isShortTag = false;
-                    char shortTagValue = '\0';
-
-                    if (i + 3 < textArray.Length)
-                        isShortTag = isEndingTag ? textArray[i + 3] == '>' : textArray[i + 2] == '>';
-
-                    if (i + 2 < textArray.Length)
-                        shortTagValue = isShortTag ? (isEndingTag ? textArray[i + 2] : textArray[i + 1]) : ' ';
-
-                    if (!isShortTag || Array.IndexOf(allowedShortHTMLTags, shortTagValue) == -1)
-                    {
-                        inHtmlTag = true;
-                        continue;
-                    }
-                }
-                else if (!inVTTCue && inHtmlTag) // Skip contents until end of HTML tag
-                {
-                    if (textArray[i] == '>')
-                        inHtmlTag = false;
-
-                    continue;
-                } 
-
-                text += textArray[i];
-            }
-
-            return text;
-        }
-
-        private string HandleTextNewLine(string text)
+        private string ProcessSubtitleText(string text)
         {
             text = text.Replace("\\n", "\n").Replace("\\N", "\n");
 
+            if (filterSubtitles)
+                text = FilterSubtitle(text);
+
             return text;
         }
 
+        private string FilterSubtitle(string text) // This function removes unsupported HTML tags and all ASS tags
+        {
+            char[] allowedShortHTMLTags = { 'b', 'i', 'u' };
+
+            // Replace {x} with <x> for allowed tags
+            foreach (char tag in allowedShortHTMLTags)
+                text = text.Replace("{" + tag + "}", "<" + tag + ">").Replace("{/" + tag + "}", "</" + tag + ">");
+
+            string result = "";
+            char tagEnd = '\0';
+
+            for (int i = 0; i < text.Length; i++)
+            {
+                if (tagEnd != '\0')
+                {
+                    // Skip contents until the end of tag
+                    if (text[i] == tagEnd)
+                        tagEnd = '\0';
+
+                    continue;
+                }
+
+                if (i + 1 < text.Length)
+                {
+                    if (text[i] == '{' && text[i + 1] == '\\') // Start of ASS tag
+                    {
+                        tagEnd = '}';
+                        continue;
+                    }
+
+                    if (text[i] == '<') // Start of HTML tag
+                    {
+                        bool isEndingTag = text[i + 1] == '/';
+                        bool isShortTag = false;
+                        char shortTagValue = '\0';
+
+                        if (i + 3 < text.Length)
+                            isShortTag = isEndingTag ? text[i + 3] == '>' : text[i + 2] == '>';
+
+                        if (i + 2 < text.Length)
+                            shortTagValue = isShortTag ? (isEndingTag ? text[i + 2] : text[i + 1]) : ' ';
+
+                        if (!isShortTag || Array.IndexOf(allowedShortHTMLTags, shortTagValue) == -1)
+                        {
+                            tagEnd = '>';
+                            continue;
+                        }
+                    }
+                }
+
+                result += text[i];
+            }
+
+            return result;
+        }
+
+        #endregion
+        #region Input
+
+        [PublicAPI]
         public void ProcessInput(string input)
         {
             if (!_isLocal && !CanControlSubtitles())
@@ -769,7 +1062,7 @@ namespace UdonSharp.Video.Subtitles
                 return;
             }
 
-            if (_dataText.Length > 0)
+            if (_dataCount > 0)
             {
                 if (!_isLocal)
                     SetAndTransmitSubtitles(_dataTmp); // Synchronize to others only if the input is valid
@@ -783,6 +1076,7 @@ namespace UdonSharp.Video.Subtitles
             }
         }
 
+        [PublicAPI]
         public void ProcessURLInput(VRCUrl url)
         {
             if (!_isLocal && !CanControlSubtitles())
@@ -806,7 +1100,7 @@ namespace UdonSharp.Video.Subtitles
             LogMessage("Loading text from URL: " + url);
 
             foreach (SubtitleControlHandler handler in _registeredControlHandlers)
-                handler.SetStatusText(MESSAGE_FETCHING);
+                handler.SetStatusText(GetTranslation("FETCHING"));
 
             VRCStringDownloader.LoadUrl(url, (IUdonEventReceiver)this);
         }
@@ -832,169 +1126,32 @@ namespace UdonSharp.Video.Subtitles
             LogError("Failed to load subtitles from URL: " + result.Error);
 
             foreach (SubtitleControlHandler handler in _registeredControlHandlers)
-                handler.SetStatusText(result.Error);
+                handler.SetStatusText(GetTranslation("FETCH_FAILED")); //handler.SetStatusText(result.Error);
         }
 
-        private void SetAndTransmitSubtitles(string text)
-        {
-            TakeOwnership();
+        #endregion
+        #region API
+        // These methods are not used internally, they are only for external use
 
-            _dataSynced = text; // Must be set no matter what for the local toggle to work correctly
-
-            if (syncOnlyUrl && _URLTmp != VRCUrl.Empty && text != "") // Make sure to also handle clear button by checking for empty text
-                _URLSync = _URLTmp;
-            else
-                _URLSync = VRCUrl.Empty;
-
-            _syncId = Networking.GetServerTimeInMilliseconds();
-            _lastSyncId = _syncId;
-
-            TransmitSubtitles();
-        }
-
-        private void TakeOwnership()
-        {
-            if (Networking.IsOwner(gameObject))
-                return;
-
-            if (CanControlSubtitles()) {
-                LogMessage("Taking ownership");
-
-                Networking.SetOwner(Networking.LocalPlayer, gameObject);
-            }
-        }
-
-        private void LogMessage(string message)
-        {
-            Debug.Log(LOG_PREFIX + " " + message, this);
-
-            if (debugLogField)
-                debugLogField.text = message + "\n" + debugLogField.text;
-        }
-
-        private void LogWarning(string message)
-        {
-            Debug.LogWarning(LOG_PREFIX + " " + message, this);
-
-            if (debugLogField)
-                debugLogField.text = message + "\n" + debugLogField.text;
-        }
-
-        private void LogError(string message)
-        {
-            Debug.LogError(LOG_PREFIX + " " + message, this);
-
-            if (debugLogField)
-                debugLogField.text = message + "\n" + debugLogField.text;
-        }
-
-        public override void OnPlayerJoined(VRCPlayerApi player)
-        {
-            if (Networking.IsOwner(gameObject))
-            {
-                if (_dataSynced != "")
-                    TransmitSubtitles();
-#if USHARPVIDEO_FOUND
-                else if (!IsUsingUSharpVideo()) // To make sure the lock state is correct on the joiner
-#else
-                else
-#endif
-                    RequestSerialization();
-
-#if USHARPVIDEO_FOUND
-                if (_dataSynced != "" || !IsUsingUSharpVideo())
-#endif
-                    LogMessage($"Player joined ({player.displayName}) - request serialization");
-            }
-        }
-
-        public override void OnPlayerLeft(VRCPlayerApi player)
-        {
-            if (Networking.IsOwner(gameObject) && player == _previousOwner && !IsSynchronized() && IsSameSyncId()) // Player who left was running the synchronization, resume it as we have all the data
-            {
-                if (!_isLocal)
-                {
-                    foreach (SubtitleControlHandler handler in _registeredControlHandlers) // This will prevent the status being stuck at "synchronizing last chunk"
-                    {
-                        handler.RestoreStatusText();
-
-                        if (_dataSynced != "")
-                            handler.SetStatusText(MESSAGE_LOADED);
-                        else
-                            handler.SetStatusText(MESSAGE_NOT_LOADED);
-
-                        handler.SaveStatusText();
-                    }
-                }
-
-                RequestSerialization();
-
-                LogMessage($"Player left ({player.displayName}) - request serialization");
-            }
-        }
-
-// Similary to how it is in USharpVideo - uncomment this to prevent people from taking ownership when they shouldn't be able to
-//        public override bool OnOwnershipRequest(VRCPlayerApi requestingPlayer, VRCPlayerApi requestedOwner)
-//        {
-//#if USHARPVIDEO_FOUND
-//            if (targetVideoPlayer)
-//                return !targetVideoPlayer.IsLocked() || targetVideoPlayer.IsPrivilegedUser(requestedOwner);
-//#endif
-//            
-//            return !_isLocked || IsPrivilegedUser(requestedOwner);
-//        }
-
-        public override void OnOwnershipTransferred(VRCPlayerApi player)
-        {
-            _previousOwner = _currentOwner;
-            _currentOwner = Networking.GetOwner(gameObject);
-
-            if (!_isLocal)
-            {
-                foreach (SubtitleControlHandler handler in _registeredControlHandlers)
-                {
-                    handler.UpdateOwner();
-                    handler.UpdateLockState();
-                }
-            }
-
-            SendCallback("OnUSharpVideoSubtitlesOwnershipChange");
-
-            LogMessage($"Ownership changed ({player.displayName})");
-        }
-
-#if USHARPVIDEO_FOUND
-        public bool IsUsingUSharpVideo()
-        {
-            return targetVideoPlayer != null;
-        }
-
-        public VRCPlayerApi GetUSharpVideoOwner()
-        {
-            if (targetVideoPlayer)
-                return Networking.GetOwner(targetVideoPlayer.gameObject);
-
-            return null; // Should never happen
-        }
-#endif
-
+        [PublicAPI]
         public bool IsLocked()
         {
 #if USHARPVIDEO_FOUND
-            if (targetVideoPlayer)
-                return targetVideoPlayer.IsLocked();
+            if (uSharpVideoPlayer)
+                return uSharpVideoPlayer.IsLocked();
 #endif
 
             return _isLocked;
         }
 
+        [PublicAPI]
         public void SetLocked(bool state)
         {
             if (!IsPrivilegedUser(Networking.LocalPlayer))
                 return;
 
 #if USHARPVIDEO_FOUND
-            if (targetVideoPlayer)
+            if (uSharpVideoPlayer)
             {
                 LogError("Method SetLocked cannot be used while using USharpVideo");
                 return;
@@ -1018,31 +1175,13 @@ namespace UdonSharp.Video.Subtitles
             SendCallback("OnUSharpVideoSubtitlesLockChange");
         }
 
-        public bool CanControlSubtitles()
-        {
-#if USHARPVIDEO_FOUND
-            if (targetVideoPlayer)
-                return targetVideoPlayer.CanControlVideoPlayer();
-#endif
-
-            return !_isLocked || IsPrivilegedUser(Networking.LocalPlayer);
-        }
-
-        public bool IsPrivilegedUser(VRCPlayerApi player)
-        {
-#if USHARPVIDEO_FOUND
-            if (targetVideoPlayer)
-                return targetVideoPlayer.IsPrivilegedUser(player);
-#endif
-
-            return player.isMaster;
-        }
-
+        [PublicAPI]
         public bool IsEnabled()
         {
             return _isEnabled;
         }
 
+        [PublicAPI]
         public void SetEnabled(bool state)
         {
             if (_isEnabled == state)
@@ -1064,11 +1203,13 @@ namespace UdonSharp.Video.Subtitles
             SendCallback("OnUSharpVideoSubtitlesEnabledStatusChange");
         }
 
+        [PublicAPI]
         public bool IsLocal()
         {
             return _isLocal;
         }
 
+        [PublicAPI]
         public void SetLocal(bool state)
         {
             if (_isLocal == state)
@@ -1114,11 +1255,13 @@ namespace UdonSharp.Video.Subtitles
             SendCallback("OnUSharpVideoSubtitlesModeChange");
         }
 
+        [PublicAPI]
         public float GetTimeOffset()
         {
             return _timeOffset;
         }
 
+        [PublicAPI]
         public void SetTimeOffset(float offset)
         {
             _timeOffset = -offset;
@@ -1126,25 +1269,28 @@ namespace UdonSharp.Video.Subtitles
             SendCallback("OnUSharpVideoSubtitlesTimeOffsetChange");
         }
 
+        [PublicAPI]
         public bool HasSubtitles()
         {
-            return _dataText.Length > 0;
+            return _dataCount > 0;
         }
 
+        [PublicAPI]
         public void SetVideoPlayer(BaseVRCVideoPlayer videoPlayer)
         {
 #if USHARPVIDEO_FOUND
-            if (targetVideoPlayer) {
+            if (uSharpVideoPlayer) {
                 LogWarning("Method SetVideoPlayer cannot be used with USharpVideo");
                 return;
             }
 #endif
 
-            baseVideoPlayer = videoPlayer;
+            baseVRCVideoPlayer = videoPlayer;
             ResetSubtitleTrackingState();
             SendCallback("OnUSharpVideoSubtitlesVideoPlayerChange");
         }
 
+        [PublicAPI]
         public void ClearSubtitles()
         {
             if (!_isLocal)
@@ -1168,6 +1314,7 @@ namespace UdonSharp.Video.Subtitles
             }
         }
 
+        [PublicAPI]
         public void SynchronizeSubtitles()
         {
             if (!_isLocal)
@@ -1186,34 +1333,119 @@ namespace UdonSharp.Video.Subtitles
             SendCallback("OnUSharpVideoSubtitlesSynchronize");
         }
 
+        [PublicAPI]
         public void ReloadSyncedURL()
         {
             if (IsSyncedURL())
                 FetchFromURL(_URLSync);
         }
 
+        [PublicAPI]
         public bool CanSynchronizeSubtitles()
         {
             return Networking.IsOwner(gameObject) || IsPrivilegedUser(Networking.LocalPlayer);
         }
 
-        public void SynchronizeSettings(SubtitleControlHandler callingHandler)
+        #endregion
+        #region VRChat events
+
+        public override void OnPlayerJoined(VRCPlayerApi player)
         {
-            foreach (SubtitleControlHandler handler in _registeredControlHandlers)
+            if (Networking.IsOwner(gameObject))
             {
-                if (handler == callingHandler)
-                    continue;
-
-                handler.UpdateSettingsValues();
-            }
-
-            SendCallback("OnUSharpVideoSubtitlesSettingsUpdate");
-        }
+                if (_dataSynced != "")
+                    TransmitSubtitles();
+#if USHARPVIDEO_FOUND
+                else if (!IsUsingUSharpVideo()) // To make sure the lock state is correct on the joiner
+#else
+                else
+#endif
+                    RequestSerialization();
 
 #if USHARPVIDEO_FOUND
+                if (_dataSynced != "" || !IsUsingUSharpVideo())
+#endif
+                    LogMessage($"Player joined ({player.displayName}) - request serialization");
+            }
+        }
+
+        public override void OnPlayerLeft(VRCPlayerApi player)
+        {
+            if (Networking.IsOwner(gameObject) && player == _previousOwner && !IsSynchronized() && IsSameSyncId()) // Player who left was running the synchronization, resume it as we have all the data
+            {
+                if (!_isLocal)
+                {
+                    foreach (SubtitleControlHandler handler in _registeredControlHandlers) // This will prevent the status being stuck at "synchronizing last chunk"
+                    {
+                        handler.RestoreStatusText();
+
+                        if (_dataSynced != "")
+                            handler.SetStatusText(GetTranslation("LOADED"));
+                        else
+                            handler.SetStatusText(GetTranslation("NOT_LOADED"));
+
+                        handler.SaveStatusText();
+                    }
+                }
+
+                RequestSerialization();
+
+                LogMessage($"Player left ({player.displayName}) - request serialization");
+            }
+        }
+
+// Similary to how it is in USharpVideo - uncomment this to prevent people from taking ownership when they shouldn't be able to
+//        public override bool OnOwnershipRequest(VRCPlayerApi requestingPlayer, VRCPlayerApi requestedOwner)
+//        {
+//#if USHARPVIDEO_FOUND
+//            if (uSharpVideoPlayer)
+//                return !uSharpVideoPlayer.IsLocked() || uSharpVideoPlayer.IsPrivilegedUser(requestedOwner);
+//#endif
+//            
+//            return !_isLocked || IsPrivilegedUser(requestedOwner);
+//        }
+
+        public override void OnOwnershipTransferred(VRCPlayerApi player)
+        {
+            _previousOwner = _currentOwner;
+            _currentOwner = Networking.GetOwner(gameObject);
+
+            if (!_isLocal)
+            {
+                foreach (SubtitleControlHandler handler in _registeredControlHandlers)
+                {
+                    handler.UpdateOwner();
+                    handler.UpdateLockState();
+                }
+            }
+
+            SendCallback("OnUSharpVideoSubtitlesOwnershipChange");
+
+            LogMessage($"Ownership changed ({player.displayName})");
+        }
+
+        #endregion
+        #region USharpVideo integration
+
+#if USHARPVIDEO_FOUND
+        [PublicAPI]
+        public bool IsUsingUSharpVideo()
+        {
+            return uSharpVideoPlayer != null;
+        }
+
+        [PublicAPI]
+        public VRCPlayerApi GetUSharpVideoOwner()
+        {
+            if (uSharpVideoPlayer)
+                return Networking.GetOwner(uSharpVideoPlayer.gameObject);
+
+            return null; // Should never happen
+        }
+
         public void OnUSharpVideoPlay()
         {
-            VRCUrl currentURL = targetVideoPlayer.GetCurrentURL();
+            VRCUrl currentURL = uSharpVideoPlayer.GetCurrentURL();
 
             if (currentURL != _lastVideoURL)
             {
@@ -1244,9 +1476,9 @@ namespace UdonSharp.Video.Subtitles
 
         public void _MigrateToUSharpVideoOwner()
         {
-            VRCPlayerApi videoPlayerOwner = Networking.GetOwner(targetVideoPlayer.gameObject);
+            VRCPlayerApi videoPlayerOwner = Networking.GetOwner(uSharpVideoPlayer.gameObject);
 
-            if (targetVideoPlayer.IsLocked() && Networking.LocalPlayer == videoPlayerOwner && Networking.GetOwner(gameObject) != videoPlayerOwner)
+            if (uSharpVideoPlayer.IsLocked() && Networking.LocalPlayer == videoPlayerOwner && Networking.GetOwner(gameObject) != videoPlayerOwner)
             {
                 if (IsSynchronized())
                 {
@@ -1265,7 +1497,7 @@ namespace UdonSharp.Video.Subtitles
 
         public void OnUSharpVideoOwnershipChange()
         {
-            if (targetVideoPlayer.IsLocked()) // Only to update the master in the input field's placeholder
+            if (uSharpVideoPlayer.IsLocked()) // Only to update the master in the input field's placeholder
             {
                 foreach (SubtitleControlHandler handler in _registeredControlHandlers)
                     handler.UpdateLockState();
@@ -1273,74 +1505,10 @@ namespace UdonSharp.Video.Subtitles
         }
 #endif
 
-        public void RegisterOverlayHandler(SubtitleOverlayHandler handler)
-        {
-            if (_overlayHandler == null)
-            {
-                _overlayHandler = handler;
-                _overlayHandler.ClearSubtitle();
-            }
-            else
-                LogError("SubtitleOverlayHandler is already registered, only one can be active at the same time");
-        }
+        #endregion
+        #region Callback events
 
-        public void UnregisterOverlayHandler(SubtitleOverlayHandler handler)
-        {
-            if (handler == _overlayHandler)
-                _overlayHandler = null;
-            else
-                LogError("This method must be called by the currently registered SubtitleOverlayHandler");
-        }
-
-        public void RegisterControlHandler(SubtitleControlHandler newControlHandler)
-        {
-            if (_registeredControlHandlers == null)
-                _registeredControlHandlers = new SubtitleControlHandler[0];
-
-            foreach (SubtitleControlHandler controlHandler in _registeredControlHandlers)
-            {
-                if (newControlHandler == controlHandler)
-                    return;
-            }
-
-            SubtitleControlHandler[] newControlHandlers = new SubtitleControlHandler[_registeredControlHandlers.Length + 1];
-            _registeredControlHandlers.CopyTo(newControlHandlers, 0);
-            _registeredControlHandlers = newControlHandlers;
-
-            _registeredControlHandlers[_registeredControlHandlers.Length - 1] = newControlHandler;
-
-            newControlHandler.SetToggleButtonState(_isEnabled);
-            newControlHandler.SetLocalToggleButtonState(_isLocal);
-            newControlHandler.SetStatusText(_dataText.Length > 0 ? MESSAGE_LOADED : MESSAGE_NOT_LOADED);
-        }
-
-        public void UnregisterControlHandler(SubtitleControlHandler controlHandler)
-        {
-            if (_registeredControlHandlers == null)
-                _registeredControlHandlers = new SubtitleControlHandler[0];
-
-            int controlHandlerCount = _registeredControlHandlers.Length;
-            for (int i = 0; i < controlHandlerCount; ++i)
-            {
-                SubtitleControlHandler handler = _registeredControlHandlers[i];
-
-                if (controlHandler == handler)
-                {
-                    SubtitleControlHandler[] newControlHandlers = new SubtitleControlHandler[controlHandlerCount - 1];
-
-                    for (int j = 0; j < i; ++j)
-                        newControlHandlers[j] = _registeredControlHandlers[j];
-
-                    for (int j = i + 1; j < controlHandlerCount; ++j)
-                        newControlHandlers[j - 1] = _registeredControlHandlers[j];
-
-                    _registeredControlHandlers = newControlHandlers;
-
-                    return;
-                }
-            }
-        }
-
+        [PublicAPI]
         public void RegisterCallbackReceiver(UdonSharpBehaviour callbackReceiver)
         {
             if (!callbackReceiver)
@@ -1362,6 +1530,7 @@ namespace UdonSharp.Video.Subtitles
             _registeredCallbackReceivers[_registeredCallbackReceivers.Length - 1] = callbackReceiver;
         }
 
+        [PublicAPI]
         public void UnregisterCallbackReceiver(UdonSharpBehaviour callbackReceiver)
         {
             if (!callbackReceiver)
@@ -1400,5 +1569,7 @@ namespace UdonSharp.Video.Subtitles
                     callbackReceiver.SendCustomEvent(callbackName);
             }
         }
+
+        #endregion
     }
 }

@@ -1,5 +1,8 @@
+# Ignore everything by default
 /*
 !/.gitignore
+
+# Stuff to track
 !/Dev/
 !/Dev.meta
 !/USharpVideoSubtitles/

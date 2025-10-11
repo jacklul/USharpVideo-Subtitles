@@ -523,7 +523,7 @@ MonoBehaviour:
       Data: 33|UnityEngine.HeaderAttribute, UnityEngine.CoreModule
     - Name: header
       Entry: 1
-      Data: Defaults
+      Data: Default text style
     - Name: 
       Entry: 8
       Data: 

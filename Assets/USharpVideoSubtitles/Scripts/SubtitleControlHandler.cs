@@ -4,6 +4,7 @@
  * https://github.com/jacklul/USharpVideo-Subtitles
  */
 
+using JetBrains.Annotations;
 using System;
 using TMPro;
 using UnityEngine;
@@ -14,18 +15,12 @@ using VRC.SDK3.Persistence;
 
 namespace UdonSharp.Video.Subtitles
 {
+    [DefaultExecutionOrder(7)]
     [UdonBehaviourSyncMode(BehaviourSyncMode.NoVariableSync)]
+    [AddComponentMenu("Udon Sharp/Video/Subtitles/Subtitle Control Handler")]
     public class SubtitleControlHandler : UdonSharpBehaviour
     {
-        private const string MESSAGE_PASTE = "Paste SRT subtitles...";
-        private const string MESSAGE_LOAD_URL = "Paste URL to SRT subtitles...";
-        private const string MESSAGE_WAIT_SYNC = "Wait for synchronization to finish";
-        private const string MESSAGE_ONLY_MASTER_CAN_ADD = "Only master {0} can add subtitles";
-        private const string MESSAGE_ONLY_OWNER_CAN_SYNC = "Only {0} can synchronize subtitles";
-        private const string INDICATOR_LOCAL = "(local)";
-        private const string INDICATOR_ANYONE = "(anyone)";
-        private const string ALIGNMENT_BOTTOM = "Bottom";
-        private const string ALIGNMENT_TOP = "Top";
+        #region Config
 
         [SerializeField]
         private SubtitleManager manager;
@@ -40,10 +35,13 @@ namespace UdonSharp.Video.Subtitles
         public float settingsPopupScale = 0f;
         [Tooltip("How much transparent should the popup window be")]
         public float settingsPopupAlpha = 0.85f;
+#if VRC_ENABLE_PLAYER_PERSISTENCE
         [SerializeField, Tooltip("The key used to store the user's settings in PlayerData key-value database\nEmpty disables this feature")]
         private string settingsPersistenceKey = "UsharpVideoSubtitles_Settings";
+
         [SerializeField, Tooltip("How many seconds to wait before saving the settings to PlayerData after they have been changed")]
         private float settingsPersistenceDelay = 5f;
+#endif
 
         [Header("Alpha applying rules")]
         [SerializeField, Tooltip("Should we ignore image components with no sprite assigned?")]
@@ -236,6 +234,9 @@ namespace UdonSharp.Video.Subtitles
         public Color buttonActivatedColor = new Color(0.943f, 0.943f, 0.943f);
         public Color iconInvertedColor = new Color(0.196f, 0.196f, 0.196f);
 
+        #endregion
+        #region Variables
+
         private const int IMPORT_NONE = 0; // Just set the values on the UI
         private const int IMPORT_UPDATE = 1; // Update overlay (without settings reset)
         private const int IMPORT_RESET = 2; // Update overlay with settings reset
@@ -248,12 +249,17 @@ namespace UdonSharp.Video.Subtitles
         private string _savedStatus = "";
         private string _lastStatus = "";
 
+#if VRC_ENABLE_PLAYER_PERSISTENCE
         private bool _persistentDataRestored = false;
         private bool _persistentDataSaved = true;
+#endif
 
         private bool _synchronizeSettings = true;
         private string _currentSettingsExport = "";
         private bool _popupActive = false;
+
+        #endregion
+        #region Initialization
 
         private void OnEnable()
         {
@@ -309,28 +315,6 @@ namespace UdonSharp.Video.Subtitles
                 else
                     preset4Object.SetActive(false);
             }
-        }
-
-        public override void OnPlayerRestored(VRCPlayerApi player)
-        {
-            if (_persistentDataRestored || player != Networking.LocalPlayer)
-                return;
-
-            if (settingsPersistenceKey.Length > 0) {
-                bool success = PlayerData.TryGetString(player, settingsPersistenceKey, out string userSettings);
-
-                if (success) {
-                    if (userSettings.Length > 0 && _currentSettingsExport != userSettings) {
-                        Debug.Log("Restoring subtitle settings from PlayerData: " + userSettings);
-
-                        ImportSettingsFromString(userSettings);
-                    }
-                } else {
-                    Debug.Log("Failed to fetch subtitle settings from PlayerData");
-                }
-            }
-
-            _persistentDataRestored = true;
         }
 
         private void OnDisable()
@@ -409,6 +393,48 @@ namespace UdonSharp.Video.Subtitles
             }
         }
 
+        #endregion
+        #region VRC Persistence
+
+#if VRC_ENABLE_PLAYER_PERSISTENCE
+        public override void OnPlayerRestored(VRCPlayerApi player)
+        {
+            if (_persistentDataRestored || player != Networking.LocalPlayer)
+                return;
+
+            if (settingsPersistenceKey.Length > 0 && PlayerData.HasKey(player, settingsPersistenceKey))
+            {
+                bool success = PlayerData.TryGetString(player, settingsPersistenceKey, out string userSettings);
+
+                if (success)
+                {
+                    if (userSettings.Length > 0 && _currentSettingsExport != userSettings)
+                    {
+                        manager.LogMessage("Restoring subtitle settings from PlayerData: " + userSettings);
+
+                        ImportSettingsFromString(userSettings);
+                    }
+                }
+                else
+                {
+                    manager.LogMessage("Failed to fetch subtitle settings from PlayerData");
+                }
+            }
+
+            _persistentDataRestored = true;
+        }
+
+        public void _SavePersistentData()
+        {
+            manager.LogMessage("Saving subtitle settings to PlayerData: " + _currentSettingsExport);
+            PlayerData.SetString(settingsPersistenceKey, _currentSettingsExport);
+            _persistentDataSaved = true;
+        }
+#endif
+
+        #endregion
+        #region Status
+
         public void SetStatusText(string text)
         {
             if (_lastStatus != "")
@@ -417,7 +443,7 @@ namespace UdonSharp.Video.Subtitles
                 return;
             }
 
-            string message = text + (manager.IsLocal() ? " " + INDICATOR_LOCAL : "");
+            string message = text + (manager.IsLocal() ? " " + manager.GetTranslation("INDICATOR_LOCAL") : "");
 
             if (statusTextField)
             {
@@ -470,6 +496,9 @@ namespace UdonSharp.Video.Subtitles
             }
         }
 
+        #endregion
+        #region Ownership & Lock
+
         // Only allow the master to own this
         public override bool OnOwnershipRequest(VRCPlayerApi requestingPlayer, VRCPlayerApi requestedOwner)
         {
@@ -488,7 +517,7 @@ namespace UdonSharp.Video.Subtitles
             if (ownerField)
             {
                 if (manager.IsLocal())
-                    ownerField.text = Networking.LocalPlayer.displayName + " " + INDICATOR_LOCAL;
+                    ownerField.text = manager.GetTranslation("INDICATOR_LOCAL");
                 else
                     ownerField.text = Networking.GetOwner(manager.gameObject).displayName;
             }
@@ -523,8 +552,8 @@ namespace UdonSharp.Video.Subtitles
                 if (inputField) inputField.readOnly = false;
                 if (urlInputField) urlInputField.readOnly = false;
 
-                if (inputPlaceholderText) inputPlaceholderText.text = MESSAGE_PASTE + " " + INDICATOR_LOCAL;
-                if (urlInputPlaceholderText) urlInputPlaceholderText.text = MESSAGE_LOAD_URL + " " + INDICATOR_LOCAL;
+                if (inputPlaceholderText) inputPlaceholderText.text = manager.GetTranslation("PLACEHOLDER_PASTE") + " " + manager.GetTranslation("INDICATOR_LOCAL");
+                if (urlInputPlaceholderText) urlInputPlaceholderText.text = manager.GetTranslation("PLACEHOLDER_URL") + " " + manager.GetTranslation("INDICATOR_LOCAL");
 
                 return;
             }
@@ -549,8 +578,8 @@ namespace UdonSharp.Video.Subtitles
                     if (inputField) inputField.readOnly = false;
                     if (urlInputField) urlInputField.readOnly = false;
 
-                    if (inputPlaceholderText) inputPlaceholderText.text = MESSAGE_PASTE;
-                    if (urlInputPlaceholderText) urlInputPlaceholderText.text = MESSAGE_LOAD_URL;
+                    if (inputPlaceholderText) inputPlaceholderText.text = manager.GetTranslation("PLACEHOLDER_PASTE");
+                    if (urlInputPlaceholderText) urlInputPlaceholderText.text = manager.GetTranslation("PLACEHOLDER_URL");
                 }
                 else
                 {
@@ -567,7 +596,7 @@ namespace UdonSharp.Video.Subtitles
                     string owner = Networking.GetOwner(manager.gameObject).displayName;
 #endif
 
-                    string onlyMaster = string.Format(@MESSAGE_ONLY_MASTER_CAN_ADD, owner);
+                    string onlyMaster = manager.GetTranslation("ONLY_MASTER_CAN_ADD", owner);
 
                     if (inputPlaceholderText) inputPlaceholderText.text = onlyMaster;
                     if (urlInputPlaceholderText) urlInputPlaceholderText.text = onlyMaster;
@@ -585,22 +614,28 @@ namespace UdonSharp.Video.Subtitles
                 if (inputField) inputField.readOnly = false;
                 if (urlInputField) urlInputField.readOnly = false;
 
-                if (inputPlaceholderText) inputPlaceholderText.text = MESSAGE_PASTE + " " + INDICATOR_ANYONE;
-                if (urlInputPlaceholderText) urlInputPlaceholderText.text = MESSAGE_LOAD_URL + " " + INDICATOR_ANYONE;
+                if (inputPlaceholderText) inputPlaceholderText.text = manager.GetTranslation("PLACEHOLDER_PASTE") + " " + manager.GetTranslation("INDICATOR_ANYONE");
+                if (urlInputPlaceholderText) urlInputPlaceholderText.text = manager.GetTranslation("PLACEHOLDER_URL") + " " + manager.GetTranslation("INDICATOR_ANYONE");
             }
         }
 
         public void LoadInput()
         {
-            if (inputField && inputField.text.Length > 0) {
+            if (inputField && inputField.text.Length > 0)
+            {
                 OnSubtitleInput();
-            } else if (urlInputField && urlInputField.GetUrl().ToString().Length > 0) {
+            }
+            else if (urlInputField && urlInputField.GetUrl().ToString().Length > 0)
+            {
                 OnSubtitleUrlInput();
             }
 
             inputField.text = string.Empty;
             urlInputField.SetUrl(VRCUrl.Empty);
         }
+
+        #endregion
+        #region Input
 
         public void OnSubtitleInput()
         {
@@ -666,6 +701,9 @@ namespace UdonSharp.Video.Subtitles
 
             localToggle.isOn = state;
         }
+
+        #endregion
+        #region Menu toggles
 
         public void OnInputMenuToggle()
         {
@@ -747,7 +785,8 @@ namespace UdonSharp.Video.Subtitles
                             if (_popupActive)
                                 continue; // Prevents toggling off popup window by opening other menu
 
-                            if (settingsMenu.activeSelf) {
+                            if (settingsMenu.activeSelf)
+                            {
                                 overlayHandler.SetPlaceholder(false);
                                 overlayHandler.ClearSubtitle(); // Hide subtitle placeholder when switching the menus
                             }
@@ -788,6 +827,19 @@ namespace UdonSharp.Video.Subtitles
             }
         }
 
+        [PublicAPI]
+        public void CloseInputMenu() // Used by SubtitleManager
+        {
+            if (!inputMenu)
+                return;
+
+            inputMenu.SetActive(false);
+            ToggleMenu("dummy"); // Makes sure everything gets closed and button states reset
+        }
+
+        #endregion
+        #region Buttons
+
         public void OnReloadButton()
         {
             if (!manager.IsLocal())
@@ -796,7 +848,7 @@ namespace UdonSharp.Video.Subtitles
                 {
                     if (!manager.IsSynchronized())
                     {
-                        SetStickyStatusText(MESSAGE_WAIT_SYNC, 3.0f);
+                        SetStickyStatusText(manager.GetTranslation("WAIT_FOR_SYNC"), 3.0f);
                         return;
                     }
                 }
@@ -808,7 +860,7 @@ namespace UdonSharp.Video.Subtitles
                 }
                 else
                 {
-                    SetStickyStatusText(string.Format(MESSAGE_ONLY_OWNER_CAN_SYNC, Networking.GetOwner(manager.gameObject).displayName), 3.0f);
+                    SetStickyStatusText(manager.GetTranslation("ONLY_OWNER_CAN_SYNC", Networking.GetOwner(manager.gameObject).displayName), 3.0f);
                     return;
                 }
             }
@@ -834,13 +886,21 @@ namespace UdonSharp.Video.Subtitles
             {
                 if (!manager.IsSynchronized() && !Networking.IsOwner(manager.gameObject))
                 {
-                    SetStickyStatusText(MESSAGE_WAIT_SYNC, 3.0f);
+                    SetStickyStatusText(manager.GetTranslation("WAIT_FOR_SYNC"), 3.0f);
                     return;
                 }
 
                 manager.SetLocked(!manager.IsLocked());
             }
         }
+
+        public void OnSettingsResetButton()
+        {
+            ImportSettingsFromStringInternal("", IMPORT_RESET);
+        }
+
+        #endregion
+        #region Popup
 
         public void OnSettingsPopupToggle()
         {
@@ -945,6 +1005,9 @@ namespace UdonSharp.Video.Subtitles
             }
         }
 
+        #endregion
+        #region Settings
+
         public void OnSettingsImportInput()
         {
             if (!settingsImportExportField)
@@ -956,11 +1019,7 @@ namespace UdonSharp.Video.Subtitles
                 ImportSettingsFromString(text);
         }
 
-        public void OnSettingsResetButton()
-        {
-            ImportSettingsFromStringInternal("", IMPORT_RESET);
-        }
-
+        [PublicAPI]
         public void ImportSettingsFromString(string settings)
         {
             ImportSettingsFromStringInternal(settings, IMPORT_RESET);
@@ -978,7 +1037,7 @@ namespace UdonSharp.Video.Subtitles
                 {
                     if (overlayHandler)
                     {
-                        overlayHandler.ResetSettings();
+                        overlayHandler.ResetStyle();
                         UpdateSettingsExportString();
                         settings = _currentSettingsExport + "/" + settings;
                     }
@@ -1159,17 +1218,13 @@ namespace UdonSharp.Video.Subtitles
 
             if (settingsImportExportField) settingsImportExportField.text = _currentSettingsExport;
 
-            if (_persistentDataRestored && _persistentDataSaved && settingsPersistenceKey.Length > 0) {
+#if VRC_ENABLE_PLAYER_PERSISTENCE
+            if (_persistentDataRestored && _persistentDataSaved && settingsPersistenceKey.Length > 0)
+            {
                 _persistentDataSaved = false;
                 SendCustomEventDelayedSeconds(nameof(_SavePersistentData), settingsPersistenceDelay);
             }
-        }
-
-        public void _SavePersistentData()
-        {
-            Debug.Log("Saving subtitle settings to PlayerData: " + _currentSettingsExport);
-            PlayerData.SetString(settingsPersistenceKey, _currentSettingsExport);
-            _persistentDataSaved = true;
+#endif
         }
 
         private void AfterValueChanged()
@@ -1183,20 +1238,16 @@ namespace UdonSharp.Video.Subtitles
             }
         }
 
-        public void CloseInputMenu()
-        {
-            if (!inputMenu)
-                return;
+        #endregion
+        #region API
 
-            inputMenu.SetActive(false);
-            ToggleMenu("dummy"); // Makes sure everything gets closed and button states reset
-        }
-
+        [PublicAPI]
         public bool IsSettingsPopupActive()
         {
             return _popupActive;
         }
 
+        [PublicAPI]
         public void ToggleSettingsPopup()
         {
             if (settingsMenu.activeSelf)
@@ -1214,6 +1265,9 @@ namespace UdonSharp.Video.Subtitles
 
             if (settingsPopupEnabled) settingsPopupButtonBackground.gameObject.SetActive(false);
         }
+
+        #endregion
+        #region UI
 
         public void OnFontSizeSlider()
         {
@@ -1419,7 +1473,7 @@ namespace UdonSharp.Video.Subtitles
                 return;
 
             if (alignmentSlider) alignmentSlider.value = value;
-            alignmentValue.text = value == 0 ? ALIGNMENT_BOTTOM : ALIGNMENT_TOP;
+            alignmentValue.text = value == 0 ? manager.GetTranslation("ALIGNMENT_BOTTOM") : manager.GetTranslation("ALIGNMENT_TOP");
         }
 
         public void InitTimeOffsetControl()
@@ -1503,5 +1557,7 @@ namespace UdonSharp.Video.Subtitles
         {
             ImportSettingsFromStringInternal(preset4Settings, IMPORT_UPDATE);
         }
+
+        #endregion
     }
 }

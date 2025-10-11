@@ -861,8 +861,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 20, y: 20}
-  m_SizeDelta: {x: 160, y: 35}
+  m_AnchoredPosition: {x: 20, y: 35}
+  m_SizeDelta: {x: 160, y: 25}
   m_Pivot: {x: 0, y: 0}
 --- !u!222 &1041806238
 CanvasRenderer:
@@ -2181,8 +2181,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 368572902012170216}
-  - component: {fileID: 5788624106359276806}
   - component: {fileID: 8723279727618994108}
+  - component: {fileID: 5788624106359276806}
   - component: {fileID: 368572902012170221}
   - component: {fileID: 368572902012170222}
   - component: {fileID: 368572902012170223}
@@ -2225,6 +2225,19 @@ RectTransform:
   m_AnchoredPosition: {x: 3.69, y: -2.794}
   m_SizeDelta: {x: 1028.898, y: 385.87}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &8723279727618994108
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 368572902012170217}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96c9fcd85688d64459ae79399f1ab62d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  uiStyle: {fileID: 11400000, guid: e84826a7ca484d1081c0bcd5e08fbd20, type: 2}
 --- !u!114 &5788624106359276806
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2330,19 +2343,6 @@ MonoBehaviour:
   buttonBackgroundColor: {r: 0.21318094, g: 0.18627624, b: 0.21698111, a: 1}
   buttonActivatedColor: {r: 0.9433962, g: 0.9433962, b: 0.9433962, a: 1}
   iconInvertedColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
---- !u!114 &8723279727618994108
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 368572902012170217}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 96c9fcd85688d64459ae79399f1ab62d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  uiStyle: {fileID: 11400000, guid: e84826a7ca484d1081c0bcd5e08fbd20, type: 2}
 --- !u!114 &368572902012170221
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2474,7 +2474,7 @@ MonoBehaviour:
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
-  m_DynamicPixelsPerUnit: 1
+  m_DynamicPixelsPerUnit: 2
   m_PresetInfoIsWorld: 1
 --- !u!114 &368572902012170220
 MonoBehaviour:
@@ -3388,15 +3388,21 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 368572902303537914}
-  targetVideoPlayer: {fileID: 0}
-  baseVideoPlayer: {fileID: 0}
+  uSharpVideoPlayer: {fileID: 0}
+  baseVRCVideoPlayer: {fileID: 0}
   chunkSize: 10000
   updateRate: 10
-  parserTimeLimit: 0.01
-  clearOnNewVideo: 0
+  parserTimeLimit: 11.1
   defaultUnlocked: 1
   filterSubtitles: 1
   syncOnlyUrl: 1
+  logLevel: 3
+  clearOnNewVideo: 0
+  allowInstanceCreatorControl: 1
+  setToVideoPlayerOwner: 0
+  subtitlesURL:
+    url: 
+  translationFile: {fileID: 0}
   debugLogField: {fileID: 0}
 --- !u!114 &368572902303537914
 MonoBehaviour:
@@ -10520,7 +10526,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 4292927712
   m_fontColor: {r: 0.8773585, g: 0.8773585, b: 0.8773585, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -13964,8 +13970,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 7.5, y: 0}
+  m_SizeDelta: {x: -15, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4357186916436208690
 CanvasRenderer:
@@ -15868,16 +15874,18 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'SubRip (SRT) format is fully supported.
-    You may also be able to import WebVTT (VTT) subtitles,
-    but text formatting is not handled, and you will likely see
-    unusual or malformed text.
+  m_text: 'SubRip (SRT) format is supported.
 
-    <b>Make sure the subtitles
-    are in UTF-8 format!</b>
+    You may also be able to import
+    WebVTT (VTT) subtitles but special text formatting is not handled and you will
+    most likely see unusual or malformed text.
 
-    Use online tools like <u>subtitletools.com</u>
-    for conversion.'
+
+    <b>Make sure the subtitles are
+    in UTF-8 format!</b>
+
+    Use online tools like <u>subtitletools.com</u> for
+    conversion.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -18497,7 +18505,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: d9c7efa7b08d48f9acab4ff4764e39c1, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -18638,8 +18646,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 7.5, y: 0}
+  m_SizeDelta: {x: -15, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1871923728729733342
 CanvasRenderer:
@@ -19921,7 +19929,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: e3265ab4bf004d28a9537516768c1c75, type: 3}
-    m_FontSize: 96
+    m_FontSize: 100
     m_FontStyle: 2
     m_BestFit: 0
     m_MinSize: 1

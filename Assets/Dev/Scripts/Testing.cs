@@ -16,11 +16,11 @@ namespace UdonSharp.Video.Subtitles.Test
 
         [Header("Base players")]
         public VRCUnityVideoPlayer unityVideoPlayer;
-        public VRCAVProVideoPlayer avProPlayer;
+        public VRCAVProVideoPlayer avProVideoPlayer;
         public SubtitleManager subtitlesManager2;
         public SubtitleOverlayHandler overlayHandler;
-        public GameObject screenUnityPlayer;
-        public GameObject screenAVProPlayer;
+        public GameObject screenUnityVideoPlayer;
+        public GameObject screenAvProVideoPlayer;
 
         public VRCUrl testVideo;
         public VRCUrl testRemoteSubtitles;
@@ -31,8 +31,6 @@ namespace UdonSharp.Video.Subtitles.Test
         {
             if (!subtitlesManager1 || !subtitlesManager1) return;
 
-            Debug.Log("TestUSharpVideo");
-
             uSharpVideoPlayer.gameObject.SetActive(true);
             uSharpVideoPlayer.PlayVideo(testVideo);
 
@@ -42,8 +40,6 @@ namespace UdonSharp.Video.Subtitles.Test
         public void TestUSharpVideoRemote()
         {
             if (!subtitlesManager1 || !subtitlesManager1) return;
-
-            Debug.Log("TestUSharpVideo with remote subtitles");
 
             uSharpVideoPlayer.gameObject.SetActive(true);
             uSharpVideoPlayer.PlayVideo(testVideo);
@@ -56,12 +52,13 @@ namespace UdonSharp.Video.Subtitles.Test
         {
             if (!unityVideoPlayer || !subtitlesManager2) return;
 
-            Debug.Log("TestUnityVideoPlayer");
+            if (avProVideoPlayer)
+                avProVideoPlayer.Stop();
 
             unityVideoPlayer.gameObject.SetActive(true);
             unityVideoPlayer.PlayURL(testVideo);
 
-            if (screenUnityPlayer && overlayHandler) overlayHandler.MoveOverlay(screenUnityPlayer);
+            if (screenUnityVideoPlayer && overlayHandler) overlayHandler.MoveOverlay(screenUnityVideoPlayer);
 
             subtitlesManager2.SetVideoPlayer(unityVideoPlayer);
             subtitlesManager2.ProcessInput(testSubtitles);
@@ -69,16 +66,17 @@ namespace UdonSharp.Video.Subtitles.Test
 
         public void TestAVProVideoPlayer()
         {
-            if (!avProPlayer || !subtitlesManager2) return;
+            if (!avProVideoPlayer || !subtitlesManager2) return;
 
-            Debug.Log("TestAVProVideoPlayer");
+            if (unityVideoPlayer)
+                unityVideoPlayer.Stop();
 
-            avProPlayer.gameObject.SetActive(true);
-            avProPlayer.PlayURL(testVideo);
+            avProVideoPlayer.gameObject.SetActive(true);
+            avProVideoPlayer.PlayURL(testVideo);
 
-            if (screenAVProPlayer && overlayHandler) overlayHandler.MoveOverlay(screenAVProPlayer);
+            if (screenAvProVideoPlayer && overlayHandler) overlayHandler.MoveOverlay(screenAvProVideoPlayer);
 
-            subtitlesManager2.SetVideoPlayer(avProPlayer);
+            subtitlesManager2.SetVideoPlayer(avProVideoPlayer);
             subtitlesManager2.ProcessInput(testSubtitles);
         }
     }

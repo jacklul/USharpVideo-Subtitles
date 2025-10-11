@@ -2574,7 +2574,7 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 7817971935130809596}
-  targetVideoPlayer: {fileID: 0}
+  uSharpVideoPlayer: {fileID: 0}
   subtitleControlHandler: {fileID: 0}
   videoScreen: {fileID: 0}
   videoControlHandler: {fileID: 6518308257066389412}

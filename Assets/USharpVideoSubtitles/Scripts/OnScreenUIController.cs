@@ -13,11 +13,12 @@ using UnityEditor;
 namespace UdonSharp.Video.Subtitles.Extras
 {
     [UdonBehaviourSyncMode(BehaviourSyncMode.NoVariableSync)]
+    [AddComponentMenu("Udon Sharp/Video/Subtitles/On-Screen UI Controller")]
     public class OnScreenUIController : UdonSharpBehaviour
     {
 #if USHARPVIDEO_FOUND
         [SerializeField]
-        private USharpVideoPlayer targetVideoPlayer;
+        private USharpVideoPlayer uSharpVideoPlayer;
 #endif
 
         [SerializeField]
@@ -43,8 +44,8 @@ namespace UdonSharp.Video.Subtitles.Extras
         private void Start()
         {
 #if USHARPVIDEO_FOUND
-            if (targetVideoPlayer && videoControlHandler && !videoControlHandler.targetVideoPlayer)
-                videoControlHandler.targetVideoPlayer = targetVideoPlayer;
+            if (uSharpVideoPlayer && videoControlHandler && !videoControlHandler.targetVideoPlayer)
+                videoControlHandler.targetVideoPlayer = uSharpVideoPlayer;
 #endif
 
             if (videoScreen)

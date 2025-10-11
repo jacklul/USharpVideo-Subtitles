@@ -4,14 +4,19 @@
  * https://github.com/jacklul/USharpVideo-Subtitles
  */
 
+using JetBrains.Annotations;
 using TMPro;
 using UnityEngine;
 
 namespace UdonSharp.Video.Subtitles
 {
+    [DefaultExecutionOrder(6)]
     [UdonBehaviourSyncMode(BehaviourSyncMode.NoVariableSync)]
+    [AddComponentMenu("Udon Sharp/Video/Subtitles/Subtitle Overlay Handler")]
     public class SubtitleOverlayHandler : UdonSharpBehaviour
     {
+        #region Config
+
         [SerializeField]
         private SubtitleManager manager;
 
@@ -33,7 +38,7 @@ namespace UdonSharp.Video.Subtitles
         [SerializeField, Tooltip("This text is displayed when there is no subtitle currently displayed and user has opened the settings menu")]
         private string placeholder = "The quick brown fox jumps over a lazy dog, and the slow white fox jumps over a motivated python.";
 
-        [Header("Defaults")]
+        [Header("Default text style")]
 
         [SerializeField, Range(30, 100)]
         private int fontSize = 55;
@@ -52,6 +57,9 @@ namespace UdonSharp.Video.Subtitles
         [SerializeField, Range(0, 1), Tooltip("0 = bottom\n1 = top")]
         private int alignment = 0; // @TODO To be replaced with "private VerticalAlignmentOptions alignment = VerticalAlignmentOptions.Bottom;" which is not exposed to Udon yet
 
+        #endregion
+        #region Variables
+
         private string _lastText = "";
         private bool _showPlaceholder = false;
 
@@ -62,6 +70,9 @@ namespace UdonSharp.Video.Subtitles
 
         private int _fontSize;
         private string _backgroundColorHex;
+
+        #endregion
+        #region Initialization
 
         private void OnEnable()
         {
@@ -75,7 +86,7 @@ namespace UdonSharp.Video.Subtitles
             if (subtitleTextFieldTop) _textFieldRectTransformTop = subtitleTextFieldTop.GetComponent<RectTransform>();
             if (subtitleBackgroundFieldTop) _backgroundFieldRectTransformTop = subtitleBackgroundFieldTop.GetComponent<RectTransform>();
 
-            ResetSettings();
+            ResetStyle();
 
             if (videoScreen)
                 MoveOverlay(videoScreen);
@@ -85,6 +96,9 @@ namespace UdonSharp.Video.Subtitles
         {
             manager.UnregisterOverlayHandler(this);
         }
+
+        #endregion
+        #region Display
 
         public void DisplaySubtitle(string text)
         {
@@ -138,6 +152,10 @@ namespace UdonSharp.Video.Subtitles
             _showPlaceholder = state;
         }
 
+        #endregion
+        #region API
+
+        [PublicAPI]
         public void MoveOverlay(GameObject screen)
         {
             gameObject.name = "SubtitlesOverlay";
@@ -147,18 +165,7 @@ namespace UdonSharp.Video.Subtitles
             gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
         }
 
-        public void ResetSettings()
-        {
-            SetFontSize(fontSize);
-            SetFontColor(fontColor);
-            SetOutlineSize(outlineSize);
-            SetOutlineColor(outlineColor);
-            SetBackgroundColor(backgroundColor); // This also sets the opacity, obviously
-            SetVerticalMargin(verticalMargin);
-            SetHorizontalMargin(horizontalMargin);
-            SetAlignment(alignment);
-        }
-
+        [PublicAPI]
         public Transform GetCanvasTransform()
         {
             if (gameObject.transform.childCount > 0)
@@ -171,6 +178,21 @@ namespace UdonSharp.Video.Subtitles
             }
 
             return gameObject.transform; // This shouldn't even be reached
+        }
+
+        #endregion
+        #region Styling
+
+        public void ResetStyle()
+        {
+            SetFontSize(fontSize);
+            SetFontColor(fontColor);
+            SetOutlineSize(outlineSize);
+            SetOutlineColor(outlineColor);
+            SetBackgroundColor(backgroundColor); // This also sets the opacity, obviously
+            SetVerticalMargin(verticalMargin);
+            SetHorizontalMargin(horizontalMargin);
+            SetAlignment(alignment);
         }
 
         public int GetFontSize()
@@ -345,5 +367,7 @@ namespace UdonSharp.Video.Subtitles
             //subtitleTextField.alignment = alignment;
             //subtitleBackgroundField.alignment = alignment;
         }
+
+        #endregion
     }
 }

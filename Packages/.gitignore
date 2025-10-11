@@ -1,6 +1,7 @@
-/*
-!/.gitignore
+# Ignore all packages by default
+/*/
+
+# Do not track core packages except for the bootstrap
+!com.vrchat.core.*/
+com.vrchat.core.*/
 !/com.vrchat.core.bootstrap/
-!/manifest.json
-!/packages-lock.json
-!/vpm-manifest.json

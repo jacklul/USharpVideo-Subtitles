@@ -20,7 +20,7 @@ _The core of this prefab is based on [this code](https://gist.github.com/hai-vr/
 
 ## Requirements
 
-- [Unity 2022.3.22f1](https://unity.com/releases/editor/whats-new/2022.3.22)+ (see VRChat's [Current Unity Version](https://creators.vrchat.com/sdk/upgrade/current-unity-version/) page)
+- [Unity 2022.3.22f1](https://unity.com/releases/editor/whats-new/2022.3.22)+
 - [VRChat SDK 3.7.4](https://creators.vrchat.com/releases/release-3-7-4/)+
 
 ## Installation
@@ -44,6 +44,8 @@ If you intend to use this with [USharpVideo](https://github.com/MerlinVR/USharpV
 
 6. Add a reference in the `Subtitles/Overlay` object (**Video Screen** field) to the video player's screen object
     - Script will copy the position and rotation of the screen on start but if this doesn't work on your world then you will have to manually adjust `Subtitles/Overlay` object's position and rotation to match the video screen object (make sure **Video Screen** field is empty in this case)
+
+When using a video player that uses multiple components for playback (e.g. ProTV) you can use `Udon Sharp/Video/Subtitles/Active Video Player Picker` component to automatically select the video player that is currently playing.
 
 ## Upgrading
 
