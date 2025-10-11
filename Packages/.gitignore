@@ -1,0 +1,6 @@
+/*
+!/.gitignore
+!/com.vrchat.core.bootstrap/
+!/manifest.json
+!/packages-lock.json
+!/vpm-manifest.json
