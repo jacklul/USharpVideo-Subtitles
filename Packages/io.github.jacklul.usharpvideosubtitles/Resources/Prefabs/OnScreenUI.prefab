@@ -1537,16 +1537,16 @@ GameObject:
   m_Component:
   - component: {fileID: 1555380924063275726}
   - component: {fileID: 1555380924063275735}
-  - component: {fileID: 6518308257066389412}
   - component: {fileID: 1555380924063275733}
-  - component: {fileID: 7817971935828043662}
-  - component: {fileID: 1555380924063275732}
   - component: {fileID: 1555380924063275730}
+  - component: {fileID: 6518308257066389412}
+  - component: {fileID: 1555380924063275732}
   - component: {fileID: 1555380924063275731}
   - component: {fileID: 1555380924063275728}
   - component: {fileID: 1555380924063275729}
+  - component: {fileID: 7817971935828043662}
   m_Layer: 0
-  m_Name: UI
+  m_Name: ControlsUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1588,7 +1588,53 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96c9fcd85688d64459ae79399f1ab62d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uiStyle: {fileID: 11400000, guid: e84826a7ca484d1081c0bcd5e08fbd20, type: 2}
+  uiStyle: {fileID: 0}
+--- !u!223 &1555380924063275733
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1555380924063275727}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 2
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
+  m_AdditionalShaderChannelsFlag: 0
+  m_UpdateRectTransformForStandalone: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_TargetDisplay: 0
+--- !u!114 &1555380924063275730
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1555380924063275727}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UiScaleMode: 0
+  m_ReferencePixelsPerUnit: 100
+  m_ScaleFactor: 1
+  m_ReferenceResolution: {x: 800, y: 600}
+  m_ScreenMatchMode: 0
+  m_MatchWidthOrHeight: 0
+  m_PhysicalUnit: 3
+  m_FallbackScreenDPI: 96
+  m_DefaultSpriteDPI: 96
+  m_DynamicPixelsPerUnit: 1
+  m_PresetInfoIsWorld: 1
 --- !u!114 &6518308257066389412
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1637,41 +1683,6 @@ MonoBehaviour:
   buttonBackgroundColor: {r: 0.21318094, g: 0.18627624, b: 0.21698111, a: 1}
   buttonActivatedColor: {r: 0.9433962, g: 0.9433962, b: 0.9433962, a: 1}
   iconInvertedColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
---- !u!223 &1555380924063275733
-Canvas:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1555380924063275727}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_RenderMode: 2
-  m_Camera: {fileID: 0}
-  m_PlaneDistance: 100
-  m_PixelPerfect: 0
-  m_ReceivesEvents: 1
-  m_OverrideSorting: 0
-  m_OverridePixelPerfect: 0
-  m_SortingBucketNormalizedSize: 0
-  m_VertexColorAlwaysGammaSpace: 0
-  m_AdditionalShaderChannelsFlag: 0
-  m_UpdateRectTransformForStandalone: 0
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
-  m_TargetDisplay: 0
---- !u!225 &7817971935828043662
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1555380924063275727}
-  m_Enabled: 1
-  m_Alpha: 0.8
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
-  m_IgnoreParentGroups: 0
 --- !u!114 &1555380924063275732
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1706,29 +1717,6 @@ MonoBehaviour:
   - {fileID: 1555380923865777422}
   - {fileID: 1555380924545187974}
   publicVariablesSerializationDataFormat: 0
---- !u!114 &1555380924063275730
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1555380924063275727}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
-  m_ReferencePixelsPerUnit: 100
-  m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
-  m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
-  m_PhysicalUnit: 3
-  m_FallbackScreenDPI: 96
-  m_DefaultSpriteDPI: 96
-  m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
 --- !u!114 &1555380924063275731
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1780,6 +1768,18 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 188.62, z: 0}
+--- !u!225 &7817971935828043662
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1555380924063275727}
+  m_Enabled: 1
+  m_Alpha: 0.8
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1555380924087345367
 GameObject:
   m_ObjectHideFlags: 0

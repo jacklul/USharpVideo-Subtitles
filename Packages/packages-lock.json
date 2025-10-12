@@ -232,6 +232,14 @@
         "com.unity.ai.navigation": "1.1.5"
       }
     },
+    "io.github.jacklul.usharpvideosubtitles": {
+      "version": "file:io.github.jacklul.usharpvideosubtitles",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "com.unity.textmeshpro": "3.0.6"
+      }
+    },
     "com.unity.modules.ai": {
       "version": "1.0.0",
       "depth": 0,

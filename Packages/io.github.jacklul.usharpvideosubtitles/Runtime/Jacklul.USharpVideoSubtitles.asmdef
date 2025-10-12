@@ -1,0 +1,25 @@
+{
+    "name": "Jacklul.USharpVideoSubtitles",
+    "rootNamespace": "",
+    "references": [
+        "Unity.TextMeshPro",
+        "VRC.SDK3",
+        "VRC.SDKBase",
+        "VRC.Udon",
+        "VRC.Udon.Serialization.OdinSerializer",
+        "UdonSharp.Runtime",
+        "UdonSharp.Editor",
+        "USharpVideo",
+        "xyz.drblackrat.usharpvideomodernui",
+        "com.arcanescripts.usharpvideo"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,0 +1,46 @@
+{
+    "name": "io.github.jacklul.usharpvideosubtitles",
+    "displayName": "USharpVideoSubtitles",
+    "version": "0.0.0-dev",
+    "unity": "2022.3",
+    "unityRelease": "22f1",
+    "description": "This prefab adds SRT subtitle support to video players.\nPrimarily created as USharpVideo addon but now it does not require it and will work with any video player using Unity or AVPro video components.",
+    "author": {
+        "name": "Jack'lul",
+        "email": "jacklulcat@gmail.com",
+        "url": "https://jacklul.github.io"
+    },
+    "documentationUrl": "https://github.com/jacklul/USharpVideo-Subtitles?tab=readme-ov-file",
+    "changelogUrl": "https://github.com/jacklul/USharpVideo-Subtitles/commits/master/",
+    "licensesUrl": "https://github.com/jacklul/USharpVideo-Subtitles/blob/master/LICENSE",
+    "license": "MIT",
+    "keywords": [],
+    "dependencies": {
+        "com.unity.textmeshpro": "3.0.6"
+    },
+    "gitDependencies": {},
+    "vpmDependencies": {
+        "com.vrchat.worlds": "^3.7.4"
+    },
+    "samples": [
+        {
+            "displayName": "USharpVideo Example Scene",
+            "description": "An example scene showing setup with USharpVideo.",
+            "path": "Samples~/USharpVideo Example"
+        },
+        {
+            "displayName": "ProTV Example Scene",
+            "description": "An example scene showing setup with ProTV.",
+            "path": "Samples~/ProTV Example"
+        },
+        {
+            "displayName": "VideoTXL Example Scene",
+            "description": "An example scene showing setup with VideoTXL.",
+            "path": "Samples~/VideoTXL Example"
+        }
+    ],
+    "legacyFolders": {
+        "Assets\\USharpVideoSubtitles": "37584fbe1896012458f2fc4e63569de9"
+    },
+    "legacyFiles": {}
+}

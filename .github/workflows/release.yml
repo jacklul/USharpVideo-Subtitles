@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 
 env:
-  PACKAGE_NAME: USharpVideoSubtitles
+  PACKAGE_NAME: io.github.jacklul.usharpvideosubtitles
 
 jobs:
   release:
@@ -17,10 +17,6 @@ jobs:
 
     permissions:
       contents: write
-
-    outputs:
-      version: ${{ steps.variables.outputs.version }}
-      unitypackage_file: ${{ steps.variables.outputs.unitypackage_file }}
 
     steps:
       - name: Checkout local repository
@@ -37,27 +33,47 @@ jobs:
               version="$(git describe --tags --always)"
           fi
           echo "version=$(echo "$version" | sed 's/^v//')" >> $GITHUB_OUTPUT
-          echo "unitypackage_file=${{ env.PACKAGE_NAME }}-${version}.unitypackage" >> $GITHUB_OUTPUT
+          echo "unitypackage=${{ env.PACKAGE_NAME }}-${version}.unitypackage" >> $GITHUB_OUTPUT
+          echo "unitypackage_legacy=${{ env.PACKAGE_NAME }}-${version}_legacy.unitypackage" >> $GITHUB_OUTPUT
+          echo "zip_archive=${{ env.PACKAGE_NAME }}-${version}.zip" >> $GITHUB_OUTPUT
           cat "$GITHUB_OUTPUT"
 
       - name: Insert version string to files
         run: |
           placeholder="0.0.0-dev"
           version="${{ steps.variables.outputs.version }}"
-          grep -rlF "$placeholder" "Assets/${{ env.PACKAGE_NAME }}/" | while IFS= read -r file; do
+          grep -rlF "$placeholder" "Packages/${{ env.PACKAGE_NAME }}/" | while IFS= read -r file; do
               echo "$file"
               sed "s|$placeholder|$version|g" -i "$file"
           done
 
-      - name: Generate list of meta files
+      - name: Prepare for packaging
         run: |
-          echo "Assets/${{ env.PACKAGE_NAME }}.meta" > metaList
-          find "Assets/${{ env.PACKAGE_NAME }}/" -name \*.meta >> metaList
+          cp -f LICENSE "Packages/${{ env.PACKAGE_NAME }}/LICENSE.txt"
+          find "Packages/${{ env.PACKAGE_NAME }}/" -name "*.meta" >> metaList
+
+      - name: Create Zip
+        working-directory: "Packages/${{ env.PACKAGE_NAME }}"
+        run: zip -r "${{ github.workspace }}/${{ steps.variables.outputs.zip_archive }}" .
 
       - name: Create UnityPackage
         uses: pCYSl5EDgo/create-unitypackage@v1
         with:
-          package-path: ${{ steps.variables.outputs.unitypackage_file }}
+          package-path: ${{ steps.variables.outputs.unitypackage }}
+          include-files: metaList
+
+      - name: Prepare legacy variant
+        if: ${{ steps.variables.outputs.unitypackage_legacy != '' }}
+        run: |
+          bash ./.github/legacy.sh "${{ github.workspace }}/Packages/${{ env.PACKAGE_NAME }}"
+          rm metaList
+          find "Packages/${{ env.PACKAGE_NAME }}/" -name "*.meta" >> metaList
+
+      - name: Create UnityPackage (legacy)
+        uses: pCYSl5EDgo/create-unitypackage@v1
+        if: ${{ steps.variables.outputs.unitypackage_legacy != '' }}
+        with:
+          package-path: ${{ steps.variables.outputs.unitypackage_legacy }}
           include-files: metaList
 
       - name: Create release
@@ -65,7 +81,10 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
-            ${{ needs.build.outputs.unitypackage_file }}
+            ${{ needs.build.outputs.zip_archive }}
+            ${{ needs.build.outputs.unitypackage }}
+            ${{ needs.build.outputs.unitypackage_legacy != '' && needs.build.outputs.unitypackage_legacy || '' }}
+            Packages/${{ env.PACKAGE_NAME }}/package.json
           generate_release_notes: true
           draft: true
 
@@ -75,4 +94,7 @@ jobs:
         with:
           name: build
           path: |
-            ${{ steps.variables.outputs.unitypackage_file }}
+            ${{ steps.variables.outputs.zip_archive }}
+            ${{ steps.variables.outputs.unitypackage }}
+            ${{ needs.build.outputs.unitypackage_legacy != '' && needs.build.outputs.unitypackage_legacy || '' }}
+            Packages/${{ env.PACKAGE_NAME }}/package.json

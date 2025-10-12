@@ -62,7 +62,7 @@ MonoBehaviour:
       Data: 3|System.RuntimeType, mscorlib
     - Name: 
       Entry: 1
-      Data: UdonSharp.Video.USharpVideoPlayer, Assembly-CSharp
+      Data: UdonSharp.Video.USharpVideoPlayer, USharpVideo
     - Name: 
       Entry: 8
       Data: 
@@ -2393,7 +2393,7 @@ MonoBehaviour:
       Data: 136|System.RuntimeType, mscorlib
     - Name: 
       Entry: 1
-      Data: UdonSharp.Video.VideoPlayerManager, Assembly-CSharp
+      Data: UdonSharp.Video.VideoPlayerManager, USharpVideo
     - Name: 
       Entry: 8
       Data: 
@@ -2448,7 +2448,7 @@ MonoBehaviour:
       Data: 139|System.RuntimeType, mscorlib
     - Name: 
       Entry: 1
-      Data: UdonSharp.Video.Subtitles.SubtitleOverlayHandler, Assembly-CSharp
+      Data: UdonSharp.Video.Subtitles.SubtitleOverlayHandler, Jacklul.USharpVideoSubtitles
     - Name: 
       Entry: 8
       Data: 
@@ -2503,7 +2503,7 @@ MonoBehaviour:
       Data: 142|System.RuntimeType, mscorlib
     - Name: 
       Entry: 1
-      Data: UdonSharp.Video.Subtitles.SubtitleControlHandler[], Assembly-CSharp
+      Data: UdonSharp.Video.Subtitles.SubtitleControlHandler[], Jacklul.USharpVideoSubtitles
     - Name: 
       Entry: 8
       Data: 
