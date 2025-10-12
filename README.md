@@ -38,11 +38,11 @@ If you intend to use this with [USharpVideo](https://github.com/MerlinVR/USharpV
     - TextMeshPro examples and extras are not needed!
 
 4. Unpack the `Subtitles` prefab by right clicking on it in your scene and selecting **Prefab -> Unpack Prefab**
-    - Technically this is not required if you don't intend to modify the prefab, you may consider creating a prefab variant instead of unpacking it
+    - Technically this is not required if you don't intend to modify the prefab
 
 5. Add a reference in the `Subtitles` object (**SubtitleManager** script) to:
-    - when using **USharpVideo** (**Target Video Player** field) - **USharpVideoPlayer** script from the `USharpVideo` object
-    - in any other case (**Base Video Player** field) - **VRCUnityVideoPlayer** or **VRCAVProVideoPlayer** component that has to be somewhere in your scene - depends on which one you're using ([you can change this dynamically](API.md#subtitlemanagersetvideoplayerbasevrcvideoplayer-void))
+    - when using **USharpVideo** (**U Sharp Video Player** field) - **USharpVideoPlayer** script from the `USharpVideo` object
+    - in any other case (**Base VRC Video Player** field) - **VRCUnityVideoPlayer** or **VRCAVProVideoPlayer** component that has to be somewhere in your scene - depends on which one you're using ([you can change this dynamically](API.md#subtitlemanagersetvideoplayerbasevrcvideoplayer-void))
 
 6. Add a reference in the `Subtitles/Overlay` object (**Video Screen** field) to the video player's screen object
     - Script will copy the position and rotation of the screen on start but if this doesn't work on your world then you will have to manually adjust `Subtitles/Overlay` object's position and rotation to match the video screen object (make sure **Video Screen** field is empty in this case)
@@ -56,3 +56,7 @@ Delete the `Subtitles` object from your scene and re-do the [installation steps]
 ## API reference
 
 [See here](API.md).
+
+## License
+
+[MIT License](LICENSE).
