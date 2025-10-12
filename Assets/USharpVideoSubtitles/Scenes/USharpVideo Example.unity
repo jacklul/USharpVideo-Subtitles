@@ -201,6 +201,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2853267199229678515, guid: 79b0ea249ffa6a54bb5f55191b085d00,
         type: 3}
+      propertyPath: subtitlesURL.url
+      value: https://pastebin.com/raw/FPfhSexB
+      objectReference: {fileID: 0}
+    - target: {fileID: 2853267199229678515, guid: 79b0ea249ffa6a54bb5f55191b085d00,
+        type: 3}
       propertyPath: uSharpVideoPlayer
       value: 
       objectReference: {fileID: 844468986}
@@ -474,10 +479,30 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 111484359792581272, guid: 87d772cf1b1ec7b49839dde29eb427be,
         type: 3}
+      propertyPath: loopPlaylist
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 111484359792581272, guid: 87d772cf1b1ec7b49839dde29eb427be,
+        type: 3}
+      propertyPath: playlist.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 111484359792581272, guid: 87d772cf1b1ec7b49839dde29eb427be,
+        type: 3}
       propertyPath: serializationData.Prefab
       value: 
       objectReference: {fileID: 111484359792581272, guid: 87d772cf1b1ec7b49839dde29eb427be,
         type: 3}
+    - target: {fileID: 111484359792581272, guid: 87d772cf1b1ec7b49839dde29eb427be,
+        type: 3}
+      propertyPath: playlist.Array.data[0].url
+      value: https://www.youtube.com/watch?v=UMBxESl38o0
+      objectReference: {fileID: 0}
+    - target: {fileID: 111484359792581272, guid: 87d772cf1b1ec7b49839dde29eb427be,
+        type: 3}
+      propertyPath: playlist.Array.data[1].url
+      value: https://files.catbox.moe/x3g51o.mp4
+      objectReference: {fileID: 0}
     - target: {fileID: 167512882263069486, guid: 87d772cf1b1ec7b49839dde29eb427be,
         type: 3}
       propertyPath: serializationData.Prefab
