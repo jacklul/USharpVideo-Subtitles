@@ -49,16 +49,16 @@ namespace UdonSharp.Video.Subtitles
         [Range(4.16f, 33.3f), PublicAPI, Tooltip("Approximate maximum processing time for the parser to take in miliseconds\nRecommended to keep this under 16.6 as otherwise it will reduce everyone's FPS below 60 during parsing\nSee https://fpstoms.com for more info")]
         public float parserTimeLimit = 11.1f;
 
-        [SerializeField, Tooltip("When false then only the master can manage the subtitles by default\nThis setting does nothing when using USharpVideo as the lock state is inherited from it")]
+        [SerializeField, Tooltip("When checked then anyone can control the subtitles by default\nThis setting does nothing when using USharpVideo as the lock state is inherited from it")]
         private bool defaultUnlocked = true;
 
-        [PublicAPI, Tooltip("Allow the instance creator to always control the subtitles regardless of if they are the master or not?")]
+        [PublicAPI, Tooltip("When checked then the instance creator can always control the subtitles regardless of if they are the master or not")]
         public bool allowInstanceCreatorControl = true;
 
-        [PublicAPI, Tooltip("Removes unsupported tags from subtitle text\nDisabling this will speed up processing of huge files\nYou should only disable this if you're going to serve pre-filtered subtitles")]
+        [PublicAPI, Tooltip("Remove unsupported tags from subtitle text\nYou should only disable this if you're going to serve pre-filtered subtitles")]
         public bool filterSubtitles = true;
 
-        [PublicAPI, Tooltip("Sync entered URL to everyone for them to individually fetch the data themselves\nWhen disabled the URL is fetched by the person who entered it and then the text is synchronized to everyone\nYou should keep it on for better VRC networking performance")]
+        [PublicAPI, Tooltip("Sync entered URL to everyone for them to individually fetch the data themselves\nWhen false then the URL is fetched by the person who entered it and then the text is synchronized to everyone\nYou should keep it set to true for better VRC networking performance")]
         public bool syncOnlyUrl = true;
 
         [Range(0, 3), PublicAPI, Tooltip("Logging verbosity\n0 = none, 1 = errors, 2 = warnings, 3 = info")]

@@ -496,7 +496,7 @@ MonoBehaviour:
       Data: 34|UnityEngine.TooltipAttribute, UnityEngine.CoreModule
     - Name: tooltip
       Entry: 1
-      Data: 'When false then only the master can manage the subtitles by default
+      Data: 'When checked then anyone can control the subtitles by default
 
         This
         setting does nothing when using USharpVideo as the lock state is inherited
@@ -563,8 +563,8 @@ MonoBehaviour:
       Data: 38|UnityEngine.TooltipAttribute, UnityEngine.CoreModule
     - Name: tooltip
       Entry: 1
-      Data: Allow the instance creator to always control the subtitles regardless
-        of if they are the master or not?
+      Data: When checked then the instance creator can always control the subtitles
+        regardless of if they are the master or not
     - Name: 
       Entry: 8
       Data: 
@@ -627,13 +627,10 @@ MonoBehaviour:
       Data: 42|UnityEngine.TooltipAttribute, UnityEngine.CoreModule
     - Name: tooltip
       Entry: 1
-      Data: 'Removes unsupported tags from subtitle text
+      Data: 'Remove unsupported tags from subtitle text
 
-        Disabling this
-        will speed up processing of huge files
-
-        You should only disable this
-        if you''re going to serve pre-filtered subtitles'
+        You should only
+        disable this if you''re going to serve pre-filtered subtitles'
     - Name: 
       Entry: 8
       Data: 
@@ -699,11 +696,11 @@ MonoBehaviour:
       Data: 'Sync entered URL to everyone for them to individually fetch the data
         themselves
 
-        When disabled the URL is fetched by the person who entered
-        it and then the text is synchronized to everyone
+        When false then the URL is fetched by the person who
+        entered it and then the text is synchronized to everyone
 
-        You should keep
-        it on for better VRC networking performance'
+        You should
+        keep it set to true for better VRC networking performance'
     - Name: 
       Entry: 8
       Data: 
