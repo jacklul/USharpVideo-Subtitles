@@ -2216,11 +2216,6 @@ PrefabInstance:
       objectReference: {fileID: 1547728457}
     - target: {fileID: 5166741581669073756, guid: 07a8344aed11c464d9ca30fde8ee3351,
         type: 3}
-      propertyPath: targetVideoPlayer
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 5166741581669073756, guid: 07a8344aed11c464d9ca30fde8ee3351,
-        type: 3}
       propertyPath: uSharpVideoPlayer
       value: 
       objectReference: {fileID: 238172481}

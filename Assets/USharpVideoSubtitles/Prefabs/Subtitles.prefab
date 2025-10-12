@@ -3394,11 +3394,11 @@ MonoBehaviour:
   updateRate: 10
   parserTimeLimit: 11.1
   defaultUnlocked: 1
+  allowInstanceCreatorControl: 1
   filterSubtitles: 1
   syncOnlyUrl: 1
   logLevel: 3
   clearOnNewVideo: 0
-  allowInstanceCreatorControl: 1
   setToVideoPlayerOwner: 0
   subtitlesURL:
     url: 
