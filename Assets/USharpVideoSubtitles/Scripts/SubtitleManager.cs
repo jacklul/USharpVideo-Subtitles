@@ -52,6 +52,9 @@ namespace UdonSharp.Video.Subtitles
         [SerializeField, Tooltip("When false then only the master can manage the subtitles by default\nThis setting does nothing when using USharpVideo as the lock state is inherited from it")]
         private bool defaultUnlocked = true;
 
+        [PublicAPI, Tooltip("Allow the instance creator to always control the subtitles regardless of if they are the master or not?")]
+        public bool allowInstanceCreatorControl = true;
+
         [PublicAPI, Tooltip("Removes unsupported tags from subtitle text\nDisabling this will speed up processing of huge files\nYou should only disable this if you're going to serve pre-filtered subtitles")]
         public bool filterSubtitles = true;
 
@@ -66,9 +69,6 @@ namespace UdonSharp.Video.Subtitles
 
         [PublicAPI, Tooltip("Clear loaded subtitles when a new video starts?")]
         public bool clearOnNewVideo = false;
-
-        [PublicAPI, Tooltip("Allow the instance creator to always control the subtitles regardless of if they are the master or not?")]
-        public bool allowInstanceCreatorControl = true;
 
         [SerializeField, Tooltip("Force owner of this object to be whoever owns the video player when owner changes?")]
         private bool setToVideoPlayerOwner = false;
