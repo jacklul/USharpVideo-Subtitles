@@ -1,7 +1,7 @@
+using UdonSharp;
 using UnityEditor;
 using UnityEngine;
 using VRC.Udon;
-using UdonSharp;
 
 public class AddPrefabToSceneMenu
 {

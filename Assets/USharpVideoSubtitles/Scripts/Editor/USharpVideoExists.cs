@@ -21,13 +21,30 @@ public class USharpVideoExists
     {
         "1c72e0a559544c04bb1ae3a82be6dfeb", // Assets/USharpVideoSubtitles/Scripts/SubtitleManager.cs
         "3377b410bd177764d989e8d092440a28", // Assets/USharpVideoSubtitles/Scripts/SubtitleControlHandler.cs
-        "47f81f936a8517945bbe9ebbe335e379", // Assets/USharpVideoSubtitles/Scripts/SubtitleOverlayHandler.cs
+        //"47f81f936a8517945bbe9ebbe335e379", // Assets/USharpVideoSubtitles/Scripts/SubtitleOverlayHandler.cs
+        "944a789aea78be04d8d08a1c688f2010", // Assets/USharpVideoSubtitles/Scripts/OnScreenUIController.cs
         "96c9fcd85688d64459ae79399f1ab62d", // Assets/USharpVideoSubtitles/Scripts/UI/UIStyler.cs
     };
 
     static USharpVideoExists()
     {
         CheckThenAddOrRemoveSymbol();
+    }
+
+    private class USharpVideoPlayerAssetPostprocessor : AssetPostprocessor
+    {
+        private static void OnPostprocessAllAssets(string[] imported, string[] deleted, string[] moved, string[] moved_away)
+        {
+            var assets = imported.Concat(deleted).Concat(moved).Concat(moved_away);
+            foreach (string asset in assets)
+            {
+                if (asset.EndsWith(".cs"))
+                {
+                    CheckThenAddOrRemoveSymbol();
+                    break;
+                }
+            }
+        }
     }
 
     [MenuItem("Tools/USharpVideoSubtitles/Re-detect USharpVideo", priority = 10)]
@@ -86,21 +103,6 @@ public class USharpVideoExists
 
             AssetDatabase.ImportAsset(assetPath, ImportAssetOptions.ForceUpdate);
             Debug.Log($"Forced recompilation of script at {assetPath} (GUID: {guid}).");
-        }
-    }
-
-    private class USharpVideoPlayerAssetPostprocessor : AssetPostprocessor
-    {
-        private static void OnPostprocessAllAssets(string[] imported, string[] deleted, string[] moved, string[] moved_away)
-        {
-            foreach (string asset in imported.Concat(deleted))
-            {
-                if (asset.EndsWith(".cs"))
-                {
-                    CheckThenAddOrRemoveSymbol();
-                    break;
-                }
-            }
         }
     }
 }
