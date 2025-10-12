@@ -11,7 +11,7 @@ using VRC.SDK3.Video.Components.Base;
 namespace UdonSharp.Video.Subtitles
 {
     [UdonBehaviourSyncMode(BehaviourSyncMode.NoVariableSync)]
-    [AddComponentMenu("Udon Sharp/Video/Subtitles/Active Video Player Picker")]
+    [AddComponentMenu("Udon Sharp/Video/Subtitles/Utilities/Active Video Player Picker")]
     public class ActiveVideoPlayerPicker : UdonSharpBehaviour
     {
         [SerializeField, Tooltip("Reference to the SubtitleManager to set the video player on")]
@@ -88,7 +88,7 @@ namespace UdonSharp.Video.Subtitles
         {
             if (searchGameObjects.Length == 0)
             {
-                Debug.LogWarning("[ActiveVideoPlayerPicker] No search roots set, defaulting to the current GameObject", this);
+                Debug.LogWarning("[ActiveVideoPlayerPicker] No search game objects set, defaulting to the current GameObject", this);
                 searchGameObjects = new GameObject[] { gameObject };
             }
 

@@ -17,7 +17,7 @@ namespace UdonSharp.Video.Subtitles
 {
     [DefaultExecutionOrder(7)]
     [UdonBehaviourSyncMode(BehaviourSyncMode.NoVariableSync)]
-    [AddComponentMenu("Udon Sharp/Video/Subtitles/Subtitle Control Handler")]
+    [AddComponentMenu("Udon Sharp/Video/Subtitles/UI/Subtitle Control Handler")]
     public class SubtitleControlHandler : UdonSharpBehaviour
     {
         #region Config

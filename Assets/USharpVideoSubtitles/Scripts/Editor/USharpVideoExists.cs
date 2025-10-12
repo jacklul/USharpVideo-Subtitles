@@ -30,7 +30,7 @@ public class USharpVideoExists
         CheckThenAddOrRemoveSymbol();
     }
 
-    [MenuItem("Tools/USharpVideoSubtitles/Detect USharpVideo")]
+    [MenuItem("Tools/USharpVideoSubtitles/Re-detect USharpVideo", priority = 10)]
     private static void CheckThenAddOrRemoveSymbol()
     {
         BuildTargetGroup group = EditorUserBuildSettings.selectedBuildTargetGroup;

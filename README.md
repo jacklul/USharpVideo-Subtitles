@@ -27,12 +27,11 @@ _The core of this prefab is based on [this code](https://gist.github.com/hai-vr/
 
 ## Installation
 
-If you intend to use this with [USharpVideo](https://github.com/MerlinVR/USharpVideo/releases/latest) (or fork of it), it is assumed that it has already been imported.
+The video player is assumed to be in your scene already.
 
 1. Import [latest Unity Package](https://github.com/jacklul/USharpVideo-Subtitles/releases/latest)
 
 2. Add the prefab to your scene using `Tools -> USharpVideoSubtitles -> Add prefab to scene` menu item
-    - Or manually drag `/Assets/USharpVideoSubtitles/Prefabs/Subtitles.prefab` to your scene
 
 3. If a window asking you to import **TextMeshPro Essentials** appears - just do it
     - TextMeshPro examples and extras are not needed!
@@ -47,7 +46,7 @@ If you intend to use this with [USharpVideo](https://github.com/MerlinVR/USharpV
 6. Add a reference in the `Subtitles/Overlay` object (**Video Screen** field) to the video player's screen object
     - Script will copy the position and rotation of the screen on start but if this doesn't work on your world then you will have to manually adjust `Subtitles/Overlay` object's position and rotation to match the video screen object (make sure **Video Screen** field is empty in this case)
 
-When using a video player that uses multiple components for playback (e.g. ProTV) you can use `Udon Sharp/Video/Subtitles/Active Video Player Picker` component to automatically select the video player that is currently playing.
+When using a video player that uses multiple components for playback (e.g. ProTV) you can use `Tools -> USharpVideoSubtitles -> Add ActiveVideoPlayerPicker component to scene` menu item to add a component that will automatically select the video player that is currently playing.  
 
 ## Upgrading
 

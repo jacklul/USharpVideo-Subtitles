@@ -13,7 +13,9 @@ using UnityEditor;
 namespace UdonSharp.Video.Subtitles.Extras
 {
     [UdonBehaviourSyncMode(BehaviourSyncMode.NoVariableSync)]
-    [AddComponentMenu("Udon Sharp/Video/Subtitles/On-Screen UI Controller")]
+#if USHARPVIDEO_FOUND
+    [AddComponentMenu("Udon Sharp/Video/Subtitles/Examples/On-Screen UI Controller")]
+#endif
     public class OnScreenUIController : UdonSharpBehaviour
     {
 #if USHARPVIDEO_FOUND
