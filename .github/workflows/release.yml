@@ -1,4 +1,4 @@
-name: Build and Release
+name: Release
 
 on:
   push:
@@ -12,8 +12,11 @@ env:
   PACKAGE_NAME: USharpVideoSubtitles
 
 jobs:
-  build:
+  release:
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
 
     outputs:
       version: ${{ steps.variables.outputs.version }}
@@ -57,46 +60,19 @@ jobs:
           package-path: ${{ steps.variables.outputs.unitypackage_file }}
           include-files: metaList
 
-      - name: Generate changelog
-        uses: metcalfc/changelog-generator@v4
-        id: changelog
-        with:
-          myToken: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Prepare files for upload
-        run: |
-          cat << "EOF" > changelog.md
-          ${{ steps.changelog.outputs.changelog }}
-          EOF
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: build
-          path: |
-            ${{ steps.variables.outputs.unitypackage_file }}
-            changelog.md
-
-  release:
-    runs-on: ubuntu-latest
-    needs: [build]
-    if: startsWith(github.ref, 'refs/tags/')
-
-    permissions:
-      contents: write
-
-    steps:
-      - name: Download artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: build
-
       - name: Create release
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
             ${{ needs.build.outputs.unitypackage_file }}
-          body_path: changelog.md
           generate_release_notes: true
           draft: true
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        if: ${{ !startsWith(github.ref, 'refs/tags/') }}
+        with:
+          name: build
+          path: |
+            ${{ steps.variables.outputs.unitypackage_file }}
