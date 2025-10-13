@@ -13,6 +13,7 @@
   - [SubtitleManager.LoadTranslationFile(TextAsset): void](#subtitlemanagerloadtranslationfiletextasset-void)
   - [SubtitleManager.ProcessInput(string): void](#subtitlemanagerprocessinputstring-void)
   - [SubtitleManager.ProcessURLInput(VRCUrl): void](#subtitlemanagerprocessurlinputvrcurl-void)
+  - [SubtitleManager.RegisterCallbackReceiver(UdonSharpBehaviour): void](#subtitlemanagerregistercallbackreceiverudonsharpbehaviour-void)
   - [SubtitleManager.ReloadSyncedURL(): bool](#subtitlemanagerreloadsyncedurl-bool)
   - [SubtitleManager.SetEnabled(bool): void](#subtitlemanagersetenabledbool-void)
   - [SubtitleManager.SetLocal(bool): void](#subtitlemanagersetlocalbool-void)
@@ -20,11 +21,30 @@
   - [SubtitleManager.SetTimeOffset(float): void](#subtitlemanagersettimeoffsetfloat-void)
   - [SubtitleManager.SetVideoPlayer(BaseVRCVideoPlayer): void](#subtitlemanagersetvideoplayerbasevrcvideoplayer-void)
   - [SubtitleManager.SynchronizeSubtitles(): void](#subtitlemanagersynchronizesubtitles-void)
+  - [SubtitleManager.UnregisterCallbackReceiver(UdonSharpBehaviour): void](#subtitlemanagerunregistercallbackreceiverudonsharpbehaviour-void)
 - [SubtitleControlHandler](#subtitlecontrolhandler)
   - [SubtitleControlHandler.ImportSettingsFromString(string): void](#subtitlecontrolhandlerimportsettingsfromstringstring-void)
   - [SubtitleControlHandler.IsSettingsPopupActive(): bool](#subtitlecontrolhandlerissettingspopupactive-bool)
   - [SubtitleControlHandler.ToggleSettingsPopup(): void](#subtitlecontrolhandlertogglesettingspopup-void)
 - [SubtitleOverlayHandler](#subtitleoverlayhandler)
+  - [Styling methods](#styling-methods)
+    - [SubtitleOverlayHandler.ResetStyle(): void](#subtitleoverlayhandlerresetstyle-void)
+    - [SubtitleOverlayHandler.GetFontSize(): int](#subtitleoverlayhandlergetfontsize-int)
+    - [SubtitleOverlayHandler.SetFontSize(int): void](#subtitleoverlayhandlersetfontsizeint-void)
+    - [SubtitleOverlayHandler.GetFontColor(): Color](#subtitleoverlayhandlergetfontcolor-color)
+    - [SubtitleOverlayHandler.SetFontColor(Color): void](#subtitleoverlayhandlersetfontcolorcolor-void)
+    - [SubtitleOverlayHandler.GetOutlineColor(): Color](#subtitleoverlayhandlergetoutlinecolor-color)
+    - [SubtitleOverlayHandler.SetOutlineColor(Color): void](#subtitleoverlayhandlersetoutlinecolorcolor-void)
+    - [SubtitleOverlayHandler.GetOutlineSize(): float](#subtitleoverlayhandlergetoutlinesize-float)
+    - [SubtitleOverlayHandler.SetOutlineSize(float): void](#subtitleoverlayhandlersetoutlinesizefloat-void)
+    - [SubtitleOverlayHandler.GetBackgroundColor(): Color](#subtitleoverlayhandlergetbackgroundcolor-color)
+    - [SubtitleOverlayHandler.SetBackgroundColor(Color): void](#subtitleoverlayhandlersetbackgroundcolorcolor-void)
+    - [SubtitleOverlayHandler.GetVerticalMargin(): int](#subtitleoverlayhandlergetverticalmargin-int)
+    - [SubtitleOverlayHandler.SetVerticalMargin(int): void](#subtitleoverlayhandlersetverticalmarginint-void)
+    - [SubtitleOverlayHandler.GetHorizontalMargin(): int](#subtitleoverlayhandlergethorizontalmargin-int)
+    - [SubtitleOverlayHandler.SetHorizontalMargin(int): void](#subtitleoverlayhandlersethorizontalmarginint-void)
+    - [SubtitleOverlayHandler.GetAlignment(): int](#subtitleoverlayhandlergetalignment-int)
+    - [SubtitleOverlayHandler.SetAlignment(int): void](#subtitleoverlayhandlersetalignmentint-void)
   - [SubtitleOverlayHandler.GetCanvasTransform(): Transform](#subtitleoverlayhandlergetcanvastransform-transform)
   - [SubtitleOverlayHandler.MoveOverlay(GameObject): void](#subtitleoverlayhandlermoveoverlaygameobject-void)
 
@@ -81,6 +101,7 @@ Check if URL was synced or not
 ### SubtitleManager.LoadTranslationFile(TextAsset): void
 
 Load translation from JSON file (hardcoded status messages only).  
+You can also assign a file to `SubtitleManager.translationFile` variable in the inspector which will be loaded on start.  
 _You will have to use a 3rd-party tool to translate the interface part of the prefab._
 
 <details>
@@ -112,6 +133,58 @@ Loads subtitles from the URL globally or locally (depending on `IsLocal()` value
 - When using **USharpVideo** - only the player who can control the video player can do this
 - For other video players - if `IsLocked()` is `true` then only the Master can do this
 - To check whenever player is able to execute this - use `SubtitleManager.CanControlSubtitles()`
+
+### SubtitleManager.RegisterCallbackReceiver(UdonSharpBehaviour): void
+
+Register a `UdonSharpBehaviour` script to receive callback events
+
+<details>
+<summary>Sample callback receiver script</summary>
+
+```c# 
+using UnityEngine;
+using UdonSharp.Video.Subtitles;
+
+public class CallbackReceiver : UdonSharpBehaviour
+{
+    public SubtitleManager subtitleManager;
+    
+    void Start()
+    {
+        if (subtitleManager)
+            subtitleManager.RegisterCallbackReceiver(this);
+    }
+
+    public void OnUSharpVideoSubtitlesLoad()
+    {
+        Debug.Log("Received OnUSharpVideoSubtitlesLoad");
+    }
+}
+```
+
+</details>
+
+<details>
+<summary>List of available callback events</summary>
+
+| **Event**                                   | **Trigger**             |
+|---------------------------------------------|-------------------------|
+| `OnUSharpVideoSubtitlesLoad`                | Subtitles were loaded |
+| `OnUSharpVideoSubtitlesClear`               | Subtitles were cleared |
+| `OnUSharpVideoSubtitlesFetchError`          | Failed to fetch from URL (`OnStringLoadError`) |
+| `OnUSharpVideoSubtitlesParseError`          | Failed to parse |
+| `OnUSharpVideoSubtitlesTransmitStart`       | Subtitles are about to be transmitted (owner only) |
+| `OnUSharpVideoSubtitlesTransmitProgress`    | Called multiple times during transmitting (owner only) |
+| `OnUSharpVideoSubtitlesTransmitFinish`      | Subtitles were transmitted (owner only) |
+| `OnUSharpVideoSubtitlesEnabledChange`       | Subtitles enabled state has changed (on/off) |
+| `OnUSharpVideoSubtitlesModeChange`          | Subtitles mode has changed (sync/local) |
+| `OnUSharpVideoSubtitlesLockChange`          | Lock state has changed (on/off) |
+| `OnUSharpVideoSubtitlesTimeOffsetChange`    | Time offset value has changed |
+| `OnUSharpVideoSubtitlesVideoPlayerChange`   | Video player reference has changed |
+| `OnUSharpVideoSubtitlesOwnershipChange`     | Owner has changed |
+| `OnUSharpVideoSubtitlesSettingsUpdate`      | User has changed any setting (called by `SubtitleControlHandler` and `SetTimeOffset()`) |
+
+</details>
 
 ### SubtitleManager.ReloadSyncedURL(): bool
 
@@ -152,7 +225,13 @@ Re-synchronizes the subtitles globally, only the person who loaded them can do t
 - This can fail if the synchronization is ongoing - check if `SubtitleManager.IsSynchronized()` is `true` before running it
 - To check whenever player is able to execute this - use `SubtitleManager.CanSynchronizeSubtitles()`
 
+### SubtitleManager.UnregisterCallbackReceiver(UdonSharpBehaviour): void
+
+Unregisters a previously registered `UdonSharpBehaviour` script (via `RegisterCallbackReceiver()`)
+
 ## SubtitleControlHandler
+
+You should not call UI related methods to modify settings, instead call individual styling methods on `SubtitleOverlayHandler` then use `SubtitleControlHandler.UpdateSettingsValues()` method to update the UI.
 
 ### SubtitleControlHandler.ImportSettingsFromString(string): void
 
@@ -167,6 +246,49 @@ Check if settings popup is currently open
 Toggle settings popup, use this to show and hide the popup using separate button
 
 ## SubtitleOverlayHandler
+
+### Styling methods
+
+<details>
+<summary>List of styling methods</summary>
+
+#### SubtitleOverlayHandler.ResetStyle(): void
+
+#### SubtitleOverlayHandler.GetFontSize(): int
+
+#### SubtitleOverlayHandler.SetFontSize(int): void
+
+#### SubtitleOverlayHandler.GetFontColor(): Color
+
+#### SubtitleOverlayHandler.SetFontColor(Color): void
+
+#### SubtitleOverlayHandler.GetOutlineColor(): Color
+
+#### SubtitleOverlayHandler.SetOutlineColor(Color): void
+
+#### SubtitleOverlayHandler.GetOutlineSize(): float
+
+#### SubtitleOverlayHandler.SetOutlineSize(float): void
+
+#### SubtitleOverlayHandler.GetBackgroundColor(): Color
+
+#### SubtitleOverlayHandler.SetBackgroundColor(Color): void
+
+#### SubtitleOverlayHandler.GetVerticalMargin(): int
+
+#### SubtitleOverlayHandler.SetVerticalMargin(int): void
+
+#### SubtitleOverlayHandler.GetHorizontalMargin(): int
+
+#### SubtitleOverlayHandler.SetHorizontalMargin(int): void
+
+#### SubtitleOverlayHandler.GetAlignment(): int
+
+#### SubtitleOverlayHandler.SetAlignment(int): void
+
+Alignment value - 0 = bottom, 1 = top  
+This will be replaced with `VerticalAlignmentOptions` once supported by Udon.
+</details>
 
 ### SubtitleOverlayHandler.GetCanvasTransform(): Transform
 
