@@ -1125,7 +1125,7 @@ namespace UdonSharp.Video.Subtitles
             LogError("Failed to load subtitles from URL: " + result.Error);
 
             foreach (SubtitleControlHandler handler in _registeredControlHandlers)
-                handler.SetStatusText(GetTranslation("FETCH_FAILED")); //handler.SetStatusText(result.Error);
+                handler.SetStatusText(GetTranslation("FETCH_FAILED"));
 
             SendCallback("OnUSharpVideoSubtitlesFetchError");
         }
@@ -1358,8 +1358,9 @@ namespace UdonSharp.Video.Subtitles
             {
                 if (_dataSynced != "")
                     TransmitSubtitles();
+                // To make sure the lock state is correct on the joiner
 #if USHARPVIDEO_FOUND
-                else if (!IsUsingUSharpVideo()) // To make sure the lock state is correct on the joiner
+                else if (!IsUsingUSharpVideo())
 #else
                 else
 #endif
@@ -1374,11 +1375,13 @@ namespace UdonSharp.Video.Subtitles
 
         public override void OnPlayerLeft(VRCPlayerApi player)
         {
-            if (Networking.IsOwner(gameObject) && player == _previousOwner && !IsSynchronized() && IsSameSyncId()) // Player who left was running the synchronization, resume it as we have all the data
+            // Player who left was running the synchronization, resume it as we have all the data
+            if (Networking.IsOwner(gameObject) && player == _previousOwner && !IsSynchronized() && IsSameSyncId())
             {
                 if (!_isLocal)
                 {
-                    foreach (SubtitleControlHandler handler in _registeredControlHandlers) // This will prevent the status being stuck at "synchronizing last chunk"
+                    // This will prevent the status being stuck at "synchronizing last chunk"
+                    foreach (SubtitleControlHandler handler in _registeredControlHandlers)
                     {
                         handler.RestoreStatusText();
 
