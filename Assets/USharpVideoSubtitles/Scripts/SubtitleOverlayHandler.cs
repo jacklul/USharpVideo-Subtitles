@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace UdonSharp.Video.Subtitles
 {
-    [DefaultExecutionOrder(6)]
+    [DefaultExecutionOrder(5)]
     [UdonBehaviourSyncMode(BehaviourSyncMode.NoVariableSync)]
     [AddComponentMenu("Udon Sharp/Video/Subtitles/Internal/Subtitle Overlay Handler")]
     public class SubtitleOverlayHandler : UdonSharpBehaviour

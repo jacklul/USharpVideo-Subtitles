@@ -15,7 +15,7 @@ using VRC.SDK3.Persistence;
 
 namespace UdonSharp.Video.Subtitles
 {
-    [DefaultExecutionOrder(7)]
+    [DefaultExecutionOrder(10)]
     [UdonBehaviourSyncMode(BehaviourSyncMode.NoVariableSync)]
     [AddComponentMenu("Udon Sharp/Video/Subtitles/UI/Subtitle Control Handler")]
     public class SubtitleControlHandler : UdonSharpBehaviour
