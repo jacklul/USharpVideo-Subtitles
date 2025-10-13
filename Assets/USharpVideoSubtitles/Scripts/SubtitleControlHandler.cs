@@ -1190,8 +1190,13 @@ namespace UdonSharp.Video.Subtitles
             if (_synchronizeSettings)
             {
                 _synchronizeSettings = false; // Prevent loops
+
                 UpdateSettingsExportString();
                 ImportSettingsFromStringInternal(_currentSettingsExport, IMPORT_NONE);
+
+                // Time offset is not a saved setting, fetch new value from manager
+                InitTimeOffsetControl();
+
                 _synchronizeSettings = true;
             }
         }
@@ -1231,11 +1236,11 @@ namespace UdonSharp.Video.Subtitles
         {
             UpdateSettingsExportString();
 
-            if (overlayHandler && _synchronizeSettings)
-            {
+            if (overlayHandler)
                 overlayHandler.RefreshSubtitle();
+
+            if (_synchronizeSettings)
                 manager.SynchronizeSettings(this);
-            }
         }
 
         #endregion
@@ -1502,7 +1507,10 @@ namespace UdonSharp.Video.Subtitles
                 timeOffsetValue.text = value.ToString();
             }
 
-            manager.SetTimeOffset(value);
+            manager.SetTimeOffset(value, false);
+
+            if (_synchronizeSettings)
+                manager.SynchronizeSettings(this);
         }
 
         public void OnTimeOffsetInput()
@@ -1526,7 +1534,10 @@ namespace UdonSharp.Video.Subtitles
                     timeOffsetValue.text = text;
             }
 
-            manager.SetTimeOffset(value);
+            manager.SetTimeOffset(value, false);
+
+            if (_synchronizeSettings)
+                manager.SynchronizeSettings(this);
         }
 
         public void OnTimeOffsetReset()

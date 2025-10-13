@@ -436,11 +436,11 @@ namespace UdonSharp.Video.Subtitles
         }
 
         // Used by SubtitleControlHandler to notify all other handlers about settings change
-        public void SynchronizeSettings(SubtitleControlHandler callingHandler)
+        public void SynchronizeSettings(SubtitleControlHandler callingHandler = null)
         {
             foreach (SubtitleControlHandler handler in _registeredControlHandlers)
             {
-                if (handler == callingHandler)
+                if (callingHandler != null && handler == callingHandler)
                     continue;
 
                 handler.UpdateSettingsValues();
@@ -1261,11 +1261,14 @@ namespace UdonSharp.Video.Subtitles
         }
 
         [PublicAPI]
-        public void SetTimeOffset(float offset)
+        public void SetTimeOffset(float offset, bool sync = true)
         {
             _timeOffset = -offset;
 
             SendCallback("OnUSharpVideoSubtitlesTimeOffsetChange");
+
+            if (sync)
+                SynchronizeSettings();
         }
 
         [PublicAPI]
