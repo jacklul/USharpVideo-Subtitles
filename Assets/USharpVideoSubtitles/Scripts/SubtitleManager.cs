@@ -163,10 +163,10 @@ namespace UdonSharp.Video.Subtitles
         {
 #if USHARPVIDEO_FOUND
             if (!uSharpVideoPlayer && !baseVRCVideoPlayer)
-                LogWarning("No video player reference assigned!");
+                _LogWarning("No video player reference assigned!");
 #else
             if (!baseVRCVideoPlayer)
-                LogWarning("No video player reference assigned!");
+                _LogWarning("No video player reference assigned!");
 #endif
 
             if (_registeredControlHandlers == null)
@@ -210,11 +210,11 @@ namespace UdonSharp.Video.Subtitles
             _currentOwner = _previousOwner;
 
             ResetSubtitleTrackingState();
-            LogMessage("Initialized");
+            _LogMessage("Initialized");
 
             if (subtitlesURL.ToString() != "" && Networking.IsMaster) // subtitlesURL != VRCUrl.Empty doesn't seem to work here?
             {
-                LogMessage("Will load initial subtitles");
+                _LogMessage("Will load initial subtitles");
                 SendCustomEventDelayedSeconds(nameof(_LoadSubtitlesOnStart), 1f);
             }
         }
@@ -230,11 +230,12 @@ namespace UdonSharp.Video.Subtitles
         {
             if (subtitlesURL.ToString() != "") // subtitlesURL != VRCUrl.Empty doesn't seem to work here?
             {
-                LogMessage($"Loading subtitles from configured URL: {subtitlesURL}");
+                _LogMessage($"Loading subtitles from configured URL: {subtitlesURL}");
                 FetchFromURL(subtitlesURL);
             }
         }
 
+        [PublicAPI]
         public void RegisterOverlayHandler(SubtitleOverlayHandler handler)
         {
             if (_overlayHandler == null)
@@ -243,17 +244,19 @@ namespace UdonSharp.Video.Subtitles
                 _overlayHandler.ClearSubtitle();
             }
             else
-                LogError("SubtitleOverlayHandler is already registered, only one can be active at the same time");
+                _LogError("SubtitleOverlayHandler is already registered, only one can be active at the same time");
         }
 
+        [PublicAPI]
         public void UnregisterOverlayHandler(SubtitleOverlayHandler handler)
         {
             if (handler == _overlayHandler)
                 _overlayHandler = null;
             else
-                LogError("This method must be called by the currently registered SubtitleOverlayHandler");
+                _LogError("This method must be called by the currently registered SubtitleOverlayHandler");
         }
 
+        [PublicAPI]
         public void RegisterControlHandler(SubtitleControlHandler newControlHandler)
         {
             if (_registeredControlHandlers == null)
@@ -271,11 +274,12 @@ namespace UdonSharp.Video.Subtitles
 
             _registeredControlHandlers[_registeredControlHandlers.Length - 1] = newControlHandler;
 
-            newControlHandler.SetToggleButtonState(_isEnabled);
-            newControlHandler.SetLocalToggleButtonState(_isLocal);
-            newControlHandler.SetStatusText(_dataCount > 0 ? GetTranslation("LOADED") : GetTranslation("NOT_LOADED"));
+            newControlHandler._SetToggleButtonState(_isEnabled);
+            newControlHandler._SetLocalToggleButtonState(_isLocal);
+            newControlHandler.SetStatusText(_dataCount > 0 ? _GetTranslation("LOADED") : _GetTranslation("NOT_LOADED"));
         }
 
+        [PublicAPI]
         public void UnregisterControlHandler(SubtitleControlHandler controlHandler)
         {
             if (_registeredControlHandlers == null)
@@ -301,6 +305,50 @@ namespace UdonSharp.Video.Subtitles
                     return;
                 }
             }
+        }
+
+        #endregion
+        #region Helpers
+
+        public void _LogMessage(string message)
+        {
+            if (debugLogField)
+                debugLogField.text = message + "\n" + debugLogField.text;
+
+            if (logLevel >= 3)
+                Debug.Log(LOG_PREFIX + " " + message, this);
+        }
+
+        public void _LogWarning(string message)
+        {
+            if (debugLogField)
+                debugLogField.text = message + "\n" + debugLogField.text;
+
+            if (logLevel >= 2)
+                Debug.LogWarning(LOG_PREFIX + " " + message, this);
+        }
+
+        public void _LogError(string message)
+        {
+            if (debugLogField)
+                debugLogField.text = message + "\n" + debugLogField.text;
+
+            if (logLevel >= 1)
+                Debug.LogError(LOG_PREFIX + " " + message, this);
+        }
+
+        // Used by SubtitleControlHandler to notify all other handlers about settings change
+        public void _SynchronizeSettings(SubtitleControlHandler callingHandler = null)
+        {
+            foreach (SubtitleControlHandler handler in _registeredControlHandlers)
+            {
+                if (callingHandler != null && handler == callingHandler)
+                    continue;
+
+                handler.UpdateSettingsValues();
+            }
+
+            SendCallback("OnUSharpVideoSubtitlesSettingsUpdate");
         }
 
         #endregion
@@ -343,18 +391,18 @@ namespace UdonSharp.Video.Subtitles
                     if (result.TokenType == TokenType.DataDictionary)
                     {
                         translation = result.DataDictionary;
-                        LogMessage("Translation loaded");
+                        _LogMessage("Translation loaded");
                     }
                     else
-                        LogError("Translation file is not a valid dictionary object");
+                        _LogError("Translation file is not a valid dictionary object");
                 }
                 else
-                    LogError("Failed to parse translation file");
+                    _LogError("Failed to parse translation file");
             } else
-                LogMessage("Translation file unset, using built-in messages");
+                _LogMessage("Translation file unset, using built-in messages");
         }
 
-        public string GetTranslation(string key, params object[] args)
+        public string _GetTranslation(string key, params object[] args)
         {
             DataToken value = new DataToken();
 
@@ -367,39 +415,12 @@ namespace UdonSharp.Video.Subtitles
             if (value.TokenType == TokenType.String)
                 return args.Length > 0 ? string.Format(value.ToString(), args) : value.ToString();
 
-            LogError($"Translation key '{key}' not found");
+            _LogError($"Translation key '{key}' not found");
             return key;
         }
 
         #endregion
-        #region Helpers
-
-        public void LogMessage(string message)
-        {
-            if (debugLogField)
-                debugLogField.text = message + "\n" + debugLogField.text;
-
-            if (logLevel >= 3)
-                Debug.Log(LOG_PREFIX + " " + message, this);
-        }
-
-        public void LogWarning(string message)
-        {
-            if (debugLogField)
-                debugLogField.text = message + "\n" + debugLogField.text;
-
-            if (logLevel >= 2)
-                Debug.LogWarning(LOG_PREFIX + " " + message, this);
-        }
-
-        public void LogError(string message)
-        {
-            if (debugLogField)
-                debugLogField.text = message + "\n" + debugLogField.text;
-
-            if (logLevel >= 1)
-                Debug.LogError(LOG_PREFIX + " " + message, this);
-        }
+        #region Ownership
 
         [PublicAPI]
         public bool IsPrivilegedUser(VRCPlayerApi player)
@@ -429,24 +450,10 @@ namespace UdonSharp.Video.Subtitles
                 return;
 
             if (CanControlSubtitles()) {
-                LogMessage("Taking ownership");
+                _LogMessage("Taking ownership");
 
                 Networking.SetOwner(Networking.LocalPlayer, gameObject);
             }
-        }
-
-        // Used by SubtitleControlHandler to notify all other handlers about settings change
-        public void SynchronizeSettings(SubtitleControlHandler callingHandler = null)
-        {
-            foreach (SubtitleControlHandler handler in _registeredControlHandlers)
-            {
-                if (callingHandler != null && handler == callingHandler)
-                    continue;
-
-                handler.UpdateSettingsValues();
-            }
-
-            SendCallback("OnUSharpVideoSubtitlesSettingsUpdate");
         }
 
         #endregion
@@ -541,11 +548,11 @@ namespace UdonSharp.Video.Subtitles
             if (subtitles != "")
                 InitializeParser(subtitles);
             else
-                LogError("Requested to load empty data - this shouldn't happen");
+                _LogError("Requested to load empty data - this shouldn't happen");
 
             if (closeInputMenu)
                 foreach (SubtitleControlHandler handler in _registeredControlHandlers)
-                    handler.CloseInputMenu();
+                    handler._CloseInputMenu();
         }
 
         private void ResetSubtitleTrackingState()
@@ -562,7 +569,7 @@ namespace UdonSharp.Video.Subtitles
 
         private void ClearSubtitlesLocal()
         {
-            if (_dataCount > 0) LogMessage("Clearing subtitles locally");
+            if (_dataCount > 0) _LogMessage("Clearing subtitles locally");
 
             _dataText = new string[0];
             _dataTime = new Vector2[0];
@@ -571,7 +578,7 @@ namespace UdonSharp.Video.Subtitles
             ResetSubtitleTrackingState();
 
             foreach (SubtitleControlHandler handler in _registeredControlHandlers)
-                handler.SetStatusText(GetTranslation("CLEARED"));
+                handler.SetStatusText(_GetTranslation("CLEARED"));
 
             SendCallback("OnUSharpVideoSubtitlesClear");
         }
@@ -581,7 +588,7 @@ namespace UdonSharp.Video.Subtitles
             ClearSubtitlesLocal();
 
             foreach (SubtitleControlHandler handler in _registeredControlHandlers)
-                handler.SetStatusText(GetTranslation("NOT_LOADED"));
+                handler.SetStatusText(_GetTranslation("NOT_LOADED"));
         }
 
         #endregion
@@ -614,14 +621,14 @@ namespace UdonSharp.Video.Subtitles
 
             if (_URLSync.ToString().Length > 0)
             {
-                LogMessage($"Transmitting URL: {_URLSync}");
+                _LogMessage($"Transmitting URL: {_URLSync}");
 
                 _chunkCount = 1;
                 _chunkSync = 0;
             }
             else
             {
-                LogMessage($"Transmitting subtitles... (length = {_dataSynced.Length})");
+                _LogMessage($"Transmitting subtitles... (length = {_dataSynced.Length})");
 
                 _chunkCount = _dataSynced.Length / chunkSize + 1;
                 _chunkSync = 0;
@@ -631,8 +638,8 @@ namespace UdonSharp.Video.Subtitles
             {
                 foreach (SubtitleControlHandler handler in _registeredControlHandlers)
                 {
-                    handler.SaveStatusText();
-                    handler.SetStatusText(GetTranslation("SYNCHRONIZING", 0, _chunkCount, ARROW_UP));
+                    handler._SaveStatusText();
+                    handler.SetStatusText(_GetTranslation("SYNCHRONIZING", 0, _chunkCount, ARROW_UP));
                 }
             }
 
@@ -644,7 +651,7 @@ namespace UdonSharp.Video.Subtitles
         {
             if (_chunkSync < _chunkCount) // Makes sure this doesn't run while syncing just the lock state
             {
-                LogMessage($"About to send chunk {_chunkSync + 1} / {_chunkCount} ({_syncId})");
+                _LogMessage($"About to send chunk {_chunkSync + 1} / {_chunkCount} ({_syncId})");
 
                 if (_URLSync.ToString().Length > 0) {
                     _syncedChunk = "";
@@ -665,7 +672,7 @@ namespace UdonSharp.Video.Subtitles
         {
             if (!result.success)
             {
-                LogError("Failed to serialize data, retrying in 1 second...");
+                _LogError("Failed to serialize data, retrying in 1 second...");
 
                 SendCustomEventDelayedSeconds(nameof(TransmitSubtitles), 1f);
                 return;
@@ -676,27 +683,27 @@ namespace UdonSharp.Video.Subtitles
                 if (!_isLocal)
                 {
                     foreach (SubtitleControlHandler handler in _registeredControlHandlers)
-                        handler.SetStatusText(GetTranslation("SYNCHRONIZING", _chunkSync + 1, _chunkCount, ARROW_UP));
+                        handler.SetStatusText(_GetTranslation("SYNCHRONIZING", _chunkSync + 1, _chunkCount, ARROW_UP));
                 }
 
-                LogMessage($"Sent chunk {_chunkSync + 1} / {_chunkCount} ({_syncId})");
+                _LogMessage($"Sent chunk {_chunkSync + 1} / {_chunkCount} ({_syncId})");
 
                 _chunkSync++;
 
                 if (_chunkSync < _chunkCount)
                 {
-                    LogMessage("Will send another chunk...");
+                    _LogMessage("Will send another chunk...");
 
                     SendCallback("OnUSharpVideoSubtitlesTransmitProgress");
                 }
                 else
                 {
-                    LogMessage($"Sent all chunks");
+                    _LogMessage($"Sent all chunks");
 
                     if (!_isLocal)
                     {
                         foreach (SubtitleControlHandler handler in _registeredControlHandlers)
-                            handler.RestoreStatusText();
+                            handler._RestoreStatusText();
                     }
 
                     SendCallback("OnUSharpVideoSubtitlesTransmitFinish");
@@ -736,17 +743,17 @@ namespace UdonSharp.Video.Subtitles
 
             if (IsSameSyncId())
             {
-                LogMessage($"Not loading chunk {_chunkSync + 1} / {_chunkCount} because it has the same identifier ({_syncId}) as the previously loaded one ({_lastSyncId})");
+                _LogMessage($"Not loading chunk {_chunkSync + 1} / {_chunkCount} because it has the same identifier ({_syncId}) as the previously loaded one ({_lastSyncId})");
                 return;
             }
 
             if (!_isLocal)
             {
                 foreach (SubtitleControlHandler handler in _registeredControlHandlers)
-                    handler.SetStatusText(GetTranslation("SYNCHRONIZING", _chunkSync + 1, _chunkCount, ARROW_DOWN));
+                    handler.SetStatusText(_GetTranslation("SYNCHRONIZING", _chunkSync + 1, _chunkCount, ARROW_DOWN));
             }
 
-            LogMessage($"Received chunk {_chunkSync + 1} / {_chunkCount} ({_syncId})");
+            _LogMessage($"Received chunk {_chunkSync + 1} / {_chunkCount} ({_syncId})");
 
             if (_chunkSync == 0)
             {
@@ -762,19 +769,19 @@ namespace UdonSharp.Video.Subtitles
                 _dataSynced += _syncedChunk;
             }
             else
-                LogWarning($"Rejected chunk {_chunkSync + 1} because local chunk is {_localChunkSync}");
+                _LogWarning($"Rejected chunk {_chunkSync + 1} because local chunk is {_localChunkSync}");
 
             if (_localChunkSync == _chunkCount - 1)
             {
                 _lastSyncId = _syncId;
 
-                LogMessage($"Received all chunks");
+                _LogMessage($"Received all chunks");
 
                 if (!_isLocal)
                 {
                     if (_URLSync.ToString().Length > 0)
                     {
-                        LogMessage($"Applying synchronized URL: {_URLSync}");
+                        _LogMessage($"Applying synchronized URL: {_URLSync}");
 
                         FetchFromURL(_URLSync);
                     }
@@ -786,7 +793,7 @@ namespace UdonSharp.Video.Subtitles
                             return;
                         }
 
-                        LogMessage($"Applying synchronized data (length = {_dataSynced.Length})");
+                        _LogMessage($"Applying synchronized data (length = {_dataSynced.Length})");
 
                         LoadSubtitles(_dataSynced, false);
                     }
@@ -827,17 +834,17 @@ namespace UdonSharp.Video.Subtitles
 
             if (len <= 0)
             {
-                LogWarning($"Could not check total subtitle count");
+                _LogWarning($"Could not check total subtitle count");
 
                 foreach (SubtitleControlHandler handler in _registeredControlHandlers)
-                    handler.SetStatusText(GetTranslation("PARSE_FAILED"));
+                    handler.SetStatusText(_GetTranslation("PARSE_FAILED"));
 
                 SendCallback("OnUSharpVideoSubtitlesParseError");
 
                 return;
             }
 
-            LogMessage($"Detected {len} subtitle groups");
+            _LogMessage($"Detected {len} subtitle groups");
 
             _parserArray = (text + "\n").Replace("\r\n", "\n").Split('\n'); // We are adding empty line at the end to make sure the parser reaches final state
             _dataText = new string[len];
@@ -863,7 +870,7 @@ namespace UdonSharp.Video.Subtitles
             float timeLimit = parserTimeLimit / 1000.0f; // Convert from ms to seconds (float)
 
             foreach (SubtitleControlHandler handler in _registeredControlHandlers)
-                handler.SetStatusText(GetTranslation("PARSING", (int)Math.Round((double)(100 * _parserIndex) / _dataText.Length)));
+                handler.SetStatusText(_GetTranslation("PARSING", (int)Math.Round((double)(100 * _parserIndex) / _dataText.Length)));
 
             int parserState = 0;
             for (int i = _parserLine; i < _parserArray.Length; i++)
@@ -879,7 +886,7 @@ namespace UdonSharp.Video.Subtitles
 
                     if (_parserIndex > _dataText.Length - 1) // Prevent a crash when exceeding the max index
                     {
-                        LogError($"Ran out of space in data array ({_parserIndex})");
+                        _LogError($"Ran out of space in data array ({_parserIndex})");
 
                         _isParsing = false;
                         break;
@@ -922,7 +929,7 @@ namespace UdonSharp.Video.Subtitles
                 int groups = _parserIndex;
                 ResetParser();
 
-                LogMessage($"Parsed {groups} subtitle groups");
+                _LogMessage($"Parsed {groups} subtitle groups");
             }
 
             if (!_isParsing)
@@ -932,14 +939,14 @@ namespace UdonSharp.Video.Subtitles
                     _dataCount = _dataText.Length;
 
                     foreach (SubtitleControlHandler handler in _registeredControlHandlers)
-                        handler.SetStatusText(GetTranslation("LOADED"));
+                        handler.SetStatusText(_GetTranslation("LOADED"));
 
                     SendCallback("OnUSharpVideoSubtitlesLoad");
                 }
                 else
                 {
                     foreach (SubtitleControlHandler handler in _registeredControlHandlers)
-                        handler.SetStatusText(GetTranslation("PARSE_FAILED"));
+                        handler.SetStatusText(_GetTranslation("PARSE_FAILED"));
 
                     SendCallback("OnUSharpVideoSubtitlesParseError");
                 }
@@ -1040,11 +1047,11 @@ namespace UdonSharp.Video.Subtitles
 
             if (input == string.Empty)
             {
-                LogWarning("String input is empty");
+                _LogWarning("String input is empty");
                 return;
             }
 
-            LogMessage($"Loaded string input (length = {input.Length})");
+            _LogMessage($"Loaded string input (length = {input.Length})");
 
             LoadSubtitles(input, true);
 
@@ -1083,11 +1090,11 @@ namespace UdonSharp.Video.Subtitles
 
             if (url == VRCUrl.Empty)
             {
-                LogWarning("URL input is empty");
+                _LogWarning("URL input is empty");
                 return;
             }
 
-            LogMessage($"Loaded URL input: {url}");
+            _LogMessage($"Loaded URL input: {url}");
 
             _URLTmp = url;
 
@@ -1096,17 +1103,17 @@ namespace UdonSharp.Video.Subtitles
 
         private void FetchFromURL(VRCUrl url)
         {
-            LogMessage("Loading text from URL: " + url);
+            _LogMessage("Loading text from URL: " + url);
 
             foreach (SubtitleControlHandler handler in _registeredControlHandlers)
-                handler.SetStatusText(GetTranslation("FETCHING"));
+                handler.SetStatusText(_GetTranslation("FETCHING"));
 
             VRCStringDownloader.LoadUrl(url, (IUdonEventReceiver)this);
         }
 
         public override void OnStringLoadSuccess(IVRCStringDownload result)
         {
-            LogMessage($"Remote string load success ({BitConverter.ToInt32(result.ResultBytes, 0)} bytes)");
+            _LogMessage($"Remote string load success ({BitConverter.ToInt32(result.ResultBytes, 0)} bytes)");
 
             if (result.Url == _URLTmp) // User entered URL - to be synchronized
                 ProcessInput(result.Result);
@@ -1122,10 +1129,10 @@ namespace UdonSharp.Video.Subtitles
         {
             _URLTmp = VRCUrl.Empty;
 
-            LogError("Failed to load subtitles from URL: " + result.Error);
+            _LogError("Failed to load subtitles from URL: " + result.Error);
 
             foreach (SubtitleControlHandler handler in _registeredControlHandlers)
-                handler.SetStatusText(GetTranslation("FETCH_FAILED"));
+                handler.SetStatusText(_GetTranslation("FETCH_FAILED"));
 
             SendCallback("OnUSharpVideoSubtitlesFetchError");
         }
@@ -1154,7 +1161,7 @@ namespace UdonSharp.Video.Subtitles
 #if USHARPVIDEO_FOUND
             if (uSharpVideoPlayer)
             {
-                LogError("Method SetLocked cannot be used while using USharpVideo");
+                _LogError("Method SetLocked cannot be used while using USharpVideo");
                 return;
             }
 #endif
@@ -1199,7 +1206,7 @@ namespace UdonSharp.Video.Subtitles
             }
 
             foreach (SubtitleControlHandler handler in _registeredControlHandlers)
-                handler.SetToggleButtonState(_isEnabled);
+                handler._SetToggleButtonState(_isEnabled);
 
             SendCallback("OnUSharpVideoSubtitlesEnabledChange");
         }
@@ -1218,7 +1225,7 @@ namespace UdonSharp.Video.Subtitles
 
             _isLocal = state;
 
-            LogMessage($"Local mode = {(_isLocal ? "ON" : "OFF")}");
+            _LogMessage($"Local mode = {(_isLocal ? "ON" : "OFF")}");
 
             if (state)
             {
@@ -1245,7 +1252,7 @@ namespace UdonSharp.Video.Subtitles
             ResetSubtitleTrackingState();
 
             foreach (SubtitleControlHandler handler in _registeredControlHandlers)
-                handler.SetLocalToggleButtonState(_isLocal);
+                handler._SetLocalToggleButtonState(_isLocal);
 
             foreach (SubtitleControlHandler handler in _registeredControlHandlers)
                 handler.UpdateOwner();
@@ -1270,7 +1277,7 @@ namespace UdonSharp.Video.Subtitles
             SendCallback("OnUSharpVideoSubtitlesTimeOffsetChange");
 
             if (sync)
-                SynchronizeSettings();
+                _SynchronizeSettings();
         }
 
         [PublicAPI]
@@ -1284,7 +1291,7 @@ namespace UdonSharp.Video.Subtitles
         {
 #if USHARPVIDEO_FOUND
             if (uSharpVideoPlayer) {
-                LogWarning("Method SetVideoPlayer cannot be used with USharpVideo");
+                _LogWarning("Method SetVideoPlayer cannot be used with USharpVideo");
                 return;
             }
 #endif
@@ -1305,10 +1312,10 @@ namespace UdonSharp.Video.Subtitles
                 if (!IsSynchronized())
                 {
                     foreach (SubtitleControlHandler handler in _registeredControlHandlers)
-                        handler.RestoreStatusText(); // Prevent "subtitles loaded" status to be set after clearing when synchronization is still running
+                        handler._RestoreStatusText(); // Prevent "subtitles loaded" status to be set after clearing when synchronization is still running
                 }
 
-                ClearSubtitlesLocal(); // Must be called first otherwise RestoreStatusText() in OnPostSerialization will send previous status instead of cleared message
+                ClearSubtitlesLocal(); // Must be called first otherwise _RestoreStatusText() in OnPostSerialization will send previous status instead of cleared message
                 SetAndTransmitSubtitles("");
             }
             else
@@ -1369,7 +1376,7 @@ namespace UdonSharp.Video.Subtitles
 #if USHARPVIDEO_FOUND
                 if (_dataSynced != "" || !IsUsingUSharpVideo())
 #endif
-                    LogMessage($"Player joined ({player.displayName}) - request serialization");
+                    _LogMessage($"Player joined ({player.displayName}) - request serialization");
             }
         }
 
@@ -1383,20 +1390,20 @@ namespace UdonSharp.Video.Subtitles
                     // This will prevent the status being stuck at "synchronizing last chunk"
                     foreach (SubtitleControlHandler handler in _registeredControlHandlers)
                     {
-                        handler.RestoreStatusText();
+                        handler._RestoreStatusText();
 
                         if (_dataSynced != "")
-                            handler.SetStatusText(GetTranslation("LOADED"));
+                            handler.SetStatusText(_GetTranslation("LOADED"));
                         else
-                            handler.SetStatusText(GetTranslation("NOT_LOADED"));
+                            handler.SetStatusText(_GetTranslation("NOT_LOADED"));
 
-                        handler.SaveStatusText();
+                        handler._SaveStatusText();
                     }
                 }
 
                 RequestSerialization();
 
-                LogMessage($"Player left ({player.displayName}) - request serialization");
+                _LogMessage($"Player left ({player.displayName}) - request serialization");
             }
         }
 
@@ -1427,7 +1434,7 @@ namespace UdonSharp.Video.Subtitles
 
             SendCallback("OnUSharpVideoSubtitlesOwnershipChange");
 
-            LogMessage($"Ownership changed ({player.displayName})");
+            _LogMessage($"Ownership changed ({player.displayName})");
         }
 
         #endregion
@@ -1459,7 +1466,7 @@ namespace UdonSharp.Video.Subtitles
 
                 if (clearOnNewVideo && _dataSynced != "" && Networking.IsMaster)
                 {
-                    LogMessage("New URL detected, clearing subtitles...");
+                    _LogMessage("New URL detected, clearing subtitles...");
 
                     SetAndTransmitSubtitles("");
 
@@ -1488,13 +1495,13 @@ namespace UdonSharp.Video.Subtitles
             {
                 if (IsSynchronized())
                 {
-                    LogMessage("Taking ownership because USharpVideo is now locked...");
+                    _LogMessage("Taking ownership because USharpVideo is now locked...");
 
                     TakeOwnership();
                 }
                 else
                 {
-                    LogMessage("Waiting 1 second before taking ownership because the synchronization is still running...");
+                    _LogMessage("Waiting 1 second before taking ownership because the synchronization is still running...");
 
                     SendCustomEventDelayedSeconds(nameof(_MigrateToUSharpVideoOwner), 1f);
                 }

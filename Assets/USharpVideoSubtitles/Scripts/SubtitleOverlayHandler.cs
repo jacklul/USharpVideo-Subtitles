@@ -98,8 +98,9 @@ namespace UdonSharp.Video.Subtitles
         }
 
         #endregion
-        #region Display
+        #region Display API
 
+        [PublicAPI]
         public void DisplaySubtitle(string text)
         {
             if (_showPlaceholder && text == "")
@@ -131,6 +132,7 @@ namespace UdonSharp.Video.Subtitles
             }
         }
 
+        [PublicAPI]
         public void ClearSubtitle()
         {
             _lastText = "";
@@ -140,6 +142,7 @@ namespace UdonSharp.Video.Subtitles
             if (subtitleBackgroundFieldTop) subtitleBackgroundFieldTop.text = "";
         }
 
+        [PublicAPI]
         public void RefreshSubtitle()
         {
             string text = _lastText;
@@ -147,13 +150,11 @@ namespace UdonSharp.Video.Subtitles
             DisplaySubtitle(text);
         }
 
+        [PublicAPI]
         public void SetPlaceholder(bool state)
         {
             _showPlaceholder = state;
         }
-
-        #endregion
-        #region API
 
         [PublicAPI]
         public void MoveOverlay(GameObject screen)
@@ -181,8 +182,9 @@ namespace UdonSharp.Video.Subtitles
         }
 
         #endregion
-        #region Styling
+        #region Styling API
 
+        [PublicAPI]
         public void ResetStyle()
         {
             SetFontSize(fontSize);
@@ -195,12 +197,14 @@ namespace UdonSharp.Video.Subtitles
             SetAlignment(alignment);
         }
 
+        [PublicAPI]
         public int GetFontSize()
         {
             return _fontSize;
             //return subtitleTextField.fontSize;
         }
 
+        [PublicAPI]
         public void SetFontSize(int size)
         {
             _fontSize = size;
@@ -210,11 +214,13 @@ namespace UdonSharp.Video.Subtitles
             //subtitleBackgroundField.fontSize = size;
         }
 
+        [PublicAPI]
         public Color GetFontColor()
         {
             return subtitleTextField.color;
         }
 
+        [PublicAPI]
         public void SetFontColor(Color color)
         {
             if (color.a < 1)
@@ -224,11 +230,13 @@ namespace UdonSharp.Video.Subtitles
             if (subtitleTextFieldTop) subtitleTextFieldTop.color = color;
         }
 
+        [PublicAPI]
         public Color GetOutlineColor()
         {
             return subtitleTextField.outlineColor;
         }
 
+        [PublicAPI]
         public void SetOutlineColor(Color color)
         {
             if (color.a < 1)
@@ -241,11 +249,13 @@ namespace UdonSharp.Video.Subtitles
             if (subtitleTextFieldTop) subtitleTextFieldTop.outlineColor = color;
         }
 
+        [PublicAPI]
         public float GetOutlineSize()
         {
             return subtitleTextField.outlineWidth;
         }
 
+        [PublicAPI]
         public void SetOutlineSize(float size)
         {
             subtitleTextField.gameObject.SetActive(false); // When "maskable = true" the color does not update unless we toggle the object...
@@ -255,11 +265,13 @@ namespace UdonSharp.Video.Subtitles
             if (subtitleTextFieldTop) subtitleTextFieldTop.outlineWidth = size;
         }
 
+        [PublicAPI]
         public Color GetBackgroundColor()
         {
             return subtitleBackgroundField.color;
         }
 
+        [PublicAPI]
         public void SetBackgroundColor(Color color)
         {
             subtitleBackgroundField.color = color;
@@ -268,6 +280,7 @@ namespace UdonSharp.Video.Subtitles
             _backgroundColorHex = Common.ToRGBHex(color);
         }
 
+        [PublicAPI]
         public int GetVerticalMargin()
         {
             if (!_textFieldRectTransform)
@@ -277,6 +290,7 @@ namespace UdonSharp.Video.Subtitles
             //return GetAlignment() == 1 ? (int)subtitleTextField.margin.y : (int)subtitleTextField.margin.z;
         }
 
+        [PublicAPI]
         public void SetVerticalMargin(int margin)
         {
             if (!_textFieldRectTransform)
@@ -294,6 +308,7 @@ namespace UdonSharp.Video.Subtitles
             //    SetMarginInternal(new Vector4(subtitleTextField.margin.x, 0, subtitleTextField.margin.z, margin));
         }
 
+        [PublicAPI]
         public float GetHorizontalMargin()
         {
             if (!_textFieldRectTransform)
@@ -303,6 +318,7 @@ namespace UdonSharp.Video.Subtitles
             //return subtitleTextField.margin.x;
         }
 
+        [PublicAPI]
         public void SetHorizontalMargin(int margin)
         {
             if (!_textFieldRectTransform)
@@ -311,6 +327,7 @@ namespace UdonSharp.Video.Subtitles
             SetMarginInternal(new Vector4(margin, Mathf.Abs(_textFieldRectTransform.offsetMax.y), margin, Mathf.Abs(_textFieldRectTransform.offsetMin.y)));
         }
 
+        [PublicAPI]
         private void SetMarginInternal(Vector4 margin)
         {
             _textFieldRectTransform.offsetMin = new Vector2(margin.x, margin.w);
@@ -332,12 +349,14 @@ namespace UdonSharp.Video.Subtitles
             //subtitleBackgroundField.margin = margin;
         }
 
+        [PublicAPI]
         public int GetAlignment() // @TODO Not exposed to Udon yet, to be replaced with "public VerticalAlignmentOptions GetAlignment()"
         {
             return subtitleTextField.gameObject.activeSelf ? 0 : 1;
             //return subtitleTextField.alignment;
         }
 
+        [PublicAPI]
         public void SetAlignment(int value) // @TODO Not exposed to Udon yet, to be replaced with "public void SetAlignment(VerticalAlignmentOptions alignment)"
         {
             if (!subtitleTextFieldTop || !subtitleBackgroundFieldTop)

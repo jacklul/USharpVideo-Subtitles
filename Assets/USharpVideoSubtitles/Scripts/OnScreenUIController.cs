@@ -59,7 +59,7 @@ namespace UdonSharp.Video.Subtitles.Extras
             }
         }
 
-        public void OnToggle()
+        public void _OnToggle()
         {
             if (!panel) return;
 
@@ -90,7 +90,7 @@ namespace UdonSharp.Video.Subtitles.Extras
             }
         }
 
-        public void OnSubtitleSettingsToggle()
+        public void _OnSubtitleSettingsToggle()
         {
             if (subtitleControlHandler)
                 subtitleControlHandler.ToggleSettingsPopup();

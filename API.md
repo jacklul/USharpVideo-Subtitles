@@ -25,6 +25,7 @@
 - [SubtitleControlHandler](#subtitlecontrolhandler)
   - [SubtitleControlHandler.ImportSettingsFromString(string): void](#subtitlecontrolhandlerimportsettingsfromstringstring-void)
   - [SubtitleControlHandler.IsSettingsPopupActive(): bool](#subtitlecontrolhandlerissettingspopupactive-bool)
+  - [SubtitleControlHandler.ToggleMenu(string): void](#subtitlecontrolhandlertogglemenustring-void)
   - [SubtitleControlHandler.ToggleSettingsPopup(): void](#subtitlecontrolhandlertogglesettingspopup-void)
 - [SubtitleOverlayHandler](#subtitleoverlayhandler)
   - [Styling methods](#styling-methods)
@@ -240,6 +241,11 @@ Import settings from the given string (the same string which is displayed in the
 ### SubtitleControlHandler.IsSettingsPopupActive(): bool
 
 Check if settings popup is currently open
+
+### SubtitleControlHandler.ToggleMenu(string): void
+
+Toggle named menu, valid argument values are: `input, settings, info`  
+Any other value will close all open menus
 
 ### SubtitleControlHandler.ToggleSettingsPopup(): void
 
