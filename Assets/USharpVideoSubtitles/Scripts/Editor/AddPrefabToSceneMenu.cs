@@ -1,7 +1,12 @@
 using UdonSharp;
+using UdonSharp.Video.Subtitles;
 using UnityEditor;
 using UnityEngine;
-using VRC.Udon;
+using VRC.SDK3.Video.Components.Base;
+
+#if USHARPVIDEO_FOUND
+using UdonSharp.Video;
+#endif
 
 public class AddPrefabToSceneMenu
 {
@@ -10,29 +15,40 @@ public class AddPrefabToSceneMenu
     {
         GameObject instance = AddPrefabToScene("79b0ea249ffa6a54bb5f55191b085d00");
 
-#if USHARPVIDEO_FOUND
-        // Try to find an existing USharpVideoPlayer component in the scene and link it
         if (instance != null)
         {
             var udonBehaviour = instance.GetComponent<UdonSharpBehaviour>();
 
-            UdonSharp.Video.USharpVideoPlayer uSharpVideoPlayer = Object.FindObjectOfType<UdonSharp.Video.USharpVideoPlayer>(true);
+#if USHARPVIDEO_FOUND
+            // Try to find an existing USharpVideoPlayer component in the scene and link it
+            USharpVideoPlayer uSharpVideoPlayer = Object.FindObjectOfType<USharpVideoPlayer>(true);
             if (uSharpVideoPlayer != null)
             {
                 var field = udonBehaviour.GetType().GetField("uSharpVideoPlayer", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
                 field?.SetValue(udonBehaviour, uSharpVideoPlayer);
+                return;
+            }
+#endif
+
+            // Try to find all BaseVRCVideoPlayer components in the scene and add them to the baseVRCVideoPlayers array
+            BaseVRCVideoPlayer[] videoPlayers = Object.FindObjectsOfType<BaseVRCVideoPlayer>(true);
+            if (videoPlayers.Length > 0)
+            {
+                var field = udonBehaviour.GetType().GetField("baseVRCVideoPlayers", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                var baseVRCVideoPlayers = new BaseVRCVideoPlayer[videoPlayers.Length];
+
+                for (int i = 0; i < videoPlayers.Length; i++)
+                    baseVRCVideoPlayers[i] = videoPlayers[i];
+
+                field?.SetValue(udonBehaviour, baseVRCVideoPlayers);
             }
         }
-#else
-        // If USharpVideo is not found, also add the ActiveVideoPlayerPicker component for convenience
-        AddPickerComponentToScene();
-#endif
     }
 
     [MenuItem("Tools/USharpVideoSubtitles/Add prefab to scene", true)]
     private static bool ValidateAddSubtitlesPrefabToScene()
     {
-        return UnityEditor.SceneManagement.EditorSceneManager.GetActiveScene().IsValid();
+        return UnityEngine.SceneManagement.SceneManager.GetActiveScene().IsValid();
     }
 
 #if USHARPVIDEO_FOUND
@@ -46,7 +62,7 @@ public class AddPrefabToSceneMenu
             var udonBehaviour = instance.GetComponent<UdonSharpBehaviour>();
 
             // Try to find an existing USharpVideoPlayer component in the scene and link it
-            UdonSharp.Video.USharpVideoPlayer uSharpVideoPlayer = Object.FindObjectOfType<UdonSharp.Video.USharpVideoPlayer>(true);
+            USharpVideoPlayer uSharpVideoPlayer = Object.FindObjectOfType<USharpVideoPlayer>(true);
             if (uSharpVideoPlayer != null)
             {
                 var field = udonBehaviour.GetType().GetField("uSharpVideoPlayer", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
@@ -54,7 +70,7 @@ public class AddPrefabToSceneMenu
             }
 
             // Try to find an existing SubtitleControlHandler component in the scene and link it
-            UdonSharp.Video.Subtitles.SubtitleControlHandler subtitleControlHandler = Object.FindObjectOfType<UdonSharp.Video.Subtitles.SubtitleControlHandler>(true);
+            SubtitleControlHandler subtitleControlHandler = Object.FindObjectOfType<SubtitleControlHandler>(true);
             if (subtitleControlHandler != null)
             {
                 var field = udonBehaviour.GetType().GetField("subtitleControlHandler", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
@@ -62,7 +78,7 @@ public class AddPrefabToSceneMenu
             }
 
             // Try to find an existing SubtitleOverlayHandler component in the scene and link its videoScreen
-            UdonSharp.Video.Subtitles.SubtitleOverlayHandler subtitleOverlayHandler = Object.FindObjectOfType<UdonSharp.Video.Subtitles.SubtitleOverlayHandler>(true);
+            SubtitleOverlayHandler subtitleOverlayHandler = Object.FindObjectOfType<SubtitleOverlayHandler>(true);
             if (subtitleOverlayHandler != null)
             {
                 var videoScreenField = subtitleOverlayHandler.GetType().GetField("videoScreen", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
@@ -72,50 +88,13 @@ public class AddPrefabToSceneMenu
             }
         }
     }
-#endif
 
     [MenuItem("Tools/USharpVideoSubtitles/Add OnScreenUI prefab to scene", true)]
     private static bool ValidateAddOnScreenUIPrefabToScene()
     {
-        return UnityEditor.SceneManagement.EditorSceneManager.GetActiveScene().IsValid();
+        return UnityEngine.SceneManagement.SceneManager.GetActiveScene().IsValid();
     }
-
-    [MenuItem("Tools/USharpVideoSubtitles/Add ActiveVideoPlayerPicker component to scene")]
-    private static void AddPickerComponentToScene()
-    {
-        GameObject instance = new GameObject("ActiveVideoPlayerPicker");
-        instance.AddComponent<UdonSharp.Video.Subtitles.ActiveVideoPlayerPicker>();
-        Selection.activeGameObject = instance;
-        Undo.RegisterCreatedObjectUndo(instance, "Add ActiveVideoPlayerPicker component to scene");
-        var udonBehaviour = instance.GetComponent<UdonSharpBehaviour>();
-
-        // Try to find an existing SubtitleManager in the scene and link it
-        UdonSharp.Video.Subtitles.SubtitleManager subtitleManager = Object.FindObjectOfType<UdonSharp.Video.Subtitles.SubtitleManager>(true);
-        if (subtitleManager != null)
-        {
-            var field = udonBehaviour.GetType().GetField("subtitleManager", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-            field?.SetValue(udonBehaviour, subtitleManager);
-        }
-
-        // Try to find all BaseVRCVideoPlayer components in the scane and add them to the searchGameObjects array
-        var videoPlayers = Object.FindObjectsOfType<VRC.SDK3.Video.Components.Base.BaseVRCVideoPlayer>(true);
-        if (videoPlayers.Length > 0)
-        {
-            var field = udonBehaviour.GetType().GetField("searchGameObjects", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
-            var searchGameObjects = new GameObject[videoPlayers.Length];
-
-            for (int i = 0; i < videoPlayers.Length; i++)
-                searchGameObjects[i] = videoPlayers[i].gameObject;
-
-            field?.SetValue(udonBehaviour, searchGameObjects);
-        }
-    }
-
-    [MenuItem("Tools/USharpVideoSubtitles/Add ActiveVideoPlayerPicker component to scene", true)]
-    private static bool ValidateAddPickerComponentToScene()
-    {
-        return UnityEditor.SceneManagement.EditorSceneManager.GetActiveScene().IsValid();
-    }
+#endif
 
     private static GameObject AddPrefabToScene(string guid)
     {

@@ -19,7 +19,7 @@
   - [SubtitleManager.SetLocal(bool): void](#subtitlemanagersetlocalbool-void)
   - [SubtitleManager.SetLocked(bool): void](#subtitlemanagersetlockedbool-void)
   - [SubtitleManager.SetTimeOffset(float): void](#subtitlemanagersettimeoffsetfloat-void)
-  - [SubtitleManager.SetVideoPlayer(BaseVRCVideoPlayer): void](#subtitlemanagersetvideoplayerbasevrcvideoplayer-void)
+  - [SubtitleManager.SetVideoPlayers(BaseVRCVideoPlayer\[\]): void](#subtitlemanagersetvideoplayersbasevrcvideoplayer-void)
   - [SubtitleManager.SynchronizeSubtitles(): void](#subtitlemanagersynchronizesubtitles-void)
   - [SubtitleManager.UnregisterCallbackReceiver(UdonSharpBehaviour): void](#subtitlemanagerunregistercallbackreceiverudonsharpbehaviour-void)
 - [SubtitleControlHandler](#subtitlecontrolhandler)
@@ -212,12 +212,11 @@ Change lock state, must be executed by the Master
 
 Set time offset value
 
-### SubtitleManager.SetVideoPlayer(BaseVRCVideoPlayer): void
+### SubtitleManager.SetVideoPlayers(BaseVRCVideoPlayer[]): void
 
-Use this to change the video player reference that the subtitles are synced with
+Use this to change the video player references that the subtitles are synced with
 
 - Does nothing when using **USharpVideo**
-- You can use `VideoPlayerFinder` script to recursively scan for active video player
 
 ### SubtitleManager.SynchronizeSubtitles(): void
 

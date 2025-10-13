@@ -35,7 +35,7 @@ namespace UdonSharp.Video.Subtitles
 #endif
 
         [SerializeField]
-        private BaseVRCVideoPlayer baseVRCVideoPlayer;
+        private BaseVRCVideoPlayer[] baseVRCVideoPlayers;
 
         [Header("Settings")]
 
@@ -162,10 +162,10 @@ namespace UdonSharp.Video.Subtitles
         private void Start()
         {
 #if USHARPVIDEO_FOUND
-            if (!uSharpVideoPlayer && !baseVRCVideoPlayer)
+            if (!uSharpVideoPlayer && baseVRCVideoPlayers.Length == 0)
                 _LogWarning("No video player reference assigned!");
 #else
-            if (!baseVRCVideoPlayer)
+            if (baseVRCVideoPlayers.Length == 0)
                 _LogWarning("No video player reference assigned!");
 #endif
 
@@ -398,7 +398,8 @@ namespace UdonSharp.Video.Subtitles
                 }
                 else
                     _LogError("Failed to parse translation file");
-            } else
+            }
+            else
                 _LogMessage("Translation file unset, using built-in messages");
         }
 
@@ -449,7 +450,8 @@ namespace UdonSharp.Video.Subtitles
             if (Networking.IsOwner(gameObject))
                 return;
 
-            if (CanControlSubtitles()) {
+            if (CanControlSubtitles())
+            {
                 _LogMessage("Taking ownership");
 
                 Networking.SetOwner(Networking.LocalPlayer, gameObject);
@@ -514,8 +516,9 @@ namespace UdonSharp.Video.Subtitles
                 return _videoManager.IsPlaying();
 #endif
 
-            if (baseVRCVideoPlayer)
-                return baseVRCVideoPlayer.IsPlaying;
+            foreach (BaseVRCVideoPlayer baseVRCVideoPlayer in baseVRCVideoPlayers)
+                if (baseVRCVideoPlayer && baseVRCVideoPlayer.IsPlaying)
+                    return true;
 
             return false;
         }
@@ -529,8 +532,12 @@ namespace UdonSharp.Video.Subtitles
                 time = _videoManager.GetTime();
             else
 #endif
-            if (baseVRCVideoPlayer)
-                time = baseVRCVideoPlayer.GetTime();
+                foreach (BaseVRCVideoPlayer baseVRCVideoPlayer in baseVRCVideoPlayers)
+                    if (baseVRCVideoPlayer && baseVRCVideoPlayer.IsPlaying)
+                    {
+                        time = baseVRCVideoPlayer.GetTime();
+                        break;
+                    }
 
             if (_timeOffset != 0.0f)
             {
@@ -653,7 +660,8 @@ namespace UdonSharp.Video.Subtitles
             {
                 _LogMessage($"About to send chunk {_chunkSync + 1} / {_chunkCount} ({_syncId})");
 
-                if (_URLSync.ToString().Length > 0) {
+                if (_URLSync.ToString().Length > 0)
+                {
                     _syncedChunk = "";
                     return;
                 }
@@ -879,7 +887,7 @@ namespace UdonSharp.Video.Subtitles
 
                 if (parserState == 0 && line.Contains(" --> "))
                 {
-                    string[] times = line.Split(new string[] {" --> "}, StringSplitOptions.None);
+                    string[] times = line.Split(new string[] { " --> " }, StringSplitOptions.None);
 
                     if (times[1].Contains(" ")) // Per SRT specs there can be text coordinates after the timestamp and we can't support that
                         times[1] = times[1].Split(' ')[0];
@@ -1287,18 +1295,26 @@ namespace UdonSharp.Video.Subtitles
         }
 
         [PublicAPI]
-        public void SetVideoPlayer(BaseVRCVideoPlayer videoPlayer)
+        public void SetVideoPlayers(BaseVRCVideoPlayer[] videoPlayers)
         {
 #if USHARPVIDEO_FOUND
-            if (uSharpVideoPlayer) {
-                _LogWarning("Method SetVideoPlayer cannot be used with USharpVideo");
+            if (uSharpVideoPlayer)
+            {
+                _LogWarning("Method SetVideoPlayers cannot be used with USharpVideo");
                 return;
             }
 #endif
 
-            baseVRCVideoPlayer = videoPlayer;
+            baseVRCVideoPlayers = videoPlayers;
             ResetSubtitleTrackingState();
             SendCallback("OnUSharpVideoSubtitlesVideoPlayerChange");
+        }
+
+        [PublicAPI, Obsolete("Use SetVideoPlayers() instead")]
+        public void SetVideoPlayer(BaseVRCVideoPlayer videoPlayer)
+        {
+            _LogWarning("Method SetVideoPlayer() is deprecated, use SetVideoPlayers() instead");
+            SetVideoPlayers(new BaseVRCVideoPlayer[] { videoPlayer });
         }
 
         [PublicAPI]
@@ -1407,16 +1423,16 @@ namespace UdonSharp.Video.Subtitles
             }
         }
 
-// Similary to how it is in USharpVideo - uncomment this to prevent people from taking ownership when they shouldn't be able to
-//        public override bool OnOwnershipRequest(VRCPlayerApi requestingPlayer, VRCPlayerApi requestedOwner)
-//        {
-//#if USHARPVIDEO_FOUND
-//            if (uSharpVideoPlayer)
-//                return !uSharpVideoPlayer.IsLocked() || uSharpVideoPlayer.IsPrivilegedUser(requestedOwner);
-//#endif
-//            
-//            return !_isLocked || IsPrivilegedUser(requestedOwner);
-//        }
+        // Similary to how it is in USharpVideo - uncomment this to prevent people from taking ownership when they shouldn't be able to
+        //        public override bool OnOwnershipRequest(VRCPlayerApi requestingPlayer, VRCPlayerApi requestedOwner)
+        //        {
+        //#if USHARPVIDEO_FOUND
+        //            if (uSharpVideoPlayer)
+        //                return !uSharpVideoPlayer.IsLocked() || uSharpVideoPlayer.IsPrivilegedUser(requestedOwner);
+        //#endif
+        //            
+        //            return !_isLocked || IsPrivilegedUser(requestedOwner);
+        //        }
 
         public override void OnOwnershipTransferred(VRCPlayerApi player)
         {

@@ -41,12 +41,10 @@ The video player is assumed to be in your scene already.
 
 5. Add a reference in the `Subtitles` object (**SubtitleManager** script) to:
     - when using **USharpVideo** (**U Sharp Video Player** field) - **USharpVideoPlayer** script from the `USharpVideo` object
-    - in any other case (**Base VRC Video Player** field) - **VRCUnityVideoPlayer** or **VRCAVProVideoPlayer** component that has to be somewhere in your scene - depends on which one you're using ([you can change this dynamically](API.md#subtitlemanagersetvideoplayerbasevrcvideoplayer-void))
+    - in any other case (**Base VRC Video Players** field) - **VRCUnityVideoPlayer** and **VRCAVProVideoPlayer** components that are somewhere in your video player object
 
 6. Add a reference in the `Subtitles/Overlay` object (**Video Screen** field) to the video player's screen object
     - Script will copy the position and rotation of the screen on start but if this doesn't work on your world then you will have to manually adjust `Subtitles/Overlay` object's position and rotation to match the video screen object (make sure **Video Screen** field is empty in this case)
-
-When using a video player that uses multiple components for playback (e.g. ProTV) you can use `Tools -> USharpVideoSubtitles -> Add ActiveVideoPlayerPicker component to scene` menu item to add a component that will automatically select the video player that is currently playing.  
 
 ## Upgrading
 
