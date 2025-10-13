@@ -24,6 +24,8 @@ public class USharpVideoExists
         //"47f81f936a8517945bbe9ebbe335e379", // Assets/USharpVideoSubtitles/Scripts/SubtitleOverlayHandler.cs
         "944a789aea78be04d8d08a1c688f2010", // Assets/USharpVideoSubtitles/Scripts/OnScreenUIController.cs
         "96c9fcd85688d64459ae79399f1ab62d", // Assets/USharpVideoSubtitles/Scripts/UI/UIStyler.cs
+        "8033f878ca8f28a4ca2b5a96d91f43f9", // Assets/USharpVideoSubtitles/Scripts/Editor/AddPrefabToSceneMenu.cs
+        "894c78efa7ae828418c63cd37ffa5eda", // Assets/USharpVideoSubtitles/Scripts/Editor/SubtitleManagerEditor.cs
     };
 
     static USharpVideoExists()
