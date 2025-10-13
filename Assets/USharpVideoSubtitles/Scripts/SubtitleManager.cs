@@ -832,7 +832,7 @@ namespace UdonSharp.Video.Subtitles
                 foreach (SubtitleControlHandler handler in _registeredControlHandlers)
                     handler.SetStatusText(GetTranslation("PARSE_FAILED"));
 
-                SendCallback("OnUSharpVideoSubtitlesError");
+                SendCallback("OnUSharpVideoSubtitlesParseError");
 
                 return;
             }
@@ -941,7 +941,7 @@ namespace UdonSharp.Video.Subtitles
                     foreach (SubtitleControlHandler handler in _registeredControlHandlers)
                         handler.SetStatusText(GetTranslation("PARSE_FAILED"));
 
-                    SendCallback("OnUSharpVideoSubtitlesError");
+                    SendCallback("OnUSharpVideoSubtitlesParseError");
                 }
 
                 _isParserDone = true;
@@ -1126,6 +1126,8 @@ namespace UdonSharp.Video.Subtitles
 
             foreach (SubtitleControlHandler handler in _registeredControlHandlers)
                 handler.SetStatusText(GetTranslation("FETCH_FAILED")); //handler.SetStatusText(result.Error);
+
+            SendCallback("OnUSharpVideoSubtitlesFetchError");
         }
 
         #endregion
@@ -1199,7 +1201,7 @@ namespace UdonSharp.Video.Subtitles
             foreach (SubtitleControlHandler handler in _registeredControlHandlers)
                 handler.SetToggleButtonState(_isEnabled);
 
-            SendCallback("OnUSharpVideoSubtitlesEnabledStatusChange");
+            SendCallback("OnUSharpVideoSubtitlesEnabledChange");
         }
 
         [PublicAPI]
@@ -1332,7 +1334,6 @@ namespace UdonSharp.Video.Subtitles
             }
 
             ResetSubtitleTrackingState();
-            SendCallback("OnUSharpVideoSubtitlesSynchronize");
         }
 
         [PublicAPI]
