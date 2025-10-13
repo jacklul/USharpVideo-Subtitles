@@ -44,7 +44,7 @@ jobs:
         run: |
           placeholder="0.0.0-dev"
           version="${{ steps.variables.outputs.version }}"
-          grep -rl "$placeholder" "Assets/${{ env.PACKAGE_NAME }}/" | while IFS= read -r file; do
+          grep -rlF "$placeholder" "Assets/${{ env.PACKAGE_NAME }}/" | while IFS= read -r file; do
               echo "$file"
               sed "s|$placeholder|$version|g" -i "$file"
           done
