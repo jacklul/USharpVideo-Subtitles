@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using VRC.SDK3.Video.Components;
 using VRC.SDK3.Video.Components.AVPro;
 using VRC.SDKBase;
@@ -8,10 +9,13 @@ namespace UdonSharp.Video.Subtitles.Test
     [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
     public class Testing : UdonSharpBehaviour
     {
-#if USHARPVIDEO_FOUND
+#if USHARPVIDEO
         [Header("USharpVideo")]
         public USharpVideoPlayer uSharpVideoPlayer;
         public SubtitleManager subtitlesManager1;
+#else
+        private UdonSharpBehaviour uSharpVideoPlayer;
+        private UdonSharpBehaviour subtitlesManager1;
 #endif
 
         [Header("Base players")]
@@ -22,11 +26,37 @@ namespace UdonSharp.Video.Subtitles.Test
         public GameObject screenUnityVideoPlayer;
         public GameObject screenAvProVideoPlayer;
 
+        [Header("Other")]
+        [SerializeField, Tooltip("Field to prepend debug log messages to")]
+        private Text debugLogField;
+
+        [Header("Test content")]
         public VRCUrl testVideo;
         public VRCUrl testRemoteSubtitles;
         [TextArea] public string testSubtitles;
 
-#if USHARPVIDEO_FOUND
+        private void WriteToField(string message)
+        {
+            if (debugLogField)
+                debugLogField.text = message + "\n" + debugLogField.text;
+        }
+
+        public void Log(string message, Object context = null)
+        {
+            WriteToField("[LOG] " + message);
+        }
+
+        public void LogWarning(string message, Object context = null)
+        {
+            WriteToField("[WARN] " + message);
+        }
+
+        public void LogError(string message, Object context = null)
+        {
+            WriteToField("[ERR] " + message);
+        }
+
+#if USHARPVIDEO
         public void TestUSharpVideo()
         {
             if (!subtitlesManager1 || !subtitlesManager1) return;
@@ -60,7 +90,7 @@ namespace UdonSharp.Video.Subtitles.Test
 
             if (screenUnityVideoPlayer && overlayHandler) overlayHandler.MoveOverlay(screenUnityVideoPlayer);
 
-            subtitlesManager2.SetVideoPlayer(unityVideoPlayer);
+            subtitlesManager2.SetVideoPlayers(new VRC.SDK3.Video.Components.Base.BaseVRCVideoPlayer[] { unityVideoPlayer });
             subtitlesManager2.ProcessInput(testSubtitles);
         }
 
@@ -76,7 +106,7 @@ namespace UdonSharp.Video.Subtitles.Test
 
             if (screenAvProVideoPlayer && overlayHandler) overlayHandler.MoveOverlay(screenAvProVideoPlayer);
 
-            subtitlesManager2.SetVideoPlayer(avProVideoPlayer);
+            subtitlesManager2.SetVideoPlayers(new VRC.SDK3.Video.Components.Base.BaseVRCVideoPlayer[] { avProVideoPlayer });
             subtitlesManager2.ProcessInput(testSubtitles);
         }
     }

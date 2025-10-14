@@ -10,7 +10,7 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-namespace UdonSharp.Video.Subtitles.Extras
+namespace UdonSharp.Video.Subtitles
 {
     [UdonBehaviourSyncMode(BehaviourSyncMode.NoVariableSync)]
 #if USHARPVIDEO_FOUND
@@ -21,6 +21,8 @@ namespace UdonSharp.Video.Subtitles.Extras
 #if USHARPVIDEO_FOUND
         [SerializeField]
         private USharpVideoPlayer uSharpVideoPlayer;
+#else
+        private UdonSharpBehaviour uSharpVideoPlayer;
 #endif
 
         [SerializeField]
@@ -32,6 +34,8 @@ namespace UdonSharp.Video.Subtitles.Extras
 #if USHARPVIDEO_FOUND
         [SerializeField]
         private VideoControlHandler videoControlHandler;
+#else
+        private UdonSharpBehaviour videoControlHandler;
 #endif
 
         [SerializeField]
@@ -97,7 +101,7 @@ namespace UdonSharp.Video.Subtitles.Extras
         }
     }
 
-#if UNITY_EDITOR && !USHARPVIDEO_FOUND
+#if UNITY_EDITOR && !USHARPVIDEO
     [CustomEditor(typeof(OnScreenUIController))]
     public class OnScreenUIControllerEditor : Editor
     {

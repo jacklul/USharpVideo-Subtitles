@@ -250,6 +250,24 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 111484359792581272, guid: 87d772cf1b1ec7b49839dde29eb427be,
+        type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 111484359792581272, guid: 87d772cf1b1ec7b49839dde29eb427be,
+        type: 3}
+    - target: {fileID: 167512882263069486, guid: 87d772cf1b1ec7b49839dde29eb427be,
+        type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 167512882263069486, guid: 87d772cf1b1ec7b49839dde29eb427be,
+        type: 3}
+    - target: {fileID: 326682572128547149, guid: 87d772cf1b1ec7b49839dde29eb427be,
+        type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 326682572128547149, guid: 87d772cf1b1ec7b49839dde29eb427be,
+        type: 3}
     - target: {fileID: 1489345489830993425, guid: 87d772cf1b1ec7b49839dde29eb427be,
         type: 3}
       propertyPath: serializationData.Prefab
@@ -268,6 +286,12 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1510979598590794381, guid: 87d772cf1b1ec7b49839dde29eb427be,
         type: 3}
+    - target: {fileID: 1810727917966089325, guid: 87d772cf1b1ec7b49839dde29eb427be,
+        type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 1810727917966089325, guid: 87d772cf1b1ec7b49839dde29eb427be,
+        type: 3}
     - target: {fileID: 2112516810180698894, guid: 87d772cf1b1ec7b49839dde29eb427be,
         type: 3}
       propertyPath: serializationData.Prefab
@@ -279,6 +303,12 @@ PrefabInstance:
       propertyPath: serializationData.Prefab
       value: 
       objectReference: {fileID: 2419341083684189313, guid: 87d772cf1b1ec7b49839dde29eb427be,
+        type: 3}
+    - target: {fileID: 2568549077804054833, guid: 87d772cf1b1ec7b49839dde29eb427be,
+        type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 2568549077804054833, guid: 87d772cf1b1ec7b49839dde29eb427be,
         type: 3}
     - target: {fileID: 3345750262994555089, guid: 87d772cf1b1ec7b49839dde29eb427be,
         type: 3}
@@ -304,11 +334,29 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 4728275553037696996, guid: 87d772cf1b1ec7b49839dde29eb427be,
         type: 3}
+    - target: {fileID: 4947692714726391607, guid: 87d772cf1b1ec7b49839dde29eb427be,
+        type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 4947692714726391607, guid: 87d772cf1b1ec7b49839dde29eb427be,
+        type: 3}
+    - target: {fileID: 5332430880983690377, guid: 87d772cf1b1ec7b49839dde29eb427be,
+        type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 5332430880983690377, guid: 87d772cf1b1ec7b49839dde29eb427be,
+        type: 3}
     - target: {fileID: 5485030992997766564, guid: 87d772cf1b1ec7b49839dde29eb427be,
         type: 3}
       propertyPath: serializationData.Prefab
       value: 
       objectReference: {fileID: 5485030992997766564, guid: 87d772cf1b1ec7b49839dde29eb427be,
+        type: 3}
+    - target: {fileID: 6246411837040082669, guid: 87d772cf1b1ec7b49839dde29eb427be,
+        type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 6246411837040082669, guid: 87d772cf1b1ec7b49839dde29eb427be,
         type: 3}
     - target: {fileID: 6302534632688150388, guid: 87d772cf1b1ec7b49839dde29eb427be,
         type: 3}
@@ -330,6 +378,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchorMin.x
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6421412927428811954, guid: 87d772cf1b1ec7b49839dde29eb427be,
+        type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: VRC.Udon.UdonBehaviour, VRC.Udon
       objectReference: {fileID: 0}
     - target: {fileID: 6421412927524094469, guid: 87d772cf1b1ec7b49839dde29eb427be,
         type: 3}
@@ -451,6 +504,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: e4a45080602f8a1488567e3d95d9d027,
         type: 2}
+    - target: {fileID: 6421412928540815177, guid: 87d772cf1b1ec7b49839dde29eb427be,
+        type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: VRC.Udon.UdonBehaviour, VRC.Udon
+      objectReference: {fileID: 0}
     - target: {fileID: 6421412928588461830, guid: 87d772cf1b1ec7b49839dde29eb427be,
         type: 3}
       propertyPath: _syncMethod
@@ -1098,11 +1156,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2853267199229678515, guid: 79b0ea249ffa6a54bb5f55191b085d00,
-        type: 3}
-      propertyPath: debugLogField
-      value: 
-      objectReference: {fileID: 6529114630772651584}
     - target: {fileID: 2853267199229678515, guid: 79b0ea249ffa6a54bb5f55191b085d00,
         type: 3}
       propertyPath: uSharpVideoPlayer
@@ -1974,18 +2027,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a7b438beb9333a54092bcbda3dbb9b54, type: 3}
---- !u!114 &6529114630772651584 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8790337563628456349, guid: a7b438beb9333a54092bcbda3dbb9b54,
-    type: 3}
-  m_PrefabInstance: {fileID: 3973345647330268174}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &6759095421024464057
 MonoBehaviour:
   m_ObjectHideFlags: 0

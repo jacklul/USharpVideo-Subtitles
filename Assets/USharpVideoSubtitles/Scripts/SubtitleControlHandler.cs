@@ -11,7 +11,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using VRC.SDKBase;
 using VRC.SDK3.Components;
+
+#if VRC_ENABLE_PLAYER_PERSISTENCE
 using VRC.SDK3.Persistence;
+#endif
 
 namespace UdonSharp.Video.Subtitles
 {
@@ -22,6 +25,8 @@ namespace UdonSharp.Video.Subtitles
     {
         #region Config
 
+        [Header("References")]
+
         [SerializeField]
         private SubtitleManager manager;
 
@@ -29,18 +34,20 @@ namespace UdonSharp.Video.Subtitles
         private SubtitleOverlayHandler overlayHandler;
 
         [Header("Settings")]
+
         [SerializeField, Tooltip("Adds a button that popups the settings menu directly on the screen for easier customizing")]
         private bool settingsPopupEnabled = true;
         [Tooltip("Default value (0) will move the settings menu object into overlay object and set the scale to 0.8\nPositive numbers change the scale while keeping the same behaviour\nNegative numbers do not move the object and set an absolute scale")]
         public float settingsPopupScale = 0f;
         [Tooltip("How much transparent should the popup window be")]
         public float settingsPopupAlpha = 0.85f;
+
 #if VRC_ENABLE_PLAYER_PERSISTENCE
-        [SerializeField, Tooltip("The key used to store the user's settings in PlayerData key-value database\nEmpty disables this feature")]
+        [SerializeField, Tooltip("The key used to store the user's settings in PlayerData key-value database\nEmpty disables this feature on this instance\nIf you're using multiple UI controllers then make sure only one of them has this set")]
         private string settingsPersistenceKey = "UsharpVideoSubtitles_Settings";
 
-        [SerializeField, Tooltip("How many seconds to wait before saving the settings to PlayerData after they have been changed")]
-        private float settingsPersistenceDelay = 5f;
+        [SerializeField, Tooltip("How many seconds to wait before saving the settings to PlayerData after they have been changed\nAny changes during this delay will also be committed")]
+        private float settingsPersistenceDelay = 10f;
 #endif
 
         [Header("Alpha applying rules")]
@@ -90,7 +97,7 @@ namespace UdonSharp.Video.Subtitles
         [Header("Toggles")]
 
         [SerializeField]
-        private Toggle subtitlesToggle;
+        private Toggle subtitlesToggle; // @TODO rename to enabledToggle
 
         [SerializeField]
         private Toggle localToggle;
@@ -219,8 +226,10 @@ namespace UdonSharp.Video.Subtitles
         private Toggle alignmentToggle;
         [SerializeField]
         private Slider alignmentSlider;
+        //[SerializeField]
+        //private Text alignmentValue;
         [SerializeField]
-        private Text alignmentValue;
+        private GameObject alignmentValueTop, alignmentValueBottom;
 
         [SerializeField]
         private Slider timeOffsetSlider;
@@ -249,12 +258,15 @@ namespace UdonSharp.Video.Subtitles
         private string _savedStatus = "";
         private string _lastStatus = "";
 
+        private string _inputPlaceholder = "Paste SRT subtitles...";
+        private string _urlInputPlaceholder = "Paste URL to SRT subtitles...";
+
 #if VRC_ENABLE_PLAYER_PERSISTENCE
         private bool _persistentDataRestored = false;
         private bool _persistentDataSaved = true;
 #endif
 
-        private bool _synchronizeSettings = true;
+        private bool _canUpdateValues = true;
         private string _currentSettingsExport = "";
         private bool _popupActive = false;
 
@@ -263,31 +275,54 @@ namespace UdonSharp.Video.Subtitles
 
         private void OnEnable()
         {
+            if (!manager)
+            {
+                Debug.LogError("SubtitleManager reference is missing!");
+                enabled = false;
+                return;
+            }
+
+            if (!overlayHandler)
+            {
+                Debug.LogError("SubtitleOverlayHandler reference is missing!");
+                enabled = false;
+                return;
+            }
+
             manager.RegisterControlHandler(this);
-
-            if (subtitlesToggle) subtitlesToggle.isOn = manager.IsEnabled();
-            if (localToggle) localToggle.isOn = manager.IsLocal();
-
-#if USHARPVIDEO_FOUND
-            if (lockButton) lockButton.SetActive(!manager.IsUsingUSharpVideo());
-#else
-            if (lockButton) lockButton.SetActive(true);
-#endif
-
-            UpdateOwner();
-            UpdateLockState();
-            SendCustomEventDelayedFrames(nameof(UpdateSettingsValues), 1);
-            SendCustomEventDelayedFrames(nameof(_InitTimeOffsetControl), 1);
+            SendCustomEventDelayedFrames(nameof(UpdateValues), 1);
         }
 
         private void Start()
         {
-            if (!settingsPopupEnabled) settingsPopupButtonBackground.gameObject.SetActive(false);
+            if (!settingsPopupEnabled)
+                settingsPopupButtonBackground.gameObject.SetActive(false);
 
+            // Use placeholder text values from the UI
+            if (inputPlaceholderText)
+                _inputPlaceholder = inputPlaceholderText.text;
+
+            if (urlInputPlaceholderText)
+                _urlInputPlaceholder = urlInputPlaceholderText.text;
+
+            UpdatePresets();
+        }
+
+        private void OnDisable()
+        {
+            if (manager)
+                manager.UnregisterControlHandler(this);
+        }
+
+        private void UpdatePresets()
+        {
             if (preset1Object)
             {
                 if (preset1Settings.Length > 0)
+                {
+                    preset1Object.SetActive(true);
                     UpdatePresetPreview(preset1Object, preset1Settings);
+                }
                 else
                     preset1Object.SetActive(false);
             }
@@ -295,7 +330,10 @@ namespace UdonSharp.Video.Subtitles
             if (preset2Object)
             {
                 if (preset2Settings.Length > 0)
+                {
+                    preset2Object.SetActive(true);
                     UpdatePresetPreview(preset2Object, preset2Settings);
+                }
                 else
                     preset2Object.SetActive(false);
             }
@@ -303,7 +341,10 @@ namespace UdonSharp.Video.Subtitles
             if (preset3Object)
             {
                 if (preset3Settings.Length > 0)
+                {
+                    preset3Object.SetActive(true);
                     UpdatePresetPreview(preset3Object, preset3Settings);
+                }
                 else
                     preset3Object.SetActive(false);
             }
@@ -311,15 +352,13 @@ namespace UdonSharp.Video.Subtitles
             if (preset4Object)
             {
                 if (preset4Settings.Length > 0)
+                {
+                    preset4Object.SetActive(true);
                     UpdatePresetPreview(preset4Object, preset4Settings);
+                }
                 else
                     preset4Object.SetActive(false);
             }
-        }
-
-        private void OnDisable()
-        {
-            manager.UnregisterControlHandler(this);
         }
 
         private void UpdatePresetPreview(GameObject previewGameObject, string settings)
@@ -396,42 +435,6 @@ namespace UdonSharp.Video.Subtitles
         #endregion
         #region VRC Persistence
 
-#if VRC_ENABLE_PLAYER_PERSISTENCE
-        public override void OnPlayerRestored(VRCPlayerApi player)
-        {
-            if (_persistentDataRestored || player != Networking.LocalPlayer)
-                return;
-
-            if (settingsPersistenceKey.Length > 0 && PlayerData.HasKey(player, settingsPersistenceKey))
-            {
-                bool success = PlayerData.TryGetString(player, settingsPersistenceKey, out string userSettings);
-
-                if (success)
-                {
-                    if (userSettings.Length > 0 && _currentSettingsExport != userSettings)
-                    {
-                        manager._LogMessage("Restoring subtitle settings from PlayerData: " + userSettings);
-
-                        ImportSettingsFromString(userSettings);
-                    }
-                }
-                else
-                {
-                    manager._LogMessage("Failed to fetch subtitle settings from PlayerData");
-                }
-            }
-
-            _persistentDataRestored = true;
-        }
-
-        public void _SavePersistentData()
-        {
-            manager._LogMessage("Saving subtitle settings to PlayerData: " + _currentSettingsExport);
-            PlayerData.SetString(settingsPersistenceKey, _currentSettingsExport);
-            _persistentDataSaved = true;
-        }
-#endif
-
         #endregion
         #region Status
 
@@ -444,7 +447,7 @@ namespace UdonSharp.Video.Subtitles
                 return;
             }
 
-            string message = text + (manager.IsLocal() ? " " + manager._GetTranslation("INDICATOR_LOCAL") : "");
+            string message = text + (manager.IsLocal() ? " " + manager.GetString("INDICATOR_LOCAL") : "");
 
             if (statusTextField)
             {
@@ -459,7 +462,6 @@ namespace UdonSharp.Video.Subtitles
                 _savedStatus = _GetStatusText();
         }
 
-        [PublicAPI]
         public string _GetStatusText()
         {
             if (statusTextField)
@@ -477,7 +479,7 @@ namespace UdonSharp.Video.Subtitles
         }
 
         [PublicAPI]
-        public void SetStickyStatusText(string text, float seconds)
+        public void SetStickyStatusText(string text, float seconds) // @TODO remove?
         {
             if (_lastStatus != "")
                 return;
@@ -500,20 +502,7 @@ namespace UdonSharp.Video.Subtitles
         }
 
         #endregion
-        #region Ownership & Lock
-
-        // Only allow the master to own this
-        public override bool OnOwnershipRequest(VRCPlayerApi requestingPlayer, VRCPlayerApi requestedOwner)
-        {
-            return false;
-        }
-
-        // Master has changed and we have to update reload button state
-        public override void OnOwnershipTransferred(VRCPlayerApi player)
-        {
-            if (!manager.IsLocal())
-                UpdateOwner();
-        }
+        #region Values from manager
 
         [PublicAPI]
         public void UpdateOwner()
@@ -521,108 +510,83 @@ namespace UdonSharp.Video.Subtitles
             if (ownerField)
             {
                 if (manager.IsLocal())
-                    ownerField.text = manager._GetTranslation("INDICATOR_LOCAL");
+                    ownerField.text = manager.GetString("INDICATOR_LOCAL");
                 else
                     ownerField.text = Networking.GetOwner(manager.gameObject).displayName;
-            }
-
-            if (reloadButton)
-            {
-                if (manager.CanSynchronizeSubtitles() || manager.IsLocal() || manager.IsSyncedURL())
-                {
-                    if (reloadGraphic) reloadGraphic.color = whiteGraphicColor;
-                }
-                else
-                {
-                    if (reloadGraphic) reloadGraphic.color = redGraphicColor;
-                }
             }
         }
 
         [PublicAPI]
         public void UpdateLockState()
         {
+            var showLockButton = true;
+            var hasControl = false;
+            var indicator = "";
+
             if (manager.IsLocal())
             {
-#if USHARPVIDEO_FOUND
-                if (lockButton && !manager.IsUsingUSharpVideo()) lockButton.SetActive(false);
-#else
-                if (lockButton) lockButton.SetActive(false);
-#endif
-
-                if (lockGraphic) lockGraphic.color = whiteGraphicColor;
-                if (inputClearButtonIcon) inputClearButtonIcon.color = whiteGraphicColor;
-                if (inputLoadButtonIcon) inputLoadButtonIcon.color = whiteGraphicColor;
-
-                if (inputField) inputField.readOnly = false;
-                if (urlInputField) urlInputField.readOnly = false;
-
-                if (inputPlaceholderText) inputPlaceholderText.text = manager._GetTranslation("PLACEHOLDER_PASTE") + " " + manager._GetTranslation("INDICATOR_LOCAL");
-                if (urlInputPlaceholderText) urlInputPlaceholderText.text = manager._GetTranslation("PLACEHOLDER_URL") + " " + manager._GetTranslation("INDICATOR_LOCAL");
-
-                return;
-            }
-
-#if USHARPVIDEO_FOUND
-            if (lockButton && !manager.IsUsingUSharpVideo()) lockButton.SetActive(true);
-#else
-            if (lockButton) lockButton.SetActive(true);
-#endif
-
-            if (manager.IsLocked())
-            {
-                if (masterLockedIcon) masterLockedIcon.SetActive(true);
-                if (masterUnlockedIcon) masterUnlockedIcon.SetActive(false);
-
-                if (manager.CanControlSubtitles())
-                {
-                    if (lockGraphic) lockGraphic.color = whiteGraphicColor;
-                    if (inputClearButtonIcon) inputClearButtonIcon.color = whiteGraphicColor;
-                    if (inputLoadButtonIcon) inputLoadButtonIcon.color = whiteGraphicColor;
-
-                    if (inputField) inputField.readOnly = false;
-                    if (urlInputField) urlInputField.readOnly = false;
-
-                    if (inputPlaceholderText) inputPlaceholderText.text = manager._GetTranslation("PLACEHOLDER_PASTE");
-                    if (urlInputPlaceholderText) urlInputPlaceholderText.text = manager._GetTranslation("PLACEHOLDER_URL");
-                }
-                else
-                {
-                    if (lockGraphic) lockGraphic.color = redGraphicColor;
-                    if (inputClearButtonIcon) inputClearButtonIcon.color = redGraphicColor;
-                    if (inputLoadButtonIcon) inputLoadButtonIcon.color = redGraphicColor;
-
-                    if (inputField) inputField.readOnly = true;
-                    if (urlInputField) urlInputField.readOnly = true;
-
-#if USHARPVIDEO_FOUND
-                    string owner = (manager.IsUsingUSharpVideo() ? manager.GetUSharpVideoOwner() : Networking.GetOwner(manager.gameObject)).displayName;
-#else
-                    string owner = Networking.GetOwner(manager.gameObject).displayName;
-#endif
-
-                    string onlyMaster = manager._GetTranslation("ONLY_MASTER_CAN_ADD", owner);
-
-                    if (inputPlaceholderText) inputPlaceholderText.text = onlyMaster;
-                    if (urlInputPlaceholderText) urlInputPlaceholderText.text = onlyMaster;
-                }
+                showLockButton = false;
+                hasControl = true;
+                indicator = " " + manager.GetString("INDICATOR_LOCAL");
             }
             else
             {
-                if (masterLockedIcon) masterLockedIcon.SetActive(false);
-                if (masterUnlockedIcon) masterUnlockedIcon.SetActive(true);
+                if (manager.IsLocked())
+                {
+                    if (manager.CanControlSubtitles())
+                        hasControl = true;
+                    else
+                        indicator = " " + manager.GetString("INDICATOR_MASTER");
+                }
+                else
+                {
+                    hasControl = true;
+                    indicator = " " + manager.GetString("INDICATOR_ANYONE");
+                }
+            }
 
+#if USHARPVIDEO_FOUND
+            if (lockButton && !manager.IsUsingUSharpVideo()) lockButton.SetActive(showLockButton);
+#else
+            if (lockButton) lockButton.SetActive(showLockButton);
+#endif
+
+            if (masterLockedIcon) masterLockedIcon.SetActive(manager.IsLocked());
+            if (masterUnlockedIcon) masterUnlockedIcon.SetActive(!manager.IsLocked());
+
+            if (inputField) inputField.readOnly = !hasControl;
+            if (urlInputField) urlInputField.readOnly = !hasControl;
+
+            if (hasControl)
+            {
                 if (lockGraphic) lockGraphic.color = whiteGraphicColor;
                 if (inputClearButtonIcon) inputClearButtonIcon.color = whiteGraphicColor;
                 if (inputLoadButtonIcon) inputLoadButtonIcon.color = whiteGraphicColor;
-
-                if (inputField) inputField.readOnly = false;
-                if (urlInputField) urlInputField.readOnly = false;
-
-                if (inputPlaceholderText) inputPlaceholderText.text = manager._GetTranslation("PLACEHOLDER_PASTE") + " " + manager._GetTranslation("INDICATOR_ANYONE");
-                if (urlInputPlaceholderText) urlInputPlaceholderText.text = manager._GetTranslation("PLACEHOLDER_URL") + " " + manager._GetTranslation("INDICATOR_ANYONE");
             }
+            else
+            {
+                if (lockGraphic) lockGraphic.color = redGraphicColor;
+                if (inputClearButtonIcon) inputClearButtonIcon.color = redGraphicColor;
+                if (inputLoadButtonIcon) inputLoadButtonIcon.color = redGraphicColor;
+            }
+
+            if (inputPlaceholderText) inputPlaceholderText.text = _inputPlaceholder + indicator;
+            if (urlInputPlaceholderText) urlInputPlaceholderText.text = _urlInputPlaceholder + indicator;
         }
+
+        public void UpdateTimeOffset()
+        {
+            float offset = manager.GetTimeOffset();
+
+            if (timeOffsetValue)
+                timeOffsetValue.text = Common.RoundFloat(offset, 2).ToString();
+
+            if (timeOffsetSlider)
+                timeOffsetSlider.value = offset;
+        }
+
+        #endregion
+        #region Input
 
         public void _LoadInput()
         {
@@ -634,9 +598,6 @@ namespace UdonSharp.Video.Subtitles
             inputField.text = string.Empty;
             urlInputField.SetUrl(VRCUrl.Empty);
         }
-
-        #endregion
-        #region Input
 
         public void _OnSubtitleInput()
         {
@@ -664,43 +625,6 @@ namespace UdonSharp.Video.Subtitles
                 manager.ProcessURLInput(url);
                 urlInputField.SetUrl(VRCUrl.Empty);
             }
-        }
-
-        public void _OnClearButton()
-        {
-            manager.ClearSubtitles();
-        }
-
-        public void _OnSubtitlesToggleButton()
-        {
-            if (!subtitlesToggle)
-                return;
-
-            manager.SetEnabled(subtitlesToggle.isOn);
-        }
-
-        public void _SetToggleButtonState(bool state)
-        {
-            if (!subtitlesToggle)
-                return;
-
-            subtitlesToggle.isOn = state;
-        }
-
-        public void _OnLocalToggleButton()
-        {
-            if (!localToggle)
-                return;
-
-            manager.SetLocal(localToggle.isOn);
-        }
-
-        public void _SetLocalToggleButtonState(bool state)
-        {
-            if (!subtitlesToggle)
-                return;
-
-            localToggle.isOn = state;
         }
 
         #endregion
@@ -751,6 +675,15 @@ namespace UdonSharp.Video.Subtitles
                 return;
 
             ToggleMenu("info");
+        }
+
+        public void _CloseInputMenu() // Used by SubtitleManager
+        {
+            if (!inputMenu)
+                return;
+
+            inputMenu.SetActive(false);
+            ToggleMenu("dummy"); // Makes sure everything gets closed and button states reset
         }
 
         [PublicAPI]
@@ -829,32 +762,53 @@ namespace UdonSharp.Video.Subtitles
             }
         }
 
-        [PublicAPI]
-        public void _CloseInputMenu() // Used by SubtitleManager
-        {
-            if (!inputMenu)
-                return;
-
-            inputMenu.SetActive(false);
-            ToggleMenu("dummy"); // Makes sure everything gets closed and button states reset
-        }
-
         #endregion
         #region Buttons
 
+        public void _OnClearButton()
+        {
+            manager.ClearSubtitles();
+        }
+
+        /*public void _OnTimeOffsetSyncButton()
+        {
+            manager.SyncTimeOffset();
+        }*/
+
+        public void _OnEnabledToggleButton()
+        {
+            if (!subtitlesToggle)
+                return;
+
+            manager.SetEnabled(subtitlesToggle.isOn);
+            AfterValueChanged();
+        }
+
+        public void _OnLocalToggleButton()
+        {
+            if (!localToggle)
+                return;
+
+            manager.SetLocal(localToggle.isOn);
+            AfterValueChanged();
+        }
+
         public void _OnReloadButton()
         {
-            if (!manager.IsLocal())
+            /*if (!manager.IsLocal())
             {
+                if (reloadGraphic && reloadGraphic.color == redGraphicColor)
+                    return;
+
                 if (manager.CanSynchronizeSubtitles())
                 {
                     if (!manager.IsSynchronized())
                     {
-                        SetStickyStatusText(manager._GetTranslation("WAIT_FOR_SYNC"), 3.0f);
+                        //SetStickyStatusText(manager.GetString("SYNC_RUNNING"), 3.0f);
                         return;
                     }
                 }
-                else if (manager.IsSyncedURL())
+                /*else if (manager.IsSyncedURL())
                 {
                     AnimateReloadButton();
                     manager.ReloadSyncedURL();
@@ -862,10 +816,13 @@ namespace UdonSharp.Video.Subtitles
                 }
                 else
                 {
-                    SetStickyStatusText(manager._GetTranslation("ONLY_OWNER_CAN_SYNC", Networking.GetOwner(manager.gameObject).displayName), 3.0f);
-                    return;
+                    //SetStickyStatusText(manager.GetString("ONLY_OWNER_CAN_SYNC", Networking.GetOwner(manager.gameObject).displayName), 3.0f);
+                    //return;
                 }
-            }
+            }*/
+
+            if (reloadGraphic && reloadGraphic.color == redGraphicColor)
+                return;
 
             AnimateReloadButton();
             manager.SynchronizeSubtitles();
@@ -882,18 +839,37 @@ namespace UdonSharp.Video.Subtitles
             }
         }
 
+        public void _DisableReloadButton(float timeout = 3f)
+        {
+            if (reloadButton && reloadGraphic)
+            {
+                reloadGraphic.color = redGraphicColor;
+
+                if (timeout > 0f)
+                    SendCustomEventDelayedSeconds(nameof(_EnableReloadButton), timeout);
+            }
+        }
+
+        public void _EnableReloadButton()
+        {
+            if (reloadButton)
+                reloadGraphic.color = whiteGraphicColor;
+        }
+
         public void _OnLockButton()
         {
-            if (manager.IsPrivilegedUser(Networking.LocalPlayer))
+            /*if (manager.IsPrivilegedUser(Networking.LocalPlayer))
             {
                 if (!manager.IsSynchronized() && !Networking.IsOwner(manager.gameObject))
                 {
-                    SetStickyStatusText(manager._GetTranslation("WAIT_FOR_SYNC"), 3.0f);
+                    SetStickyStatusText(manager.GetString("SYNC_RUNNING"), 3.0f);
                     return;
                 }
 
                 manager.SetLocked(!manager.IsLocked());
-            }
+            }*/
+
+            manager.SetLocked(!manager.IsLocked());
         }
 
         public void _OnSettingsResetButton()
@@ -902,7 +878,7 @@ namespace UdonSharp.Video.Subtitles
         }
 
         #endregion
-        #region Settings
+        #region Settings management
 
         public void _OnSettingsImportInput()
         {
@@ -1082,19 +1058,24 @@ namespace UdonSharp.Video.Subtitles
         }
 
         [PublicAPI]
-        public void UpdateSettingsValues()
+        public void UpdateValues()
         {
-            if (_synchronizeSettings)
+            if (_canUpdateValues)
             {
-                _synchronizeSettings = false; // Prevent loops
+                _canUpdateValues = false; // Prevent loop
+
+                // Update non-saved state buttons
+                if (subtitlesToggle) subtitlesToggle.isOn = manager.IsEnabled();
+                if (localToggle) localToggle.isOn = manager.IsLocal();
+
+                UpdateLockState();
+                UpdateOwner();
+                UpdateTimeOffset();
 
                 UpdateSettingsExportString();
                 ImportSettingsFromStringInternal(_currentSettingsExport, IMPORT_NONE);
 
-                // Time offset is not a saved setting, fetch new value from manager
-                _InitTimeOffsetControl();
-
-                _synchronizeSettings = true;
+                _canUpdateValues = true;
             }
         }
 
@@ -1121,13 +1102,22 @@ namespace UdonSharp.Video.Subtitles
             if (settingsImportExportField) settingsImportExportField.text = _currentSettingsExport;
 
 #if VRC_ENABLE_PLAYER_PERSISTENCE
-            if (_persistentDataRestored && _persistentDataSaved && settingsPersistenceKey.Length > 0)
+            if (_persistentDataSaved && settingsPersistenceKey.Length > 0)
             {
                 _persistentDataSaved = false;
                 SendCustomEventDelayedSeconds(nameof(_SavePersistentData), settingsPersistenceDelay);
             }
 #endif
         }
+
+#if VRC_ENABLE_PLAYER_PERSISTENCE
+        public void _SavePersistentData()
+        {
+            manager.LogDebug("Saving subtitle settings to PlayerData: " + _currentSettingsExport, this);
+            PlayerData.SetString(settingsPersistenceKey, _currentSettingsExport);
+            _persistentDataSaved = true;
+        }
+#endif
 
         private void AfterValueChanged()
         {
@@ -1136,8 +1126,8 @@ namespace UdonSharp.Video.Subtitles
             if (overlayHandler)
                 overlayHandler.RefreshSubtitle();
 
-            if (_synchronizeSettings)
-                manager._SynchronizeSettings(this);
+            if (_canUpdateValues) // Prevent loop
+                manager.SynchronizeSettings(this);
         }
 
         #endregion
@@ -1176,13 +1166,7 @@ namespace UdonSharp.Video.Subtitles
                     if (scale == 0)
                         scale = 0.8f;
 
-                    Transform transparentCanvas = transform.Find("TransparentCanvas2");
-
-                    if (transparentCanvas)
-                        settingsMenu.transform.SetParent(transparentCanvas);
-                    else
-                        settingsMenu.transform.SetParent(transform);
-
+                    settingsMenu.transform.SetParent(transform);
                     settingsMenu.transform.localPosition = Vector3.zero;
                     settingsMenu.transform.localRotation = Quaternion.identity;
                 }
@@ -1474,14 +1458,26 @@ namespace UdonSharp.Video.Subtitles
 
         private void SetAlignmentValue(int value)
         {
-            if (!alignmentValue)
-                return;
+            //if (!alignmentValue)
+            //    return;
 
             if (alignmentSlider) alignmentSlider.value = value;
-            alignmentValue.text = value == 0 ? manager._GetTranslation("ALIGNMENT_BOTTOM") : manager._GetTranslation("ALIGNMENT_TOP");
+
+            if (value == 0)
+            {
+                alignmentValueTop.SetActive(false);
+                alignmentValueBottom.SetActive(true);
+            }
+            else
+            {
+                alignmentValueTop.SetActive(true);
+                alignmentValueBottom.SetActive(false);
+            }
+
+            //alignmentValue.text = value == 0 ? manager.GetString("ALIGNMENT_BOTTOM") : manager.GetString("ALIGNMENT_TOP");
         }
 
-        public void _InitTimeOffsetControl()
+        public void _UpdateTimeOffsetControl()
         {
             float offset = manager.GetTimeOffset();
 
@@ -1492,6 +1488,7 @@ namespace UdonSharp.Video.Subtitles
                 timeOffsetSlider.value = offset;
         }
 
+        // @TODO slider should not apply the value immediately
         public void _OnTimeOffsetSlider()
         {
             if (!timeOffsetSlider)
@@ -1507,10 +1504,8 @@ namespace UdonSharp.Video.Subtitles
                 timeOffsetValue.text = value.ToString();
             }
 
-            manager.SetTimeOffset(value, false);
-
-            if (_synchronizeSettings)
-                manager._SynchronizeSettings(this);
+            manager.SetTimeOffset(value);
+            AfterValueChanged();
         }
 
         public void _OnTimeOffsetInput()
@@ -1534,10 +1529,8 @@ namespace UdonSharp.Video.Subtitles
                     timeOffsetValue.text = text;
             }
 
-            manager.SetTimeOffset(value, false);
-
-            if (_synchronizeSettings)
-                manager._SynchronizeSettings(this);
+            manager.SetTimeOffset(value);
+            AfterValueChanged();
         }
 
         public void _OnTimeOffsetReset()
@@ -1568,6 +1561,50 @@ namespace UdonSharp.Video.Subtitles
         {
             ImportSettingsFromStringInternal(preset4Settings, IMPORT_UPDATE);
         }
+
+        #endregion
+        #region VRChat events
+
+        // Only allow the master to own this
+        public override bool OnOwnershipRequest(VRCPlayerApi requestingPlayer, VRCPlayerApi requestedOwner)
+        {
+            return false;
+        }
+
+        // Master has changed and we have to update reload button state
+        public override void OnOwnershipTransferred(VRCPlayerApi player)
+        {
+            if (!manager.IsLocal())
+                UpdateOwner();
+        }
+
+#if VRC_ENABLE_PLAYER_PERSISTENCE
+        public override void OnPlayerRestored(VRCPlayerApi player)
+        {
+            if (_persistentDataRestored || player != Networking.LocalPlayer)
+                return;
+
+            if (settingsPersistenceKey.Length > 0 && PlayerData.HasKey(player, settingsPersistenceKey))
+            {
+                bool success = PlayerData.TryGetString(player, settingsPersistenceKey, out string userSettings);
+
+                if (success)
+                {
+                    if (userSettings.Length > 0 && _currentSettingsExport != userSettings)
+                    {
+                        manager.LogDebug("Restoring subtitle settings from PlayerData: " + userSettings, this);
+
+                        ImportSettingsFromString(userSettings);
+                    }
+                }
+                else
+                    manager.LogWarning("Failed to fetch subtitle settings from PlayerData", this);
+            }
+
+            _persistentDataRestored = true;
+        }
+
+#endif
 
         #endregion
     }

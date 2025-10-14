@@ -10,7 +10,7 @@
   - [SubtitleManager.IsLocked(): bool](#subtitlemanagerislocked-bool)
   - [SubtitleManager.IsPrivilegedUser(): bool](#subtitlemanagerisprivilegeduser-bool)
   - [SubtitleManager.IsSyncedURL(): bool](#subtitlemanagerissyncedurl-bool)
-  - [SubtitleManager.LoadTranslationFile(TextAsset): void](#subtitlemanagerloadtranslationfiletextasset-void)
+  - [SubtitleManager.LoadStringsFile(TextAsset): void](#subtitlemanagerloadstringsfiletextasset-void)
   - [SubtitleManager.ProcessInput(string): void](#subtitlemanagerprocessinputstring-void)
   - [SubtitleManager.ProcessURLInput(VRCUrl): void](#subtitlemanagerprocessurlinputvrcurl-void)
   - [SubtitleManager.RegisterCallbackReceiver(UdonSharpBehaviour): void](#subtitlemanagerregistercallbackreceiverudonsharpbehaviour-void)
@@ -19,7 +19,9 @@
   - [SubtitleManager.SetLocal(bool): void](#subtitlemanagersetlocalbool-void)
   - [SubtitleManager.SetLocked(bool): void](#subtitlemanagersetlockedbool-void)
   - [SubtitleManager.SetTimeOffset(float): void](#subtitlemanagersettimeoffsetfloat-void)
+  - [SubtitleManager.SetOverlayHandler(SubtitleOverlayHandler): void](#subtitlemanagersetoverlayhandlersubtitleoverlayhandler-void)
   - [SubtitleManager.SetVideoPlayers(BaseVRCVideoPlayer\[\]): void](#subtitlemanagersetvideoplayersbasevrcvideoplayer-void)
+  - [SubtitleManager.SynchronizeSettings(SubtitleControlHandler|null): void](#subtitlemanagersynchronizesettingssubtitlecontrolhandlernull-void)
   - [SubtitleManager.SynchronizeSubtitles(): void](#subtitlemanagersynchronizesubtitles-void)
   - [SubtitleManager.UnregisterCallbackReceiver(UdonSharpBehaviour): void](#subtitlemanagerunregistercallbackreceiverudonsharpbehaviour-void)
 - [SubtitleControlHandler](#subtitlecontrolhandler)
@@ -99,10 +101,10 @@ Check if URL was synced or not
 
 - If this returns `false` and `SubtitleManager.IsSynchronized()` is `true` then subtitles from pasted text are used
 
-### SubtitleManager.LoadTranslationFile(TextAsset): void
+### SubtitleManager.LoadStringsFile(TextAsset): void
 
 Load translation from JSON file (hardcoded status messages only).  
-You can also assign a file to `SubtitleManager.translationFile` variable in the inspector which will be loaded on start.  
+You can also assign a file to `SubtitleManager.stringsFile` variable in the inspector which will be loaded on start.  
 _You will have to use a 3rd-party tool to translate the interface part of the prefab._
 
 <details>
@@ -182,6 +184,7 @@ public class CallbackReceiver : UdonSharpBehaviour
 | `OnUSharpVideoSubtitlesLockChange`          | Lock state has changed (on/off) |
 | `OnUSharpVideoSubtitlesTimeOffsetChange`    | Time offset value has changed |
 | `OnUSharpVideoSubtitlesVideoPlayerChange`   | Video player reference has changed |
+| `OnUSharpVideoSubtitlesOverlayChange`       | Overlay handler reference has changed |
 | `OnUSharpVideoSubtitlesOwnershipChange`     | Owner has changed |
 | `OnUSharpVideoSubtitlesSettingsUpdate`      | User has changed any setting (called by `SubtitleControlHandler` and `SetTimeOffset()`) |
 
@@ -210,13 +213,22 @@ Change lock state, must be executed by the Master
 
 ### SubtitleManager.SetTimeOffset(float): void
 
-Set time offset value
+Set time offset value  
+You should also call `SubtitleManager.SynchronizeSettings()` after to push the changes to the UI
+
+### SubtitleManager.SetOverlayHandler(SubtitleOverlayHandler): void
+
+Set overlay handler to use
 
 ### SubtitleManager.SetVideoPlayers(BaseVRCVideoPlayer[]): void
 
 Use this to change the video player references that the subtitles are synced with
 
 - Does nothing when using **USharpVideo**
+
+### SubtitleManager.SynchronizeSettings(SubtitleControlHandler|null): void
+
+Use this to update settings on all connected instances of `SubtitleControlHandler`
 
 ### SubtitleManager.SynchronizeSubtitles(): void
 
@@ -253,6 +265,8 @@ Toggle settings popup, use this to show and hide the popup using separate button
 ## SubtitleOverlayHandler
 
 ### Styling methods
+
+You should call `SubtitleManager.SynchronizeSettings()` after making styling changes on the overlay to push the changes to the UI
 
 <details>
 <summary>List of styling methods</summary>

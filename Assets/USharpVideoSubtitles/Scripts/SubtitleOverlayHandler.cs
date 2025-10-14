@@ -17,8 +17,39 @@ namespace UdonSharp.Video.Subtitles
     {
         #region Config
 
-        [SerializeField]
-        private SubtitleManager manager;
+        [SerializeField, Tooltip("Will move itself to this object on initialization and reset the scale to make it match the screen size")]
+        private GameObject videoScreen;
+
+        [Header("Defaults")]
+
+        [SerializeField, Tooltip("This text is displayed when there is no subtitle currently displayed and user has opened the settings menu")]
+        private string placeholder = "The quick brown fox jumps over a lazy dog, and the slow white fox jumps over a motivated python.";
+
+        [SerializeField, Range(30, 100)]
+        private int fontSize = 55;
+
+        [SerializeField, ColorUsage(false)]
+        private Color fontColor = new Color(1f, 1f, 1f, 1f);
+
+        [SerializeField, Range(0, 1)]
+        private float outlineSize = 0.3f;
+
+        [SerializeField, ColorUsage(false)]
+        private Color outlineColor = new Color(0f, 0f, 0f, 1f);
+
+        [SerializeField, Tooltip("This also sets background opacity")]
+        private Color backgroundColor = new Color(0f, 0f, 0f, 0f);
+
+        [SerializeField, Range(0, 540)]
+        private int verticalMargin = 80;
+
+        [SerializeField, Range(0, 960)]
+        private int horizontalMargin = 80;
+
+        [SerializeField, Range(0, 1), Tooltip("0 = bottom\n1 = top")]
+        private int alignment = 0; // @TODO To be replaced with "private VerticalAlignmentOptions alignment = VerticalAlignmentOptions.Bottom;" which is not exposed to Udon yet
+
+        [Header("Fields")]
 
         [SerializeField]
         private TextMeshProUGUI subtitleTextField;
@@ -26,36 +57,12 @@ namespace UdonSharp.Video.Subtitles
         [SerializeField]
         private TextMeshProUGUI subtitleBackgroundField;
 
+        // This is very hacky way of achieving top alignment but it'll have to do until we get access to VerticalAlignmentOptions
         [SerializeField]
         private TextMeshProUGUI subtitleTextFieldTop;
 
         [SerializeField]
         private TextMeshProUGUI subtitleBackgroundFieldTop;
-
-        [SerializeField, Tooltip("Optional, will move the overlay to this object on initialization and reset the scale to make it match the screen size\nThis might not work and you will have to move the overlay manually")]
-        private GameObject videoScreen;
-
-        [SerializeField, Tooltip("This text is displayed when there is no subtitle currently displayed and user has opened the settings menu")]
-        private string placeholder = "The quick brown fox jumps over a lazy dog, and the slow white fox jumps over a motivated python.";
-
-        [Header("Default text style")]
-
-        [SerializeField, Range(30, 100)]
-        private int fontSize = 55;
-        [SerializeField, ColorUsage(false)]
-        private Color fontColor = new Color(1f, 1f, 1f, 1f);
-        [SerializeField, Range(0, 1)]
-        private float outlineSize = 0.3f;
-        [SerializeField, ColorUsage(false)]
-        private Color outlineColor = new Color(0f, 0f, 0f, 1f);
-        [SerializeField, Tooltip("This also sets background opacity")]
-        private Color backgroundColor = new Color(0f, 0f, 0f, 0f);
-        [SerializeField, Range(0, 540)]
-        private int verticalMargin = 80;
-        [SerializeField, Range(0, 960)]
-        private int horizontalMargin = 80;
-        [SerializeField, Range(0, 1), Tooltip("0 = bottom\n1 = top")]
-        private int alignment = 0; // @TODO To be replaced with "private VerticalAlignmentOptions alignment = VerticalAlignmentOptions.Bottom;" which is not exposed to Udon yet
 
         #endregion
         #region Variables
@@ -76,13 +83,18 @@ namespace UdonSharp.Video.Subtitles
 
         private void OnEnable()
         {
-            manager.RegisterOverlayHandler(this);
+            if (!subtitleTextField && !subtitleBackgroundField && !subtitleTextFieldTop && !subtitleBackgroundFieldTop)
+            {
+                Debug.LogError("Field references are not set!");
+                enabled = false;
+                return;
+            }
         }
-
+    
         private void Start()
         {
-            _textFieldRectTransform = subtitleTextField.GetComponent<RectTransform>();
-            _backgroundFieldRectTransform = subtitleBackgroundField.GetComponent<RectTransform>();
+            if (subtitleTextField) _textFieldRectTransform = subtitleTextField.GetComponent<RectTransform>();
+            if (subtitleBackgroundField) _backgroundFieldRectTransform = subtitleBackgroundField.GetComponent<RectTransform>();
             if (subtitleTextFieldTop) _textFieldRectTransformTop = subtitleTextFieldTop.GetComponent<RectTransform>();
             if (subtitleBackgroundFieldTop) _backgroundFieldRectTransformTop = subtitleBackgroundFieldTop.GetComponent<RectTransform>();
 
@@ -90,11 +102,6 @@ namespace UdonSharp.Video.Subtitles
 
             if (videoScreen)
                 MoveOverlay(videoScreen);
-        }
-
-        private void OnDisable()
-        {
-            manager.UnregisterOverlayHandler(this);
         }
 
         #endregion
@@ -122,13 +129,13 @@ namespace UdonSharp.Video.Subtitles
 
             if (GetAlignment() == 0)
             {
-                subtitleTextField.text = subtitle;
-                subtitleBackgroundField.text = background;
+                if (subtitleTextField) subtitleTextField.text = subtitle;
+                if (subtitleBackgroundField) subtitleBackgroundField.text = background;
             }
-            else if (subtitleTextFieldTop && subtitleBackgroundFieldTop) // This is very dirty way of achieving this but it'll do until we get access to alignment property
+            else
             {
-                subtitleTextFieldTop.text = subtitle;
-                subtitleBackgroundFieldTop.text = background;
+                if (subtitleTextFieldTop) subtitleTextFieldTop.text = subtitle;
+                if (subtitleBackgroundFieldTop) subtitleBackgroundFieldTop.text = background;
             }
         }
 
@@ -136,8 +143,8 @@ namespace UdonSharp.Video.Subtitles
         public void ClearSubtitle()
         {
             _lastText = "";
-            subtitleTextField.text = "";
-            subtitleBackgroundField.text = "";
+            if (subtitleTextField) subtitleTextField.text = "";
+            if (subtitleBackgroundField) subtitleBackgroundField.text = "";
             if (subtitleTextFieldTop) subtitleTextFieldTop.text = "";
             if (subtitleBackgroundFieldTop) subtitleBackgroundFieldTop.text = "";
         }
@@ -169,16 +176,11 @@ namespace UdonSharp.Video.Subtitles
         [PublicAPI]
         public Transform GetCanvasTransform()
         {
-            if (gameObject.transform.childCount > 0)
-            {
-                for (int i = 0; i < gameObject.transform.childCount; i++)
-                {
-                    if (gameObject.transform.GetChild(i).GetComponent<Canvas>())
-                        return gameObject.transform.GetChild(i);
-                }
-            }
+            Canvas canvas = GetComponentInChildren<Canvas>();
+            if (canvas)
+                return canvas.transform;
 
-            return gameObject.transform; // This shouldn't even be reached
+            return null;
         }
 
         #endregion
