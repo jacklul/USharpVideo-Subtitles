@@ -702,6 +702,7 @@ namespace UdonSharp.Video.Subtitles
                 {
                     _LogMessage("Will send another chunk...");
 
+                    SendCustomEventDelayedFrames(nameof(_QueueSerialize), 1);
                     SendCallback("OnUSharpVideoSubtitlesTransmitProgress");
                 }
                 else
@@ -716,8 +717,6 @@ namespace UdonSharp.Video.Subtitles
 
                     SendCallback("OnUSharpVideoSubtitlesTransmitFinish");
                 }
-
-                SendCustomEventDelayedFrames(nameof(_QueueSerialize), 1);
             }
         }
 
