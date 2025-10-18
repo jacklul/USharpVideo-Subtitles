@@ -5,7 +5,7 @@ using VRC.SDKBase;
 
 namespace UdonSharp.Video.Subtitles.Test
 {
-    [UdonBehaviourSyncMode(BehaviourSyncMode.NoVariableSync)]
+    [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
     public class Testing : UdonSharpBehaviour
     {
 #if USHARPVIDEO_FOUND
