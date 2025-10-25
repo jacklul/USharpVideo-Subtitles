@@ -65,7 +65,7 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
-            ${{ needs.build.outputs.unitypackage_file }}
+            ${{ steps.variables.outputs.unitypackage_file }}
           generate_release_notes: true
           draft: true
 
