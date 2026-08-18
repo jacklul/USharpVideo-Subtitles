@@ -59,7 +59,7 @@ namespace UdonSharp.Video.Subtitles.Test
 #if USHARPVIDEO
         public void TestUSharpVideo()
         {
-            if (!subtitlesManager1 || !subtitlesManager1) return;
+            if (!uSharpVideoPlayer || !subtitlesManager1) return;
 
             uSharpVideoPlayer.gameObject.SetActive(true);
             uSharpVideoPlayer.PlayVideo(testVideo);
@@ -69,7 +69,7 @@ namespace UdonSharp.Video.Subtitles.Test
 
         public void TestUSharpVideoRemote()
         {
-            if (!subtitlesManager1 || !subtitlesManager1) return;
+            if (!uSharpVideoPlayer || !subtitlesManager1) return;
 
             uSharpVideoPlayer.gameObject.SetActive(true);
             uSharpVideoPlayer.PlayVideo(testVideo);
